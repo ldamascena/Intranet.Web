@@ -1,0 +1,49 @@
+﻿body {
+    color: #73879C;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.table {
+    font-size: 13px;
+}
+
+.icon-td {
+    width: 37px;
+}
+
+.Feito {
+    background-color: #82af6f !important;
+}
+
+.Pendente {
+    background-color: #f89406 !important;
+}
+
+.Problema {
+    background-color: #d15b47 !important;
+}
+
+.ng-hide-add {
+    animation: 0.5s lightSpeedOut ease;
+}
+
+#buscaProduto {
+    width: 35%;
+}
+
+#labelNumberPages {
+    font-weight: normal;
+    color: #5bc0de;
+}
+
+.modal-footer {
+    margin-top: 10px;
+}
+
+#observacao {
+    height: 134px;
+}

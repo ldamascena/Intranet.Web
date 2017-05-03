@@ -1,0 +1,299 @@
+﻿<html lang="en" ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do módulo*@
+    <script src="~/scripts/App.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do Controllers*@
+    <script src="~/scripts/Controllers/listaAlertaCtrl.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do Services*@
+    <script src="~/scripts/Services/AlertaGeralService.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css"/>
+
+    <title>Lista de Alertas</title>
+
+    <script type="text/javascript">
+
+        // Controller do Modal
+
+        app.controller("ModalInstanceCtrl", function ($scope, $uibModalInstance, $interval, AlertaGeralService) {
+
+            $scope.dadosHistorico = [];
+
+            $scope.carregarHistoricos = function () {
+                AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
+                    $scope.dadosHistorico = response.data;
+                    //console.log($scope.dadosHistorico);
+                },
+                function (response) {
+                    $scope.message = "Aconteceu um problema: " + response.status;
+                });
+            }
+
+            $scope.carregarHistoricos()
+
+
+            // Função para persistir na tabela histórico
+
+            var cadastrarHistorico = function (data) {
+                AlertaGeralService.SaveObservacao(data).then(function (response) {
+                    $scope.submittedSuccess = true;
+                }, function (response) {
+                    $scope.message = "Aconteceu um problema: " + response.status;
+                });
+            };
+
+            // Função para persistir na tabela histórico quando for alterar todos de uma vez
+
+            var cadastrarObservacoes = function (data) {
+                AlertaGeralService.SaveObservacao(data).then(function (response) {
+                    $scope.submittedSuccess = true;
+                }, function (response) {
+                    $scope.message = "Aconteceu um problema: " + response.status;
+                });
+            };
+
+            // Clique do gravar com validações e chamando a função de persistir
+
+            $scope.Gravar = function (observacao, status) {
+                $scope.observacao = observacao;
+                $scope.status = status;
+
+                // Validação do campo observação e status
+
+                if (($scope.observacao == "" || $scope.observacao == undefined) || ($scope.status == "" || $scope.status == undefined)) {
+                    window.document.getElementById("observacao").focus();
+                    $scope.submittedErro = true;
+
+                    $interval(function () {
+                        $scope.submittedErro = false;
+                    }, 6000);
+                }
+
+                else {
+                    $scope.dadosInsert = {
+                        "CdProduto": $scope.idProduto,
+                        "CdAlerta": $scope.idAlerta,
+                        "DescricaoHistorico": $scope.observacao,
+                        "StatusAlertaAtual": $scope.status,
+                        "cdTipoAlerta": $scope.tipoAlerta,
+                        "cdPessoaFilial": $scope.idFilial
+                    };
+                    cadastrarHistorico($scope.dadosInsert);
+                    //alert(JSON.stringify($scope.dadosInsert));
+                    $scope.submittedSuccess = true;
+                    $interval(function () {
+                        $scope.submittedSuccess = false;
+                        $uibModalInstance.close();
+                        location.reload();
+                    }, 3000);
+
+                }
+
+            };
+
+            // Clique do gravar com validações e chamando a função de persistir
+
+            $scope.GravarTodas = function (observacao, status) {
+                $scope.observacao = observacao;
+                $scope.status = status;
+                $scope.tipoAlerta = tipoAlerta;
+
+                // Validação do campo observação e status
+
+                if (($scope.observacao == "" || $scope.observacao == undefined) || ($scope.status == "" || $scope.status == undefined)) {
+                    window.document.getElementById("observacao").focus();
+                    $scope.submittedErro = true;
+
+                    $interval(function () {
+                        $scope.submittedErro = false;
+                    }, 6000);
+                }
+
+                else {
+                    $scope.dadosInsert = {
+                        "CdProduto": $scope.idProduto,
+                        "DescricaoHistorico": $scope.observacao,
+                        "StatusAlertaAtual": $scope.status,
+                        "CdTipoAlerta": $scope.tipoAlerta
+                    };
+                    cadastrarObservacoes(JSON.stringify($scope.dadosInsert));
+                    alert(JSON.stringify($scope.dadosInsert));
+                    $scope.submittedSuccess = true;
+                    $interval(function () {
+                        $scope.submittedSuccess = false;
+                        $uibModalInstance.close();
+                        location.reload();
+                    }, 3000);
+
+                }
+
+            };
+
+            // Função limpar campos
+
+            $scope.Limpar = function () {
+                window.document.getElementById("observacao").value = "";
+                //$scope.teste();
+            }
+
+            // Função do modal para
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss();
+            }
+        });
+
+    </script>
+</head>
+
+<body ng-controller="listaAlertaCtrl as listaAlertaCtrl">
+    <uib-accordion close-others="oneAtATime">
+        <div class="container" >
+            <div class="panel panel-primary" uib-accordion-group heading="Alerta Inversão">
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('QtdEstoque')">QtdEstoque &nbsp<i ng-show="orderBycolumn === 'QtdEstoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                @*<th ng-click="orderByMe('UltData')">UltData &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>*@
+                                <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th>
+                                    <a href="#" title="Cadastrar Todos" ng-click="teste();">
+                                        <span class="glyphicon glyphicon-asterisk red"></span>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dado in dados | orderBy:orderBycolumn:reverse">
+                                @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
+                                <td>{{dado.CdProduto}}</td>
+                                <td>{{dado.NomeProduto}}</td>
+                                <td>{{dado.Pessoa.NomePessoa}}</td>
+                                <td>{{dado.QtdEstoque}}</td>
+                                @*<td>{{dado.UltData | date:'dd/MM/yyyy'}}</td>*@
+                                @*<td><label class="label label-warning">Pendente</label></td>*@
+                                <td><label ng-class="['label {{dado.Status}}']">{{dado.Status}} </label></td>
+                                <td class="icon-td">
+                                    <a href="#" ng-click="showModal(dado.CdProduto, dado.CdAlertaInversao, dado.Pessoa.CdPessoa, 1);" title="Cadastrar Observação">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chat_list" ng-show="dadosHistorico.length > 0">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
+                        <div class="row">
+                            <div class="col-lg-1">
+                                <span ng-class="dadoHistorico.StatusAlertaAtual == 'Feito' ?
+                                              'glyphicon glyphicon-ok-sign' :
+                                              (dadoHistorico.StatusAlertaAtual == 'Pendente' ?
+                                              'glyphicon glyphicon-remove-sign' :
+                                              'glyphicon glyphicon-question-sign')"></span>
+                            </div>
+
+                            <div class="col-lg-11">
+                                <small class="pull-right text-muted">{{dadoHistorico.DataDoHistorico | date:'dd/MM/yyyy'}} as {{dadoHistorico.DataDoHistorico | date:'HH:mm'}}</small>
+                                <small class="list-group-item-heading text-muted text-primary">User</small>
+                                <div><strong>Loja: </strong> {{dadoHistorico.Pessoa.NomePessoa}}</div>
+                                <div><strong>Tipo de Aleta: </strong> {{dadoHistorico.AlertaTipo.NomeAlerta}}</div>
+                                <div><strong>Alterado de: </strong> {{dadoHistorico.StatusAlertaAnterior}} <strong>para:</strong> {{dadoHistorico.StatusAlertaAtual}}, </div>
+                                <div><strong>Descrição: </strong>{{dadoHistorico.DescricaoHistorico}}</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                @*class="btn btn-circle-sm btn-primary"><span class="glyphicon glyphicon-thumbs-up">*@
+                <button class="btn btn-circle-micro btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
+            </div>
+        </div>
+
+        <div class="container" ng-show="dadosHistorico.length == 0">
+            <div class="chat_list">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div style="text-align:center;">
+                            Esse produto não possui histórico!
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        @*Inicio Modal Observação*@
+
+        <script type="text/ng-template" id="myModal.html">
+            <div class="modal-header">
+                <h4 class="modal-title">Produto</h4>
+                <button class="close" style="margin-top: -32px;" ng-click="cancel();">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form name="form">
+                    <div>
+                        <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Observação:</label></label>
+                        <textarea class="form-control" name="observacao" id="observacao" style="height: 134px;" value="" ng-model="observacao" ng-focus="true" ng-required="true"></textarea>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Status:</label></label>
+                        <select class="form-control input-sm" style="width: auto;" ng-model="status" name="status" id="status">
+                            <option selected="selected" style="color: #5bc0de;">Analisando</option>
+                            <option style="color: #f0ad4e;">Pendente</option>
+                            <option style="color: #5cb85c;">Feito</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="alert alert-danger" ng-show="submittedErro">
+                    O campos <strong>Observação</strong> e <strong>Status</strong> precisam ser preenchidos!
+                </div>
+
+                <div class="alert alert-success" ng-show="submittedSuccess">
+                    Alteração gravada com sucesso!
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 10px;">
+                <input type="button" id="limpar" class="btn btn-info" value="Limpar" ng-click="Limpar();">
+                <input type="button" id="Gravar" class="btn btn-primary" value="Gravar" ng-click="Gravar(observacao, status, 1);">
+            </div>
+
+            <script type="text/ng-template" id="myModalAlert.html">
+                <div class="modal-dialog">
+                    <div class="modal-body">
+                        <div class="alert alert-success">
+                            Observação cadastrada com <strong>sucesso!</strong>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        </script>
+        @*Fim Modal Observação*@
+</body>
+</html>

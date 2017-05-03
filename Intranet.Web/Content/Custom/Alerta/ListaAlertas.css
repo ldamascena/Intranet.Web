@@ -1,0 +1,92 @@
+﻿body {
+    color: #73879C;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.table {
+    font-size: 13px;
+}
+
+.icon-td {
+    width: 37px;
+}
+
+.Feito {
+    background-color: #82af6f !important;
+}
+
+.Pendente {
+    background-color: #f89406 !important;
+}
+
+.Analisando {
+    background-color: #5bc0de !important;
+}
+
+.ng-hide-add {
+    animation: 0.5s lightSpeedOut ease;
+}
+
+.red {
+    color: indianred;
+}
+
+.chat_list {
+    padding-top: 20px;
+}
+
+    .chat_list .list-group-item {
+        padding: 5px 4px;
+        min-height: 34px;
+        font-size: 13px;
+    }
+
+    .chat_list .list-group-item-text {
+        word-wrap: break-word;
+        display: flex;
+        overflow: auto;
+    }
+
+    .chat_list .pull-left {
+        width: 55px;
+        text-align: center;
+    }
+
+span.glyphicon-ok-sign {
+    font-size: 2.0em;
+    color: #82af6f !important;
+}
+
+span.glyphicon-remove-sign {
+    font-size: 2.0em;
+    color: #f89406 !important;
+}
+
+span.glyphicon-question-sign {
+    font-size: 2.0em;
+    color: #5bc0de !important;
+}
+
+.btn-circle {
+    width: 49px;
+    height: 49px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 20px;
+    line-height: 2.00;
+    border-radius: 30px;
+}
+
+.btn-circle-micro {
+    width: 19px;
+    height: 19px;
+    text-align: center;
+    padding: 1px 0;
+    font-size: 13px;
+    line-height: 0.1;
+    border-radius: 30px;
+}
