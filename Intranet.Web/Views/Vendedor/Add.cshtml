@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Gentelella Alela! | </title>
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/multiselect.js" type="text/javascript" language="javascript"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet">
+
+    <script type="text/javascript">
+
+        var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);
+
+        app.controller('appCtrl', function ($scope, $uibModal) {
+
+            $scope.name = 'World';
+            $scope.cars = [{ id: 1, name: 'Audi' }, { id: 2, name: 'BMW' }, { id: 1, name: 'Honda' }];
+            $scope.selectedCar = [];
+
+
+
+            $scope.AddVendedor = function (vendedor) {
+                $scope.vendedores.push(vendedor);
+            }
+
+            $scope.searchCNPJ = function () {
+                $uibModal.open({
+                    templateUrl: 'modalEmpresa.html',
+                    controller: 'ModalInstanceCtrl'
+                });
+
+                $scope.empresa = "ABC";
+                $scope.test = $scope.CNPJ.substring(0, $scope.CNPJ.indexOf("/"));
+                $scope.CNPJEmpresa = $scope.test.replace(".", "").replace(".", "");
+                $scope.CNPJFilial = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("/") + 1, $scope.CNPJ.indexOf("-")));
+                $scope.CNPJDV = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("-") + 1, $scope.CNPJ.indexOf("-") + 3));
+            }
+
+            $scope.searchEmpresa = function () {
+                $uibModal.open({
+                    templateUrl: 'modalEmpresa.html',
+                    controller: 'ModalInstanceCtrl'
+                });
+
+                $scope.empresa = "CBA";
+                $scope.CNPJ = 222222222222;
+            }
+
+
+        });
+
+        app.controller("ModalInstanceCtrl", function ($scope, $uibModalInstance, $interval) {
+            var value = 0;
+            $scope.dynamic = 0;
+
+
+            $scope.increment = function () {
+                if ($scope.dynamic != "100") {
+                    value = value + 10;
+                }
+
+                if ($scope.dynamic == "100") {
+                    value = 100;
+                    $uibModalInstance.close();
+                }
+                $scope.dynamic = value;
+            }
+
+            $interval(function () {
+                $scope.increment();
+            }, 100);
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+        });
+
+    </script>
+
+    <style type="text/css">
+        multiselect {
+            display: block;
+        }
+
+            multiselect .btn {
+                width: 50%;
+                background-color: #FFF;
+            }
+
+                multiselect .btn.error {
+                    border: 1px solid #da4f49 !important;
+                }
+
+            multiselect .dropdown-menu {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            multiselect .dropdown-menu {
+                width: 50%;
+                box-sizing: border-box;
+                padding: 2px;
+            }
+
+                multiselect .dropdown-menu > li > a {
+                    padding: 3px 10px;
+                    cursor: pointer;
+                }
+
+        span {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body ng-controller="appCtrl">
+    <div class="container" style="margin-top: 20px; width: 50%;">
+        <div class="main_container">
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">Empresa</label>
+                        <div class="col-sm-10 input-group">
+                            <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" />
+                            <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchEmpresa();"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
+                        <div class="col-sm-8 col input-group">
+                            <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" />
+                            <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchCNPJ();"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">Nome</label>
+                        <div class="col-sm-10 input-group">
+                            <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">Telefone</label>
+                        <div class="col-sm-4 input-group">
+                            <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">E-Mail</label>
+                        <div class="col-sm-8 input-group">
+                            <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Margem">Comprador</label>
+                        <div class="col-sm-8 input-group">
+                            <multiselect class="input-xlarge" multiple="true" ng-model="selectedCar" options="c.name for c in cars" change="selected()"></multiselect>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+
+        </div>
+
+
+        <script type="text/ng-template" id="modalEmpresa.html">
+            <div class="modal-body">
+                <uib-progressbar class="progress-striped active" max="100" value="dynamic">%{{dynamic}} <i ng-sh<i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+            </div>
+        </script>
+    </div>
+</body>
+</html>

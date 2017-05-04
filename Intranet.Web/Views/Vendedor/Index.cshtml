@@ -1,3 +1,218 @@
-﻿
-<h2>Indexa</h2>
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Gentelella Alela! | </title>
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css" />
+
+    <script type="text/javascript">
+        
+        var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask']);
+
+        app.controller('VendedorCtrl', function ($scope, $uibModal, $interval) {
+
+            $scope.totalItems = 500;
+            $scope.currentPage = 1;
+            $scope.maxSize = 10;
+
+            $scope.vendedores = [{
+                id: 1, empresa: "Leonardo ltda", CNPJ: "66.665.682/0001-60", nome: "Leonardo Damascena",
+                telefone: "(21) 97417-1314", email: "ldamascena2307@gmail.com", inativo: 1, textAtivo: "Inativo"
+            },
+            {
+                id: 2, empresa: "Marcelo ltda", CNPJ: "66.665.682/0001-66", nome: "Marcelo Damascena",
+                telefone: "(21) 97417-0000", email: "marcelo2307@gmail.com", inativo: 0, textAtivo: "Ativo"
+            },
+            {
+                id: 3, empresa: "Evandro ltda", CNPJ: "66.665.682/0001-70", nome: "Evandro Damascena",
+                telefone: "(21) 97417-1314", email: "Evandro@gmail.com", inativo: 1, textAtivo: "Inativo"
+            }];
+
+            $scope.AddVendedor = function (vendedor) {
+                $scope.vendedores.push(vendedor);
+            }
+
+            $scope.open = function () {
+                $uibModal.open({
+                    templateUrl: 'myModal.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        vendedores: function () {
+                            return $scope.vendedores;
+                        }
+                    }
+                });
+            }
+
+            $scope.inativar = function (index) {
+                $scope.vendedores[index].inativo = !$scope.vendedores[index].inativo;
+                if ($scope.vendedores[index].textAtivo == "Inativo") {
+                    $scope.vendedores[index].textAtivo = "Ativo";
+                }
+                else {
+                    $scope.vendedores[index].textAtivo = "Inativo";
+                }
+            }
+
+        });
+
+        app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $interval) {
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+
+            $scope.saveChanges = function () {
+                $scope.vendedor = {
+                    id: $scope.vendedores.length + 1, empresa: $scope.empresa, CNPJ: $scope.CNPJ,
+                    nome: $scope.nome, telefone: $scope.telefone, email: $scope.email, inativo: 0, textAtivo: "Ativo"
+                };
+
+                $scope.AddVendedor($scope.vendedor);
+
+
+            }
+        });
+    </script>
+
+    <style type="text/css">
+    </style>
+
+</head>
+<body ng-controller="VendedorCtrl">
+    <div class="container" style="margin-top: 20px;">
+        <a href="Vendedor/Add" class="btn btn-primary btn-xs pull-right" style="margin-bottom:10px;"><b>+</b> Incluir Vendedor</a>
+        <div class="main_container">
+            <div class="clearfix"></div>
+            <table class="table table-bordered" ng-show="vendedores.length > 0">
+                <thead>
+                    <tr style="margin-top: 10px;">
+                        <th>Id</th>
+                        <th>Empresa</th>
+                        <th>CNPJ</th>
+                        <th>Vendedor</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Compradores</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="vendedor in vendedores">
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.id}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.empresa}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.CNPJ}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.nome}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.telefone}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.email}}</td>
+                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''"></td>
+                        <td class="text-center">
+                            <a class='btn btn-info btn-xs' href="#" ng-click="open();">
+                                <span class="glyphicon glyphicon-edit"></span> Edit
+                            </a>
+                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)">
+                                <span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}
+                            </a>
+
+                            @*<a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.inativo == 1">
+                                <span class="glyphicon glyphicon-remove"></span> Inativo
+                            </a>
+                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.inativo == 0">
+                                <span class="glyphicon glyphicon-remove"></span> Ativo
+                            </a>*@
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul uib-pagination total-items="vendedores.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false"></ul>
+        </div>
+
+        <div>
+            <div class="chat_list" ng-show="vendedores.length == 0">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div style="text-align:center;">
+                            Nenhum vendedor encontrado!
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <script type="text/ng-template" id="myModal.html">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="cancel()">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Modal title
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Margem">Empresa</label>
+                            {{vendedores}}
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" clean="true" restrict="reject" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Margem">Nome</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Margem">Telefone</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Margem">E-Mail</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveChanges()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </script>
+    </div>
+</body>
+</html>
