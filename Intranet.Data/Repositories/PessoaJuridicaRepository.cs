@@ -17,9 +17,16 @@ namespace Intranet.Data.Repositories
 
         public PessoaJuridica GetByCNPJ(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
         {
-            return Db.PessoasJuridica.FirstOrDefault(x => x.CNPJEmpresa == CNPJEmpresa 
-            && x.CNPJFilial == CNPJFilial 
+            return Db.PessoasJuridica.FirstOrDefault(x => x.CNPJEmpresa == CNPJEmpresa
+            && x.CNPJFilial == CNPJFilial
             && x.CNPJDV == CNPJDV);
+        }
+
+        public int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
+        {
+            return Db.PessoasJuridica.FirstOrDefault(x => x.CNPJEmpresa == CNPJEmpresa
+            && x.CNPJFilial == CNPJFilial
+            && x.CNPJDV == CNPJDV).cdPessoaJuridica;
         }
 
         public PessoaJuridica GetByRazaoSocial(string razaoSocial)

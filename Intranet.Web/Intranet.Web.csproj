@@ -963,6 +963,8 @@
     <Content Include="scripts\Services\AlertaGeralService.js" />
     <Content Include="scripts\Services\ClassificacaoProdutoService.js" />
     <Content Include="scripts\Services\EstoqueService.js" />
+    <Content Include="scripts\Services\PessoaJuridicaService.js" />
+    <Content Include="scripts\Services\VendedorService.js" />
     <Content Include="Web.config" />
     <Content Include="scripts\jquery-1.10.2.min.map" />
   </ItemGroup>

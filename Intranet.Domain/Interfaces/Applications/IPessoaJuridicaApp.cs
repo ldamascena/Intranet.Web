@@ -11,5 +11,6 @@ namespace Intranet.Domain.Interfaces.Applications
     {
         PessoaJuridica GetByCNPJ(string CNPJEmpresa, int CNPJFilial, int CNPJDV);
         PessoaJuridica GetByRazaoSocial(string razaoSocial);
+        int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV);
     }
 }

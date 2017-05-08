@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicebase.cs" />
     <Compile Include="SolUsuarioService.cs" />
+    <Compile Include="VendedorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intranet.Data\Intranet.Data.csproj">

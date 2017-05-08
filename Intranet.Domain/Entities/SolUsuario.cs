@@ -16,6 +16,7 @@ namespace Intranet.Domain.Entities
         public SolUsuario()
         {
             ClassificacaoProdutos = new HashSet<ClassificacaoProduto>();
+            Vendedores = new HashSet<Vendedor>();
         }
 
         [DataMember]
@@ -46,5 +47,7 @@ namespace Intranet.Domain.Entities
         public int? TentativasErradas { get; set; }
 
         public virtual ICollection<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
+
+        public virtual ICollection<Vendedor> Vendedores { get; set; }
     }
 }

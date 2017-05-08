@@ -63,6 +63,7 @@
     <Compile Include="Entities\PessoaJuridica.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\SolUsuario.cs" />
+    <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
     <Compile Include="Interfaces\Applications\IAppBase.cs" />
@@ -72,11 +73,13 @@
     <Compile Include="Interfaces\Applications\IEstoqueMovimentoApp.cs" />
     <Compile Include="Interfaces\Applications\IPessoaJuridicaApp.cs" />
     <Compile Include="Interfaces\Applications\ISolUsuarioApp.cs" />
+    <Compile Include="Interfaces\Applications\IVendedorApp.cs" />
     <Compile Include="Interfaces\Repositories\IClassificacaoProdutoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEstoqueFisicoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEstoqueMovimentoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPessoaJuridicaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISolUsuarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IVendedorRepository.cs" />
     <Compile Include="Interfaces\Services\IClassificacaoProdutoService.cs" />
     <Compile Include="Interfaces\Services\IEstoqueFisicoService.cs" />
     <Compile Include="Interfaces\Services\IEstoqueMovimentoService.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Services\IServiceBase.cs" />
     <Compile Include="Interfaces\Services\IUnitOfWorkService.cs" />
+    <Compile Include="Interfaces\Services\IVendedorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

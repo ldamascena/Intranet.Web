@@ -38,6 +38,16 @@ namespace Intranet.API.Controllers
 
             return _app.GetByCNPJ(CNPJEmpresa, CNPJFilial, CNPJDV);
         }
+
+        public int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
+        {
+            _repository = new PessoaJuridicaRepository(new CentralContext());
+            _service = new PessoaJuridicaService(_repository);
+            _app = new PessoaJuridicaApp(_service);
+
+            return _app.GetCdPessoaJuridica(CNPJEmpresa, CNPJFilial, CNPJDV);
+        }
+
         public PessoaJuridica GetByRazaoSocial(string razaoSocial)
         {
             _repository = new PessoaJuridicaRepository(new CentralContext());

@@ -15,8 +15,14 @@
     <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.min.js" type="text/javascript" language="javascript"></script>
+
+    
+
     <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Directive/multiselect.js" type="text/javascript" language="javascript"></script>
+    
+    @*<script src="~/scripts/Services/PessoaJuridicaService.js" type="text/javascript" language="javascript"></script>*@
+    @*<script src="~/scripts/Services/VendedorService.js" type="text/javascript" language="javascript"></script>*@
 
     <link href="~/Content/bootstrap.css" rel="stylesheet">
 
@@ -24,11 +30,24 @@
 
         var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);
 
-        app.controller('appCtrl', function ($scope, $uibModal) {
+        app.controller('appCtrl', function ($scope, $uibModal, $interval, PessoaJuridicaService, VendedorService) {
 
             $scope.name = 'World';
-            $scope.cars = [{ id: 1, name: 'Audi' }, { id: 2, name: 'BMW' }, { id: 1, name: 'Honda' }];
-            $scope.selectedCar = [];
+            $scope.Comprador = [];
+            $scope.Compradores = [
+                { id: 14, nome: 'Diego Gonçalves' }, { id: 175, nome: 'Geraldo Bonifácio' }, { id: 12, nome: 'Julio Ruiz' },
+                { id: 15, nome: 'Marcel Louis' }, { id: 144, nome: 'Renato Barros' }, { id: 186, nome: 'Samir Ponce de Leon' },
+                { id: 27, nome: 'Vinicius Bonifácio' }, { id: 13, nome: 'Wanderson Batista' }];
+
+
+
+            $scope.pad_with_zeroes = function (number, length) {
+                var my_string = '' + number;
+                while (my_string.length < length) {
+                    my_string = '0' + my_string;
+                }
+                return my_string;
+            }
 
 
 
@@ -42,11 +61,14 @@
                     controller: 'ModalInstanceCtrl'
                 });
 
-                $scope.empresa = "ABC";
                 $scope.test = $scope.CNPJ.substring(0, $scope.CNPJ.indexOf("/"));
                 $scope.CNPJEmpresa = $scope.test.replace(".", "").replace(".", "");
                 $scope.CNPJFilial = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("/") + 1, $scope.CNPJ.indexOf("-")));
                 $scope.CNPJDV = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("-") + 1, $scope.CNPJ.indexOf("-") + 3));
+
+                PessoaJuridicaService.GetByCNPJ($scope.CNPJEmpresa, $scope.CNPJFilial, $scope.CNPJDV).then(function (response) {
+                    $scope.empresa = response.data.RazaoSocial
+                });
             }
 
             $scope.searchEmpresa = function () {
@@ -55,11 +77,76 @@
                     controller: 'ModalInstanceCtrl'
                 });
 
-                $scope.empresa = "CBA";
-                $scope.CNPJ = 222222222222;
+                PessoaJuridicaService.GetByRazaoSocial($scope.empresa).then(function (response) {
+                    $scope.CNPJ = response.data.CNPJEmpresa
+                    $scope.CNPJ = $scope.CNPJ + $scope.pad_with_zeroes(response.data.CNPJFilial, 4);
+                    $scope.CNPJ = $scope.CNPJ + $scope.pad_with_zeroes(response.data.CNPJDV, 2) 
+                });
             }
 
+            $scope.saveChanges = function () {
 
+                $scope.submitted = true
+                $scope.DDD = parseInt($scope.telefone.substring(0, 2));
+                $scope.telefoneCortado = parseInt($scope.telefone.substring(2, $scope.telefone.length));
+
+                $scope.test = $scope.CNPJ.substring(0, $scope.CNPJ.indexOf("/"));
+                $scope.CNPJEmpresa = $scope.test.replace(".", "").replace(".", "");
+                $scope.CNPJFilial = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("/") + 1, $scope.CNPJ.indexOf("-")));
+                $scope.CNPJDV = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("-") + 1, $scope.CNPJ.indexOf("-") + 3));
+
+
+
+                if ($scope.Comprador.length > 1) {
+                    for (var i = 0; i < $scope.Comprador.length; i++) {
+                        $scope.vendedor = {
+                            CdPessoaJuridica: 1,
+                            CdComprador: $scope.Comprador[i].id,
+                            Nome: $scope.nome,
+                            DDD: $scope.DDD,
+                            Teledone: $scope.telefoneCortado,
+                            Email: $scope.email,
+                            Status: false
+                        };
+
+                        $scope.vendedor = angular.toJson($scope.vendedor);
+                        VendedorService.AddVendedor($scope.vendedor);
+                        // addVendedor
+                    }
+
+                    $uibModal.open({
+                        templateUrl: 'modalSucess.html'
+                    });
+
+                    $interval(function () {
+                        location.href = "Index";
+                    }, 3000);
+                }
+                else {
+                    alert($scope.Comprador[0].id);
+
+                    $scope.vendedor = {
+                        CdPessoaJuridica: 1,
+                        CdComprador: $scope.Comprador[0].id,
+                        Nome: $scope.nome,
+                        DDD: $scope.DDD,
+                        Teledone: $scope.telefoneCortado,
+                        Email: $scope.email,
+                        Status: false
+                    }
+
+                    $scope.vendedor = angular.toJson($scope.vendedor);
+                    VendedorService.AddVendedor($scope.vendedor);
+                    // addVendedor
+                    $uibModal.open({
+                        templateUrl: 'modalSucess.html'
+                    });
+
+                    $interval(function () {
+                        location.href = "Index";
+                    }, 3000);
+                }
+            };
         });
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModalInstance, $interval) {
@@ -86,6 +173,56 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+        });
+
+        app.service('PessoaJuridicaService', function ($http) {
+            var serviceBase = 'http://localhost:50837/';
+            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
+
+            this.GetByRazaoSocial = function (razao) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetByRazaoSocial?razaoSocial=" + razao).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetByCNPJ = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetByCNPJ?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetCdPessoaJuridica = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetCdPessoaJuridica?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+        });
+
+        app.service('VendedorService', function ($http) {
+            var serviceBase = 'http://localhost:50837/';
+            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
+
+            this.GetAll = function () {
+                return $http.get(serviceBase + "api/Vendedor/GetAll").then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.AddVendedor = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/AddVendedor", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
         });
 
     </script>
@@ -127,14 +264,14 @@
 
 </head>
 <body ng-controller="appCtrl">
-    <div class="container" style="margin-top: 20px; width: 50%;">
+    <div class="container" style="margin-top: 40px; width: 50%;">
         <div class="main_container">
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal" name="addForm" role="form">
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Margem">Empresa</label>
                         <div class="col-sm-10 input-group">
-                            <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" />
+                            <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" ng-required="true" />
                             <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchEmpresa();"></span>
                         </div>
                     </div>
@@ -142,7 +279,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
                         <div class="col-sm-8 col input-group">
-                            <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" />
+                            <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" ng-required="true" />
                             <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchCNPJ();"></span>
                         </div>
                     </div>
@@ -150,14 +287,14 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Margem">Nome</label>
                         <div class="col-sm-10 input-group">
-                            <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" />
+                            <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" ng-required="true" />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Margem">Telefone</label>
                         <div class="col-sm-4 input-group">
-                            <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" />
+                            <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" ng-required="true" />
                         </div>
                     </div>
 
@@ -170,19 +307,64 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Margem">Comprador</label>
                         <div class="col-sm-8 input-group">
-                            <multiselect class="input-xlarge" multiple="true" ng-model="selectedCar" options="c.name for c in cars" change="selected()"></multiselect>
+                            <multiselect class="input-xlarge" multiple="true" ng-model="Comprador" options="c.nome for c in Compradores" change="selected()"></multiselect>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" ng-click="saveChanges();">
                     Save changes
                 </button>
             </div>
 
+            <div class="alert alert-danger" ng-show="addForm.empresa.$error.required && submitted">
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Preencha o campo <strong>Empresa</strong> corretamente!
+                </p>
+            </div>
+
+            <div class="alert alert-danger" ng-show="addForm.CNPJ.$error.required && submitted">
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Preencha o campo <strong>CNPJ</strong> corretamente!
+                </p>
+            </div>
+
+            <div class="alert alert-danger" ng-show="addForm.nome.$error.required && submitted">
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Preencha o campo <strong>Vendedor</strong> corretamente!
+                </p>
+            </div>
+
+            <div class="alert alert-danger" ng-show="addForm.telefone.$error.required && submitted">
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Preencha o campo <strong>Telefone</strong> corretamente!
+                </p>
+            </div>
+
+            <div class="alert alert-danger" ng-show="Comprador.length == 0 && submitted">
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Preencha o campo <strong>Comprador</strong> corretamente!
+                </p>
+            </div>
+
         </div>
 
+        <script type="text/ng-template" id="modalSucess.html">
+            <div class="alert alert-success" style="margin-bottom: 1px;">
+                Vendedor cadastrado com sucesso!
+            </div>
+        </script>
 
         <script type="text/ng-template" id="modalEmpresa.html">
             <div class="modal-body">

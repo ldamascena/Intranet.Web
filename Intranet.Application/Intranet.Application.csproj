@@ -61,6 +61,7 @@
     <Compile Include="PessoaJuridicaApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolUsuarioApp.cs" />
+    <Compile Include="VendedorApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intranet.Domain\Intranet.Domain.csproj">

@@ -25,6 +25,11 @@ namespace Intranet.Service
             return _repository.GetByCNPJ(CNPJEmpresa, CNPJFilial, CNPJDV);
         }
 
+        public int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
+        {
+            return _repository.GetCdPessoaJuridica(CNPJEmpresa, CNPJFilial, CNPJDV);
+        }
+
         public PessoaJuridica GetByRazaoSocial(string razaoSocial)
         {
             return _repository.GetByRazaoSocial(razaoSocial);

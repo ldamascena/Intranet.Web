@@ -64,6 +64,7 @@
     <Compile Include="Repositories\PessoaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SolUsuarioRepository.cs" />
+    <Compile Include="Repositories\VendedorRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

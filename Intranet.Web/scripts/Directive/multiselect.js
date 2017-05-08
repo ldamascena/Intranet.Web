@@ -242,8 +242,8 @@
               }
 
               scope.focus = function focus() {
-                  var searchBox = element.find('input')[0];
-                  searchBox.focus();
+                  
+                  
               }
 
               var elementMatchesAnyInArray = function (element, elementArray) {

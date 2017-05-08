@@ -71,5 +71,6 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public virtual SolUsuario Usuario { get; set; }
+
     }
 }

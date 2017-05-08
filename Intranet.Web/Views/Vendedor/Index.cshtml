@@ -21,40 +21,39 @@
     <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css" />
 
     <script type="text/javascript">
-        
+
         var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask']);
 
-        app.controller('VendedorCtrl', function ($scope, $uibModal, $interval) {
+        app.controller('VendedorCtrl', function ($scope, $uibModal, $interval, VendedorService) {
 
             $scope.totalItems = 500;
             $scope.currentPage = 1;
             $scope.maxSize = 10;
 
-            $scope.vendedores = [{
-                id: 1, empresa: "Leonardo ltda", CNPJ: "66.665.682/0001-60", nome: "Leonardo Damascena",
-                telefone: "(21) 97417-1314", email: "ldamascena2307@gmail.com", inativo: 1, textAtivo: "Inativo"
-            },
-            {
-                id: 2, empresa: "Marcelo ltda", CNPJ: "66.665.682/0001-66", nome: "Marcelo Damascena",
-                telefone: "(21) 97417-0000", email: "marcelo2307@gmail.com", inativo: 0, textAtivo: "Ativo"
-            },
-            {
-                id: 3, empresa: "Evandro ltda", CNPJ: "66.665.682/0001-70", nome: "Evandro Damascena",
-                telefone: "(21) 97417-1314", email: "Evandro@gmail.com", inativo: 1, textAtivo: "Inativo"
-            }];
+            VendedorService.GetAll().then(function (response) {
+                $scope.vendedores = response.data;
+            });
 
             $scope.AddVendedor = function (vendedor) {
                 $scope.vendedores.push(vendedor);
             }
 
-            $scope.open = function () {
+            $scope.orderByMe = function (colunm) {
+                $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
+                $scope.orderBycolumn = colunm;
+            }
+
+            $scope.open = function (nome) {
                 $uibModal.open({
                     templateUrl: 'myModal.html',
                     controller: 'ModalInstanceCtrl',
                     scope: $scope,
                     resolve: {
-                        vendedores: function () {
-                            return $scope.vendedores;
+                        fornecedores: function () {
+                            VendedorService.GetAllByName(nome).then(function (response) {
+                                $scope.fornecedores = response.data
+                            })
+                            return $scope.fornecedores;
                         }
                     }
                 });
@@ -76,16 +75,63 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+        });
 
-            $scope.saveChanges = function () {
-                $scope.vendedor = {
-                    id: $scope.vendedores.length + 1, empresa: $scope.empresa, CNPJ: $scope.CNPJ,
-                    nome: $scope.nome, telefone: $scope.telefone, email: $scope.email, inativo: 0, textAtivo: "Ativo"
-                };
+        app.service('PessoaJuridicaService', function ($http) {
+            var serviceBase = 'http://localhost:50837/';
+            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
 
-                $scope.AddVendedor($scope.vendedor);
+            this.GetByRazaoSocial = function (razao) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetByRazaoSocial?razaoSocial=" + razao).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
 
+            this.GetByCNPJ = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetByCNPJ?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
 
+            this.GetCdPessoaJuridica = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
+                return $http.get(serviceBase + "api/PessoaJuridica/GetCdPessoaJuridica?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+        });
+
+        app.service('VendedorService', function ($http) {
+            var serviceBase = 'http://localhost:50837/';
+            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
+
+            this.GetAll = function () {
+                return $http.get(serviceBase + "api/Vendedor/GetAll").then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetAllByName = function (nome) {
+                return $http.get(serviceBase + "api/Vendedor/GetAllByName?nome=" + nome).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.AddVendedor = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/AddVendedor", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
             }
         });
     </script>
@@ -96,45 +142,88 @@
 </head>
 <body ng-controller="VendedorCtrl">
     <div class="container" style="margin-top: 20px;">
-        <a href="Vendedor/Add" class="btn btn-primary btn-xs pull-right" style="margin-bottom:10px;"><b>+</b> Incluir Vendedor</a>
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" style="height: 28px; font-size: 10px; line-height: 14px;" placeholder="Empresa" />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" style="margin-left:20px; height: 28px; font-size: 10px; line-height: 14px;" placeholder="Vendedor" />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" style="margin-left:20px; height: 28px; font-size: 10px; line-height: 14px;" placeholder="Email" />
+            </div>
+            <div class="form-group">
+                <label style="font-size:12px; margin-left:20px;">Comprador:</label>
+                <select class="form-control" style="height: 28px; font-size: 11px; line-height: 14px;">
+                    <option>teste</option>
+                    <option>teste2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label style="font-size:12px; margin-left:20px;">Status:</label>
+                <select class="form-control" style="height: 28px; font-size: 11px; line-height: 14px;">
+                    <option>teste</option>
+                    <option>teste2</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default btn-xs" style="margin-left:20px;">Procurar</button>
+
+        </form>
+
+        <a href="Add" class="btn btn-primary btn-xs pull-right" style="margin-top:30px; margin-bottom:10px;"><b>+</b> Incluir Vendedor</a>
         <div class="main_container">
             <div class="clearfix"></div>
             <table class="table table-bordered" ng-show="vendedores.length > 0">
                 <thead>
                     <tr style="margin-top: 10px;">
-                        <th>Id</th>
-                        <th>Empresa</th>
-                        <th>CNPJ</th>
-                        <th>Vendedor</th>
-                        <th>Telefone</th>
-                        <th>Email</th>
-                        <th>Compradores</th>
+                        <th ng-click="orderByMe('Nome')">Vendedor &nbsp<i ng-show="orderBycolumn === 'Nome'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                        <th ng-click="orderByMe('email')">Email &nbsp<i ng-show="orderBycolumn === 'email'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                        <th ng-click="orderByMe('Teledone')">Telefone &nbsp<i ng-show="orderBycolumn === 'Teledone'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                        @*<th></th>*@
+                        @*<th ng-click="orderByMe('RazaoSocial')">Empresa &nbsp<i ng-show="orderBycolumn === 'RazaoSocial'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>*@
+                        @*<th ng-click="orderByMe('CNPJ')">CNPJ &nbsp<i ng-show="orderBycolumn === 'CNPJ'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>*@
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="vendedor in vendedores">
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.id}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.empresa}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.CNPJ}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.nome}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.telefone}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.email}}</td>
-                        <td ng-class="vendedor.inativo == 1 ? 'danger': ''"></td>
+                    <tr ng-repeat="vendedor in vendedores | orderBy:orderBycolumn:reverse">
+                        <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Nome}}</td>
+                        <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Email}}</td>
+                        @*<td ng-class="vendedor.status == 1 ? 'danger': ''">{{vendedor.PessoaJuridica.RazaoSocial}}</td>*@
+                        @*<td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.CNPJ}}</td>*@
+                        <td ng-class="vendedor.status == 1 ? 'danger': ''">({{vendedor.DDD}}) {{vendedor.Teledone}}</td>
+                        @*<td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                            <a class='btn btn-primary btn-xs' href="#" ng-click="open();">
+                                <span class="glyphicon glyphicon-home"></span>  Empresas
+                            </a>
+                        </td>*@
+                        <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                            <a class='btn btn-primary btn-xs' href="#" ng-click="open(vendedor.Nome);">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>  Compradores
+                            </a>
+                        </td>
+                        <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                            <a href="#" class="btn btn-primary btn-xs" ng-click="status($index)">
+                                <span class="glyphicon glyphicon-briefcase"></span>  Fornecedor
+                                @*<span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}*@
+                            </a>
+                        </td>
                         <td class="text-center">
                             <a class='btn btn-info btn-xs' href="#" ng-click="open();">
                                 <span class="glyphicon glyphicon-edit"></span> Edit
                             </a>
-                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)">
-                                <span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}
-                            </a>
+                            @*<a href="#" class="btn btn-danger btn-xs" ng-click="status($index)">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                @*<span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}
+                            </a>*@
 
-                            @*<a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.inativo == 1">
+                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 1">
                                 <span class="glyphicon glyphicon-remove"></span> Inativo
                             </a>
-                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.inativo == 0">
+                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 0">
                                 <span class="glyphicon glyphicon-remove"></span> Ativo
-                            </a>*@
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -168,48 +257,14 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="Margem">Empresa</label>
-                            {{vendedores}}
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" clean="true" restrict="reject" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="Margem">Nome</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="Margem">Telefone</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="Margem">E-Mail</label>
-                            <div class="col-sm-8">
-                                <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="saveChanges()">
-                        Save changes
-                    </button>
+                    <table ng-repeat="fornecedor in fornecedores" class="table" style="margin-bottom: 1px">
+                        <tbody>
+                            <tr>
+                                <td><span class="glyphicon glyphicon-user"></span> {{fornecedor.Usuario.NmUsuario}}</td>
+                                <td class="text-center"><span class="glyphicon glyphicon-envelope"></span> {{fornecedor.Usuario.Email}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </script>

@@ -30,6 +30,7 @@ namespace Intranet.Data.Context
         public virtual DbSet<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
         public virtual DbSet<PessoaJuridica> PessoasJuridica { get; set; }
+        public virtual DbSet<Vendedor> Vendedores { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,17 +39,25 @@ namespace Intranet.Data.Context
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
+            #region Relationships
+
+            //Alerta Inversão com Pessoa
+
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.AlertasInversao)
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
+            //Alerta Histórico com Pessoa
+
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.AlertasHistorico)
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
+
+            //Alerta Histórico com Alerta Tipo
 
             modelBuilder.Entity<AlertaTipo>()
                 .HasMany(e => e.AlertasHistorico)
@@ -56,22 +65,38 @@ namespace Intranet.Data.Context
                 .HasForeignKey(e => e.CdTipoAlerta)
                 .WillCascadeOnDelete(false);
 
+            //ClassificacaoProduto com ClassificacaoProduto
+
             modelBuilder.Entity<ClassificacaoProduto>()
                 .HasMany(e => e.ClassificacaoProduto1)
                 .WithOptional(e => e.ClassificacaoProduto2)
                 .HasForeignKey(e => new { e.CdEmpresaPai, e.CdClassificacaoProdutoPai });
+
+            //ClassificacaoProduto com SolUsuario
 
             modelBuilder.Entity<SolUsuario>()
                 .HasMany(e => e.ClassificacaoProdutos)
                 .WithRequired(e => e.Usuario)
                 .HasForeignKey(e => e.CdComprador)
                 .WillCascadeOnDelete(false);
+
+            //Vendedor com SolUsuario
+
+            modelBuilder.Entity<SolUsuario>()
+                .HasMany(e => e.Vendedores)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.CdComprador)
+                .WillCascadeOnDelete(false);
+
+            //Vendedor com PessoaJuridica
+
+            modelBuilder.Entity<PessoaJuridica>()
+                .HasMany(e => e.Vendedores)
+                .WithRequired(e => e.PessoaJuridica)
+                .HasForeignKey(e => e.CdPessoaJuridica)
+                .WillCascadeOnDelete(false);
+
+            #endregion
         }
-
-
-        //public override int SaveChanges()
-        //{
-        //    return base.SaveChanges();
-        //}
     }
 }
