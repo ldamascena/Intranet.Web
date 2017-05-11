@@ -16,15 +16,23 @@
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.min.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/multiselect.js" type="text/javascript" language="javascript"></script>
+
 
     <link href="~/Content/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css" />
 
+
     <script type="text/javascript">
 
-        var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask']);
+        var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);
 
         app.controller('VendedorCtrl', function ($scope, $uibModal, $interval, VendedorService) {
+
+            $scope.Compradores = [
+                { id: 14, nome: 'Diego Gonçalves' }, { id: 175, nome: 'Geraldo Bonifácio' }, { id: 12, nome: 'Julio Ruiz' },
+                { id: 15, nome: 'Marcel Louis' }, { id: 144, nome: 'Renato Barros' }, { id: 186, nome: 'Samir Ponce de Leon' },
+                { id: 27, nome: 'Vinicius Bonifácio' }, { id: 13, nome: 'Wanderson Batista' }];
 
             $scope.totalItems = 500;
             $scope.currentPage = 1;
@@ -33,6 +41,20 @@
             VendedorService.GetAll().then(function (response) {
                 $scope.vendedores = response.data;
             });
+
+            $scope.Procurar = function () {
+                if ($scope.searchVendedor != "") {
+                    VendedorService.GetAllByNameLike($scope.searchVendedor).then(function (response) {
+                        $scope.vendedores = response.data;
+                    });
+                }
+                else {
+                    VendedorService.GetAll().then(function (response) {
+                        $scope.vendedores = response.data;
+                    });
+                }
+
+            }
 
             $scope.AddVendedor = function (vendedor) {
                 $scope.vendedores.push(vendedor);
@@ -43,14 +65,52 @@
                 $scope.orderBycolumn = colunm;
             }
 
-            $scope.open = function (nome) {
+            $scope.openVendedor = function (nome) {
                 $uibModal.open({
-                    templateUrl: 'myModal.html',
+                    templateUrl: 'modalEdit.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        editVendedor: function () {
+                            VendedorService.GetAllByName(nome).then(function (response) {
+                                console.log(angular.toJson(response.data));
+                                $scope.empresa = response.data[0].Empresa
+                                $scope.CNPJ = response.data[0].CNPJ
+                                $scope.nome = response.data[0].Nome
+                                $scope.email = response.data[0].Email
+                                $scope.telefone = response.data[0].DDD.toString() + response.data[0].Telefone.toString();
+                                $scope.editVendedor = response.data;
+                            })
+                            return $scope.editVendedor;
+                        }
+                    }
+                });
+            }
+
+            $scope.openComprador = function (nome) {
+                $uibModal.open({
+                    templateUrl: 'modalComprador.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        comprs: function () {
+                            VendedorService.GetAllByNameGrouped(nome).then(function (response) {
+                                $scope.comprs = response.data
+                            })
+                            return $scope.comprs;
+                        }
+                    }
+                });
+            }
+
+            $scope.openFornecedor = function (nome) {
+                $uibModal.open({
+                    templateUrl: 'modalFornecedor.html',
                     controller: 'ModalInstanceCtrl',
                     scope: $scope,
                     resolve: {
                         fornecedores: function () {
-                            VendedorService.GetAllByName(nome).then(function (response) {
+                            VendedorService.GetAllFornecedorByName(nome).then(function (response) {
                                 $scope.fornecedores = response.data
                             })
                             return $scope.fornecedores;
@@ -59,28 +119,182 @@
                 });
             }
 
-            $scope.inativar = function (index) {
-                $scope.vendedores[index].inativo = !$scope.vendedores[index].inativo;
-                if ($scope.vendedores[index].textAtivo == "Inativo") {
-                    $scope.vendedores[index].textAtivo = "Ativo";
-                }
-                else {
-                    $scope.vendedores[index].textAtivo = "Inativo";
-                }
+            $scope.addComprador = function () {
+                $uibModal.open({
+                    templateUrl: 'modalAddComprador.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope
+                });
             }
 
+            $scope.addFornecedor = function () {
+                $uibModal.open({
+                    templateUrl: 'modalAddFornecedor.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope
+                });
+            }
+
+            $scope.inativar = function (index) {
+                $uibModal.open({
+                    templateUrl: 'modalQuestion.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        Status: function () {
+                            $scope.status = $scope.vendedores[index].Status;
+                            return $scope.status;
+                        },
+
+                        Nome: function () {
+                            $scope.nome = $scope.vendedores[index].Nome;
+                            return $scope.nome;
+                        }
+                    }
+                });
+            }
         });
 
-        app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $interval) {
+        app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, VendedorService, PessoaJuridicaService) {
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $scope.pad_with_zeroes = function (number, length) {
+                var my_string = '' + number;
+                while (my_string.length < length) {
+                    my_string = '0' + my_string;
+                }
+                return my_string;
+            }
+
+            $scope.Alterar = function () {
+                $scope.submitted = true;
+
+                for (var i = 0; i < $scope.editVendedor.length; i++) {
+                    $scope.obj = {
+                        CdVendedor: $scope.editVendedor[i].CdVendedor,
+                        Nome: $scope.nome,
+                        DDD: parseInt($scope.telefone.substring(0, 2)),
+                        Telefone: parseInt($scope.telefone.substring(2, $scope.telefone.length)),
+                        Email: $scope.email
+                    }
+
+                    VendedorService.AtualizarVendedor(angular.toJson($scope.obj))
+                    $uibModalInstance.close('');
+                    location.reload();
+                }
+
+            }
+
+            $scope.gravarComprador = function () {
+                $scope.submitted = true;
+                VendedorService.GetAllFornecedorByName($scope.comprs[0].Nome).then(function (response) {
+
+                    for (var e = 0; e < response.data.length; e++) {
+
+                        for (var i = 0; i < $scope.Comprador.length; i++) {
+                            $scope.obj = {
+                                CNPJ: response.data[e].CNPJ, Empresa: response.data[e].Empresa,
+                                CdComprador: $scope.Comprador[i].id, Nome: $scope.comprs[0].Nome,
+                                DDD: $scope.comprs[0].DDD, Telefone: $scope.comprs[0].Telefone, Email: $scope.comprs[0].Email
+                            }
+                            VendedorService.IncluirComprador(angular.toJson($scope.obj));
+                        }
+                    }
+                    $uibModalStack.dismissAll('');
+                });
+            }
+
+            $scope.RemoverComprador = function (index) {
+                if ($scope.comprs.length == 1) {
+                    alert("É necessário ter pelo menos um comprador vinculado ao vendedor!")
+                }
+
+                else {
+
+                    $scope.obj = { CdComprador: $scope.comprs[index].CdComprador, Nome: $scope.comprs[index].Nome };
+                    VendedorService.ExcluirComprador(angular.toJson($scope.obj));
+
+                    $uibModalInstance.close('');
+                }
+            }
+
+            $scope.gravarFornecedor = function () {
+                $scope.submitted = true;
+                VendedorService.GetByEmpresa($scope.fornecedores[0].Empresa, $scope.fornecedores[0].Nome).then(function (response) {
+                    $scope.empresas = response.data
+
+                    for (var i = 0; i < $scope.empresas.length; i++) {
+                        $scope.obj = {
+                            CNPJ: $scope.CNPJ, Empresa: $scope.empresa,
+                            CdComprador: $scope.empresas[i].CdComprador, Nome: $scope.empresas[i].Nome,
+                            DDD: $scope.empresas[i].DDD, Telefone: $scope.empresas[i].Telefone, Email: $scope.empresas[i].Email
+                        }
+
+                        VendedorService.IncluirFornecedor(angular.toJson($scope.obj));
+                    }
+
+                    $uibModalStack.dismissAll('');
+                });
+            }
+
+            $scope.RemoverFornecedor = function (index) {
+
+                if ($scope.fornecedores.length == 1) {
+                    alert("É necessário ter pelo menos um comprador vinculado ao vendedor!")
+                }
+
+                else {
+
+                    $scope.obj = { Empresa: $scope.fornecedores[index].Empresa, Nome: $scope.fornecedores[index].Nome };
+                    VendedorService.ExcluirFornecedor(angular.toJson($scope.obj));
+
+                    $uibModalInstance.close('');
+                }
+            }
+
+            $scope.searchCNPJ = function () {
+                $scope.test = $scope.CNPJ.substring(0, $scope.CNPJ.indexOf("/"));
+                $scope.CNPJEmpresa = $scope.test.replace(".", "").replace(".", "");
+                $scope.CNPJFilial = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("/") + 1, $scope.CNPJ.indexOf("-")));
+                $scope.CNPJDV = parseInt($scope.CNPJ.substring($scope.CNPJ.indexOf("-") + 1, $scope.CNPJ.indexOf("-") + 3));
+
+                PessoaJuridicaService.GetByCNPJ($scope.CNPJEmpresa, $scope.CNPJFilial, $scope.CNPJDV).then(function (response) {
+                    $scope.empresa = response.data.RazaoSocial
+                });
+            }
+
+            $scope.searchEmpresa = function () {
+                PessoaJuridicaService.GetByRazaoSocial($scope.empresa).then(function (response) {
+                    $scope.CNPJ = response.data.CNPJEmpresa
+                    $scope.CNPJ = $scope.CNPJ + $scope.pad_with_zeroes(response.data.CNPJFilial, 4);
+                    $scope.CNPJ = $scope.CNPJ + $scope.pad_with_zeroes(response.data.CNPJDV, 2)
+                });
+            }
+
+            $scope.ok = function () {
+                VendedorService.GetAllByName($scope.nome).then(function (response) {
+                    $scope.status = !$scope.status;
+                    for (var i = 0; i < response.data.length; i++) {
+                        $scope.obj = { CdVendedor: response.data[i].CdVendedor, status: $scope.status }
+                        VendedorService.AlterarStatus(angular.toJson($scope.obj));
+                    }
+                });
+
+                $uibModalInstance.close('');
+                location.reload();
+                
+            }
+
+            $scope.cancel = function () {
+                $uibModalInstance.close('');
+            }
         });
 
         app.service('PessoaJuridicaService', function ($http) {
             var serviceBase = 'http://localhost:50837/';
             var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
-
             this.GetByRazaoSocial = function (razao) {
                 return $http.get(serviceBase + "api/PessoaJuridica/GetByRazaoSocial?razaoSocial=" + razao).then(function (response) {
                     return response
@@ -118,8 +332,40 @@
                 });
             }
 
+            this.GetAllByNameLike = function (nome) {
+                return $http.get(serviceBase + "api/Vendedor/GetAllByNameLike?nome=" + nome).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetAllByNameGrouped = function (nome) {
+                return $http.get(serviceBase + "api/Vendedor/GetAllByNameGrouped?nome=" + nome).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
             this.GetAllByName = function (nome) {
                 return $http.get(serviceBase + "api/Vendedor/GetAllByName?nome=" + nome).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetAllFornecedorByName = function (nome) {
+                return $http.get(serviceBase + "api/Vendedor/GetAllFornecedorByName?nome=" + nome).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.GetByEmpresa = function (empresa, nome) {
+                return $http.get(serviceBase + "api/Vendedor/GetByEmpresa?empresa=" + empresa + "&nome=" + nome).then(function (response) {
                     return response
                 }, function (response) {
                     return alert("Erro: " + response.status);
@@ -133,141 +379,345 @@
                     return alert("Erro: " + response.status);
                 });
             }
+
+            this.AtualizarVendedor = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/AtulizarVendedor", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.IncluirComprador = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/IncluirComprador", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.ExcluirComprador = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/ExcluirComprador", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.IncluirFornecedor = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/IncluirFornecedor", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.ExcluirFornecedor = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/ExcluirFornecedor", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            this.AlterarStatus = function (data) {
+                return $http.post(serviceBase + "api/Vendedor/AlterarStatus", data).then(function (response) {
+                    return response
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
         });
     </script>
 
     <style type="text/css">
+        .glyphicon-plus-sign {
+            cursor: pointer;
+        }
+
+        .btn-default {
+            width: 200px;
+        }
     </style>
 
 </head>
 <body ng-controller="VendedorCtrl">
     <div class="container" style="margin-top: 20px;">
-        <form class="form-inline">
-            <div class="form-group">
-                <input type="text" class="form-control" style="height: 28px; font-size: 10px; line-height: 14px;" placeholder="Empresa" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" style="margin-left:20px; height: 28px; font-size: 10px; line-height: 14px;" placeholder="Vendedor" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" style="margin-left:20px; height: 28px; font-size: 10px; line-height: 14px;" placeholder="Email" />
-            </div>
-            <div class="form-group">
-                <label style="font-size:12px; margin-left:20px;">Comprador:</label>
-                <select class="form-control" style="height: 28px; font-size: 11px; line-height: 14px;">
-                    <option>teste</option>
-                    <option>teste2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label style="font-size:12px; margin-left:20px;">Status:</label>
-                <select class="form-control" style="height: 28px; font-size: 11px; line-height: 14px;">
-                    <option>teste</option>
-                    <option>teste2</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-default btn-xs" style="margin-left:20px;">Procurar</button>
-
-        </form>
-
-        <a href="Add" class="btn btn-primary btn-xs pull-right" style="margin-top:30px; margin-bottom:10px;"><b>+</b> Incluir Vendedor</a>
-        <div class="main_container">
-            <div class="clearfix"></div>
-            <table class="table table-bordered" ng-show="vendedores.length > 0">
-                <thead>
-                    <tr style="margin-top: 10px;">
-                        <th ng-click="orderByMe('Nome')">Vendedor &nbsp<i ng-show="orderBycolumn === 'Nome'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                        <th ng-click="orderByMe('email')">Email &nbsp<i ng-show="orderBycolumn === 'email'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                        <th ng-click="orderByMe('Teledone')">Telefone &nbsp<i ng-show="orderBycolumn === 'Teledone'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                        @*<th></th>*@
-                        @*<th ng-click="orderByMe('RazaoSocial')">Empresa &nbsp<i ng-show="orderBycolumn === 'RazaoSocial'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>*@
-                        @*<th ng-click="orderByMe('CNPJ')">CNPJ &nbsp<i ng-show="orderBycolumn === 'CNPJ'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>*@
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="vendedor in vendedores | orderBy:orderBycolumn:reverse">
-                        <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Nome}}</td>
-                        <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Email}}</td>
-                        @*<td ng-class="vendedor.status == 1 ? 'danger': ''">{{vendedor.PessoaJuridica.RazaoSocial}}</td>*@
-                        @*<td ng-class="vendedor.inativo == 1 ? 'danger': ''">{{vendedor.CNPJ}}</td>*@
-                        <td ng-class="vendedor.status == 1 ? 'danger': ''">({{vendedor.DDD}}) {{vendedor.Teledone}}</td>
-                        @*<td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
-                            <a class='btn btn-primary btn-xs' href="#" ng-click="open();">
-                                <span class="glyphicon glyphicon-home"></span>  Empresas
-                            </a>
-                        </td>*@
-                        <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
-                            <a class='btn btn-primary btn-xs' href="#" ng-click="open(vendedor.Nome);">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>  Compradores
-                            </a>
-                        </td>
-                        <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
-                            <a href="#" class="btn btn-primary btn-xs" ng-click="status($index)">
-                                <span class="glyphicon glyphicon-briefcase"></span>  Fornecedor
-                                @*<span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}*@
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a class='btn btn-info btn-xs' href="#" ng-click="open();">
-                                <span class="glyphicon glyphicon-edit"></span> Edit
-                            </a>
-                            @*<a href="#" class="btn btn-danger btn-xs" ng-click="status($index)">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                @*<span class="glyphicon glyphicon-remove"></span> {{vendedor.textAtivo}}
-                            </a>*@
-
-                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 1">
-                                <span class="glyphicon glyphicon-remove"></span> Inativo
-                            </a>
-                            <a href="#" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 0">
-                                <span class="glyphicon glyphicon-remove"></span> Ativo
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <ul uib-pagination total-items="vendedores.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false"></ul>
-        </div>
-
-        <div>
-            <div class="chat_list" ng-show="vendedores.length == 0">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div style="text-align:center;">
-                            Nenhum vendedor encontrado!
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <script type="text/ng-template" id="myModal.html">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="cancel()">
-                        <span aria-hidden="true">&times;</span>
-                        <span class="sr-only">Close</span>
+        <div class="panel panel-info">
+            <div class="panel-heading">Vendedores</div>
+            <div class="panel-body">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchVendedor" style="width:300px; height: 28px; font-size: 10px; line-height: 14px;" placeholder="Vendedor" />
+                    </div>
+                    <button type="button" class="btn btn-info btn-xs" style="margin-left:20px;" ng-click="Procurar()">
+                        <span class="glyphicon glyphicon-search"></span> Procurar
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        Modal title
-                    </h4>
-                </div>
-
-                <div class="modal-body">
-                    <table ng-repeat="fornecedor in fornecedores" class="table" style="margin-bottom: 1px">
+                    <a href="Vendedor/Add" class="btn btn-primary btn-xs pull-right"><b>+</b> Incluir Vendedor</a>
+                </form>
+                <div class="main_container" style="margin-top: 10px;">
+                    <div class="clearfix"></div>
+                    <table class="table table-bordered" ng-show="vendedores.length > 0">
+                        <thead>
+                            <tr style="margin-top: 10px;">
+                                <th ng-click="orderByMe('Nome')">Vendedor &nbsp<i ng-show="orderBycolumn === 'Nome'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('email')">Email &nbsp<i ng-show="orderBycolumn === 'email'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('Telefone')">Telefone &nbsp<i ng-show="orderBycolumn === 'Telefone'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th></th>
+                                <th></th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr>
-                                <td><span class="glyphicon glyphicon-user"></span> {{fornecedor.Usuario.NmUsuario}}</td>
-                                <td class="text-center"><span class="glyphicon glyphicon-envelope"></span> {{fornecedor.Usuario.Email}}</td>
+                            <tr ng-repeat="vendedor in vendedores | orderBy:orderBycolumn:reverse">
+                                <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Nome}}</td>
+                                <td ng-class="vendedor.Status == 1 ? 'danger': ''">{{vendedor.Email}}</td>
+                                <td ng-class="vendedor.Status == 1 ? 'danger': ''">({{vendedor.DDD}}) {{vendedor.Telefone}}</td>
+                                <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                                    <a class='btn btn-primary btn-xs' href="#" ng-click="openComprador(vendedor.Nome);">
+                                        <span class="glyphicon glyphicon-shopping-cart"></span>  Compradores
+                                    </a>
+                                </td>
+                                <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                                    <a href="#" class="btn btn-success btn-xs" ng-click="openFornecedor(vendedor.Nome)">
+                                        <span class="glyphicon glyphicon-briefcase"></span>  Fornecedor
+                                    </a>
+                                </td>
+                                <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
+                                    <a class='btn btn-info btn-xs' href="#" ng-click="openVendedor(vendedor.Nome);">
+                                        <span class="glyphicon glyphicon-edit"></span> Alterar
+                                    </a>
+
+                                    <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 1">
+                                        <span class="glyphicon glyphicon-remove"></span> Inativo
+                                    </a>
+                                    <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 0">
+                                        <span class="glyphicon glyphicon-remove"></span> Ativo
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                    <ul uib-pagination total-items="vendedores.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false" ng-show="vendedores.length > 0"></ul>
                 </div>
+                <div>
+                    <div class="chat_list" ng-show="vendedores.length == 0">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div style="text-align:center;">
+                                    Nenhum vendedor encontrado!
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Modal Comprador -->
+
+                <script type="text/ng-template" id="modalComprador.html">
+                    <div class="modal-content">
+
+                        <div class="panel panel-primary" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Compradores  <i ng-click="addComprador();" class="glyphicon glyphicon-plus-sign"></i></h3>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="compr in comprs">
+                                    <tr>
+                                        <td>{{compr.Usuario.NmUsuario}}</td>
+                                        <td>{{compr.Usuario.Email}}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-danger btn-xs" ng-click="RemoverComprador($index)">
+                                                <span class="glyphicon glyphicon-remove"></span> Remover
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="modalAddComprador.html">
+                    <div class="modal-content">
+                        <div class="panel panel-primary" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Inclusão Compradores</h3>
+                            </div>
+                            <form class="form-inline" style="margin-top: 15px; margin-bottom: 15px;">
+                                <div class="form-group" style="margin-left: 10px;">
+                                    <label class="control-label">Comprador</label>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <multiselect class="input-xlarge" multiple="true" ng-model="Comprador" options="c.nome for c in Compradores" change="selected()"></multiselect>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-left:10px;">
+                                    <button class="btn btn-primary" ng-click="gravarComprador()">Gravar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </script>
+
+                <!-- Fim Modal Comprador -->
+                <!-- Modal Fornecedor -->
+
+                <script type="text/ng-template" id="modalFornecedor.html">
+                    <div class="panel panel-success" style="margin-bottom:0px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Fornecedores   <i ng-click="addFornecedor();" class="glyphicon glyphicon-plus-sign"></i></h3>
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>CNPJ</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="fornecedor in fornecedores">
+                                <tr>
+                                    <td>{{fornecedor.Empresa}}</td>
+                                    <td>{{fornecedor.CNPJ}}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-danger btn-xs" ng-click="RemoverFornecedor($index)">
+                                            <span class="glyphicon glyphicon-remove"></span> Remover
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="modalAddFornecedor.html">
+                    <div class="modal-content">
+                        <div class="panel panel-success" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Inclusão Fornecedor</h3>
+                            </div>
+                            <form class="form-horizontal" style="margin-top: 15px; margin-bottom: 15px;">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Empresa</label>
+                                    <div class="col-sm-9 input-group">
+                                        <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" ng-required="true" />
+                                        <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchEmpresa();"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">CNPJ</label>
+                                    <div class="col-sm-9 col input-group">
+                                        <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" ng-required="true" />
+                                        <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchCNPJ();"></span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" style="margin-left:82%" ng-click="gravarFornecedor()">Gravar</button>
+                            </form>
+                        </div>
+                        <div class="alert alert-danger" ng-show="addForm.empresa.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Empresa</strong> corretamente!
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" ng-show="addForm.CNPJ.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>CNPJ</strong> corretamente!
+                            </p>
+                        </div>
+                    </div>
+                </script>
+
+                <!-- Fim Modal Fornecedor -->
+                <!-- Modal Vendedor -->
+
+                <script type="text/ng-template" id="modalEdit.html">
+                    <div class="panel panel-info" style="margin-bottom:0px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Inclusão Vendedor</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" name="addForm" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Nome</label>
+                                    <div class="col-sm-9 input-group">
+                                        <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" ng-required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Telefone</label>
+                                    <div class="col-sm-4 input-group">
+                                        <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" ng-required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">E-Mail</label>
+                                    <div class="col-sm-8 input-group">
+                                        <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="Alterar();">
+                                Alterar
+                            </button>
+                        </div>
+
+
+                        <div class="alert alert-danger" ng-show="addForm.nome.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Vendedor</strong> corretamente!
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" ng-show="addForm.telefone.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Telefone</strong> corretamente!
+                            </p>
+                        </div>
+                    </div>
+                </script>
+
+                <!-- Fim Modal Vendedor -->
+
+                <script type="text/ng-template" id="modalQuestion.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Aviso!</h3>
+                    </div>
+                    <div class="modal-body">
+                        Deseja realmente alterar o status do vendedor?
+                        {{nome}}
+                        {{status}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="ok()">Sim</button>
+                        <button class="btn btn-danger" ng-click="cancel()">Não</button>
+                        
+                    </div>
+                </script>
             </div>
-        </script>
+        </div>
     </div>
 </body>
 </html>

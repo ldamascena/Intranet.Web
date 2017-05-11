@@ -10,5 +10,12 @@ namespace Intranet.Domain.Interfaces.Applications
     public interface IVendedorApp : IAppBase<Vendedor>
     {
         IEnumerable<Vendedor> GetVendedorByNome(string nome);
+        IEnumerable<Vendedor> GetVendedorByEmpresa(string empresa, string nome);
+        void AtulizarVendedor(Vendedor obj);
+        void IncluirComprador(Vendedor obj);
+        void ExcluirComprador(Vendedor obj);
+        void IncluirFornecedor(Vendedor obj);
+        void ExcluirEmpresa(Vendedor obj);
+        void AlterarStatus(Vendedor obj);
     }
 }

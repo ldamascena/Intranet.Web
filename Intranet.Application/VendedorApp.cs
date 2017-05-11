@@ -23,5 +23,40 @@ namespace Intranet.Application
         {
             return _service.GetVendedorByNome(nome);
         }
+
+        public IEnumerable<Vendedor> GetVendedorByEmpresa(string empresa, string nome)
+        {
+            return _service.GetVendedorByEmpresa(empresa, nome);
+        }
+
+        public void AtulizarVendedor(Vendedor obj)
+        {
+            _service.AtulizarVendedor(obj);
+        }
+
+        public void IncluirComprador(Vendedor obj)
+        {
+            _service.IncluirComprador(obj);
+        }
+
+        public void ExcluirComprador(Vendedor obj)
+        {
+            _service.ExcluirComprador(obj);
+        }
+
+        public void IncluirFornecedor(Vendedor obj)
+        {
+            _service.IncluirFornecedor(obj);
+        }
+
+        public void ExcluirEmpresa(Vendedor obj)
+        {
+            _service.ExcluirEmpresa(obj);
+        }
+
+        public void AlterarStatus(Vendedor obj)
+        {
+            _service.AlterarStatus(obj);
+        }
     }
 }

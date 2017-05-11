@@ -18,7 +18,10 @@ namespace Intranet.Domain.Entities
         public int CdVendedor { get; set; }
 
         [DataMember]
-        public int CdPessoaJuridica { get; set; }
+        public string CNPJ { get; set; }
+
+        [DataMember]
+        public string Empresa { get; set; }
 
         [DataMember]
         public int CdComprador { get; set; }
@@ -30,7 +33,7 @@ namespace Intranet.Domain.Entities
         public int DDD { get; set; }
 
         [DataMember]
-        public int Teledone { get; set; }
+        public int Telefone { get; set; }
 
         [DataMember]
         public string Email { get; set; }
@@ -47,7 +50,7 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public virtual SolUsuario Usuario { get; set; }
 
-        [DataMember]
-        public virtual PessoaJuridica PessoaJuridica { get; set; }
+        //[DataMember]
+        //public virtual PessoaJuridica PessoaJuridica { get; set; }
     }
 }

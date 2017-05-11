@@ -32,7 +32,6 @@
 
         app.controller('appCtrl', function ($scope, $uibModal, $interval, PessoaJuridicaService, VendedorService) {
 
-            $scope.name = 'World';
             $scope.Comprador = [];
             $scope.Compradores = [
                 { id: 14, nome: 'Diego Gonçalves' }, { id: 175, nome: 'Geraldo Bonifácio' }, { id: 12, nome: 'Julio Ruiz' },
@@ -100,18 +99,19 @@
                 if ($scope.Comprador.length > 1) {
                     for (var i = 0; i < $scope.Comprador.length; i++) {
                         $scope.vendedor = {
-                            CdPessoaJuridica: 1,
+                            CNPJ: $scope.CNPJ,
+                            Empresa: $scope.empresa,
                             CdComprador: $scope.Comprador[i].id,
                             Nome: $scope.nome,
                             DDD: $scope.DDD,
-                            Teledone: $scope.telefoneCortado,
+                            Telefone: $scope.telefoneCortado,
                             Email: $scope.email,
                             Status: false
                         };
 
                         $scope.vendedor = angular.toJson($scope.vendedor);
                         VendedorService.AddVendedor($scope.vendedor);
-                        // addVendedor
+                        
                     }
 
                     $uibModal.open({
@@ -119,18 +119,19 @@
                     });
 
                     $interval(function () {
-                        location.href = "Index";
+                        location.href = "/Vendedor";
                     }, 3000);
                 }
                 else {
                     alert($scope.Comprador[0].id);
 
                     $scope.vendedor = {
-                        CdPessoaJuridica: 1,
+                        CNPJ: $scope.CNPJ,
+                        Empresa: $scope.empresa,
                         CdComprador: $scope.Comprador[0].id,
                         Nome: $scope.nome,
                         DDD: $scope.DDD,
-                        Teledone: $scope.telefoneCortado,
+                        Telefone: $scope.telefoneCortado,
                         Email: $scope.email,
                         Status: false
                     }
@@ -143,7 +144,7 @@
                     });
 
                     $interval(function () {
-                        location.href = "Index";
+                        location.href = "/Vendedor";
                     }, 3000);
                 }
             };
@@ -265,112 +266,117 @@
 </head>
 <body ng-controller="appCtrl">
     <div class="container" style="margin-top: 40px; width: 50%;">
-        <div class="main_container">
-            <div class="modal-body">
-                <form class="form-horizontal" name="addForm" role="form">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">Empresa</label>
-                        <div class="col-sm-10 input-group">
-                            <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" ng-required="true" />
-                            <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchEmpresa();"></span>
-                        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Inclusão Vendedor</div>
+            <div class="panel-body">
+                <div class="main_container">
+                    <div class="modal-body">
+                        <form class="form-horizontal" name="addForm" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">Empresa</label>
+                                <div class="col-sm-10 input-group">
+                                    <input type="text" class="form-control" ng-model="empresa" name="empresa" id="empresa" placeholder="Empresa" ng-required="true" />
+                                    <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchEmpresa();"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
+                                <div class="col-sm-8 col input-group">
+                                    <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" ng-required="true" />
+                                    <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchCNPJ();"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">Nome</label>
+                                <div class="col-sm-10 input-group">
+                                    <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" ng-required="true" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">Telefone</label>
+                                <div class="col-sm-4 input-group">
+                                    <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" ng-required="true" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">E-Mail</label>
+                                <div class="col-sm-8 input-group">
+                                    <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="Margem">Comprador</label>
+                                <div class="col-sm-8 input-group">
+                                    <multiselect class="input-xlarge" multiple="true" ng-model="Comprador" options="c.nome for c in Compradores" change="selected()"></multiselect>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="saveChanges();">
+                            Save changes
+                        </button>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">CNPJ</label>
-                        <div class="col-sm-8 col input-group">
-                            <input type="text" class="form-control" ng-model="CNPJ" name="CNPJ" id="CNPJ" placeholder="CNPJ" mask="99.999.999/9999-99" restrict="reject" ng-required="true" />
-                            <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchCNPJ();"></span>
-                        </div>
+                    <div class="alert alert-danger" ng-show="addForm.empresa.$error.required && submitted">
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <hr class="message-inner-separator">
+                        <p>
+                            Preencha o campo <strong>Empresa</strong> corretamente!
+                        </p>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">Nome</label>
-                        <div class="col-sm-10 input-group">
-                            <input type="text" class="form-control" ng-model="nome" name="nome" id="nome" placeholder="Vendedor" ng-required="true" />
-                        </div>
+                    <div class="alert alert-danger" ng-show="addForm.CNPJ.$error.required && submitted">
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <hr class="message-inner-separator">
+                        <p>
+                            Preencha o campo <strong>CNPJ</strong> corretamente!
+                        </p>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">Telefone</label>
-                        <div class="col-sm-4 input-group">
-                            <input type="text" class="form-control" ng-model="telefone" name="telefone" id="telefone" placeholder="Telefone" mask="(99) 9?9999-9999" restrict="reject" clean="true" ng-required="true" />
-                        </div>
+                    <div class="alert alert-danger" ng-show="addForm.nome.$error.required && submitted">
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <hr class="message-inner-separator">
+                        <p>
+                            Preencha o campo <strong>Vendedor</strong> corretamente!
+                        </p>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">E-Mail</label>
-                        <div class="col-sm-8 input-group">
-                            <input type="email" class="form-control" ng-model="email" name="email" id="email" placeholder="E-Mail" />
-                        </div>
+                    <div class="alert alert-danger" ng-show="addForm.telefone.$error.required && submitted">
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <hr class="message-inner-separator">
+                        <p>
+                            Preencha o campo <strong>Telefone</strong> corretamente!
+                        </p>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">Comprador</label>
-                        <div class="col-sm-8 input-group">
-                            <multiselect class="input-xlarge" multiple="true" ng-model="Comprador" options="c.nome for c in Compradores" change="selected()"></multiselect>
-                        </div>
+
+                    <div class="alert alert-danger" ng-show="Comprador.length == 0 && submitted">
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <hr class="message-inner-separator">
+                        <p>
+                            Preencha o campo <strong>Comprador</strong> corretamente!
+                        </p>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="saveChanges();">
-                    Save changes
-                </button>
-            </div>
 
-            <div class="alert alert-danger" ng-show="addForm.empresa.$error.required && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Empresa</strong> corretamente!
-                </p>
-            </div>
+                </div>
 
-            <div class="alert alert-danger" ng-show="addForm.CNPJ.$error.required && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>CNPJ</strong> corretamente!
-                </p>
-            </div>
+                <script type="text/ng-template" id="modalSucess.html">
+                    <div class="alert alert-success" style="margin-bottom: 1px;">
+                        Vendedor cadastrado com sucesso!
+                    </div>
+                </script>
 
-            <div class="alert alert-danger" ng-show="addForm.nome.$error.required && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Vendedor</strong> corretamente!
-                </p>
+                <script type="text/ng-template" id="modalEmpresa.html">
+                    <div class="modal-body">
+                        <uib-progressbar class="progress-striped active" max="100" value="dynamic">%{{dynamic}} <i ng-sh<i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+                    </div>
+                </script>
             </div>
-
-            <div class="alert alert-danger" ng-show="addForm.telefone.$error.required && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Telefone</strong> corretamente!
-                </p>
-            </div>
-
-            <div class="alert alert-danger" ng-show="Comprador.length == 0 && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Comprador</strong> corretamente!
-                </p>
-            </div>
-
         </div>
-
-        <script type="text/ng-template" id="modalSucess.html">
-            <div class="alert alert-success" style="margin-bottom: 1px;">
-                Vendedor cadastrado com sucesso!
-            </div>
-        </script>
-
-        <script type="text/ng-template" id="modalEmpresa.html">
-            <div class="modal-body">
-                <uib-progressbar class="progress-striped active" max="100" value="dynamic">%{{dynamic}} <i ng-sh<i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
-            </div>
-        </script>
     </div>
 </body>
 </html>

@@ -14,11 +14,6 @@ namespace Intranet.Domain.Entities
     public class PessoaJuridica
     {
 
-        public PessoaJuridica()
-        {
-            Vendedores = new HashSet<Vendedor>();
-        }
-
         [DataMember]
         [Key]
         public int cdPessoaJuridica { get; set; }
@@ -43,6 +38,5 @@ namespace Intranet.Domain.Entities
 
         public string CNAE { get; set; }
 
-        public virtual ICollection<Vendedor> Vendedores { get; set; }
     }
 }

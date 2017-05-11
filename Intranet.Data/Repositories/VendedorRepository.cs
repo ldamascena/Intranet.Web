@@ -19,5 +19,10 @@ namespace Intranet.Data.Repositories
         {
             return Db.Vendedores.Where(x => x.Nome == nome);
         }
+
+        public IEnumerable<Vendedor> GetVendedorByEmpresa(string empresa, string nome)
+        {
+            return Db.Vendedores.Where(x => x.Empresa == empresa && x.Nome == nome);
+        }
     }
 }

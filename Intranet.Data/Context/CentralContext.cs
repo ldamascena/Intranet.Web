@@ -90,11 +90,11 @@ namespace Intranet.Data.Context
 
             //Vendedor com PessoaJuridica
 
-            modelBuilder.Entity<PessoaJuridica>()
-                .HasMany(e => e.Vendedores)
-                .WithRequired(e => e.PessoaJuridica)
-                .HasForeignKey(e => e.CdPessoaJuridica)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<PessoaJuridica>()
+            //    .HasMany(e => e.Vendedores)
+            //    .WithRequired(e => e.PessoaJuridica)
+            //    .HasForeignKey(e => e.CdPessoaJuridica)
+            //    .WillCascadeOnDelete(false);
 
             #endregion
         }

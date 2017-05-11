@@ -10,5 +10,6 @@ namespace Intranet.Domain.Interfaces.Repositories
     public interface IVendedorRepository : IRepositoryBase<Vendedor>
     {
         IEnumerable<Vendedor> GetVendedorByNome(string nome);
+        IEnumerable<Vendedor> GetVendedorByEmpresa(string empresa, string nome);
     }
 }
