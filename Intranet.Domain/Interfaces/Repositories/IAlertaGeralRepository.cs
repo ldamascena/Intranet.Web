@@ -10,5 +10,6 @@ namespace Intranet.Domain.Interfaces
     public interface IAlertaGeralRepository : IRepositoryBase<AlertaGeral>
     {
         AlertaGeral GetGeralPorProduto(int cdProduto);
+        AlertaGeral GetGeralPorProdutoNome(string nomeProduto);
     }
 }

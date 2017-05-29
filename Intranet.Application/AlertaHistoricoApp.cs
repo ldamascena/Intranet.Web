@@ -19,9 +19,14 @@ namespace Intranet.Application
             this._service = service;
         }
 
-        public void CadastrarHistorico(AlertaHistorico obj)
+        public void CadastrarHistoricoInversao(AlertaHistorico obj)
         {
-            _service.CadastrarHistorico(obj);
+            _service.CadastrarHistoricoInversao(obj);
+        }
+
+        public void CadastrarHistoricoManual(AlertaHistorico obj)
+        {
+            _service.CadastrarHistoricoManual(obj);
         }
 
         public List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto)

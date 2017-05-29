@@ -125,12 +125,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\select.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\alertaApp.js" />
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />
     <Content Include="scripts\angular-aria.js" />
@@ -178,9 +180,11 @@
     <Content Include="scripts\Controllers\ClassificacaoProdutoCtrl.js" />
     <Content Include="scripts\Controllers\EstoqueFisicoCtrl.js" />
     <Content Include="scripts\Controllers\listaAlertaCtrl.js" />
+    <Content Include="scripts\Controllers\VendedorCtrl.js" />
     <Content Include="scripts\Directive\autocomplete.js" />
     <Content Include="scripts\Directive\multiselect.js" />
     <Content Include="scripts\Directive\ngMask.js" />
+    <Content Include="scripts\Directive\select.js" />
     <Content Include="scripts\errors.json" />
     <Content Include="scripts\angular.min.js.map" />
     <Content Include="scripts\angular-touch.min.js.map" />
@@ -961,10 +965,15 @@
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\Services\AlertaGeralService.js" />
+    <Content Include="scripts\Services\AlertaManualService.js" />
+    <Content Include="scripts\Services\AlertaTipoService.js" />
     <Content Include="scripts\Services\ClassificacaoProdutoService.js" />
+    <Content Include="scripts\Services\EmpresaFilialService.js" />
     <Content Include="scripts\Services\EstoqueService.js" />
     <Content Include="scripts\Services\PessoaJuridicaService.js" />
+    <Content Include="scripts\Services\ProdutoService.js" />
     <Content Include="scripts\Services\VendedorService.js" />
+    <Content Include="scripts\vendedorApp.js" />
     <Content Include="Web.config" />
     <Content Include="scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
@@ -997,6 +1006,7 @@
     <Content Include="Views\Vendedor\Index.cshtml" />
     <Content Include="Views\Vendedor\Add.cshtml" />
     <Content Include="Templates\multiselect.html" />
+    <Content Include="Views\AlertaGeral\SolicitacaoTipoAlerta.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1006,7 +1016,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

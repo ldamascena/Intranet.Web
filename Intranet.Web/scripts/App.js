@@ -1,1 +1,1 @@
-﻿var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);
+﻿var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.select']);

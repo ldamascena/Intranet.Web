@@ -1,0 +1,1 @@
+﻿var app = angular.module('alertaApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);

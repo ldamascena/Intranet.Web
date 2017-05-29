@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intranet.Domain.Services
+namespace Intranet.Service
 {
     public class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : class
     {

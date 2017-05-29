@@ -22,9 +22,14 @@ namespace Intranet.Application
         }
 
 
-        public IEnumerable<AlertaGeral> ObterTodas()
+        public AlertaGeral GetGeralPorProduto(int cdProduto)
         {
-            return _service.GetAll();
+            return _service.GetGeralPorProduto(cdProduto);
+        }
+
+        public AlertaGeral GetGeralPorProdutoNome(string nomeProduto)
+        {
+            return _service.GetGeralPorProdutoNome(nomeProduto);
         }
     }
 }

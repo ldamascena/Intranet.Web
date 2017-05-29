@@ -1,0 +1,314 @@
+﻿<html lang="en" ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do módulo*@
+    <script src="~/scripts/App.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do Controllers*@
+    @*Iniciação do Services*@
+    @*<script src="~/scripts/Services/AlertaGeralService.js" type="text/javascript" language="javascript"></script>
+        <script src="~/scripts/Services/ProdutoService.js" type="text/javascript" language="javascript"></script>
+        <script src="~/scripts/Services/EmpresaFilialService.js" type="text/javascript" language="javascript"></script>
+        <script src="~/scripts/Services/AlertaManualService.js" type="text/javascript" language="javascript"></script>
+        <script src="~/scripts/Services/AlertaTipoService.js" type="text/javascript" language="javascript"></script>*@
+
+
+    <script src="~/scripts/Services/AlertaTipoService.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/select.js" type="text/javascript" language="javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Custom/Alerta/Principal.css" />
+    <link rel="stylesheet" href="~/Content/select.css">
+
+    <title>Solicitações</title>
+
+    <script type="text/javascript">
+        app.controller('appCtrl', function (AlertaTipoService, $uibModal, $scope, $interval, $location) {
+            $scope.currentPage = 1;
+            $scope.numPerPage = 10
+            $scope.maxSize = 10;
+            $scope.filteredTodos = [];
+
+            $scope.today = function () {
+                $scope.dt = new Date();
+            };
+
+            $scope.clear = function () {
+                $scope.dtInicio = null;
+                dtFim
+            };
+
+            $scope.open1 = function () {
+                $scope.popup1.opened = true;
+            };
+
+            $scope.setDate = function (year, month, day) {
+                $scope.dtInicio = new Date(year, month, day);
+            };
+
+            $scope.popup1 = {
+                opened: false
+            };
+
+
+            $scope.orderByMe = function (colunm) {
+                $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
+                $scope.orderBycolumn = colunm;
+            }
+
+            $scope.Vincular = function (index) {
+                $uibModal.open({
+                    templateUrl: 'modalVinculo.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        TipoAlertaClick: function () {
+                            $scope.TipoAlertaClick = $scope.filteredTiposAlerta[index];
+                            return $scope.nome;
+                        }
+                    }
+                })
+            }
+
+            $scope.Aprovar = function (index) {
+                $uibModal.open({
+                    templateUrl: 'modalQuestion.html',
+                    controller: 'ModalInstanceCtrl',
+                    scope: $scope,
+                    resolve: {
+                        TipoAlertaClick: function () {
+                            $scope.TipoAlertaClick = $scope.filteredTiposAlerta[index];
+                            return $scope.nome;
+                        }
+                    }
+                })
+            }
+
+            AlertaTipoService.GetAll().then(function (response) {
+                $scope.tiposAlerta = response.data;
+                $scope.totalItems = response.data.length;
+
+                $scope.$watch('currentPage + numPerPage', function () {
+                    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                    , end = begin + $scope.numPerPage;
+
+                    $scope.filteredTiposAlerta = $scope.tiposAlerta.slice(begin, end);
+                });
+            });
+        });
+
+        app.controller('ModalInstanceCtrl', function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, AlertaTipoService) {
+            AlertaTipoService.GetAllAprovado().then(function (response) {
+                $scope.tiposAlerta = response.data;
+                console.log(response.data);
+            });
+
+            $scope.observacao = $scope.TipoAlertaClick.NomeAlerta + " foi vinculado ao ";
+
+            $scope.change = function (option) {
+                $scope.observacao = $scope.TipoAlertaClick.NomeAlerta + " foi vinculado ao " + option.NomeAlerta;
+            }
+
+            $scope.gravar = function () {
+                $scope.obj = [];
+                if ($scope.nomeTipoAlerta != undefined) {
+
+                    $scope.obj.push($scope.TipoAlertaClick)
+                    $scope.obj.push($scope.nomeTipoAlerta);
+                    console.log($scope.obj);
+                    //$uibModalInstance.close('');
+                    //location.reload();
+                }
+                
+            }
+
+            $scope.ok = function () {
+                AlertaTipoService.AprovarTipoAlerta(angular.toJson($scope.TipoAlertaClick));
+                $uibModalInstance.close('');
+                location.reload();
+            }
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss();
+            }
+        });
+    </script>
+
+    <style>
+        .full button span {
+            background-color: limegreen;
+            border-radius: 32px;
+            color: black;
+        }
+
+        .partially button span {
+            background-color: orange;
+            border-radius: 32px;
+            color: black;
+        }
+
+        thead {
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body ng-controller="appCtrl as appCtrl">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Solicitações de inclusão de Tipo de Alerta</h3>
+            </div>
+            <div class="panel-body">
+                <form style="margin-bottom: 12px" class="form-inline">
+                    <input type="text" class="form-control" name="buscaTipoAlerta" id="buscaTipoAlerta" placeholder="Tipo de Alerta">
+                    @*<select class="form-control" name="tipoAlerta" id="tipoAlerta" placeholder="Tipo de Alerta" style="margin-left:15px;" ng-model="tipoAlerta" ng-options="item.NomeAlerta for item in tiposAlerta" ng-change="change(tipoAlerta)"></select>*@
+
+                    <select class="form-control" style="margin-left:15px;">
+                        <option>Todos</option>
+                        <option>Pendente</option>
+                        <option>Vinculado</option>
+                        <option>Aprovado</option>
+                    </select>
+
+                    <div class="input-group">
+                        <input style="width:130px; margin-left: 15px;" type="text" class="form-control" uib-datepicker-popup="{{format}}" placeholder="Data da Inclusão" ng-model="dtInicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-addon"><i ng-click="open1()" class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                    <input type="button" class="btn btn-primary" value="Procurar" ng-click="buscaProduto();" style="margin-left: 10px;" />
+                </form>
+                <table class="table table-bordered" ng-show="filteredTiposAlerta.length > 0">
+                    <thead>
+                        <tr>
+                            <th style="width:8%;" ng-click="orderByMe('CdTipoAlerta')">Codigo &nbsp<i ng-show="orderBycolumn === 'CdTipoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th style="width:15%;" ng-click="orderByMe('NomeAlerta')">Alerta &nbsp<i ng-show="orderBycolumn === 'NomeAlerta'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                            <th ng-click="orderByMe('Observacao')">Observacao &nbsp<i ng-show="orderBycolumn === 'Observacao'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th style="width:15%;" ng-click="orderByMe('DtInclusao')">Data de Inclusão &nbsp <i ng-show="orderBycolumn === 'DtInclusao'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th style="width:10%;">Status &nbsp</th>
+                            <th style="width:8%;">Action &nbsp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tipoAlerta in filteredTiposAlerta | orderBy:orderBycolumn:reverse" ng-class="tipoAlerta.Aprovado == true && tipoAlerta.Vinculado == null ? 'success':
+                            tipoAlerta.Aprovado == false && tipoAlerta.Vinculado == true ? 'info' : ''">
+                            <td>{{tipoAlerta.CdTipoAlerta}}</td>
+                            <td>{{tipoAlerta.NomeAlerta}}</td>
+                            <td>{{tipoAlerta.Observacao}}</td>
+                            <td>{{tipoAlerta.DtInclusao | date:'dd/MM/yyyy'}}</td>
+                            <td>
+                                <label ng-show="tipoAlerta.Aprovado == false && tipoAlerta.Vinculado == null" class="label label-warning">Pendente</label>
+                                <label ng-show="tipoAlerta.Aprovado == false && tipoAlerta.Vinculado == true" class="label label-primary">Vinculado</label>
+                                <label ng-show="tipoAlerta.Aprovado == true && tipoAlerta.Vinculado == null" class="label label-success">Aprovado</label>
+                            </td>
+                            <td>
+                                <a href="" title="Vincular Alerta" class="btn btn-default btn-xs" ng-click="Vincular($index);" ng-disabled="tipoAlerta.Aprovado == true || tipoAlerta.Vinculado == true">
+                                    <span class="glyphicon glyphicon-magnet"></span>
+                                </a>
+                                <button title="Aprovar Alerta" class="btn btn-default btn-xs" ng-click="Aprovar($index);" ng-disabled="tipoAlerta.Aprovado == true || tipoAlerta.Vinculado == true">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination total-items="tiposAlerta.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false" ng-show="tiposAlerta.length > 0"></ul>
+                <div class="chat_list" ng-show="filteredTiposAlerta.length == 0">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div style="text-align:center;">
+                                Nenhum registro encontrado!
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <script type="text/ng-template" id="modalVinculo.html">
+                <div class="modal-content">
+                    <div class="panel panel-primary" style="margin-bottom:0px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Vinculo de Tipo de Alerta</h3>
+                        </div>
+                        <form class="form-horizontal" name="addForm" style="margin-top: 15px; margin-bottom: 15px;">
+
+                            <div class="form-group">
+                                <label class="col-sm-4 col-sm-offset-1">Nome Tipo Alerta</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <select class="form-control" name="nomeTipoAlerta" id="nomeTipoAlerta" placeholder="Tipo de Alerta" ng-required="true" ng-model="nomeTipoAlerta" ng-options="item.NomeAlerta for item in tiposAlerta" ng-change="change(nomeTipoAlerta)"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-offset-1">Observação</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <textarea class="form-control" name="observacao" id="observacao" style="height: 134px;" ng-model="observacao"></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" style="margin-left:80%" ng-click="gravar();" ng-disabled="">Gravar</button>
+                        </form>
+
+                        <div class="alert alert-danger" ng-show="addForm.cdProduto.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Codigo</strong> corretamente!
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" ng-show="addForm.produto.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Produto</strong> corretamente!
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" ng-show="addForm.tipoAlerta.$error.required && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Tipo de Alerta</strong> corretamente!
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" ng-show="appCtrl.filiais == 0 && submitted">
+                            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                            <hr class="message-inner-separator">
+                            <p>
+                                Preencha o campo <strong>Filial</strong> corretamente!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="modalQuestion.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Aviso!</h3>
+                </div>
+                <div class="modal-body">
+                    Deseja aprovar esse tipo de alerta?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">Sim</button>
+                    <button class="btn btn-danger" ng-click="cancel()">Não</button>
+                </div>
+            </script>
+        </div>
+    </div>
+</body>
+</html>

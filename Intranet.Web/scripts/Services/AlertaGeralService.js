@@ -10,6 +10,22 @@
         });
     }
 
+    this.GetContainsNomeProduto = function (nomeProduto) {
+        return $http.get(serviceBase + "api/AlertaGeral/GetContainsNomeProduto?nomeProduto=" + nomeProduto).then(function (response) {
+            return response
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    this.GetGeralPorProduto = function (id) {
+        return $http.get(serviceBase + "api/AlertaGeral/GetGeralPorProduto?cdProduto=" + id).then(function (response) {
+            return response
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
     this.GetallAlertasProduto = function (idProduto) {
         return $http.get(serviceBase + "api/AlertaInversao/GetInvertidosPorProduto/?cdProduto=" + idProduto).then(function (response) {
             return response
@@ -26,8 +42,16 @@
         });
     }
 
-    this.SaveObservacao = function (data) {
-        return $http.post(serviceBase + "api/AlertaHistorico/CadastrarHistorico", data).then(function (response) {
+    this.CadastrarHistoricoInversao = function (data) {
+        return $http.post(serviceBase + "api/AlertaHistorico/CadastrarHistoricoInversao", data).then(function (response) {
+            return response
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    this.CadastrarHistoricoManual = function (data) {
+        return $http.post(serviceBase + "api/AlertaHistorico/CadastrarHistoricoManual", data).then(function (response) {
             return response
         }, function (response) {
             return alert("Erro: " + response.status);

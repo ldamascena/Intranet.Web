@@ -1,6 +1,7 @@
 ﻿using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
 using Intranet.Domain.Interfaces.Services;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,11 @@ namespace Intranet.Domain.Services
         public AlertaGeral GetGeralPorProduto(int cdProduto)
         {
             return _repository.GetGeralPorProduto(cdProduto);
+        }
+
+        public AlertaGeral GetGeralPorProdutoNome(string nomeProduto)
+        {
+            return _repository.GetGeralPorProdutoNome(nomeProduto);
         }
     }
 }

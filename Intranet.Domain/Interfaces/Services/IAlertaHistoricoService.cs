@@ -9,7 +9,8 @@ namespace Intranet.Domain.Interfaces.Services
 {
     public interface IAlertaHistoricoService : IServiceBase<AlertaHistorico>
     {
-        void CadastrarHistorico(AlertaHistorico obj);
+        void CadastrarHistoricoInversao(AlertaHistorico obj);
+        void CadastrarHistoricoManual(AlertaHistorico obj);
         void CadastrarHistoricos(AlertaHistorico obj);
         List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto);
     }

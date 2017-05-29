@@ -18,5 +18,10 @@ namespace Intranet.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult SolicitacaoTipoAlerta()
+        {
+            return View();
+        }
     }
 }

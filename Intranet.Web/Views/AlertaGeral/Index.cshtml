@@ -10,147 +10,391 @@
     @*Iniciação do módulo*@
     <script src="~/scripts/App.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Controllers*@
-    <script src="~/scripts/Controllers/listaAlertaCtrl.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Services*@
     <script src="~/scripts/Services/AlertaGeralService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/ProdutoService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/EmpresaFilialService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/AlertaManualService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/AlertaTipoService.js" type="text/javascript" language="javascript"></script>
+
 
     <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/select.js" type="text/javascript" language="javascript"></script>
+
+
 
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/Custom/Alerta/Principal.css" />
+    <link rel="stylesheet" href="~/Content/select.css">
 
     <title>Index</title>
 
     <script type="text/javascript">
 
-        app.controller('appCtrl', function (AlertaGeralService, $scope, $interval, $filter, $location) {
+        app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $interval, $location, EmpresaFilialService) {
+            $scope.currentPage = 1;
+            $scope.numPerPage = 10
+            $scope.maxSize = 10;
+            $scope.filteredTodos = [];
 
-            $scope.carregarDados = function () {
+            $scope.appCtrl.filiais = [];
 
-                $scope.dados = [];
-                $scope.test = 0;
-                $scope.currentPage = 0;
-                $scope.pageSize = 14;
-                $scope.buscaProduto = "";
+            EmpresaFilialService.GetAll().then(function (response) {
+                $scope.filiaisDiponiveis = response.data;
+            });
 
-                AlertaGeralService.GetallInvertidos().then(function (response) {
-                    $scope.dados = response.data;
-                    $scope.totalItems = response.data.length;
-                    $scope.totalNumPages = response.data.length / $scope.pageSize;
+            $scope.orderByMe = function (colunm) {
+                $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
+                $scope.orderBycolumn = colunm;
+            }
 
-                    $scope.orderByMe = function (colunm) {
-                        $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
-                        $scope.orderBycolumn = colunm;
-                    }
+            $scope.buscaProduto = function () {
 
-                    $scope.changeView = function (id) {
-                        $location.path('ListaDeAlertas');
-                        $scope.test = id;
-                    }
+                if (isNaN($scope.teste) && $scope.teste != "") {
+                    AlertaGeralService.GetContainsNomeProduto($scope.teste).then(function (response) {
+                        $scope.produtos = response.data;
+                        $scope.totalItems = response.data.length;
 
-                    $scope.getData = function () {
-                        return $filter('filter')(response.data, $scope.buscaProduto)
-                    };
+                        $scope.$watch('currentPage + numPerPage', function () {
+                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                            , end = begin + $scope.numPerPage;
 
-                    $scope.numberOfPages = function () {
-                        return Math.ceil($scope.dados.length / $scope.pageSize);
-                    };
+                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
+                        });
+                    });
+                }
+                else if (isNaN($scope.teste) == false && $scope.teste != "") {
+                    AlertaGeralService.GetGeralPorProduto(parseInt($scope.teste)).then(function (response) {
+                        $scope.produtos = response.data;
+                        $scope.totalItems = response.data.length;
 
-                    $scope.$watch('buscaProduto', function (newValue, oldValue) {
-                        if (oldValue != newValue) {
-                            $scope.currentPage = 0;
-                        }
-                    }, true);
+                        $scope.$watch('currentPage + numPerPage', function () {
+                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                            , end = begin + $scope.numPerPage;
 
-                    //$scope.numPages = $scope.numberOfPages();
-                    //console.log($scope.numPages);
-                    //console.log($scope.dados.length);
-                    //console.log($scope.pageSize);
+                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
+                        });
+                    });
+                }
 
-                }, function (data) {
-                    $scope.message = "Aconteceu um problema: " + response.status;
+                else {
+                    AlertaGeralService.GetallInvertidos().then(function (response) {
+                        $scope.produtos = response.data;
+                        $scope.totalItems = response.data.length;
+
+                        $scope.$watch('currentPage + numPerPage', function () {
+                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                            , end = begin + $scope.numPerPage;
+
+                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
+                        });
+                    });
+                }
+            }
+
+            AlertaGeralService.GetallInvertidos().then(function (response) {
+                $scope.produtos = response.data;
+                $scope.totalItems = response.data.length;
+
+                $scope.$watch('currentPage + numPerPage', function () {
+                    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                    , end = begin + $scope.numPerPage;
+
+                    $scope.filteredProdutos = $scope.produtos.slice(begin, end);
                 });
-            };
 
-            $scope.carregarDados();
-
-            aa
-            a
+                $scope.addManual = function () {
+                    $uibModal.open({
+                        templateUrl: 'modalAddAlertaManual.html',
+                        controller: 'ModalInstanceCtrl',
+                        scope: $scope
+                    });
+                }
+            });
         });
 
-        app.filter('startFrom', function () {
-            return function (input, start) {
-                start = +start; //parse to int
-                return input.slice(start);
+        app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, ProdutoService, EmpresaFilialService, AlertaManualService, AlertaTipoService) {
+
+            $scope.tipoAlerta;
+
+            $scope.searchByCodigo = function () {
+                $uibModal.open({
+                    templateUrl: 'modalLoad.html',
+                    controller: 'ModalInstanceteste'
+                });
+
+                ProdutoService.GetById(parseInt($scope.cdProduto)).then(function (response) {
+                    $scope.cdProduto = response.data.idProduto
+                    $scope.produto = response.data.Descricao
+                });
+            }
+
+            $scope.searchByProduto = function () {
+                $uibModal.open({
+                    templateUrl: 'modalLoad.html',
+                    controller: 'ModalInstanceteste'
+                });
+
+                ProdutoService.GetByNomeProduto($scope.produto).then(function (response) {
+                    $scope.cdProduto = response.data.idProduto
+                    $scope.produto = response.data.Descricao
+                });
+            }
+
+
+
+            $scope.addTipoAlerta = function () {
+                $uibModal.open({
+                    templateUrl: 'modalAddTipoAlerta.html',
+                    controller: 'ModalInstanceNovoAlerta'
+                });
+            }
+
+            AlertaTipoService.GetAll().then(function (response) {
+                $scope.tiposAlerta = response.data;
+                console.log(response.data);
+            });
+
+            $scope.change = function (option) {
+                alert(option);
+            }
+
+            $scope.gravarAlerta = function () {
+                $scope.submitted = true;
+                if ($scope.appCtrl.filiais.length > 0 && $scope.cdProduto != undefined && $scope.produto != undefined && $scope.tipoAlerta != undefined) {
+                    alert();
+                    for (var i = 0; i < $scope.appCtrl.filiais.length; i++) {
+                        $scope.obj = { CdProduto: $scope.cdProduto, nomeProduto: $scope.produto, cdPessoaFilial: $scope.appCtrl.filiais[i].cdPessoaFilial, CdTipoAlerta: $scope.tipoAlerta.CdTipoAlerta, tipoAlerta: $scope.tipoAlerta.NomeAlerta, Comentario: $scope.comentario};
+                        AlertaManualService.IncluirAlerta(angular.toJson($scope.obj));
+                        console.log(angular.toJson($scope.obj));
+                    }
+                    $uibModalInstance.close('');
+                    location.reload();
+                }
             }
         });
 
-        //app.service('AlertaGeralService', function ($http) {
-        //    //var serviceBase = 'http://localhost:50837/';
-        //    //var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/'
+        app.controller("ModalInstanceteste", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval) {
+            var value = 0;
+            $scope.dynamic = 0;
 
-        //    //this.GetallInvertidos = function () {
-        //    //    return $http.get(serviceBaseProducao + "api/AlertaGeral/Get");
-        //    //}
+            $scope.increment = function () {
+                if ($scope.dynamic != "100") {
+                    value = value + 10;
+                }
 
-        //    //this.SaveObservacao = function (data) {
-        //    //    return $http.post(serviceBase + "api/Alerta/Cadastrar", data)
-        //    //}
+                if ($scope.dynamic == "100") {
+                    value = 100;
+                    $uibModalInstance.close();
+                }
+                $scope.dynamic = value;
+            }
 
-        //    //this.GetAllInvertidos2 = function (data) {
-        //    //    return $http.get(serviceBase + "api/AlertaInversao");
-        //    //}
-        //});
+            $interval(function () {
+                $scope.increment();
+            }, 1000);
 
+        });
+
+        app.controller("ModalInstanceNovoAlerta", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, AlertaTipoService) {
+            $scope.gravarTipoAlerta = function () {
+
+                if ($scope.alertaNovo != "" && $scope.alertaNovo != undefined) {
+                    $scope.obj = {NomeAlerta: $scope.alertaNovo}
+                    AlertaTipoService.IncluirAlerta(angular.toJson($scope.obj))
+
+                    $uibModal.open({
+                        templateUrl: 'success.html',
+                        controller: 'ModalInstanceNovoAlerta'
+                    });
+                    $uibModalInstance.close('');
+                }
+            }
+        });
 
     </script>
 </head>
 
 <body ng-controller="appCtrl as appCtrl">
     <div class="container">
+
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="panel-title">teste</div>
+                <h3 class="panel-title">Alertas Geral  <i title="Inclusão de Alerta Manual" ng-click="addManual();" class="glyphicon glyphicon-plus-sign pull-right" style="cursor:pointer"></i></h3>
             </div>
             <div class="panel-body">
                 <div style="margin-bottom: 12px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                    <input type="text" class="form-control" name="buscaProduto" id="buscaProduto" placeholder="Procurar" ng-model="buscaProduto">
+                    <input type="text" style="width:200px;" class="form-control" name="buscaProduto" id="buscaProduto" ng-model="teste" placeholder="Codigo ou Produto">
+                    <input type="button" class="btn btn-primary" value="Procurar" ng-click="buscaProduto();" style="margin-left: 10px;" />
                 </div>
-                <table class="table table-bordered">
+
+                <table class="table table-bordered" ng-show="filteredProdutos.length > 0">
                     <thead>
                         <tr>
-                            <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th ng-click="orderByMe('CdProduto')">Codigo &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                             <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                             <th ng-click="orderByMe('Severidade')">Severidade &nbsp<i ng-show="orderBycolumn === 'Severidade'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                            <th ng-click="orderByMe('AlertaEmAberto')">AlertaEmAberto &nbsp<i ng-show="orderBycolumn === 'AlertaEmAberto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                            <th ng-click="orderByMe('DataDoUltimoAlerta')">DataDoUltimoAlerta &nbsp <i ng-show="orderBycolumn === 'DataDoUltimoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th ng-click="orderByMe('AlertaEmAberto')">Alertas Abertos &nbsp<i ng-show="orderBycolumn === 'AlertaEmAberto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            <th ng-click="orderByMe('DataDoUltimoAlerta')">Data de Geração &nbsp <i ng-show="orderBycolumn === 'DataDoUltimoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="dado in dados | filter:buscaProduto | startFrom:currentPage*pageSize | limitTo:pageSize | orderBy:orderBycolumn:reverse">
-                            <td>{{dado.CdProduto}}</td>
-                            <td>{{dado.NomeProduto}}</td>
-                            <td>{{dado.Severidade}}</td>
-                            <td>{{dado.AlertaEmAberto}}</td>
-                            <td>{{dado.DataDoUltimoAlerta | date:'dd/MM/yyyy'}}</td>
+                        <tr ng-repeat="produto in filteredProdutos | orderBy:orderBycolumn:reverse">
+                            <td>{{produto.CdProduto}}</td>
+                            <td>{{produto.NomeProduto}}</td>
+                            <td>{{produto.Severidade}}</td>
+                            <td>{{produto.AlertaEmAberto}}</td>
+                            <td>{{produto.DataDoUltimoAlerta | date:'dd/MM/yyyy'}}</td>
                             <td class="icon-td">
-                                <a ng-href="ListaDeAlertas/{{dado.CdProduto}}">
+                                <a ng-href="ListaDeAlertas/{{produto.CdProduto}}">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </a>
                             </td>
                         </tr>
                     </tbody>
-                </table>    
-                <button class="btn btn-sm btn-info" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</button> 
-                <label id="labelNumberPages">{{currentPage+1}}/{{numberOfPages()}}</label>
-                <button class="btn btn-sm btn-info" ng-disabled="currentPage >= dados.length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
-                @*<ul uib-pagination total-items="dados.length" ng-model="currentPage" max-size="pageSize" class="pagination-sm" boundary-links="true" num-pages="numPages"></ul>*@
+                </table>
+                <ul uib-pagination total-items="produtos.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false" ng-show="produtos.length > 0"></ul>
+                <div class="chat_list" ng-show="filteredProdutos.length == 0">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div style="text-align:center;">
+                                Nenhum registro encontrado!
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <script type="text/ng-template" id="modalAddAlertaManual.html">
+                    <div class="modal-content">
+                        <div class="panel panel-primary" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Cadastro Alerta Manual</h3>
+                            </div>
+                            <form class="form-horizontal" name="addForm" style="margin-top: 15px; margin-bottom: 15px;">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-offset-1 input-group">Codigo</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10 col-sm-offset-1 input-group">
+                                        <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchByCodigo();"></span>
+                                        <input type="text" class="form-control" ng-model="cdProduto" name="cdProduto" id="cdProduto" placeholder="Codigo" ng-required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-offset-1 input-group">Produto</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-10 col-sm-offset-1 input-group">
+                                        <span class="input-group-addon alert-info glyphicon glyphicon-search" ng-click="searchByProduto();"></span>
+                                        <input type="text" class="form-control" ng-model="produto" name="produto" id="produto" placeholder="Nome do Produto" ng-required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-offset-1 input-group">Filial</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10 col col-sm-offset-1 input-group">
+                                        <ui-select multiple sortable="true" title="Escolha as filiais..." ng-model="appCtrl.filiais" name="filiais" id="filiais">
+                                            <ui-select-match placeholder="Escolha as filiais....">{{$item.nmFilial}}</ui-select-match>
+                                            <ui-select-choices repeat="filiais in filiaisDiponiveis">
+                                                {{filiais.nmFilial}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-sm-offset-1 input-group">Tipo de Erro</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10 col col-sm-offset-1 input-group">
+                                        <span class="input-group-addon alert-info glyphicon glyphicon-plus" ng-click="addTipoAlerta();"></span>
+                                        <select class="form-control" name="tipoAlerta" id="tipoAlerta" placeholder="Tipo de Alerta" ng-required="true" ng-model="tipoAlerta" ng-options="item.NomeAlerta for item in tiposAlerta" ng-change="change(tipoAlerta)"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-sm-offset-1 input-group">Comentário</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10 col-sm-offset-1 input-group">
+                                        <textarea class="form-control" name="comentario" id="comentario" style="height: 134px;" ng-model="comentario"></textarea>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" style="margin-left:82%" ng-click="gravarAlerta()">Gravar</button>
+                            </form>
+
+                            <div class="alert alert-danger" ng-show="addForm.cdProduto.$error.required && submitted">
+                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    Preencha o campo <strong>Codigo</strong> corretamente!
+                                </p>
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="addForm.produto.$error.required && submitted">
+                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    Preencha o campo <strong>Produto</strong> corretamente!
+                                </p>
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="addForm.tipoAlerta.$error.required && submitted">
+                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    Preencha o campo <strong>Tipo de Alerta</strong> corretamente!
+                                </p>
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="appCtrl.filiais == 0 && submitted">
+                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    Preencha o campo <strong>Filial</strong> corretamente!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="modalLoad.html">
+                    <div class="modal-body">
+                        <uib-progressbar class="progress-striped active" max="100" value="dynamic">%{{dynamic}} <i ng-sh<i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="modalAddTipoAlerta.html">
+                    <div class="modal-content">
+                        <div class="panel panel-primary" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Cadastro Tipo de Alerta</h3>
+                            </div>
+                            <form class="form-horizontal" id="addTipoAlertaForm" name="addTipoAlertaForm" style="margin-top: 15px; margin-bottom: 15px;">
+                                <div class="form-group col-sm-12" style="margin-left:auto;">
+                                    <input type="text" class="form-control col-sm-9" ng-model="alertaNovo" name="alertaNovo" id="alertaNovo" placeholder="Novo tipo de Erro" ng-required="true" />
+                                </div>
+                                <button class="btn btn-primary" style="margin-left:14px;" ng-click="gravarTipoAlerta();">Gravar</button>
+                            </form>
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="success.html">
+                    <div class="alert alert-success" style="margin-bottom:0px;">
+                        Tipo de erro cadastrado com <strong>sucesso!</strong>
+                    </div>
+                </script>
             </div>
         </div>
     </div>

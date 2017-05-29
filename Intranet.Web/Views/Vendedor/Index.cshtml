@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="vendedorApp">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -18,144 +18,21 @@
     <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Directive/multiselect.js" type="text/javascript" language="javascript"></script>
 
+    <script src="~/scripts/vendedorApp.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Controllers/VendedorCtrl.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/Services/PessoaJuridicaService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/VendedorService.js" type="text/javascript" language="javascript"></script>
+
 
     <link href="~/Content/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css" />
+    
 
 
     <script type="text/javascript">
 
-        var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);
-
-        app.controller('VendedorCtrl', function ($scope, $uibModal, $interval, VendedorService) {
-
-            $scope.Compradores = [
-                { id: 14, nome: 'Diego Gonçalves' }, { id: 175, nome: 'Geraldo Bonifácio' }, { id: 12, nome: 'Julio Ruiz' },
-                { id: 15, nome: 'Marcel Louis' }, { id: 144, nome: 'Renato Barros' }, { id: 186, nome: 'Samir Ponce de Leon' },
-                { id: 27, nome: 'Vinicius Bonifácio' }, { id: 13, nome: 'Wanderson Batista' }];
-
-            $scope.totalItems = 500;
-            $scope.currentPage = 1;
-            $scope.maxSize = 10;
-
-            VendedorService.GetAll().then(function (response) {
-                $scope.vendedores = response.data;
-            });
-
-            $scope.Procurar = function () {
-                if ($scope.searchVendedor != "") {
-                    VendedorService.GetAllByNameLike($scope.searchVendedor).then(function (response) {
-                        $scope.vendedores = response.data;
-                    });
-                }
-                else {
-                    VendedorService.GetAll().then(function (response) {
-                        $scope.vendedores = response.data;
-                    });
-                }
-
-            }
-
-            $scope.AddVendedor = function (vendedor) {
-                $scope.vendedores.push(vendedor);
-            }
-
-            $scope.orderByMe = function (colunm) {
-                $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
-                $scope.orderBycolumn = colunm;
-            }
-
-            $scope.openVendedor = function (nome) {
-                $uibModal.open({
-                    templateUrl: 'modalEdit.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope,
-                    resolve: {
-                        editVendedor: function () {
-                            VendedorService.GetAllByName(nome).then(function (response) {
-                                console.log(angular.toJson(response.data));
-                                $scope.empresa = response.data[0].Empresa
-                                $scope.CNPJ = response.data[0].CNPJ
-                                $scope.nome = response.data[0].Nome
-                                $scope.email = response.data[0].Email
-                                $scope.telefone = response.data[0].DDD.toString() + response.data[0].Telefone.toString();
-                                $scope.editVendedor = response.data;
-                            })
-                            return $scope.editVendedor;
-                        }
-                    }
-                });
-            }
-
-            $scope.openComprador = function (nome) {
-                $uibModal.open({
-                    templateUrl: 'modalComprador.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope,
-                    resolve: {
-                        comprs: function () {
-                            VendedorService.GetAllByNameGrouped(nome).then(function (response) {
-                                $scope.comprs = response.data
-                            })
-                            return $scope.comprs;
-                        }
-                    }
-                });
-            }
-
-            $scope.openFornecedor = function (nome) {
-                $uibModal.open({
-                    templateUrl: 'modalFornecedor.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope,
-                    resolve: {
-                        fornecedores: function () {
-                            VendedorService.GetAllFornecedorByName(nome).then(function (response) {
-                                $scope.fornecedores = response.data
-                            })
-                            return $scope.fornecedores;
-                        }
-                    }
-                });
-            }
-
-            $scope.addComprador = function () {
-                $uibModal.open({
-                    templateUrl: 'modalAddComprador.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope
-                });
-            }
-
-            $scope.addFornecedor = function () {
-                $uibModal.open({
-                    templateUrl: 'modalAddFornecedor.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope
-                });
-            }
-
-            $scope.inativar = function (index) {
-                $uibModal.open({
-                    templateUrl: 'modalQuestion.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope,
-                    resolve: {
-                        Status: function () {
-                            $scope.status = $scope.vendedores[index].Status;
-                            return $scope.status;
-                        },
-
-                        Nome: function () {
-                            $scope.nome = $scope.vendedores[index].Nome;
-                            return $scope.nome;
-                        }
-                    }
-                });
-            }
-        });
-
-        app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, VendedorService, PessoaJuridicaService) {
+        vendedorApp.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, VendedorService, PessoaJuridicaService) {
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
@@ -292,142 +169,6 @@
             }
         });
 
-        app.service('PessoaJuridicaService', function ($http) {
-            var serviceBase = 'http://localhost:50837/';
-            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
-            this.GetByRazaoSocial = function (razao) {
-                return $http.get(serviceBase + "api/PessoaJuridica/GetByRazaoSocial?razaoSocial=" + razao).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetByCNPJ = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
-                return $http.get(serviceBase + "api/PessoaJuridica/GetByCNPJ?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetCdPessoaJuridica = function (CNPJEmpresa, CNPJFilial, CNPJDV) {
-                return $http.get(serviceBase + "api/PessoaJuridica/GetCdPessoaJuridica?CNPJEmpresa=" + CNPJEmpresa + "&CNPJFilial=" + CNPJFilial + "&CNPJDV=" + CNPJDV).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-        });
-
-        app.service('VendedorService', function ($http) {
-            var serviceBase = 'http://localhost:50837/';
-            var serviceBaseProducao = 'http://192.168.1.199:9810/Intranet.API/';
-
-            this.GetAll = function () {
-                return $http.get(serviceBase + "api/Vendedor/GetAll").then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetAllByNameLike = function (nome) {
-                return $http.get(serviceBase + "api/Vendedor/GetAllByNameLike?nome=" + nome).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetAllByNameGrouped = function (nome) {
-                return $http.get(serviceBase + "api/Vendedor/GetAllByNameGrouped?nome=" + nome).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetAllByName = function (nome) {
-                return $http.get(serviceBase + "api/Vendedor/GetAllByName?nome=" + nome).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetAllFornecedorByName = function (nome) {
-                return $http.get(serviceBase + "api/Vendedor/GetAllFornecedorByName?nome=" + nome).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.GetByEmpresa = function (empresa, nome) {
-                return $http.get(serviceBase + "api/Vendedor/GetByEmpresa?empresa=" + empresa + "&nome=" + nome).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.AddVendedor = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/AddVendedor", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.AtualizarVendedor = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/AtulizarVendedor", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.IncluirComprador = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/IncluirComprador", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.ExcluirComprador = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/ExcluirComprador", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.IncluirFornecedor = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/IncluirFornecedor", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.ExcluirFornecedor = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/ExcluirFornecedor", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-
-            this.AlterarStatus = function (data) {
-                return $http.post(serviceBase + "api/Vendedor/AlterarStatus", data).then(function (response) {
-                    return response
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-        });
     </script>
 
     <style type="text/css">
@@ -484,21 +225,25 @@
                                     </a>
                                 </td>
                                 <td class="text-center" ng-class="vendedor.Status == 1 ? 'danger': ''">
-                                    <a class='btn btn-info btn-xs' href="#" ng-click="openVendedor(vendedor.Nome);">
-                                        <span class="glyphicon glyphicon-edit"></span> Alterar
-                                    </a>
+                                    <div>
+                                        <a class='btn btn-info btn-xs' href="#" ng-click="openVendedor(vendedor.Nome);">
+                                            <span class="glyphicon glyphicon-edit"></span> Alterar
+                                        </a>
+                                    </div>
 
-                                    <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 1">
-                                        <span class="glyphicon glyphicon-remove"></span> Inativo
-                                    </a>
-                                    <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 0">
-                                        <span class="glyphicon glyphicon-remove"></span> Ativo
-                                    </a>
+                                    <div>
+                                        <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 1">
+                                            <span class="glyphicon glyphicon-remove"></span> Inativo
+                                        </a>
+                                        <a href="" class="btn btn-danger btn-xs" ng-click="inativar($index)" ng-show="vendedor.Status == 0">
+                                            <span class="glyphicon glyphicon-remove"></span> Ativo
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <ul uib-pagination total-items="vendedores.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false" ng-show="vendedores.length > 0"></ul>
+                    <ul uib-pagination total-items="vendedores.length" ng-model="currentPage" items-per-page="itemsPerPage" max-size="maxSize" class="pagination-sm" boundary-links="true" boundary-link-numbers="true" rotate="false" ng-show="vendedores.length > 0"></ul>
                 </div>
                 <div>
                     <div class="chat_list" ng-show="vendedores.length == 0">
@@ -707,8 +452,6 @@
                     </div>
                     <div class="modal-body">
                         Deseja realmente alterar o status do vendedor?
-                        {{nome}}
-                        {{status}}
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" ng-click="ok()">Sim</button>

@@ -207,12 +207,16 @@
     <Compile Include="Controllers\AlertaGeralController.cs" />
     <Compile Include="Controllers\AlertaHistoricoController.cs" />
     <Compile Include="Controllers\AlertaInversaoController.cs" />
+    <Compile Include="Controllers\AlertaManualController.cs" />
+    <Compile Include="Controllers\AlertaTipoController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
+    <Compile Include="Controllers\EmpresaFilialController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Controllers\PessoaJuridicaController.cs" />
     <Compile Include="Controllers\SolUsuarioController.cs" />
     <Compile Include="Controllers\VendedorController.cs" />
+    <Compile Include="Controllers\ViewProdutoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

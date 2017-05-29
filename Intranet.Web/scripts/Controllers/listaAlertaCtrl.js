@@ -1,6 +1,6 @@
 ﻿// Iniciação do Controller
 
-app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralService, $interval) {
+app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralService, AlertaManualService, $interval) {
 
     // Recuperando identificador do produto - LocalHost
     //var pathArray = window.location.pathname.split('/');
@@ -13,101 +13,52 @@ app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralServic
     //Local
     $scope.idProduto = pathArray[3];
 
-
-    // Função para carregar os alertas
-
-    $scope.carregarDados = function () {
-        AlertaGeralService.GetallAlertasProduto($scope.idProduto).then(function (response) {
-            $scope.dados = [];
-            $scope.animationsEnabled = true;
-            $scope.submittedErro = false;
-            $scope.submittedSuccess = false;
-            $scope.idAlerta = 0
-            $scope.observacao = "";
-            $scope.status = "";
-            $scope.tipoAlerta = 0;
-            $scope.idFilial = 0;
-
-            $scope.dados = response.data;
-
-            // Função para abrir o modal ao clicar
-
-            $scope.showModal = function (idProduto, idAlerta, idFilial, tipoAlerta) {
-                var modalInstance = $uibModal.open({
-                    animation: $scope.animationsEnabled,
-                    templateUrl: 'myModal.html',
-                    controller: 'ModalInstanceCtrl',
-                    scope: $scope
-                });
-
-                $scope.idProduto = idProduto;
-                $scope.idAlerta = idAlerta;
-                $scope.idFilial = idFilial;
-                $scope.tipoAlerta = tipoAlerta;
-            };
+    var pagesShown = 1;
+    var pageSize = 5;
 
 
-            // Função para abrir o modal ao clicar e alterar todos
+    // Carrega Alerta de Inversão
 
-            //$scope.showModalTodos = function (idProduto) {
-            //    var modalInstance = $uibModal.open({
-            //        animation: $scope.animationsEnabled,
-            //        templateUrl: 'myModal.html',
-            //        controller: 'ModalInstanceCtrl',
-            //        scope: $scope
-            //    });
+    AlertaGeralService.GetallAlertasProduto($scope.idProduto).then(function (response) {
+        $scope.dadosinversao = response.data;
+    })
 
-            //    $scope.idProduto = idProduto;
-            //};
+    AlertaManualService.GetByProduto($scope.idProduto).then(function (response) {
+        $scope.dadosManual = response.data;
+    })
 
-            //$scope.teste = function () {
-            //    var modalInstance = $uibModal.open({
-            //        animation: $scope.animationsEnabled,
-            //        templateUrl: 'historicoModal.html',
-            //        controller: 'ModalInstanceCtrl',
-            //        scope: $scope
-            //    });
+    // Carrega Todos os históricos
 
-            //}
-            
-            //, function (data, status) {
-            //    $scope.message = "Aconteceu um problema: " + response.status;
-            //    alert($scope.message);
-            //};
-
-            var pagesShown = 1;
-            var pageSize = 5;
-
-            $scope.carregarHistoricos = function () {
-                AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
-                    $scope.dadosHistorico = response.data;
-
-		    
-                    $scope.paginationLimit = function(data) {
-                        return pageSize * pagesShown;
-                    };
-
-                    $scope.hasMoreItemsToShow = function() {
-                        return pagesShown < ($scope.dadosHistorico.length / pageSize);
-                    };
-
-                    $scope.showMoreItems = function() {
-                        pagesShown = pagesShown + 1;       
-                    };	
-                    
-                },
-                function (response) {
-                    $scope.message = "Aconteceu um problema: " + response.status;
-                });
-            }
+    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+        $scope.dadosHistorico = response.data;
 
 
-            $scope.carregarHistoricos()
+        $scope.paginationLimit = function (data) {
+            return pageSize * pagesShown;
+        };
+
+        $scope.hasMoreItemsToShow = function () {
+            return pagesShown < ($scope.dadosHistorico.length / pageSize);
+        };
+
+        $scope.showMoreItems = function () {
+            pagesShown = pagesShown + 1;
+        };
+
+    });
+
+    // Função para abrir o modal ao clicar
+
+    $scope.showModal = function (idProduto, idAlerta, idFilial, tipoAlerta) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'myModal.html',
+            controller: 'ModalInstanceCtrl',
+            scope: $scope
         });
-    }
 
-    // Carregando a página com os dados
-
-    $scope.carregarDados();
-
+        $scope.idProduto = idProduto;
+        $scope.idAlerta = idAlerta;
+        $scope.idFilial = idFilial;
+        $scope.tipoAlerta = tipoAlerta;
+    };;
 });

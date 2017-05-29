@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Intranet.Domain.Interfaces.Applications
 {
-    public interface IAlertaGeralApp
+    public interface IAlertaGeralApp : IAppBase<AlertaGeral>
     {
-        IEnumerable<AlertaGeral> ObterTodas();
+        AlertaGeral GetGeralPorProduto(int cdProduto);
+        AlertaGeral GetGeralPorProdutoNome(string nomeProduto);
     }
 }

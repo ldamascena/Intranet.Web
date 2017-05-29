@@ -2,6 +2,7 @@
 using Intranet.Domain.Interfaces;
 using Intranet.Domain.Interfaces.Services;
 using Intranet.Domain.Services;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

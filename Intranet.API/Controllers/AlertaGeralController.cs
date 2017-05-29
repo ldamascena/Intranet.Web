@@ -30,7 +30,35 @@ namespace Intranet.API.Controllers
             _service = new AlertaGeralService(_repository);
             _app = new AlertaGeralApp(_service);
 
-            return _app.ObterTodas().OrderByDescending(x => x.Severidade);
+            return _app.GetAll().OrderByDescending(x => x.Severidade);
+        }
+
+        public IEnumerable<AlertaGeral> GetContainsNomeProduto(string nomeProduto)
+        {
+            // Inicialização das instancias
+            _repository = new AlertaGeralRepository(new CentralContext());
+            _service = new AlertaGeralService(_repository);
+            _app = new AlertaGeralApp(_service);
+
+            return _app.GetAll().Where(x => x.NomeProduto.Contains(nomeProduto.ToUpper())).OrderByDescending(x => x.Severidade);
+        }
+
+        public IEnumerable<AlertaGeral> GetGeralPorProduto(int cdProduto)
+        {
+            _repository = new AlertaGeralRepository(new CentralContext());
+            _service = new AlertaGeralService(_repository);
+            _app = new AlertaGeralApp(_service);
+
+            return _app.GetAll().Where(x => x.CdProduto == cdProduto).ToList();
+        }
+
+        public AlertaGeral GetGeralPorProdutoNome(string nomeProduto)
+        {
+            _repository = new AlertaGeralRepository(new CentralContext());
+            _service = new AlertaGeralService(_repository);
+            _app = new AlertaGeralApp(_service);
+
+            return _app.GetGeralPorProdutoNome(nomeProduto);
         }
     }
 }

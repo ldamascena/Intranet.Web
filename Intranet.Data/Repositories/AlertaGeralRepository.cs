@@ -16,10 +16,14 @@ namespace Intranet.Data.Repositories
         {
         }
 
-
         public AlertaGeral GetGeralPorProduto(int cdProduto)
         {
             return Db.AlertasGeral.FirstOrDefault(x => x.CdProduto == cdProduto);
+        }
+
+        public AlertaGeral GetGeralPorProdutoNome(string nomeProduto)
+        {
+            return Db.AlertasGeral.FirstOrDefault(x => x.NomeProduto == nomeProduto);
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Intranet.Domain.Interfaces.Applications
 {
     public interface IAlertaHistoricoApp
     {
-        void CadastrarHistorico(AlertaHistorico obj);
+        void CadastrarHistoricoInversao(AlertaHistorico obj);
+        void CadastrarHistoricoManual(AlertaHistorico obj);
         List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto);
     }
 }

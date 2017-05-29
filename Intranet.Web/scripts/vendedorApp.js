@@ -1,0 +1,1 @@
+﻿var vendedorApp = angular.module('vendedorApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMask', 'ui.multiselect']);

@@ -60,8 +60,10 @@ namespace Intranet.Domain.Entities
 
         public decimal? PrLogistico { get; set; }
 
+        [DataMember]
         public int? NrCoberturaMinima { get; set; }
 
+        [DataMember]
         public decimal? PrMargemMinima { get; set; }
 
         [DataMember]

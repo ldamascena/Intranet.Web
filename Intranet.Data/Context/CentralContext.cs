@@ -31,6 +31,10 @@ namespace Intranet.Data.Context
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
         public virtual DbSet<PessoaJuridica> PessoasJuridica { get; set; }
         public virtual DbSet<Vendedor> Vendedores { get; set; }
+        public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
+        public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
+        public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
+        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -53,6 +57,14 @@ namespace Intranet.Data.Context
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.AlertasHistorico)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            //Alerta Manual com Pessoa
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasManual)
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);

@@ -1,7 +1,6 @@
 ﻿using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Repositories;
 using Intranet.Domain.Interfaces.Services;
-using Intranet.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,9 +68,10 @@ namespace Intranet.Service
 
             if (raiz != null)
             {
-                raiz.CdComprador = objView.CdComprador;
-                raiz.PrMargem = objView.PrMargem;
-                raiz.NrCobertura = objView.NrCobertura;
+                raiz.CdComprador = objView.CdComprador == null ? raiz.CdComprador : objView.CdComprador;
+                raiz.PrMargem = objView.PrMargem == null ? raiz.PrMargem : objView.PrMargem;
+                raiz.NrCobertura = objView.NrCobertura == null ? raiz.NrCobertura : objView.NrCobertura;
+                raiz.PrMargemMinima = objView.PrMargemMinima == null ? raiz.PrMargemMinima : objView.PrMargemMinima;
 
                 _repository.Update(raiz);
 
@@ -80,9 +80,10 @@ namespace Intranet.Service
                 {
                     foreach (var obj in raizDois)
                     {
-                        obj.CdComprador = objView.CdComprador;
-                        obj.PrMargem = objView.PrMargem;
-                        obj.NrCobertura = objView.NrCobertura;
+                        obj.CdComprador = objView.CdComprador == null ? obj.CdComprador : objView.CdComprador;
+                        obj.PrMargem = objView.PrMargem == null ? obj.PrMargem : objView.PrMargem;
+                        obj.NrCobertura = objView.NrCobertura == null ? obj.NrCobertura : objView.NrCobertura;
+                        obj.PrMargemMinima = objView.PrMargemMinima == null ? obj.PrMargemMinima : objView.PrMargemMinima;
 
                         _repository.Update(obj);
 
@@ -91,9 +92,10 @@ namespace Intranet.Service
                         {
                             foreach (var obj2 in raizTres)
                             {
-                                obj2.CdComprador = objView.CdComprador;
-                                obj2.PrMargem = objView.PrMargem;
-                                obj2.NrCobertura = objView.NrCobertura;
+                                obj2.CdComprador = objView.CdComprador == null ? obj2.CdComprador : objView.CdComprador;
+                                obj2.PrMargem = objView.PrMargem == null ? obj2.PrMargem : objView.PrMargem;
+                                obj2.NrCobertura = objView.NrCobertura == null ? obj2.NrCobertura : objView.NrCobertura;
+                                obj2.PrMargemMinima = objView.PrMargemMinima == null ? obj2.PrMargemMinima : objView.PrMargemMinima;
 
                                 _repository.Update(obj2);
 
@@ -102,9 +104,10 @@ namespace Intranet.Service
                                 {
                                     foreach (var obj3 in raizQuatro)
                                     {
-                                        obj3.CdComprador = objView.CdComprador;
-                                        obj3.PrMargem = objView.PrMargem;
-                                        obj3.NrCobertura = objView.NrCobertura;
+                                        obj3.CdComprador = objView.CdComprador == null ? obj3.CdComprador : objView.CdComprador;
+                                        obj3.PrMargem = objView.PrMargem == null ? obj3.PrMargem : objView.PrMargem;
+                                        obj3.NrCobertura = objView.NrCobertura == null ? obj3.NrCobertura : objView.NrCobertura;
+                                        obj3.PrMargemMinima = objView.PrMargemMinima == null ? obj3.PrMargemMinima : objView.PrMargemMinima;
 
                                         _repository.Update(obj3);
                                     }
@@ -128,6 +131,6 @@ namespace Intranet.Service
         //    }
         //}
 
-        
+
     }
 }

@@ -54,19 +54,27 @@
     <Compile Include="AlertaGeralApp.cs" />
     <Compile Include="AlertaHistoricoApp.cs" />
     <Compile Include="AlertaInversaoApp.cs" />
+    <Compile Include="AlertaManualApp.cs" />
+    <Compile Include="AlertaTipoApp.cs" />
     <Compile Include="AppBase.cs" />
     <Compile Include="ClassificacaoProdutoApp.cs" />
     <Compile Include="EstoqueFisicoApp.cs" />
     <Compile Include="EstoqueMovimentoApp.cs" />
+    <Compile Include="EmpresaFilialApp.cs" />
     <Compile Include="PessoaJuridicaApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolUsuarioApp.cs" />
     <Compile Include="VendedorApp.cs" />
+    <Compile Include="ViewProdutoApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intranet.Domain\Intranet.Domain.csproj">
       <Project>{56386C9C-1648-4ACA-A329-BFDC60DEBE2E}</Project>
       <Name>Intranet.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Intranet.Service\Intranet.Service.csproj">
+      <Project>{547AF97C-E959-494D-8376-03134FDF9326}</Project>
+      <Name>Intranet.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

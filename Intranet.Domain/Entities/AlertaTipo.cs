@@ -25,6 +25,18 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public string NomeAlerta { get; set; }
 
+        [DataMember]
+        public bool Aprovado { get; set; }
+
+        [DataMember]
+        public bool? Vinculado { get; set; }
+
+        [DataMember]
+        public string Observacao { get; set; }
+
+        [DataMember]
+        public DateTime DtInclusao { get; set; }
+
         public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
     }
 }
