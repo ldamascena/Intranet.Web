@@ -85,40 +85,74 @@ namespace Intranet.Domain.Services
 
         }
 
-        #region Cadastrar todos os historicos
-        public void CadastrarHistoricos(AlertaHistorico obj)
+        public void CadastrarHistoricosInversao(AlertaHistorico obj)
         {
-            var resultInversao = _repositoryInversao.GetInvertidosPorProduto(obj.CdProduto).ToList();
+            var resultInversao = _repositoryInversao.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.Status == "Pendente").ToList();
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
+            obj.DataDoHistorico = DateTime.Now;
+            obj.StatusAlertaAnterior = resultInversao[0].Status;
+            obj.NomeProduto = resultInversao[0].NomeProduto;
 
             try
             {
-                for (int i = 0; i <= resultInversao.Count - 1; i++)
-                {
+                foreach (var item in resultInversao) {
+                    if (obj.StatusAlertaAtual == "Feito")
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
+                        resultGeral.AlertaEmAberto--;
+                    }
 
-                    obj.StatusAlertaAnterior = resultInversao[i].Status;
-                    obj.NomeProduto = resultInversao[i].NomeProduto;
-                    obj.CdAlerta = resultInversao[i].CdAlertaInversao;
+                    item.Status = obj.StatusAlertaAtual;
+                    _repositoryInversao.Update(item);
 
-                    resultInversao[i].Status = obj.StatusAlertaAtual;
-
-                    resultGeral.Severidade = resultGeral.Severidade - resultInversao[i].Severidade;
-                    resultGeral.AlertaEmAberto--;
-
-                    obj.DataDoHistorico = DateTime.Now;
+                    obj.CdPessoaFilial = item.CdPessoaFilial;
 
                     _repository.Add(obj);
-                    _repositoryInversao.Update(resultInversao[i]);
-                    _repositoryGeral.Update(resultGeral);
                 }
 
+                _repositoryGeral.Update(resultGeral);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
         }
-        #endregion
+
+        public void CadastrarHistoricosManual(AlertaHistorico obj)
+        {
+            var resultManual = _repositoryManual.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.StatusAlerta == "Pendente").ToList();
+            var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
+            obj.DataDoHistorico = DateTime.Now;
+            obj.StatusAlertaAnterior = resultManual[0].StatusAlerta;
+            obj.NomeProduto = resultManual[0].NomeProduto;
+
+            try
+            {
+                foreach (var item in resultManual)
+                {
+                    if (obj.StatusAlertaAtual == "Feito")
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
+                        resultGeral.AlertaEmAberto--;
+                    }
+
+                    item.StatusAlerta = obj.StatusAlertaAtual;
+                    _repositoryManual.Update(item);
+
+                    obj.CdPessoaFilial = item.CdPessoaFilial;
+
+                    _repository.Add(obj);
+                }
+
+                _repositoryGeral.Update(resultGeral);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
         public List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto)
         {

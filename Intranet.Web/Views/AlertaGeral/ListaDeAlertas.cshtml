@@ -14,13 +14,16 @@
     @*Iniciação do Services*@
     <script src="~/scripts/Services/AlertaGeralService.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Services/AlertaManualService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/ProdutoService.js" type="text/javascript" language="javascript"></script>
 
     <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-cookies.js" type="text/javascript" language="javascript"></script>
 
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/select.js" type="text/javascript" language="javascript"></script>
 
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/Custom/Alerta/ListaAlertas.css" />
@@ -30,10 +33,6 @@
     <script type="text/javascript">
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, AlertaGeralService) {
-
-            AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
-                $scope.dadosHistorico = response.data;
-            });
 
             $scope.Gravar = function () {
                 $scope.submitted = true;
@@ -54,6 +53,43 @@
                     $uibModal.open({
                         templateUrl: 'success.html',
                         controller: 'ModalInstanceCtrl',
+                    });
+
+                    $uibModalInstance.close();
+                    location.reload();
+                }
+            };
+
+            $scope.Limpar = function () {
+                window.document.getElementById("observacao").value = "";
+            }
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss();
+            }
+        });
+
+        app.controller("ModalInstanceTodosCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, AlertaGeralService) {
+
+            $scope.Gravar = function () {
+                $scope.submitted = true;
+                if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.status != "" && $scope.status != undefined)) {
+                    $scope.obj = {
+                        CdProduto: $scope.idProduto, DescricaoHistorico: $scope.observacao,
+                        StatusAlertaAtual: $scope.status, cdTipoAlerta: $scope.tipoAlerta
+                    };
+
+                    switch ($scope.tipoAlerta) {
+                        case 1:
+                            AlertaGeralService.CadastrarHistoricosInversao(angular.toJson($scope.obj));
+                            break;
+                        case 11:
+                            AlertaGeralService.CadastrarHistoricosManual(angular.toJson($scope.obj));
+                    }
+
+                    $uibModal.open({
+                        templateUrl: 'success.html',
+                        controller: 'ModalInstanceTodosCtrl',
                     });
 
                     $uibModalInstance.close();
@@ -91,7 +127,7 @@
                                 <th ng-click="orderByMe('UltData')">Data do Erro &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                                 <th>
-                                    <a href="#" title="Cadastrar Todos">
+                                    <a href="#" ng-click="showModalTodos(1);" title="Cadastrar Todos">
                                         <span class="glyphicon glyphicon-asterisk red"></span>
                                     </a>
                                 </th>
@@ -129,12 +165,12 @@
                                 <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('QtdEstoque')">QtdEstoque &nbsp<i ng-show="orderBycolumn === 'QtdEstoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('TipoAlerta')">Tipo de Alerta &nbsp<i ng-show="orderBycolumn === 'TipoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('dataCriacaoAlerta')">Data de Criação &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('comentario')">Comentario &nbsp <i ng-show="orderBycolumn === 'Comentario'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                                 <th>
-                                    <a href="#" title="Cadastrar Todos">
+                                    <a href="#" ng-click="showModalTodos(11);" title="Cadastrar Todos">
                                         <span class="glyphicon glyphicon-asterisk red"></span>
                                     </a>
                                 </th>

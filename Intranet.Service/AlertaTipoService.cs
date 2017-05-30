@@ -21,10 +21,10 @@ namespace Intranet.Service
             this._repositoryManual = repositoryManual;
         }
 
-        public List<AlertaTipo> GetAlerta(string nomeAlerta, bool aprovado, bool vinculado, DateTime dtInclusao)
-        {
-            return _repositoryTipoAlerta.GetAll().Where(x => x.NomeAlerta == nomeAlerta && x.Aprovado == aprovado && x.DtInclusao == dtInclusao).ToList();
-        }
+        //public List<AlertaTipo> GetAlerta(string nomeAlerta, bool aprovado, bool vinculado, DateTime dtInclusao)
+        //{
+        //    return _repositoryTipoAlerta.GetAll().Where(x => x.NomeAlerta == nomeAlerta && x.Aprovado == aprovado && x.DtInclusao == dtInclusao).ToList();
+        //}
 
         public void IncluirTipoAlerta(AlertaTipo obj)
         {

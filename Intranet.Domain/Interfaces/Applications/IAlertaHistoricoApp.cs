@@ -11,6 +11,8 @@ namespace Intranet.Domain.Interfaces.Applications
     {
         void CadastrarHistoricoInversao(AlertaHistorico obj);
         void CadastrarHistoricoManual(AlertaHistorico obj);
+        void CadastrarHistoricosInversao(AlertaHistorico obj);
+        void CadastrarHistoricosManual(AlertaHistorico obj);
         List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto);
     }
 }

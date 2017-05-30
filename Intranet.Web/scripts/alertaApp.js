@@ -1,1 +1,1 @@
-﻿var app = angular.module('alertaApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+﻿var app = angular.module('alertaApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.select', 'ngCookies']);

@@ -28,7 +28,7 @@ namespace Intranet.Domain.Entities
         public int CdPessoaFilial { get; set; }
 
         [DataMember]
-        public decimal QtdEstoque { get; set; } 
+        public decimal? QtdEstoque { get; set; } 
 
         [DataMember]
         public DateTime UltData { get; set; }

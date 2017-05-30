@@ -89,26 +89,51 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        //[HttpPost]
-        //public HttpResponseMessage CadastrarHistoricos([FromBody] AlertaHistorico obj)
-        //{
-        //    context = new CentralContext();
-        //    _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-        //    _alertaGeralRepository = new AlertaGeralRepository(context);
-        //    _alertaInversaoRepository = new AlertaInversaoRepository(context);
-        //    _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository);
-        //    try
-        //    {
-        //        _alertaHistoricoService.CadastrarHistoricos(obj);
+        [HttpPost]
+        public HttpResponseMessage CadastrarHistoricosInversao([FromBody] AlertaHistorico obj)
+        {
+            context = new CentralContext();
+            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
+            _alertaGeralRepository = new AlertaGeralRepository(context);
+            _alertaInversaoRepository = new AlertaInversaoRepository(context);
+            _alertaManualRepository = new AlertaManualRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository);
+            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
+            try
+            {
+                _alertaHistoricoApp.CadastrarHistoricosInversao(obj);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-        //    }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+            }
 
-        //    return Request.CreateResponse(HttpStatusCode.OK);
-        //}
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage CadastrarHistoricosManual([FromBody] AlertaHistorico obj)
+        {
+            context = new CentralContext();
+            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
+            _alertaGeralRepository = new AlertaGeralRepository(context);
+            _alertaInversaoRepository = new AlertaInversaoRepository(context);
+            _alertaManualRepository = new AlertaManualRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository);
+            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
+            try
+            {
+                _alertaHistoricoApp.CadastrarHistoricosManual(obj);
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
 
         [HttpGet]
         public IEnumerable<AlertaHistorico> GetHistoricoPorProduto(int cdProduto)

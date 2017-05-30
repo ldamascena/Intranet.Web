@@ -10,17 +10,22 @@
     @*Iniciação do módulo*@
     <script src="~/scripts/App.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Controllers*@
+    <script src="~/scripts/Controllers/listaAlertaCtrl.js" type="text/javascript" language="javascript"></script>
+
     @*Iniciação do Services*@
     <script src="~/scripts/Services/AlertaGeralService.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Services/ProdutoService.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Services/EmpresaFilialService.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Services/AlertaManualService.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Services/AlertaTipoService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/ProdutoService.js" type="text/javascript" language="javascript"></script>
 
 
     <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-cookies.js" type="text/javascript" language="javascript"></script>
+
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/Directive/select.js" type="text/javascript" language="javascript"></script>
@@ -35,92 +40,12 @@
 
     <script type="text/javascript">
 
-        app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $interval, $location, EmpresaFilialService) {
-            $scope.currentPage = 1;
-            $scope.numPerPage = 10
-            $scope.maxSize = 10;
-            $scope.filteredTodos = [];
-
-            $scope.appCtrl.filiais = [];
-
-            EmpresaFilialService.GetAll().then(function (response) {
-                $scope.filiaisDiponiveis = response.data;
-            });
-
-            $scope.orderByMe = function (colunm) {
-                $scope.reverse = ($scope.orderBycolumn === colunm) ? !$scope.reverse : false;
-                $scope.orderBycolumn = colunm;
-            }
-
-            $scope.buscaProduto = function () {
-
-                if (isNaN($scope.teste) && $scope.teste != "") {
-                    AlertaGeralService.GetContainsNomeProduto($scope.teste).then(function (response) {
-                        $scope.produtos = response.data;
-                        $scope.totalItems = response.data.length;
-
-                        $scope.$watch('currentPage + numPerPage', function () {
-                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-                            , end = begin + $scope.numPerPage;
-
-                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
-                        });
-                    });
-                }
-                else if (isNaN($scope.teste) == false && $scope.teste != "") {
-                    AlertaGeralService.GetGeralPorProduto(parseInt($scope.teste)).then(function (response) {
-                        $scope.produtos = response.data;
-                        $scope.totalItems = response.data.length;
-
-                        $scope.$watch('currentPage + numPerPage', function () {
-                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-                            , end = begin + $scope.numPerPage;
-
-                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
-                        });
-                    });
-                }
-
-                else {
-                    AlertaGeralService.GetallInvertidos().then(function (response) {
-                        $scope.produtos = response.data;
-                        $scope.totalItems = response.data.length;
-
-                        $scope.$watch('currentPage + numPerPage', function () {
-                            var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-                            , end = begin + $scope.numPerPage;
-
-                            $scope.filteredProdutos = $scope.produtos.slice(begin, end);
-                        });
-                    });
-                }
-            }
-
-            AlertaGeralService.GetallInvertidos().then(function (response) {
-                $scope.produtos = response.data;
-                $scope.totalItems = response.data.length;
-
-                $scope.$watch('currentPage + numPerPage', function () {
-                    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-                    , end = begin + $scope.numPerPage;
-
-                    $scope.filteredProdutos = $scope.produtos.slice(begin, end);
-                });
-
-                $scope.addManual = function () {
-                    $uibModal.open({
-                        templateUrl: 'modalAddAlertaManual.html',
-                        controller: 'ModalInstanceCtrl',
-                        scope: $scope
-                    });
-                }
-            });
-        });
+        
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, ProdutoService, EmpresaFilialService, AlertaManualService, AlertaTipoService) {
 
             $scope.tipoAlerta;
-
+                
             $scope.searchByCodigo = function () {
                 $uibModal.open({
                     templateUrl: 'modalLoad.html',
@@ -156,21 +81,17 @@
 
             AlertaTipoService.GetAll().then(function (response) {
                 $scope.tiposAlerta = response.data;
-                console.log(response.data);
             });
 
             $scope.change = function (option) {
-                alert(option);
             }
 
             $scope.gravarAlerta = function () {
                 $scope.submitted = true;
                 if ($scope.appCtrl.filiais.length > 0 && $scope.cdProduto != undefined && $scope.produto != undefined && $scope.tipoAlerta != undefined) {
-                    alert();
                     for (var i = 0; i < $scope.appCtrl.filiais.length; i++) {
                         $scope.obj = { CdProduto: $scope.cdProduto, nomeProduto: $scope.produto, cdPessoaFilial: $scope.appCtrl.filiais[i].cdPessoaFilial, CdTipoAlerta: $scope.tipoAlerta.CdTipoAlerta, tipoAlerta: $scope.tipoAlerta.NomeAlerta, Comentario: $scope.comentario};
                         AlertaManualService.IncluirAlerta(angular.toJson($scope.obj));
-                        console.log(angular.toJson($scope.obj));
                     }
                     $uibModalInstance.close('');
                     location.reload();
@@ -205,7 +126,7 @@
 
                 if ($scope.alertaNovo != "" && $scope.alertaNovo != undefined) {
                     $scope.obj = {NomeAlerta: $scope.alertaNovo}
-                    AlertaTipoService.IncluirAlerta(angular.toJson($scope.obj))
+                    AlertaTipoService.IncluirAlerta(angular.toJson($scope.obj));
 
                     $uibModal.open({
                         templateUrl: 'success.html',
@@ -252,8 +173,8 @@
                             <td>{{produto.AlertaEmAberto}}</td>
                             <td>{{produto.DataDoUltimoAlerta | date:'dd/MM/yyyy'}}</td>
                             <td class="icon-td">
-                                <a ng-href="ListaDeAlertas/{{produto.CdProduto}}">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                <a ng-click="changePage($index);">
+                                    <span class="glyphicon glyphicon-list-alt" style="cursor: pointer;"></span>
                                 </a>
                             </td>
                         </tr>
