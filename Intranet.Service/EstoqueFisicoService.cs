@@ -40,11 +40,7 @@ namespace Intranet.Service
 
         public void AtualizarEstoque(EstoqueFisico[] objs)
         {
-
-            bool inEntrada = false;
-
-
-
+            
             if (objs.Length == 4)
             {
                 var objToUpdate = _repositoryFisico.GetAllTipoProdutoPorProdutoEmbalagemEQuantidade(objs[0].CdProduto, objs[0].CdEmbalagem, objs[0].QtEmbalagem);
@@ -75,8 +71,6 @@ namespace Intranet.Service
                 objToUpdate.QtVolumesFisico = objs[1].QtVolumesFisico;
 
                 _repositoryFisico.Update(objToUpdate);
-                this.IncluirLog(objs[0].CdProduto, objs[0].CdEmbalagem, objs[1].QtVolumesFisico, 11, true, objs[1].QtEstoqueFisico,
-                    "teste", objs[1].QtEstoqueFisico, objs[1].QtEstoqueFisico, objs[1].QtVolumesFisico, objToUpdate.QtEmbalagem, 1);
             }
         }
 

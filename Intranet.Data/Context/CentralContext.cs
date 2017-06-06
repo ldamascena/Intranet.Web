@@ -80,7 +80,7 @@ namespace Intranet.Data.Context
             //ClassificacaoProduto com ClassificacaoProduto
 
             modelBuilder.Entity<ClassificacaoProduto>()
-                .HasMany(e => e.ClassificacaoProduto1)
+                .HasMany(e => e.children)
                 .WithOptional(e => e.ClassificacaoProduto2)
                 .HasForeignKey(e => new { e.CdEmpresaPai, e.CdClassificacaoProdutoPai });
 

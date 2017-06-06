@@ -15,7 +15,7 @@ namespace Intranet.Domain.Entities
     {
         public ClassificacaoProduto()
         {
-            ClassificacaoProduto1 = new HashSet<ClassificacaoProduto>();
+            children = new HashSet<ClassificacaoProduto>();
         }
 
         [Key]
@@ -46,9 +46,6 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public int? NrCobertura { get; set; }
 
-        [DataMember]
-        public string NmClassificacaoProduto { get; set; }
-
         public byte? CdCarga { get; set; }
 
         [DataMember]
@@ -67,7 +64,11 @@ namespace Intranet.Domain.Entities
         public decimal? PrMargemMinima { get; set; }
 
         [DataMember]
-        public virtual ICollection<ClassificacaoProduto> ClassificacaoProduto1 { get; set; }
+        public virtual ICollection<ClassificacaoProduto> children { get; set; }
+
+        [DataMember]
+        [Column("NmClassificacaoProduto")]
+        public string label { get; set; }
 
         public virtual ClassificacaoProduto ClassificacaoProduto2 { get; set; }
 

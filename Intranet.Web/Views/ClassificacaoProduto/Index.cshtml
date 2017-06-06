@@ -1,4 +1,4 @@
-﻿<html lang="en" ng-app="app">
+﻿<html lang="en" ng-app="classificacaoProdutoApp">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -8,11 +8,11 @@
 
     <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do módulo*@
-    <script src="~/scripts/App.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/ClassificacaoProdutoApp.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Controller*@
     <script src="~/scripts/Controllers/ClassificacaoProdutoCtrl.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Diretiva*@
-    <script src="~/scripts/Directive/autocomplete.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/abn_tree_directive.js" type="text/javascript" language="javascript"></script>
     @*Iniciação do Service*@
     <script src="~/scripts/Services/ClassificacaoProdutoService.js" type="text/javascript" language="javascript"></script>
 
@@ -21,9 +21,11 @@
     <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
     <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
-
+    
+    
 
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/abn_tree.css">
     <title>Index</title>
 
     <script type="text/javascript">
@@ -32,11 +34,13 @@
             $scope.saveChanges = function () {
                 $scope.objUpdate = {
                     "CdComprador": $scope.cdComprador,
-                    "nmClassificacaoProduto": $scope.classificacao,
+                    "CdClassificacaoProduto": $scope.output,
                     "nrCobertura": $scope.nrCobertura,
+                    "nrCoberturaMinima": $scope.nrCoberturaMinima,
                     "prMargem": $scope.prMargem,
                     "prMargemMinima": $scope.prMargemMinima
                 };
+
                 ClassificacaoProdutoService.UpdateClassificacao(angular.toJson($scope.objUpdate))
                 $uibModal.open({
                     templateUrl: 'modalSucess.html',
@@ -54,69 +58,27 @@
             };
         });
     </script>
-
-    <style>
-        .autocomplete {
-            width: 50%;
-            position: relative;
-        }
-
-            .autocomplete input {
-                width: 100%;
-                height: 34px;
-                padding: 7px 14px;
-                font-size: 14px;
-                line-height: 1.42857143;
-                color: #555;
-                background-color: #fff;
-                background-image: none;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-
-            .autocomplete ul {
-                width: 100%;
-                font-size: 14px;
-                padding-top: 5px;
-            }
-
-            .autocomplete li {
-                text-align: left;
-                list-style: none;
-                width: 100%;
-                padding: 0.6em;
-            }
-
-                .autocomplete li.active {
-                    width: 100%;
-                    background-color: #5bc0de;
-                }
-
-            .autocomplete .highlight {
-                background-color: #E2E2E2;
-            }
-
-            .autocomplete li.active .highlight {
-                background: #666;
-                color: #fff;
-            }
-    </style>
-
 </head>
 <body ng-controller="ClassificacaoProdutoCtrl">
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header">
-            <h1>Alteração de Classificação de Produto</h1>
+            <h1>Classificação Produto  <small> - Alteração de classificacao</small></h1>
         </div>
-
-        <div>
-            <div class="main">
-                <h3>Classificações</h3>
-                <autocomplete ng-model="classificacao" attr-placeholder="" click-activation="true" data="classificacoes" on-select="doSomethingElse"></autocomplete>
+        <div style="float:left; width:400px;background:whitesmoke;border:1px solid lightgray;border-radius:5px;">
+            <abn-tree tree-data="my_data" tree-control="my_tree" on-select="my_tree_handler(branch)" expand-level="1"></abn-tree>
+        </div>
+        <div style="float:left; margin-left:10px; margin-top: 20px;">
+            <div>
+                <button ng-click="my_tree.expand_all()" class="btn btn-success btn-sm">Expand All</button>
+            </div>
+            <div>
+                <button ng-click="my_tree.collapse_all()" class="btn btn-danger btn-sm">Collapse All</button>
+            </div>
+            <div>
+                <button ng-click="selected()" class="btn btn-primary btn-sm">Select</button>
             </div>
         </div>
     </div>
-
     <script type="text/ng-template" id="myModal.html">
         <div class="modal-content">
             <div class="modal-header">
@@ -131,13 +93,6 @@
 
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="Margem">Margem</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" ng-model="prMargem" name="prMargem" id="prMargem" placeholder="Margem" />
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Comprador" style="text-decoration: underline; text-decoration-color: red;">Comprador</label>
                         <div class="col-sm-10">
@@ -155,10 +110,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"
-                               for="Cobertura">Cobertura</label>
+                        <label class="col-sm-2 control-label" for="Margem">Margem</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="nrCobertura" name="nrCobertura" ng-model="nrCobertura" placeholder="Cobertura" />
+                            <input type="number" class="form-control" ng-model="prMargem" name="prMargem" id="prMargem" placeholder="Margem" />
                         </div>
                     </div>
 
@@ -170,6 +124,21 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="Cobertura">Cobertura</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="nrCobertura" name="nrCobertura" ng-model="nrCobertura" placeholder="Cobertura" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="Cobertura">Cobertura Minima</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="nrCoberturaMinima" name="nrCoberturaMinima" ng-model="nrCoberturaMinima" placeholder="Cobertura Minima" />
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

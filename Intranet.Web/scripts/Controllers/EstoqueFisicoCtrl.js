@@ -20,18 +20,18 @@
                 $scope.enabledEdit[$scope.estoques.length - 1] = true;
             }
             $scope.editEstoque = function (index) {
-                console.log("edit index" + index);
+                //console.log("edit index" + index);
                 $scope.enabledEdit[index] = !$scope.enabledEdit[index];
             }
 
             $scope.submitEstoque = function () {
 
-                console.log($scope.estoques.length);
-                console.log($scope.data.length);
+                //console.log($scope.estoques.length);
+                //console.log($scope.data.length);
 
                 if ($scope.estoques.length != $scope.data.length) {
-                    console.log($scope.estoques[$scope.estoques.length - 1]);
-                    console.log("Inclusão");
+                    //console.log($scope.estoques[$scope.estoques.length - 1]);
+                    //console.log("Inclusão");
                     if ($scope.estoques[$scope.estoques.length - 1].CdEmbalagem == "") {
                         window.document.getElementById("CdEmbalagem" + ($scope.estoques.length - 1) + "").focus();
                     }
@@ -57,7 +57,7 @@
                         .result.then(
                             function () {
                                 //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
-                                EstoqueService.AdicionarEstoque(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
+                                //EstoqueService.AdicionarEstoque(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 $uibModal.open({
                                     templateUrl: 'myModalAlert.html',
@@ -87,7 +87,7 @@
                             $scope.dataUnion.push($scope.estoques[i]);
                             //console.log(angular.toJson($scope.dataUnion));
                             //console.log("Alteração");
-                            EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
+                            //EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
                         }
                     }
 

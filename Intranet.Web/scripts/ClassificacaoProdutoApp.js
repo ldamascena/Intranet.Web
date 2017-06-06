@@ -1,0 +1,1 @@
+﻿var app = angular.module('classificacaoProdutoApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularBootstrapNavTree']);

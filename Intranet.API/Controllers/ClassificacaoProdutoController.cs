@@ -24,6 +24,18 @@ namespace Intranet.API.Controllers
 
         [HttpGet]
         // GET: api/ClassificacaoProduto
+        public IEnumerable<ClassificacaoProduto> GetAll()
+        {
+            // Inicialização das instancias
+            _repository = new ClassificacaoProdutoRepository(new CentralContext());
+            _service = new ClassificacaoProdutoService(_repository);
+            _app = new ClassificacaoProdutoApp(_service);
+
+            return _app.GetAll().Where(x => x.CdOrdem.Length == 3).OrderBy(x => x.label);
+        }
+
+        [HttpGet]
+        // GET: api/ClassificacaoProduto
         public IEnumerable<ClassificacaoProduto> Get(string nomeClassificacao)
         {
             // Inicialização das instancias
@@ -31,7 +43,7 @@ namespace Intranet.API.Controllers
             _service = new ClassificacaoProdutoService(_repository);
             _app = new ClassificacaoProdutoApp(_service);
 
-            return _app.GetAll().Where(x => x.NmClassificacaoProduto == nomeClassificacao);
+            return _app.GetAll().Where(x => x.label == nomeClassificacao);
         }
 
         [HttpGet]
