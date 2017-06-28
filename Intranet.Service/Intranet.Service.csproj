@@ -54,6 +54,7 @@
     <Compile Include="AlertaInversaoService.cs" />
     <Compile Include="AlertaManualService.cs" />
     <Compile Include="AlertaTipoService.cs" />
+    <Compile Include="ClassificacaoMetaService.cs" />
     <Compile Include="EstoqueFisicoService.cs" />
     <Compile Include="ClassificacaoProdutoService.cs" />
     <Compile Include="EstoqueMovimentoService.cs" />

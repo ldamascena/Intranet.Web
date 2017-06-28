@@ -17,7 +17,6 @@ namespace Intranet.Data.Context
 
         }
 
-        //public virtual DbSet<OrdemServicoDTO> Produtos { get; set; }
         public virtual DbSet<Alerta> Alertas { get; set; }
         public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
         public virtual DbSet<Pessoa> Pessoas { get; set; }
@@ -34,7 +33,10 @@ namespace Intranet.Data.Context
         public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
         public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
         public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
-        
+        public virtual DbSet<ClassificacaoMeta> ClassificacaoMetas { get; set; }
+        public virtual DbSet<VwClassificacaoMeta> VwClassificacaoMeta { get; set; }
+        public virtual DbSet<VwClassificacaoMetaMes> VwClassificacaoMetaMes { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -99,6 +101,7 @@ namespace Intranet.Data.Context
                 .WithRequired(e => e.Usuario)
                 .HasForeignKey(e => e.CdComprador)
                 .WillCascadeOnDelete(false);
+
 
             //Vendedor com PessoaJuridica
 

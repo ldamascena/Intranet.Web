@@ -1,0 +1,344 @@
+﻿<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do módulo*@
+    <script src="~/scripts/MetaApp.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Controller*@
+    <script src="~/scripts/Controllers/MetaCtrl.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Diretiva*@
+    <script src="~/scripts/Directive/angular-filter.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ng-currency-mask.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Service*@
+    <script src="~/scripts/Services/ClassificacaoMetaService.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+
+    <title>Index</title>
+
+    <script type="text/javascript">
+
+        app.controller('ModalInstanceCtrl', function ($scope, $uibModal, $uibModalInstance, ClassificacaoMetaService) {
+
+            $scope.atualizarDados = function () {
+                
+                ClassificacaoMetaService.GetClassificacaoMetaByMes($scope.nomeMes).then(function (response) {
+                    $scope.dadosMeta = response.data;
+                });
+
+                $uibModal.open({
+                    templateUrl: 'modalLoad.html',
+                    controller: 'ModalInstanceLoad'
+                });
+            }
+
+            $scope.alterarValores = function (key) {
+                $scope.key = key;
+                $uibModal.open({
+                    templateUrl: 'MetaForm.html',
+                    controller: 'ModalInstanceFormCtrl',
+                    backdrop: false,
+                    scope: $scope
+                });
+            }
+        });
+
+        app.controller('ModalInstanceAlertCtrl', function ($scope, $uibModal, $uibModalInstance) { });
+
+        app.controller("ModalInstanceLoad", function ($scope, $uibModal, $uibModalInstance, $interval) {
+            var value = 0;
+            $scope.dynamic = 0;
+
+            $scope.increment = function () {
+                if ($scope.dynamic != "100") {
+                    value = value + 10;
+                }
+
+                if ($scope.dynamic == "100") {
+                    value = 100;
+                    $uibModalInstance.close();
+                }
+                $scope.dynamic = value;
+            }
+
+            $interval(function () {
+                $scope.increment();
+            }, 300);
+        });
+
+        app.controller('ModalInstanceFormCtrl', function ($scope, $uibModalInstance, $interval, ClassificacaoMetaService) {
+            $scope.limpar = function () {
+                $scope.value = "";
+                $scope.repeat = "";
+            }
+
+            $scope.save = function () {
+                if ($scope.value == undefined || $scope.repeat == undefined) {
+                    $scope.showError = true;
+                    $scope.subbmited = true;
+                    $scope.showSuccess = false;
+                }
+                else {
+
+                    $scope.obj = {
+                        nmClassificacaoProduto: $scope.key,
+                        nomeMes: $scope.nomeMes,
+                        dispCompras: $scope.value,
+                        metaMarkup: $scope.repeat
+                    };
+
+                    ClassificacaoMetaService.AlterarClassificacao(angular.toJson($scope.obj));
+
+                    $scope.subbmited = true;
+                    $scope.showSuccess = true
+                    $scope.showError = false;
+
+                    $interval(function () {
+                        $uibModalInstance.close();
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+    <style>
+        .app-modal-window .modal-dialog {
+            width: 1200px;
+        }
+
+        .table {
+            font-size: 13px;
+        }
+
+        .modal-header-info {
+            color: #fff;
+            padding: 6px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #5bc0de;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .alert {
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body ng-controller="metaCtrl">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Inclusão de Meta  <small> - Inclusão de meta por Classificação</small></h1>
+        </div>
+        <uib-accordion class="col-md-10 col-md-offset-1">
+            <div uib-accordion-group class="panel panel-primary" is-open="true">
+                <uib-accordion-heading>
+                    Meta por Mês
+                </uib-accordion-heading>
+                <table class="table table-hover table-bordered" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Mês</th>
+                            <th>Meta de Compra</th>
+                            <th>Meta de Markup</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="dado in dados">
+                            <td></td>
+                            <td>{{dado.nomeMes}}</td>
+                            <td>{{dado.MetaCompra | currency:"R$ "}}</td>
+                            <td>{{dado.MetaMarkup}}%</td>
+                            <td style="text-align: center;">
+                                <a href="#" class="btn btn-warning btn-xs" ng-click="editEstoque($index)">
+                                    <span class="glyphicon glyphicon-pencil"></span>  Alterar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-accordion>
+
+        <script type="text/ng-template" id="stackedModal.html">
+            <div class="modal-header modal-header-info">
+                <h4 class="modal-title">Meta por Comprador e Classificação <i title="Atualizar Dados" ng-click="atualizarDados();" class="glyphicon glyphicon-refresh pull-right" style="cursor:pointer; top:5px;"></i></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-bordered" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th>Comprador</th>
+                            <th>Classificacao 1º</th>
+                            <th>Classificacao 2º</th>
+                            <th>Disp.Compra</th>
+                            <th>Meta.Markup</th>
+                            <th ng-show="{{show}}" style="text-align:center;">#</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="(key, t) in dadosMeta  | groupBy: '[nmUsuario]'">
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>
+                                <table class="table table-hover ">
+                                    <tbody ng-repeat="(key, x) in t | groupBy: '[Nivel1]'">
+                                        <tr>
+                                            <td>{{key}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            @*<td>{{t.Nivel1}}</td>
+                                <td>{{t.Nivel2}}</td>
+                                <td>{{t.dispCompras}}</td>
+                                <td>{{t.metaMarkup}}</td>*@
+                            <td>
+                                <table class="table table-hover ">
+                                    <tbody ng-repeat="(key, x) in t | groupBy: '[Nivel1]'">
+                                        <tr ng-repeat="(key, x1) in x | groupBy: '[Nivel2]'">
+                                            <td>{{key}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                            <td>
+                                <table class="table table-hover ">
+                                    <tbody ng-repeat="(key, y) in t | groupBy: '[Nivel1]'">
+                                        <tr ng-repeat="(key, y1) in y | groupBy: '[Nivel2]'">
+                                            <td>{{y1[0].dispCompras | currency:"R$ " }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                            <td>
+                                <table class="table table-hover ">
+                                    <tbody ng-repeat="(key, w) in t | groupBy: '[Nivel1]'">
+                                        <tr ng-repeat="(key, w1) in w | groupBy: '[Nivel2]'">
+                                            <td>{{w1[0].metaMarkup}}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td ng-show="{{show}}">
+                                <table class="table table-hover ">
+                                    <tbody ng-repeat="(key, z) in t | groupBy: '[Nivel1]'">
+                                        <tr ng-repeat="(key, z1) in z | groupBy: '[Nivel2]'">
+                                            <td style="text-align: center;">
+                                                <a href="#" class="btn btn-warning btn-xs" ng-click="alterarValores(key)">
+                                                    <span class="glyphicon glyphicon-pencil"></span>  Alterar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr style="background-color:#6969691a;">
+                            <td colspan="3" style="text-align:right;"><b>Total: </b></td>
+                            <td colspan="3"><b>{{ getVolumeSum(t) | currency:"R$ " }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="AvisoMeta.html">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> <strong>Aviso</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    A <strong>alteração</strong> das metas e a quantia de compras disponivel, só poderá ser feita no prazo de <strong>1 semana</strong>, a partir do primeiro dia do mês. Apos, só poderia ser possivel <strong>visualizar</strong> o mesmo!
+                </p>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="MesForm.html">
+            <div class="modal-header">
+                <h4 class="modal-title">Inclusão de Mês</h4>
+            </div>
+            <div class="modal-body">
+                <form accept-charset="UTF-8" name="formMes" id="formMeta" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <select name="mesSelecionado" id="mesSelecionado" class="form-control" 
+                                    ng-init="mesSelecionado = anoMeses[0].nome"  
+                                    ng-options="option.nome for option in anoMeses" 
+                                    ng-model="mesSelecionado">
+                            </select>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-sm btn-success" ng-click="gerarMes();" type="button" value="Gerar">
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="MetaForm.html">
+            <div class="modal-header">
+                <h4 class="modal-title">Alteração Metas</h4>
+            </div>
+            <div class="modal-body">
+                <form accept-charset="UTF-8" name="formMeta" id="formMeta" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Valor disponivel para compra" name="compra" type="text" ng-model="value" ng-required="true" ng-currency-mask>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Markup classificacao" name="markup" type="text" mask="99.99" ng-required="true" ng-model="repeat">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-sm btn-info" ng-click="limpar();" type="button" value="Limpar">
+                <input class="btn btn-sm btn-success" ng-click="save();" type="button" value="Salvar">
+
+                <div class="alert alert-success" ng-show="!formMeta.$error.required && subbmited && showSuccess" style="margin-top: 20px; text-align:center;">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        <strong>Alteração</strong> feita com sucesso!
+                    </p>
+                </div>
+
+                <div class="alert alert-danger" ng-show="formMeta.$error.required && subbmited && showError" style="margin-top: 20px; text-align:center;">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span> <strong>Atenção</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        Preencha os <strong>campos</strong> corretamente!
+                    </p>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="modalLoad.html">
+            <div class="modal-body">
+                <uib-progressbar class="progress-striped active" max="100" value="dynamic">%{{dynamic}} <i ng-sh<i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+            </div>
+        </script>
+    </div>
+</body>
+</html>

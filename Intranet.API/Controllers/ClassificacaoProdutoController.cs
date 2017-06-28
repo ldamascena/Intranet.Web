@@ -47,6 +47,18 @@ namespace Intranet.API.Controllers
         }
 
         [HttpGet]
+        // GET: api/ClassificacaoProduto
+        public ClassificacaoProduto GetByCdClassificacao(int cdClassificacao)
+        {
+            // Inicialização das instancias
+            _repository = new ClassificacaoProdutoRepository(new CentralContext());
+            _service = new ClassificacaoProdutoService(_repository);
+            _app = new ClassificacaoProdutoApp(_service);
+
+            return _app.GetAll().Where(x => x.CdClassificacaoProduto == cdClassificacao).FirstOrDefault();
+        }
+
+        [HttpGet]
         public IEnumerable<ClassificacaoProduto> GetAllVinculado(string nomeClassificacao)
         {
             // Inicialização das instancias

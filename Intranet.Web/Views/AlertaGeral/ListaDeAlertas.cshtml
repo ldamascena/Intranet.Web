@@ -55,8 +55,13 @@
                         controller: 'ModalInstanceCtrl',
                     });
 
-                    $uibModalInstance.close();
-                    location.reload();
+
+                    $interval(function () {
+                        location.reload();
+                        $uibModalInstance.close();
+                    }, 800);
+                    
+                    
                 }
             };
 
@@ -92,8 +97,10 @@
                         controller: 'ModalInstanceTodosCtrl',
                     });
 
-                    $uibModalInstance.close();
-                    location.reload();
+                    $interval(function () {
+                        location.reload();
+                        $uibModalInstance.close();
+                    }, 800);
                 }
             };
 

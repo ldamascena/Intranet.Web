@@ -31,6 +31,23 @@
     <script type="text/javascript">
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, ClassificacaoProdutoService) {
+            $scope.compradores = [
+                { CdUsuario: 14, NmUsuario: "Diego Gonçalves" },
+                { CdUsuario: 175, NmUsuario: "Geraldo Bonifácio" },
+                { CdUsuario: 12, NmUsuario: "Julio Ruiz" },
+                { CdUsuario: 15, NmUsuario: "Marcel Louis" },
+                { CdUsuario: 144, NmUsuario: "Renato Barros" },
+                { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
+                { CdUsuario: 175, NmUsuario: "Wanderson Batista" }
+            ]
+
+            ClassificacaoProdutoService.GetByCdClassificacao($scope.output).then(function (response) {
+                $scope.nrCobertura = response.data.NrCobertura;
+                $scope.nrCoberturaMinima = response.data.NrCoberturaMinima;
+                $scope.prMargem = response.data.PrMargem;
+                $scope.prMargemMinima = response.data.PrMargemMinima;
+            })
+
             $scope.saveChanges = function () {
                 $scope.objUpdate = {
                     "CdComprador": $scope.cdComprador,
@@ -40,6 +57,7 @@
                     "prMargem": $scope.prMargem,
                     "prMargemMinima": $scope.prMargemMinima
                 };
+
 
                 ClassificacaoProdutoService.UpdateClassificacao(angular.toJson($scope.objUpdate))
                 $uibModal.open({
@@ -75,7 +93,7 @@
                 <button ng-click="my_tree.collapse_all()" class="btn btn-danger btn-sm">Collapse All</button>
             </div>
             <div>
-                <button ng-click="selected()" class="btn btn-primary btn-sm">Select</button>
+                <button ng-click="selected($index)" class="btn btn-primary btn-sm">Select</button>
             </div>
         </div>
     </div>
@@ -96,16 +114,11 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="Comprador" style="text-decoration: underline; text-decoration-color: red;">Comprador</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="cdComprador" name="cdComprador" ng-model="cdComprador">
-                                <option value="14">Diego Gonçalves</option>
-                                <option value="175">Geraldo Bonifácio</option>
-                                <option value="12">Julio Ruiz</option>
-                                <option value="15">Marcel Louis</option>
-                                <option value="144">Renato Barros</option>
-                                <option value="186">Samir Ponce de Leon</option>
-                                <option value="27">Vinicius Bonifácio</option>
-                                <option value="13">Wanderson Batista</option>
+                            <select class="form-control" 
+                                    ng-model="selectedOption.nome"
+                                    ng-options="comprador.NmUsuario for comprador in selectedOption.compradores">
                             </select>
+                            {{selectedOption.NmUsuario}}
                         </div>
                     </div>
 

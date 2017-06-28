@@ -57,7 +57,7 @@
                         .result.then(
                             function () {
                                 //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
-                                //EstoqueService.AdicionarEstoque(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
+                                EstoqueService.AdicionarEstoque(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 $uibModal.open({
                                     templateUrl: 'myModalAlert.html',
@@ -87,7 +87,7 @@
                             $scope.dataUnion.push($scope.estoques[i]);
                             //console.log(angular.toJson($scope.dataUnion));
                             //console.log("Alteração");
-                            //EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
+                            EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
                         }
                     }
 
@@ -115,7 +115,7 @@
                                 });
 
 
-                    //$scope.dataUnion = [];
+                    $scope.dataUnion = [];
                 }
             }
         });

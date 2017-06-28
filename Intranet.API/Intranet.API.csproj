@@ -209,6 +209,7 @@
     <Compile Include="Controllers\AlertaInversaoController.cs" />
     <Compile Include="Controllers\AlertaManualController.cs" />
     <Compile Include="Controllers\AlertaTipoController.cs" />
+    <Compile Include="Controllers\ClassificacaoMetaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\EmpresaFilialController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />

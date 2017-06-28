@@ -182,10 +182,13 @@
     <Content Include="scripts\Controllers\ClassificacaoProdutoCtrl.js" />
     <Content Include="scripts\Controllers\EstoqueFisicoCtrl.js" />
     <Content Include="scripts\Controllers\listaAlertaCtrl.js" />
+    <Content Include="scripts\Controllers\MetaCtrl.js" />
     <Content Include="scripts\Controllers\VendedorCtrl.js" />
     <Content Include="scripts\Directive\abn_tree_directive.js" />
+    <Content Include="scripts\Directive\angular-filter.js" />
     <Content Include="scripts\Directive\autocomplete.js" />
     <Content Include="scripts\Directive\multiselect.js" />
+    <Content Include="scripts\Directive\ng-currency-mask.js" />
     <Content Include="scripts\Directive\ngMask.js" />
     <Content Include="scripts\Directive\select.js" />
     <Content Include="scripts\errors.json" />
@@ -966,10 +969,12 @@
     <Content Include="scripts\i18n\angular-locale_zu.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\MetaApp.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\Services\AlertaGeralService.js" />
     <Content Include="scripts\Services\AlertaManualService.js" />
     <Content Include="scripts\Services\AlertaTipoService.js" />
+    <Content Include="scripts\Services\ClassificacaoMetaService.js" />
     <Content Include="scripts\Services\ClassificacaoProdutoService.js" />
     <Content Include="scripts\Services\EmpresaFilialService.js" />
     <Content Include="scripts\Services\EstoqueService.js" />
@@ -983,6 +988,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AlertaGeralController.cs" />
+    <Compile Include="Controllers\ClassificacaoMetaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\EstoqueController.cs" />
     <Compile Include="Controllers\VendedorController.cs" />
@@ -1010,6 +1016,7 @@
     <Content Include="Views\Vendedor\Add.cshtml" />
     <Content Include="Templates\multiselect.html" />
     <Content Include="Views\AlertaGeral\SolicitacaoTipoAlerta.cshtml" />
+    <Content Include="Views\ClassificacaoMeta\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

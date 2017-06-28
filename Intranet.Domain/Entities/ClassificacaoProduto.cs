@@ -21,7 +21,7 @@ namespace Intranet.Domain.Entities
         [Key]
         [Column(Order = 0)]
         [DataMember]
-        public byte cdEmpresa { get; set; }
+        public byte CdEmpresa { get; set; }
 
         [Key]
         [Column(Order = 1)]

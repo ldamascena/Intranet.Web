@@ -59,6 +59,7 @@
     <Compile Include="Repositories\AlertaManualRepository.cs" />
     <Compile Include="Repositories\AlertaRepository.cs" />
     <Compile Include="Repositories\AlertaTipoRepository.cs" />
+    <Compile Include="Repositories\ClassificacaoMetaRepository.cs" />
     <Compile Include="Repositories\ClassificacaoProdutoRepository.cs" />
     <Compile Include="Repositories\EmpresaFilialRepository.cs" />
     <Compile Include="Repositories\EstoqueFisicoRepository.cs" />

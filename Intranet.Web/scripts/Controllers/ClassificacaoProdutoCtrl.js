@@ -24036,12 +24036,12 @@
         "PrMargemMinima": null,
         "label": "99-FORA DE LINHA"
     }
-      ]
+    ]
 
     $scope.my_data = $scope.classificacoes;
     $scope.my_tree = {};
 
-    $scope.selected = function () {
+    $scope.selected = function (index) {
         $uibModal.open({
             templateUrl: 'myModal.html',
             controller: 'ModalInstanceCtrl',

@@ -1,1 +1,1 @@
-﻿var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angularBootstrapNavTree']);
+﻿var app = angular.module('app', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
