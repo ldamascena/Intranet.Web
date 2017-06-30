@@ -118,7 +118,7 @@
 
 <body ng-controller="listaAlertaCtrl as listaAlertaCtrl">
     <uib-accordion close-others="oneAtATime">
-        <div class="container">
+        <div class="container-fluid" style="margin-top: 10px;">
             <div class="panel panel-primary" uib-accordion-group >
                 <uib-accordion-heading>
                     Alerta Inversão  <i class="pull-right badge">{{dadosinversao.length}}</i>
@@ -130,8 +130,8 @@
                                 <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('QtdEstoque')">QtdEstoque &nbsp<i ng-show="orderBycolumn === 'QtdEstoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('UltData')">Data do Erro &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('QtdEstoque')">Qtd.Estoque &nbsp<i ng-show="orderBycolumn === 'QtdEstoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('DataDeCriacao')">Data de Criação &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                                 <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
                                 <th>
                                     <a href="#" ng-click="showModalTodos(1);" title="Cadastrar Todos">
@@ -147,7 +147,7 @@
                                 <td>{{dado.NomeProduto}}</td>
                                 <td>{{dado.Pessoa.NomePessoa}}</td>
                                 <td>{{dado.QtdEstoque}}</td>
-                                <td>{{dado.UltData | date:'dd/MM/yyyy'}}</td>
+                                <td>{{dado.DataDeCriacao | date:'dd/MM/yyyy'}}</td>
                                 @*<td><label class="label label-warning">Pendente</label></td>*@
                                 <td><label ng-class="['label {{dado.Status}}']">{{dado.Status}} </label></td>
                                 <td class="icon-td">

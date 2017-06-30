@@ -31,9 +31,6 @@ namespace Intranet.Domain.Entities
         public decimal? QtdEstoque { get; set; } 
 
         [DataMember]
-        public DateTime UltData { get; set; }
-
-        [DataMember]
         public int Severidade { get; set; }
 
         [DataMember]
