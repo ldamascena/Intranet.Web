@@ -56,6 +56,7 @@
     <Compile Include="Entities\AlertaInversao.cs" />
     <Compile Include="Entities\AlertaManual.cs" />
     <Compile Include="Entities\AlertaTipo.cs" />
+    <Compile Include="Entities\AlertaUltimoCusto.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaManualApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaTipoApp.cs" />
+    <Compile Include="Interfaces\Applications\IAlertaUltimoCustoApp.cs" />
     <Compile Include="Interfaces\Applications\IAppBase.cs" />
     <Compile Include="Interfaces\Applications\IAlertaInversaoApp.cs" />
     <Compile Include="Interfaces\Applications\IClassificacaoMetaApp.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Interfaces\Applications\IViewProdutoApp.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaManualRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaTipoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IAlertaUltimoCustoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IClassificacaoMetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IClassificacaoProdutoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEmpresaFilialRepository.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Interfaces\Repositories\IViewProdutoRepository.cs" />
     <Compile Include="Interfaces\Services\IAlertaTipoService.cs" />
     <Compile Include="Interfaces\Services\IAlertaManualService.cs" />
+    <Compile Include="Interfaces\Services\IAlertaUltimoCustoService.cs" />
     <Compile Include="Interfaces\Services\IClassificacaoMetaService.cs" />
     <Compile Include="Interfaces\Services\IClassificacaoProdutoService.cs" />
     <Compile Include="Interfaces\Services\IEmpresaFilialService.cs" />

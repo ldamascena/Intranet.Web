@@ -15,19 +15,22 @@ namespace Intranet.Domain.Services
     {
         private readonly IAlertaInversaoRepository _repositoryInversao;
         private readonly IAlertaManualRepository _repositoryManual;
+        private readonly IAlertaUltimoCustoRepository _repositoryUltimoCusto;
         private readonly IAlertaGeralRepository _repositoryGeral;
         private readonly IAlertaHistoricoRepository _repository;
 
         public AlertaHistoricoService(IAlertaHistoricoRepository repository,
             IAlertaInversaoRepository repositoryInversao,
             IAlertaGeralRepository repositoryGeral,
-            IAlertaManualRepository repositoryManual)
+            IAlertaManualRepository repositoryManual,
+            IAlertaUltimoCustoRepository repositoryUltimoCusto)
             : base(repository)
         {
             this._repository = repository;
             this._repositoryInversao = repositoryInversao;
             this._repositoryGeral = repositoryGeral;
             this._repositoryManual = repositoryManual;
+            this._repositoryUltimoCusto = repositoryUltimoCusto;
         }
 
         public void CadastrarHistoricoInversao(AlertaHistorico obj)
@@ -44,11 +47,117 @@ namespace Intranet.Domain.Services
                 resultGeral.AlertaEmAberto--;
             }
 
+            resultGeral.Alterado = true;
+
             try
             {
                 _repository.Add(obj);
                 resultInversao.Status = obj.StatusAlertaAtual;
                 _repositoryInversao.Update(resultInversao);
+                _repositoryGeral.Update(resultGeral);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public void CadastrarHistoricosInversao(AlertaHistorico obj)
+        {
+            var resultInversao = _repositoryInversao.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.Status == "Pendente").ToList();
+            var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
+            obj.DataDoHistorico = DateTime.Now;
+            obj.StatusAlertaAnterior = resultInversao[0].Status;
+            obj.NomeProduto = resultInversao[0].NomeProduto;
+
+            try
+            {
+                foreach (var item in resultInversao)
+                {
+                    if (obj.StatusAlertaAtual == "Feito")
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
+                        resultGeral.AlertaEmAberto--;
+                    }
+
+                    item.Status = obj.StatusAlertaAtual;
+                    _repositoryInversao.Update(item);
+
+                    obj.CdPessoaFilial = item.CdPessoaFilial;
+
+                    _repository.Add(obj);
+                }
+
+                resultGeral.Alterado = true;
+
+                _repositoryGeral.Update(resultGeral);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public void CadastrarHistoricoUltimoCusto(AlertaHistorico obj)
+        {
+            var resultUltimoCusto = _repositoryUltimoCusto.Get(x => x.CdProduto == obj.CdProduto && x.CdAlertaUltCusto == obj.CdAlerta);
+            var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
+            obj.DataDoHistorico = DateTime.Now;
+            obj.StatusAlertaAnterior = resultUltimoCusto.StatusAlerta;
+            obj.NomeProduto = resultUltimoCusto.NomeProduto;
+
+            if (obj.StatusAlertaAtual == "Feito")
+            {
+                resultGeral.Severidade = resultGeral.Severidade - resultUltimoCusto.Severidade;
+                resultGeral.AlertaEmAberto--;
+            }
+
+            resultGeral.Alterado = true;
+
+            try
+            {
+                _repository.Add(obj);
+                resultUltimoCusto.StatusAlerta = obj.StatusAlertaAtual;
+                _repositoryUltimoCusto.Update(resultUltimoCusto);
+                _repositoryGeral.Update(resultGeral);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public void CadastrarHistoricosUltimoCusto(AlertaHistorico obj)
+        {
+            var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.StatusAlerta == "Pendente").ToList();
+            var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
+            obj.DataDoHistorico = DateTime.Now;
+            obj.StatusAlertaAnterior = resultUltimoCusto[0].StatusAlerta;
+            obj.NomeProduto = resultUltimoCusto[0].NomeProduto;
+
+            try
+            {
+                foreach (var item in resultUltimoCusto)
+                {
+                    if (obj.StatusAlertaAtual == "Feito")
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
+                        resultGeral.AlertaEmAberto--;
+                    }
+
+                    item.StatusAlerta = obj.StatusAlertaAtual;
+                    _repositoryUltimoCusto.Update(item);
+
+                    obj.CdPessoaFilial = item.CdPessoaFilial;
+
+                    _repository.Add(obj);
+                }
+
+                resultGeral.Alterado = true;
+
                 _repositoryGeral.Update(resultGeral);
             }
             catch (Exception ex)
@@ -76,40 +185,6 @@ namespace Intranet.Domain.Services
                 _repository.Add(obj);
                 resultManual.StatusAlerta = obj.StatusAlertaAtual;
                 _repositoryManual.Update(resultManual);
-                _repositoryGeral.Update(resultGeral);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
-
-        public void CadastrarHistoricosInversao(AlertaHistorico obj)
-        {
-            var resultInversao = _repositoryInversao.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.Status == "Pendente").ToList();
-            var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
-            obj.DataDoHistorico = DateTime.Now;
-            obj.StatusAlertaAnterior = resultInversao[0].Status;
-            obj.NomeProduto = resultInversao[0].NomeProduto;
-
-            try
-            {
-                foreach (var item in resultInversao) {
-                    if (obj.StatusAlertaAtual == "Feito")
-                    {
-                        resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
-                        resultGeral.AlertaEmAberto--;
-                    }
-
-                    item.Status = obj.StatusAlertaAtual;
-                    _repositoryInversao.Update(item);
-
-                    obj.CdPessoaFilial = item.CdPessoaFilial;
-
-                    _repository.Add(obj);
-                }
-
                 _repositoryGeral.Update(resultGeral);
             }
             catch (Exception ex)

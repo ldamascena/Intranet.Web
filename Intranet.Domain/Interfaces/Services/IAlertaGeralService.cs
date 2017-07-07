@@ -11,5 +11,6 @@ namespace Intranet.Domain.Interfaces.Services
     {
         AlertaGeral GetGeralPorProduto(int cdProduto);
         AlertaGeral GetGeralPorProdutoNome(string nomeProduto);
+        IEnumerable<AlertaGeral> Get(int? tipoAlerta = null);
     }
 }

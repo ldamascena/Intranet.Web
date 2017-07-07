@@ -31,5 +31,10 @@ namespace Intranet.Application
         {
             return _service.GetGeralPorProdutoNome(nomeProduto);
         }
+
+        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null)
+        {
+            return _service.Get(tipoAlerta);
+        }
     }
 }

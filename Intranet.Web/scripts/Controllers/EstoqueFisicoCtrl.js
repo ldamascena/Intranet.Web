@@ -56,9 +56,7 @@
                         })
                         .result.then(
                             function () {
-                                //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 EstoqueService.AdicionarEstoque(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
-                                //alert(angular.toJson($scope.estoques[$scope.estoques.length - 1]));
                                 $uibModal.open({
                                     templateUrl: 'myModalAlert.html',
                                     controller: 'ModalInstanceCtrl',
@@ -66,7 +64,7 @@
                                 })
                                 $interval(function () {
                                     location.reload();
-                                }, 3000);
+                                }, 5000);
                             },
                             function () {
 
@@ -79,15 +77,12 @@
                     $scope.dataUnion = [];
 
                     for (var i = 0; i <= $scope.estoques.length - 1; i++) {
-                        //console.log("form submitted:" + angular.toJson($scope.estoques[i]));
 
                         if ($scope.data[i].QtEstoqueFisico != $scope.estoques[i].QtEstoqueFisico) {
 
                             $scope.dataUnion.push($scope.data[i]);
                             $scope.dataUnion.push($scope.estoques[i]);
-                            //console.log(angular.toJson($scope.dataUnion));
-                            //console.log("Alteração");
-                            EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
+                            //EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion))
                         }
                     }
 
@@ -96,26 +91,23 @@
                         controller: 'ModalInstanceCtrl',
                         scope: $scope
                     })
-                            .result.then(
-                                function () {
-                                    //alert(angular.toJson($scope.dataUnion));
-                                    EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion));
-                                    $uibModal.open({
-                                        templateUrl: 'myModalAlert.html',
-                                        controller: 'ModalInstanceCtrl',
-                                        scope: $scope
-                                    })
+                        .result.then(
+                            function () {
+                                alert(angular.toJson($scope.dataUnion));
+                                EstoqueService.AtualizaEstoque(angular.toJson($scope.dataUnion));
+                                $uibModal.open({
+                                    templateUrl: 'myModalAlert.html',
+                                    controller: 'ModalInstanceCtrl',
+                                    scope: $scope
+                                })
 
-                                    $interval(function () {
-                                        location.reload();
-                                    }, 3000);
-                                },
-                                function () {
+                                $interval(function () {
+                                    location.reload();
+                                }, 5000);
+                            },
+                            function () {
 
-                                });
-
-
-                    $scope.dataUnion = [];
+                            });
                 }
             }
         });

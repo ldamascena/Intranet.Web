@@ -42,6 +42,8 @@ namespace Intranet.Domain.Entities
 
         public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
 
+        public virtual ICollection<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
+
         public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
 
         public virtual ICollection<AlertaManual> AlertasManual { get; set; }

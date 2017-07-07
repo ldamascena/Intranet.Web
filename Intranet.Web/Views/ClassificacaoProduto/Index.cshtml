@@ -42,6 +42,8 @@
             ]
 
             ClassificacaoProdutoService.GetByCdClassificacao($scope.output).then(function (response) {
+                console.log(response.data.Usuario.NmUsuario);
+                $scope.nomeComprador = response.data.Usuario.NmUsuario;
                 $scope.nrCobertura = response.data.NrCobertura;
                 $scope.nrCoberturaMinima = response.data.NrCoberturaMinima;
                 $scope.prMargem = response.data.PrMargem;
@@ -115,10 +117,10 @@
                         <label class="col-sm-2 control-label" for="Comprador" style="text-decoration: underline; text-decoration-color: red;">Comprador</label>
                         <div class="col-sm-10">
                             <select class="form-control" 
-                                    ng-model="selectedOption.nome"
-                                    ng-options="comprador.NmUsuario for comprador in selectedOption.compradores">
+                                    ng-model="nomeComprador"
+                                    ng-options="comprador.NmUsuario for comprador in compradores">
                             </select>
-                            {{selectedOption.NmUsuario}}
+                            {{nomeComprador}}
                         </div>
                     </div>
 

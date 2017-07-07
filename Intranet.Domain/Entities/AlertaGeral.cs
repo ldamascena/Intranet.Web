@@ -34,5 +34,8 @@ namespace Intranet.Domain.Entities
         [DataMember]
         [Column("dataUltimoAlerta")]
         public DateTime DataDoUltimoAlerta { get; set; }
+
+        [DataMember]
+        public bool Alterado { get; set; }
     }
 }

@@ -60,8 +60,8 @@
                         location.reload();
                         $uibModalInstance.close();
                     }, 800);
-                    
-                    
+
+
                 }
             };
 
@@ -114,16 +114,82 @@
         });
 
     </script>
+    <style>
+        li.active a.ng-binding {
+            color: #fff;
+            background-color: #136352;
+            text-decoration: none;
+        }
+
+        li a.ng-binding:hover {
+            color: #fff;
+            background-color: #136352;
+            text-decoration: none;
+        }
+
+        li a.ng-binding {
+            background: #20A286;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .app-modal-window .modal-dialog {
+            width: 1200px;
+        }
+
+
+    </style>
 </head>
 
 <body ng-controller="listaAlertaCtrl as listaAlertaCtrl">
-    <uib-accordion close-others="oneAtATime">
-        <div class="container-fluid" style="margin-top: 10px;">
-            <div class="panel panel-primary" uib-accordion-group >
-                <uib-accordion-heading>
-                    Alerta Inversão  <i class="pull-right badge">{{dadosinversao.length}}</i>
-                </uib-accordion-heading>
-                <div class="panel-body">
+
+    <button ng-click="teste();"> teste</button>
+
+    <div class="chat_list" ng-show="dadosHistorico.length > 0">
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <span ng-class="dadoHistorico.StatusAlertaAtual == 'Feito' ?
+                                              'glyphicon glyphicon-ok-sign' :
+                                              (dadoHistorico.StatusAlertaAtual == 'Pendente' ?
+                                              'glyphicon glyphicon-remove-sign' :
+                                              'glyphicon glyphicon-question-sign')"></span>
+                    </div>
+
+                    <div class="col-lg-11">
+                        <small class="pull-right text-muted">{{dadoHistorico.DataDoHistorico | date:'dd/MM/yyyy'}} as {{dadoHistorico.DataDoHistorico | date:'HH:mm'}}</small>
+                        <small class="list-group-item-heading text-muted text-primary">{{dadoHistorico.NomeUsuario}}</small>
+                        <div><strong>Loja: </strong> {{dadoHistorico.Pessoa.NomePessoa}}</div>
+                        <div><strong>Tipo de Aleta: </strong> {{dadoHistorico.AlertaTipo.NomeAlerta}}</div>
+                        <div><strong>Alterado de: </strong> {{dadoHistorico.StatusAlertaAnterior}} <strong>para:</strong> {{dadoHistorico.StatusAlertaAtual}} </div>
+                        <div><strong>Descrição: </strong>{{dadoHistorico.DescricaoHistorico}}</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        @*class="btn btn-circle-sm btn-primary"><span class="glyphicon glyphicon-thumbs-up">*@
+        <button class="btn btn-circle-micro btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
+    </div>
+
+
+    <div class="container" ng-show="dadosHistorico.length == 0">
+        <div class="chat_list">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div style="text-align:center;">
+                        Esse produto não possui histórico!
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script type="text/ng-template" id="modalTeste.html">
+        <uib-tabset>
+            <uib-tab heading="Inversão ({{dadosinversao.length}})"> 
+                <div class="container">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -159,148 +225,71 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </uib-tab>
+            <uib-tab heading="SJ">Short Labeled Justified content</uib-tab>
+            <uib-tab heading="Long Justified">Long Labeled Justified content</uib-tab>
+            <uib-tab heading="Justified">Justified content</uib-tab>
+            <uib-tab heading="SJ">Short Labeled Justified content</uib-tab>
+            <uib-tab heading="Long Justified">Long Labeled Justified content</uib-tab>
+        </uib-tabset>
+    </script>
 
-            <div class="panel panel-primary" uib-accordion-group >
-                <uib-accordion-heading>
-                    Alerta Manual  <i class="pull-right badge">{{dadosManual.length}}</i>
-                </uib-accordion-heading>
-                <div class="panel-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('TipoAlerta')">Tipo de Alerta &nbsp<i ng-show="orderBycolumn === 'TipoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('dataCriacaoAlerta')">Data de Criação &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('comentario')">Comentario &nbsp <i ng-show="orderBycolumn === 'Comentario'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                                <th>
-                                    <a href="#" ng-click="showModalTodos(11);" title="Cadastrar Todos">
-                                        <span class="glyphicon glyphicon-asterisk red"></span>
-                                    </a>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="dado in dadosManual | orderBy:orderBycolumn:reverse">
-                                @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
-                                <td>{{dado.CdProduto}}</td>
-                                <td>{{dado.NomeProduto}}</td>
-                                <td>{{dado.Pessoa.NomePessoa}}</td>
-                                <td>{{dado.TipoAlerta}}</td>
-                                <td>{{dado.DataCriacaoAlerta | date:'dd/MM/yyyy'}}</td>
-                                <td>{{dado.Comentario}}</td>
-                                @*<td><label class="label label-warning">Pendente</label></td>*@
-                                <td><label ng-class="['label {{dado.StatusAlerta}}']">{{dado.StatusAlerta}} </label></td>
-                                <td class="icon-td">
-                                    <a href="#" ng-click="showModal(dado.CdProduto, dado.CdAlertaManual, dado.Pessoa.CdPessoa, 11);" title="Cadastrar Observação">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    @*Inicio Modal Observação*@
 
-            <div class="chat_list" ng-show="dadosHistorico.length > 0">
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
-                        <div class="row">
-                            <div class="col-lg-1">
-                                <span ng-class="dadoHistorico.StatusAlertaAtual == 'Feito' ?
-                                              'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Pendente' ?
-                                              'glyphicon glyphicon-remove-sign' :
-                                              'glyphicon glyphicon-question-sign')"></span>
-                            </div>
-
-                            <div class="col-lg-11">
-                                <small class="pull-right text-muted">{{dadoHistorico.DataDoHistorico | date:'dd/MM/yyyy'}} as {{dadoHistorico.DataDoHistorico | date:'HH:mm'}}</small>
-                                <small class="list-group-item-heading text-muted text-primary">User</small>
-                                <div><strong>Loja: </strong> {{dadoHistorico.Pessoa.NomePessoa}}</div>
-                                <div><strong>Tipo de Aleta: </strong> {{dadoHistorico.AlertaTipo.NomeAlerta}}</div>
-                                <div><strong>Alterado de: </strong> {{dadoHistorico.StatusAlertaAnterior}} <strong>para:</strong> {{dadoHistorico.StatusAlertaAtual}} </div>
-                                <div><strong>Descrição: </strong>{{dadoHistorico.DescricaoHistorico}}</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                @*class="btn btn-circle-sm btn-primary"><span class="glyphicon glyphicon-thumbs-up">*@
-                <button class="btn btn-circle-micro btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
-            </div>
+    <script type="text/ng-template" id="myModal.html">
+        <div class="modal-header">
+            <h4 class="modal-title">Produto</h4>
+            <button class="close" style="margin-top: -32px;" ng-click="cancel();">
+                <span>&times;</span>
+            </button>
         </div>
 
-        <div class="container" ng-show="dadosHistorico.length == 0">
-            <div class="chat_list">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div style="text-align:center;">
-                            Esse produto não possui histórico!
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <div class="modal-body">
+            <form name="obsForm" id="obsForm">
+                <div>
+                    <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Observação:</label></label>
+                    <textarea class="form-control" name="observacao" id="observacao" style="height: 134px;" ng-model="observacao" required></textarea>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Status:</label></label>
+                    <select class="form-control input-sm" style="width: auto;" ng-model="status" ng-required="true" name="status" id="status">
+                        <option selected="selected" style="color: #5bc0de;">Analisando</option>
+                        <option style="color: #f0ad4e;">Pendente</option>
+                        <option style="color: #5cb85c;">Feito</option>
+                    </select>
+                </div>
+            </form>
         </div>
 
-        @*Inicio Modal Observação*@
+        <div class="modal-footer" style="margin-top: 10px;">
+            <input type="button" id="limpar" class="btn btn-info" value="Limpar" ng-click="Limpar();">
+            <input type="button" id="Gravar" class="btn btn-primary" value="Gravar" ng-click="Gravar();">
+        </div>
 
-        <script type="text/ng-template" id="myModal.html">
-            <div class="modal-header">
-                <h4 class="modal-title">Produto</h4>
-                <button class="close" style="margin-top: -32px;" ng-click="cancel();">
-                    <span>&times;</span>
-                </button>
+        <div class="alert alert-danger" ng-show="obsForm.observacao.$invalid && submitted">
+            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+            <hr class="message-inner-separator">
+            <p>
+                Preencha o campo <strong>Observação</strong> corretamente!
+            </p>
+        </div>
+
+        <div class="alert alert-danger" ng-show='obsForm.status.$invalid && submitted'>
+            <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+            <hr class="message-inner-separator">
+            <p>
+                Preencha o campo <strong>Status</strong> corretamente!
+            </p>
+        </div>
+
+        <script type="text/ng-template" id="success.html">
+            <div class="alert alert-success" style="margin-bottom:0px;">
+                Observação cadastrada com <strong>sucesso!</strong>
             </div>
-
-            <div class="modal-body">
-                <form name="obsForm" id="obsForm">
-                    <div>
-                        <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Observação:</label></label>
-                        <textarea class="form-control" name="observacao" id="observacao" style="height: 134px;" ng-model="observacao" required></textarea>
-                    </div>
-
-                    <div style="margin-top: 30px;">
-                        <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Status:</label></label>
-                        <select class="form-control input-sm" style="width: auto;" ng-model="status" ng-required="true" name="status" id="status">
-                            <option selected="selected" style="color: #5bc0de;">Analisando</option>
-                            <option style="color: #f0ad4e;">Pendente</option>
-                            <option style="color: #5cb85c;">Feito</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer" style="margin-top: 10px;">
-                <input type="button" id="limpar" class="btn btn-info" value="Limpar" ng-click="Limpar();">
-                <input type="button" id="Gravar" class="btn btn-primary" value="Gravar" ng-click="Gravar();">
-            </div>
-
-            <div class="alert alert-danger" ng-show="obsForm.observacao.$invalid && submitted">
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Observação</strong> corretamente!
-                </p>
-            </div>
-
-            <div class="alert alert-danger" ng-show='obsForm.status.$invalid && submitted'>
-                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
-                <hr class="message-inner-separator">
-                <p>
-                    Preencha o campo <strong>Status</strong> corretamente!
-                </p>
-            </div>
-
-            <script type="text/ng-template" id="success.html">
-                <div class="alert alert-success" style="margin-bottom:0px;">
-                    Observação cadastrada com <strong>sucesso!</strong>
-                </div>
-            </script>
-
         </script>
-        @*Fim Modal Observação*@
+
+    </script>
+    @*Fim Modal Observação*@
 </body>
 </html>

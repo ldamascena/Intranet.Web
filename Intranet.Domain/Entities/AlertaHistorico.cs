@@ -45,6 +45,10 @@ namespace Intranet.Domain.Entities
         public int CdPessoaFilial { get; set; }
 
         [DataMember]
+        [Column("nomeUsuario")]
+        public string NomeUsuario { get; set; }
+
+        [DataMember]
         public virtual AlertaTipo AlertaTipo { get; set; }
 
         [DataMember]

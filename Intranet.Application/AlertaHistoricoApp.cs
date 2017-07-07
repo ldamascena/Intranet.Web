@@ -19,11 +19,6 @@ namespace Intranet.Application
             this._service = service;
         }
 
-        public void CadastrarHistoricoInversao(AlertaHistorico obj)
-        {
-            _service.CadastrarHistoricoInversao(obj);
-        }
-
         public void CadastrarHistoricoManual(AlertaHistorico obj)
         {
             _service.CadastrarHistoricoManual(obj);
@@ -34,14 +29,30 @@ namespace Intranet.Application
             _service.CadastrarHistoricosManual(obj);
         }
 
-        public List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto)
+        public void CadastrarHistoricoInversao(AlertaHistorico obj)
         {
-            return _service.ObterAlertasPorProdutoTipoAlerta(cdProduto);
+            _service.CadastrarHistoricoInversao(obj);
         }
 
         public void CadastrarHistoricosInversao(AlertaHistorico obj)
         {
             _service.CadastrarHistoricosInversao(obj);
         }
+
+        public void CadastrarHistoricoUltimoCusto(AlertaHistorico obj)
+        {
+            _service.CadastrarHistoricoUltimoCusto(obj);
+        }
+        public void CadastrarHistoricosUltimoCusto(AlertaHistorico obj)
+        {
+            _service.CadastrarHistoricosUltimoCusto(obj);
+        }
+
+        public List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto)
+        {
+            return _service.ObterAlertasPorProdutoTipoAlerta(cdProduto);
+        }
+
+        
     }
 }
