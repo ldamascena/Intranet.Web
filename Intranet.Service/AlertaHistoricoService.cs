@@ -85,6 +85,7 @@ namespace Intranet.Domain.Services
                     _repositoryInversao.Update(item);
 
                     obj.CdPessoaFilial = item.CdPessoaFilial;
+                    obj.CdAlerta = item.CdAlertaInversao;
 
                     _repository.Add(obj);
                 }
@@ -152,6 +153,7 @@ namespace Intranet.Domain.Services
                     _repositoryUltimoCusto.Update(item);
 
                     obj.CdPessoaFilial = item.CdPessoaFilial;
+                    obj.CdAlerta = item.CdAlertaUltCusto;
 
                     _repository.Add(obj);
                 }

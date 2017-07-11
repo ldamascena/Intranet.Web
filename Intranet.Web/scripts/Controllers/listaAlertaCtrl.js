@@ -170,6 +170,10 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $scope.nomeUsuario = "Leonardo Damascena";
         }
 
+        else if (ip == "192.168.1.229") {
+            $scope.nomeUsuario = "Fabrício Oliveira";
+        }
+
         else {
             $scope.nomeUsuario = "usuario não cadastrado";
         }
