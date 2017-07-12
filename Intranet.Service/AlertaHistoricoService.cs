@@ -47,7 +47,7 @@ namespace Intranet.Domain.Services
                 resultGeral.AlertaEmAberto--;
             }
 
-            else if (obj.StatusAlertaAtual == "Analisando" && resultInversao.Status == "Feito")
+            else if ( (obj.StatusAlertaAtual == "Analisando" && resultInversao.Status == "Feito") || (obj.StatusAlertaAtual == "Pendente" && resultInversao.Status == "Feito"))
             {
                 resultGeral.Severidade = 3;
                 resultGeral.AlertaEmAberto = 1;
@@ -121,7 +121,7 @@ namespace Intranet.Domain.Services
                 resultGeral.AlertaEmAberto--;
             }
 
-            else if (obj.StatusAlertaAtual == "Analisando" && resultUltimoCusto.StatusAlerta == "Feito")
+            else if (obj.StatusAlertaAtual == "Analisando" && resultUltimoCusto.StatusAlerta == "Feito" || (obj.StatusAlertaAtual == "Pendente" && resultUltimoCusto.StatusAlerta == "Feito"))
             {
                 resultGeral.Severidade = 4;
                 resultGeral.AlertaEmAberto = 1;
