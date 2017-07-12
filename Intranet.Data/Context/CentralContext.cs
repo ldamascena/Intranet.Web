@@ -22,12 +22,14 @@ namespace Intranet.Data.Context
         public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
         public virtual DbSet<AlertaUltimoCusto> tbAlertaUltimoCusto { get; set; }
         public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
-
-
-        public virtual DbSet<Pessoa> Pessoas { get; set; }
         public virtual DbSet<AlertaGeral> AlertasGeral { get; set; }
         public virtual DbSet<AlertaHistorico> AlertasHistorico { get; set; }
         public virtual DbSet<AlertaTipo> AlertasTipo { get; set; }
+        public virtual DbSet<AlertaAnalitico> AlertasAnalitico { get; set; }
+
+
+        public virtual DbSet<Pessoa> Pessoas { get; set; }
+        
         public virtual DbSet<EstoqueFisico> EstoquesFisico { get; set; }
         public virtual DbSet<EstoqueMovimento> EstoquesMovimento { get; set; }
         public virtual DbSet<Produto> Produtos { get; set; }
@@ -123,6 +125,14 @@ namespace Intranet.Data.Context
             //    .WithRequired(e => e.PessoaJuridica)
             //    .HasForeignKey(e => e.CdPessoaJuridica)
             //    .WillCascadeOnDelete(false);
+
+            // Alerta Geral com Alerta Analitico
+
+            modelBuilder.Entity<AlertaGeral>()
+                .HasMany(e => e.AlertaAnaliticos)
+                .WithRequired(e => e.AlertaGeral)
+                .HasForeignKey(e => e.cdAlerta)
+                .WillCascadeOnDelete(false);
 
             #endregion
         }

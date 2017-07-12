@@ -37,5 +37,8 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public bool Alterado { get; set; }
+
+        [DataMember]
+        public virtual ICollection<AlertaAnalitico> AlertaAnaliticos { get; set; }
     }
 }

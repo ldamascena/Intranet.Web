@@ -412,6 +412,7 @@
                             <th ng-click="orderByMe('Severidade')">Severidade &nbsp<i ng-show="orderBycolumn === 'Severidade'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                             <th ng-click="orderByMe('AlertaEmAberto')">Alertas Abertos &nbsp<i ng-show="orderBycolumn === 'AlertaEmAberto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
                             <th ng-click="orderByMe('DataDoUltimoAlerta')">Data de Geração &nbsp <i ng-show="orderBycolumn === 'DataDoUltimoAlerta'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                            @*<th>Situação &nbsp</th>*@
                             <th></th>
                         </tr>
                     </thead>
@@ -422,6 +423,10 @@
                             <td>{{produto.Severidade}}</td>
                             <td>{{produto.AlertaEmAberto}}</td>
                             <td>{{produto.DataDoUltimoAlerta | date:'dd/MM/yyyy'}}</td>
+                            @*<td>{{produto.AlertaAnaliticos[0].concluido}}</td>*@
+                            @*<td ng-show="produto.AlertaAnaliticos[0].pendente > 0 && produto.AlertaAnaliticos[0].analise == 0 && produto.AlertaAnaliticos[0].concluido == 0">Novo</td>
+                            <td ng-show="produto.AlertaAnaliticos[0].pendente > 0 && (produto.AlertaAnaliticos[0].analise > 0 || produto.AlertaAnaliticos[0].concluido > 0)">Analisando</td>
+                            <td ng-show="produto.AlertaAnaliticos[0].pendente == 0 && produto.AlertaAnaliticos[0].analise == 0 && produto.AlertaAnaliticos[0].concluido > 0">Concluido</td>*@
                             <td class="icon-td">
                                 <a ng-click="ShowModalProduto(produto.CdProduto, 2);">
                                     <span class="glyphicon glyphicon-list-alt" style="cursor: pointer;"></span>

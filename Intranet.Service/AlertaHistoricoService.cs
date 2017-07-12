@@ -71,7 +71,7 @@ namespace Intranet.Domain.Services
 
         public void CadastrarHistoricosInversao(AlertaHistorico obj)
         {
-            var resultInversao = _repositoryInversao.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.Status == "Pendente").ToList();
+            var resultInversao = _repositoryInversao.GetAll().Where(x => x.CdProduto == obj.CdProduto && (x.Status == "Pendente" || x.Status == "Analisando")).ToList();
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultInversao[0].Status;
@@ -145,7 +145,7 @@ namespace Intranet.Domain.Services
 
         public void CadastrarHistoricosUltimoCusto(AlertaHistorico obj)
         {
-            var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.StatusAlerta == "Pendente").ToList();
+            var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Where(x => x.CdProduto == obj.CdProduto && (x.StatusAlerta == "Pendente" || x.StatusAlerta == "Analisando")).ToList();
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultUltimoCusto[0].StatusAlerta;

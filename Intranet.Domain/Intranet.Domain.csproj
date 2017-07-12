@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Alerta.cs" />
+    <Compile Include="Entities\AlertaAnalitico.cs" />
     <Compile Include="Entities\AlertaGeral.cs" />
     <Compile Include="Entities\AlertaHistorico.cs" />
     <Compile Include="Entities\AlertaInversao.cs" />
