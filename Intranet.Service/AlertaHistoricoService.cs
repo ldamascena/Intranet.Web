@@ -86,7 +86,7 @@ namespace Intranet.Domain.Services
                 foreach (var item in resultInversao)
                 {
 
-                    if (obj.StatusAlertaAtual == "Feito" && item.Status == "Pendente")
+                    if (obj.StatusAlertaAtual == "Feito" && (item.Status == "Pendente" || item.Status == "Analisando"))
                     {
                         resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
                         resultGeral.AlertaEmAberto--;
@@ -169,7 +169,7 @@ namespace Intranet.Domain.Services
             {
                 foreach (var item in resultUltimoCusto)
                 {
-                    if (obj.StatusAlertaAtual == "Feito")
+                    if (obj.StatusAlertaAtual == "Feito" && (item.StatusAlerta == "Pendente" || item.StatusAlerta == "Analisando"))
                     {
                         resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
                         resultGeral.AlertaEmAberto--;
