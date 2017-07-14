@@ -27,7 +27,7 @@ namespace Intranet.API.Controllers
         private IAlertaUltimoCustoRepository _repositoryUltimoCusto;
 
         // GET: api/AlertaGeral
-        public IEnumerable<AlertaGeral> Get(int? tipoAlerta)
+        public IEnumerable<AlertaGeral> Get(int? tipoAlerta, string situacao)
         {
             // Inicialização das instancias
             _repository = new AlertaGeralRepository(new CentralContext());
@@ -36,7 +36,7 @@ namespace Intranet.API.Controllers
             _service = new AlertaGeralService(_repository, _repositoryInversao, _repositoryUltimoCusto);
             _app = new AlertaGeralApp(_service);
 
-            return _app.Get(tipoAlerta).OrderByDescending(x => x.Severidade);
+            return _app.Get(tipoAlerta, situacao).OrderByDescending(x => x.Severidade);
         }
 
         public IEnumerable<AlertaGeral> GetContainsNomeProduto(string nomeProduto)

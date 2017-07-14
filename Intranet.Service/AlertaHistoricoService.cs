@@ -17,13 +17,15 @@ namespace Intranet.Domain.Services
         private readonly IAlertaManualRepository _repositoryManual;
         private readonly IAlertaUltimoCustoRepository _repositoryUltimoCusto;
         private readonly IAlertaGeralRepository _repositoryGeral;
+        private readonly IAlertaAnaliticoRepository _repositoryAnalitico;
         private readonly IAlertaHistoricoRepository _repository;
 
         public AlertaHistoricoService(IAlertaHistoricoRepository repository,
             IAlertaInversaoRepository repositoryInversao,
             IAlertaGeralRepository repositoryGeral,
             IAlertaManualRepository repositoryManual,
-            IAlertaUltimoCustoRepository repositoryUltimoCusto)
+            IAlertaUltimoCustoRepository repositoryUltimoCusto,
+            IAlertaAnaliticoRepository repositoryAnalitico)
             : base(repository)
         {
             this._repository = repository;
@@ -31,6 +33,7 @@ namespace Intranet.Domain.Services
             this._repositoryGeral = repositoryGeral;
             this._repositoryManual = repositoryManual;
             this._repositoryUltimoCusto = repositoryUltimoCusto;
+            this._repositoryAnalitico = repositoryAnalitico;
         }
 
         public void CadastrarHistoricoInversao(AlertaHistorico obj)
@@ -41,26 +44,27 @@ namespace Intranet.Domain.Services
             obj.StatusAlertaAnterior = resultInversao.Status;
             obj.NomeProduto = resultInversao.NomeProduto;
 
-            if (obj.StatusAlertaAtual == "Feito")
+            if (obj.StatusAlertaAtual == "Feito" && resultInversao.Status == "Pendente")
             {
                 resultGeral.Severidade = resultGeral.Severidade - resultInversao.Severidade;
                 resultGeral.AlertaEmAberto--;
+
             }
 
-            else if ( (obj.StatusAlertaAtual == "Analisando" && resultInversao.Status == "Feito") || (obj.StatusAlertaAtual == "Pendente" && resultInversao.Status == "Feito"))
+            else if ((obj.StatusAlertaAtual == "Analisando" && resultInversao.Status == "Feito") || (obj.StatusAlertaAtual == "Pendente" && resultInversao.Status == "Feito"))
             {
-                resultGeral.Severidade = 3;
-                resultGeral.AlertaEmAberto = 1;
+                resultGeral.Severidade = resultGeral.Severidade + 3;
+                resultGeral.AlertaEmAberto = resultGeral.AlertaEmAberto + 1;
             }
-
-            resultGeral.Alterado = true;
 
             try
             {
+                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, resultInversao.Status, obj.NomeUsuario);
                 _repository.Add(obj);
                 resultInversao.Status = obj.StatusAlertaAtual;
                 _repositoryInversao.Update(resultInversao);
                 _repositoryGeral.Update(resultGeral);
+                
             }
             catch (Exception ex)
             {
@@ -123,14 +127,15 @@ namespace Intranet.Domain.Services
 
             else if (obj.StatusAlertaAtual == "Analisando" && resultUltimoCusto.StatusAlerta == "Feito" || (obj.StatusAlertaAtual == "Pendente" && resultUltimoCusto.StatusAlerta == "Feito"))
             {
-                resultGeral.Severidade = 4;
-                resultGeral.AlertaEmAberto = 1;
+                resultGeral.Severidade = resultGeral.Severidade + 4;
+                resultGeral.AlertaEmAberto = resultGeral.AlertaEmAberto + 1;
             }
 
             resultGeral.Alterado = true;
 
             try
             {
+                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, resultUltimoCusto.StatusAlerta, obj.NomeUsuario);
                 _repository.Add(obj);
                 resultUltimoCusto.StatusAlerta = obj.StatusAlertaAtual;
                 _repositoryUltimoCusto.Update(resultUltimoCusto);
@@ -246,6 +251,65 @@ namespace Intranet.Domain.Services
         public List<AlertaHistorico> ObterAlertasPorProdutoTipoAlerta(int cdProduto)
         {
             return _repository.ObterAlertasPorProdutoTipoAlerta(cdProduto);
+        }
+
+        public void AtualizarAnalitico(int cdProduto, string statusAtual, string statusAnterior, string usuario)
+        {
+            var result = _repositoryAnalitico.Get(x => x.cdProduto == cdProduto);
+
+            #region Feitos
+
+            if (statusAtual == "Feito" && statusAnterior == "Pendente")
+            {
+                result.concluido = result.concluido + 1;
+                result.pendente = result.pendente - 1;
+                result.vinculado = usuario;
+                _repositoryAnalitico.Update(result);
+            }
+
+            else if (statusAtual == "Feito" && statusAnterior == "Analisando")
+            {
+                result.concluido = result.concluido + 1;
+                result.analise = result.analise - 1;
+                result.vinculado = usuario;
+                _repositoryAnalitico.Update(result);
+            }
+
+            #endregion
+
+            #region Analisando
+
+            else if (statusAtual == "Analisando" && statusAnterior == "Feito")
+            {
+                result.analise = result.analise + 1;
+                result.concluido = result.concluido - 1;
+                result.vinculado = usuario;
+                _repositoryAnalitico.Update(result);
+            }
+
+            else if (statusAtual == "Analisando" && statusAnterior == "Pendente")
+            {
+                result.analise = result.analise + 1;
+                result.pendente = result.pendente - 1;
+                result.vinculado = usuario;
+                _repositoryAnalitico.Update(result);
+            }
+
+            #endregion
+
+            else if (statusAtual == "Pendente" && statusAnterior == "Feito")
+            {
+                result.pendente = result.pendente + 1;
+                result.concluido = result.concluido - 1;
+                _repositoryAnalitico.Update(result);
+            }
+
+            else if (statusAtual == "Pendente" && statusAnterior == "Analisando")
+            {
+                result.pendente = result.pendente + 1;
+                result.analise = result.analise - 1;
+                _repositoryAnalitico.Update(result);
+            }
         }
     }
 }

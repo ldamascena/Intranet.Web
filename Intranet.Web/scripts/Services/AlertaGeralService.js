@@ -4,8 +4,8 @@
 
     // Alerta Geral
 
-    this.Getall = function (tipoAlerta) {
-        return $http.get(serviceBaseProducao + "api/AlertaGeral/Get?tipoAlerta=" + tipoAlerta).then(function (response) {
+    this.Getall = function (tipoAlerta, situacao) {
+        return $http.get(serviceBaseProducao + "api/AlertaGeral/Get?tipoAlerta=" + tipoAlerta + "&situacao=" + situacao).then(function (response) {
             return response
         }, function (response) {
             return alert("Erro: " + response.status);

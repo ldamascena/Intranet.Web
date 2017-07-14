@@ -17,8 +17,8 @@ namespace Intranet.Domain.Services
         private readonly IAlertaInversaoRepository _repositoryInversao;
         private readonly IAlertaUltimoCustoRepository _repositoryUltimoCusto;
 
-        public AlertaGeralService(IAlertaGeralRepository repository, 
-            IAlertaInversaoRepository repositoryInversao, 
+        public AlertaGeralService(IAlertaGeralRepository repository,
+            IAlertaInversaoRepository repositoryInversao,
             IAlertaUltimoCustoRepository repositoryUltimoCusto)
         : base(repository)
         {
@@ -28,7 +28,7 @@ namespace Intranet.Domain.Services
         }
 
         public AlertaGeral GetGeralPorProduto(int cdProduto)
-        { 
+        {
             return _repository.GetGeralPorProduto(cdProduto);
         }
 
@@ -37,7 +37,7 @@ namespace Intranet.Domain.Services
             return _repository.GetGeralPorProdutoNome(nomeProduto);
         }
 
-        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null)
+        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null, string situacao = null)
         {
             var result = _repository.GetAll().OrderByDescending(x => x.Severidade);
 
@@ -45,19 +45,77 @@ namespace Intranet.Domain.Services
             {
                 var resultInversao = _repositoryInversao.GetAll().Select(y => y.CdProduto);
 
-                return result.Where(x => resultInversao.Contains(x.CdProduto));
+                switch (situacao)
+                {
+                    case "Novo":
+                        return result.Where(x => resultInversao.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].pendente > 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido == 0);
+                        break;
+
+                    case "Em Análise":
+                        return result.Where(x => resultInversao.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].analise > 0);
+                        break;
+                    case "Concluído":
+                        return result.Where(x => resultInversao.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].pendente == 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido > 0);
+                    default:
+                        return result.Where(x => resultInversao.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
+
+                }
             }
 
             else if (tipoAlerta == 3)
             {
                 var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Select(y => y.CdProduto);
 
-                return result.Where(x => resultUltimoCusto.Contains(x.CdProduto));
+                switch (situacao)
+                {
+                    case "Novo":
+                        return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].pendente > 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido == 0);
+                        break;
+
+                    case "Em Análise":
+                        return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].analise > 0);
+                        break;
+                    case "Concluído":
+                        return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
+                        && x.AlertaAnaliticos[0].pendente == 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido > 0);
+                    default:
+                        return result.Where(x => resultUltimoCusto.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
+                }
             }
 
             else
             {
-                return result;
+                switch (situacao)
+                {
+                    case "Novo":
+                        return result.Where(x => x.AlertaAnaliticos[0].pendente > 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido == 0);
+                        break;
+
+                    case "Em Análise":
+                        return result.Where(x => x.AlertaAnaliticos[0].analise > 0);
+                        break;
+                    case "Concluído":
+                        return result.Where(x => x.AlertaAnaliticos[0].pendente == 0
+                        && x.AlertaAnaliticos[0].analise == 0
+                        && x.AlertaAnaliticos[0].concluido > 0);
+                    default:
+                        return result.Where(x => x.AlertaEmAberto > 0);
+                }
             }
         }
     }

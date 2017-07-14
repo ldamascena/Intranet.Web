@@ -32,9 +32,9 @@ namespace Intranet.Application
             return _service.GetGeralPorProdutoNome(nomeProduto);
         }
 
-        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null)
+        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null, string situacao = null)
         {
-            return _service.Get(tipoAlerta);
+            return _service.Get(tipoAlerta, situacao);
         }
     }
 }

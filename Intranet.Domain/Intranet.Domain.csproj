@@ -89,6 +89,7 @@
     <Compile Include="Interfaces\Applications\ISolUsuarioApp.cs" />
     <Compile Include="Interfaces\Applications\IVendedorApp.cs" />
     <Compile Include="Interfaces\Applications\IViewProdutoApp.cs" />
+    <Compile Include="Interfaces\Repositories\IAlertaAnaliticoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaManualRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaTipoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaUltimoCustoRepository.cs" />

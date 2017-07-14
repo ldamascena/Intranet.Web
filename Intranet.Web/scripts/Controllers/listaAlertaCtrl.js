@@ -151,26 +151,27 @@ app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralServic
 });
 
 app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $interval, $location, EmpresaFilialService, ProdutoService, $cookieStore) {
-
+    $scope.ips = [];
     getIPs(function (ip) {
-        if (ip == "192.168.1.60")
+        $scope.ips.push(ip);
+        if ($scope.ips[0] == "192.168.1.60")
         {
             $scope.nomeUsuario = "Cristiane Lima";
         }
 
-        else if (ip == "192.168.1.56") {
+        else if ($scope.ips[0] == "192.168.1.56") {
             $scope.nomeUsuario = "Amanda Ramos";
         }
 
-        else if (ip == "192.168.1.57") {
+        else if ($scope.ips[0] == "192.168.1.57") {
             $scope.nomeUsuario = "Tiago Cunha";
         }
 
-        else if (ip == "192.168.1.188") {
+        else if ($scope.ips[0] == "192.168.1.188") {
             $scope.nomeUsuario = "Leonardo Damascena";
         }
 
-        else if (ip == "192.168.1.229") {
+        else if ($scope.ips[0] == "192.168.1.229") {
             $scope.nomeUsuario = "Fabrício Oliveira";
         }
 
@@ -178,6 +179,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $scope.nomeUsuario = "usuario não cadastrado";
         }
     });
+
 
     var pagesShown = 1;
     var pageSize = 5
@@ -229,7 +231,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
         }
 
         else {
-            AlertaGeralService.Getall($scope.selectTipoAlerta).then(function (response) {
+            AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.selectSituacao).then(function (response) {
                 $scope.produtos = response.data;
                 $scope.totalItems = response.data.length;
 
@@ -243,7 +245,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
         }
     }
 
-    AlertaGeralService.Getall("").then(function (response) {
+    AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.selectSituacao).then(function (response) {
         $scope.produtos = response.data;
         $scope.totalItems = response.data.length;
 

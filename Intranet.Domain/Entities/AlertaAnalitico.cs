@@ -35,6 +35,9 @@ namespace Intranet.Domain.Entities
         [StringLength(100)]
         public string vinculado { get; set; }
 
+        [DataMember]
+        public DateTime? dtVinculo { get; set; }
+
         public virtual AlertaGeral AlertaGeral { get; set; }
     }
 }
