@@ -85,12 +85,21 @@ namespace Intranet.Domain.Services
             {
                 foreach (var item in resultInversao)
                 {
-                    if (obj.StatusAlertaAtual == "Feito")
+
+                    if (obj.StatusAlertaAtual == "Feito" && item.Status == "Pendente")
                     {
                         resultGeral.Severidade = resultGeral.Severidade - item.Severidade;
                         resultGeral.AlertaEmAberto--;
+
                     }
 
+                    else if ((obj.StatusAlertaAtual == "Analisando" && item.Status == "Feito") || (obj.StatusAlertaAtual == "Pendente" && item.Status == "Feito"))
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade + 3;
+                        resultGeral.AlertaEmAberto = resultGeral.AlertaEmAberto + 1;
+                    }
+
+                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, item.Status, obj.NomeUsuario);
                     item.Status = obj.StatusAlertaAtual;
                     _repositoryInversao.Update(item);
 
@@ -166,6 +175,14 @@ namespace Intranet.Domain.Services
                         resultGeral.AlertaEmAberto--;
                     }
 
+                    else if (obj.StatusAlertaAtual == "Analisando" && item.StatusAlerta == "Feito" || (obj.StatusAlertaAtual == "Pendente" && item.StatusAlerta == "Feito"))
+                    {
+                        resultGeral.Severidade = resultGeral.Severidade + 4;
+                        resultGeral.AlertaEmAberto = resultGeral.AlertaEmAberto + 1;
+                    }
+
+
+                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, item.StatusAlerta, obj.NomeUsuario);
                     item.StatusAlerta = obj.StatusAlertaAtual;
                     _repositoryUltimoCusto.Update(item);
 
@@ -183,7 +200,6 @@ namespace Intranet.Domain.Services
             {
                 throw ex;
             }
-
         }
 
         public void CadastrarHistoricoManual(AlertaHistorico obj)
