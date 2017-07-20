@@ -27,9 +27,6 @@ namespace Intranet.Domain.Entities
         public DateTime DataDoHistorico { get; set; }
 
         [DataMember]
-        public int CdAlerta { get; set; }
-
-        [DataMember]
         public string StatusAlertaAtual { get; set; }
 
         [DataMember]
@@ -37,6 +34,9 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public string DescricaoHistorico { get; set; }
+
+        [DataMember]
+        public int CdAlerta { get; set; }
 
         [DataMember]
         public int CdTipoAlerta { get; set; }
@@ -53,5 +53,7 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public virtual Pessoa Pessoa { get; set; }
+
+        public virtual AlertaGeral AlertaGeral { get; set; }
     }
 }

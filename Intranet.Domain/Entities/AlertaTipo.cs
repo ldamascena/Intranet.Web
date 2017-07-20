@@ -15,7 +15,8 @@ namespace Intranet.Domain.Entities
     {
         public AlertaTipo()
         {
-            AlertasHistorico = new HashSet<AlertaHistorico>();
+            AlertasInversao = new HashSet<AlertaInversao>();
+            AlertasUltimoCusto = new HashSet<AlertaUltimoCusto>();
         }
 
         [DataMember]
@@ -23,21 +24,50 @@ namespace Intranet.Domain.Entities
         public int CdTipoAlerta { get; set; }
 
         [DataMember]
+        [StringLength(100)]
         public string NomeAlerta { get; set; }
 
-        [DataMember]
-        public bool Aprovado { get; set; }
+        public bool? Aprovado { get; set; }
 
-        [DataMember]
         public bool? Vinculado { get; set; }
 
-        [DataMember]
         public string Observacao { get; set; }
 
-        [DataMember]
         public DateTime DtInclusao { get; set; }
 
+        public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
+
+        public virtual ICollection<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
+
         public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
+
+        //public AlertaTipo()
+        //{
+        //    AlertasQuarentena = new HashSet<AlertaQuarentena>();
+        //}
+
+        //[DataMember]
+        //[Key]
+        //public int CdTipoAlerta { get; set; }
+
+        //[DataMember]
+        //public string NomeAlerta { get; set; }
+
+        //[DataMember]
+        //public bool Aprovado { get; set; }
+
+        //[DataMember]
+        //public bool? Vinculado { get; set; }
+
+        //[DataMember]
+        //public string Observacao { get; set; }
+
+        //[DataMember]
+        //public DateTime DtInclusao { get; set; }
+
+        //public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
+
+        //public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
     }
 }
 

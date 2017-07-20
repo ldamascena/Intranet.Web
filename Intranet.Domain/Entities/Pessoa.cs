@@ -15,7 +15,7 @@ namespace Intranet.Domain.Entities
     {
         public Pessoa()
         {
-            AlertasInversao = new HashSet<AlertaInversao>();
+            //AlertasInversao = new HashSet<AlertaInversao>();
             AlertasHistorico = new HashSet<AlertaHistorico>();
             AlertasManual = new HashSet<AlertaManual>();
         }

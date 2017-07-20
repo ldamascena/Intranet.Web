@@ -49,20 +49,20 @@ namespace Intranet.Domain.Services
                 {
                     case "Novo":
                         return result.Where(x => resultInversao.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].pendente > 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido == 0);
+                        && x.Pendente > 0
+                        && x.Analise == 0
+                        && x.Concluido == 0);
                         break;
 
                     case "Em Análise":
                         return result.Where(x => resultInversao.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].analise > 0);
+                        && x.Analise > 0);
                         break;
                     case "Concluído":
                         return result.Where(x => resultInversao.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].pendente == 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido > 0);
+                        && x.Pendente == 0
+                        && x.Analise == 0
+                        && x.Concluido > 0);
                     default:
                         return result.Where(x => resultInversao.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
 
@@ -77,20 +77,20 @@ namespace Intranet.Domain.Services
                 {
                     case "Novo":
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].pendente > 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido == 0);
+                        && x.Pendente > 0
+                        && x.Analise == 0
+                        && x.Concluido == 0);
                         break;
 
                     case "Em Análise":
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].analise > 0);
+                        && x.Analise > 0);
                         break;
                     case "Concluído":
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
-                        && x.AlertaAnaliticos[0].pendente == 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido > 0);
+                        && x.Pendente == 0
+                        && x.Analise == 0
+                        && x.Concluido > 0);
                     default:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
                 }
@@ -101,18 +101,18 @@ namespace Intranet.Domain.Services
                 switch (situacao)
                 {
                     case "Novo":
-                        return result.Where(x => x.AlertaAnaliticos[0].pendente > 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido == 0);
+                        return result.Where(x => x.Pendente > 0
+                        && x.Analise == 0
+                        && x.Concluido == 0);
                         break;
 
                     case "Em Análise":
-                        return result.Where(x => x.AlertaAnaliticos[0].analise > 0);
+                        return result.Where(x => x.Analise > 0);
                         break;
                     case "Concluído":
-                        return result.Where(x => x.AlertaAnaliticos[0].pendente == 0
-                        && x.AlertaAnaliticos[0].analise == 0
-                        && x.AlertaAnaliticos[0].concluido > 0);
+                        return result.Where(x => x.Pendente == 0
+                        && x.Analise == 0
+                        && x.Concluido > 0);
                     default:
                         return result.Where(x => x.AlertaEmAberto > 0);
                 }

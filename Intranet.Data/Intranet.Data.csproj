@@ -53,12 +53,11 @@
   <ItemGroup>
     <Compile Include="Context\CentralContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AlertaAnaliticoRepository.cs" />
     <Compile Include="Repositories\AlertaGeralRepository.cs" />
     <Compile Include="Repositories\AlertaHistoricoRepository.cs" />
     <Compile Include="Repositories\AlertaInversaoRepository.cs" />
     <Compile Include="Repositories\AlertaManualRepository.cs" />
-    <Compile Include="Repositories\AlertaRepository.cs" />
+    <Compile Include="Repositories\AlertaQuarentenaRepository.cs" />
     <Compile Include="Repositories\AlertaTipoRepository.cs" />
     <Compile Include="Repositories\AlertaUltimoCustoRepository.cs" />
     <Compile Include="Repositories\ClassificacaoMetaRepository.cs" />

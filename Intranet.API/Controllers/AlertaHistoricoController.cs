@@ -54,8 +54,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -79,8 +78,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -104,8 +102,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -129,8 +126,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -154,8 +150,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -179,8 +174,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -204,8 +198,7 @@ namespace Intranet.API.Controllers
             _alertaInversaoRepository = new AlertaInversaoRepository(context);
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaAnaliticoRepository = new AlertaAnaliticoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaAnaliticoRepository);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
 
             return _alertaHistoricoApp.ObterAlertasPorProdutoTipoAlerta(cdProduto).OrderByDescending(x => x.DataDoHistorico);

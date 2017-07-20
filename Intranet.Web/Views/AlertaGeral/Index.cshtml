@@ -42,7 +42,7 @@
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, ProdutoService, EmpresaFilialService, AlertaManualService, AlertaTipoService) {
 
-            $scope.tipoAlerta;
+            //$scope.tipoAlerta;
 
             $scope.searchByCodigo = function () {
                 $uibModal.open({
@@ -50,10 +50,10 @@
                     controller: 'ModalInstanceteste'
                 });
 
-                ProdutoService.GetById(parseInt($scope.cdProduto)).then(function (response) {
-                    $scope.cdProduto = response.data.idProduto
-                    $scope.produto = response.data.Descricao
-                });
+            //    ProdutoService.GetById(parseInt($scope.cdProduto)).then(function (response) {
+            //        $scope.cdProduto = response.data.idProduto
+            //        $scope.produto = response.data.Descricao
+            //    });
             }
 
             $scope.searchByProduto = function () {
@@ -62,10 +62,10 @@
                     controller: 'ModalInstanceteste'
                 });
 
-                ProdutoService.GetByNomeProduto($scope.produto).then(function (response) {
-                    $scope.cdProduto = response.data.idProduto
-                    $scope.produto = response.data.Descricao
-                });
+            //    ProdutoService.GetByNomeProduto($scope.produto).then(function (response) {
+            //        $scope.cdProduto = response.data.idProduto
+            //        $scope.produto = response.data.Descricao
+            //    });
             }
 
 
@@ -77,22 +77,22 @@
                 });
             }
 
-            AlertaTipoService.GetAll().then(function (response) {
-                $scope.tiposAlerta = response.data;
-            });
+            //AlertaTipoService.GetAll().then(function (response) {
+            //    $scope.tiposAlerta = response.data;
+            //});
 
 
-            $scope.gravarAlerta = function () {
-                $scope.submitted = true;
-                if ($scope.appCtrl.filiais.length > 0 && $scope.cdProduto != undefined && $scope.produto != undefined && $scope.tipoAlerta != undefined) {
-                    for (var i = 0; i < $scope.appCtrl.filiais.length; i++) {
-                        $scope.obj = { CdProduto: $scope.cdProduto, nomeProduto: $scope.produto, cdPessoaFilial: $scope.appCtrl.filiais[i].cdPessoaFilial, CdTipoAlerta: $scope.tipoAlerta.CdTipoAlerta, tipoAlerta: $scope.tipoAlerta.NomeAlerta, Comentario: $scope.comentario };
-                        AlertaManualService.IncluirAlerta(angular.toJson($scope.obj));
-                    }
-                    $uibModalInstance.close('');
-                    location.reload();
-                }
-            }
+            //$scope.gravarAlerta = function () {
+            //    $scope.submitted = true;
+            //    if ($scope.appCtrl.filiais.length > 0 && $scope.cdProduto != undefined && $scope.produto != undefined && $scope.tipoAlerta != undefined) {
+            //        for (var i = 0; i < $scope.appCtrl.filiais.length; i++) {
+            //            $scope.obj = { CdProduto: $scope.cdProduto, nomeProduto: $scope.produto, cdPessoaFilial: $scope.appCtrl.filiais[i].cdPessoaFilial, CdTipoAlerta: $scope.tipoAlerta.CdTipoAlerta, tipoAlerta: $scope.tipoAlerta.NomeAlerta, Comentario: $scope.comentario };
+            //            AlertaManualService.IncluirAlerta(angular.toJson($scope.obj));
+            //        }
+            //        $uibModalInstance.close('');
+            //        location.reload();
+            //    }
+            //}
         });
 
         app.controller("ModalInstanceteste", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval) {
@@ -153,17 +153,22 @@
                             AlertaGeralService.CadastrarHistoricoUltimoCusto(angular.toJson($scope.obj));
                     }
 
-                    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-                        $scope.dadosinversao = response.data;
-                    });
+                    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+                    //    $scope.dadosinversao = response.data;
+                    //});
 
-                    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-                        $scope.dadosUltimoCusto = response.data;
-                    });
+                    //AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+                    //    $scope.dadosHistorico = response.data;
+                    //});
+
+                    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+                    //    $scope.dadosUltimoCusto = response.data;
+                    //});
 
                     $interval(function () {
                         $uibModalInstance.close();
                     }, 1500);
+                    
                 }
             };
 
@@ -196,17 +201,27 @@
                             AlertaGeralService.CadastrarHistoricosUltimoCusto(angular.toJson($scope.obj));
                     }
 
-                    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-                        $scope.dadosinversao = response.data;
-                    });
+                    //AlertaGeralService.
+                    //AlertaGeralService.GetGeralPorProduto($scope.idProduto).then(function (response) {
+                    //    $scope.produtos = response.data;
+                    //});
 
-                    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-                        $scope.dadosUltimoCusto = response.data;
-                    });
+                    //$scope.dadosinversao = produto.AlertaInversao;
+                    //$scope.dadosUltimoCusto = produto.AlertaUltimoCusto;
+                    //$scope.dadosHistorico = produto.AlertasHistorico;
+
+                    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+                    //    $scope.dadosinversao = response.data;
+                    //});
+
+                    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+                    //    $scope.dadosUltimoCusto = response.data;
+                    //});
 
                     $interval(function () {
                         $uibModalInstance.close();
                     }, 1500);
+
                 }
             };
 
@@ -430,14 +445,14 @@
                             <td>{{produto.NomeProduto}}</td>
                             <td>{{produto.Severidade}}</td>
                             <td>{{produto.AlertaEmAberto}}</td>
-                            <td>{{produto.DataDoUltimoAlerta | date:'dd/MM/yyyy'}}</td>
+                            <td>{{produto.DataUltimoAlerta | date:'dd/MM/yyyy'}}</td>
                             <td>
-                                <span class="label label-primary">{{produto.AlertaAnaliticos[0].pendente}}</span>
-                                <span class="label label-info" uib-popover-html="'<i>{{produto.AlertaAnaliticos[0].vinculado}}</i>'" popover-trigger="'mouseenter'">{{produto.AlertaAnaliticos[0].analise}}</span>
-                                <span class="label label-success">{{produto.AlertaAnaliticos[0].concluido}}</span>
+                                <span class="label label-primary">{{produto.Pendente}}</span>
+                                <span class="label label-info" uib-popover-html="'<i>{{produto.Vinculado}}</i>'" popover-trigger="'mouseenter'">{{produto.Analise}}</span>
+                                <span class="label label-success">{{produto.Concluido}}</span>
                             </td>
                             <td class="icon-td">
-                                <a ng-click="ShowModalProduto(produto.CdProduto, 2);">
+                                <a ng-click="ShowModalProduto(produto);">
                                     <span class="glyphicon glyphicon-list-alt" style="cursor: pointer;"></span>
                                 </a>
                             </td>
@@ -477,18 +492,23 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="dado in dadosinversao | orderBy:orderBycolumn:reverse">
+                                            @*ng-class="dado.AlertasQuarentena.length > 0 ? 'danger' : ''"*@
+                                            
                                             @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
                                             <td>{{dado.CdProduto}}</td>
-                                            <td>{{dado.NomeProduto}}</td>
+                                            <td>{{produto.NomeProduto}}</td>
                                             <td>{{dado.Pessoa.NomePessoa}}</td>
                                             <td>{{dado.QtdEstoque}}</td>
-                                            <td>{{dado.DataDeCriacao | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dado.DataCriacaoAlerta | date:'dd/MM/yyyy'}}</td>
                                             @*<td><label class="label label-warning">Pendente</label></td>*@
-                                            <td><label ng-class="['label {{dado.Status}}']">{{dado.Status}} </label></td>
+                                            <td><label ng-class="['label {{dado.StatusAlerta}}']">{{dado.StatusAlerta}} </label></td>   
                                             <td class="icon-td">
                                                 <a href="#" ng-click="showModal(dado.CdProduto, dado.CdAlertaInversao, dado.Pessoa.CdPessoa, 2);" title="Cadastrar Observação">
                                                     <span class="glyphicon glyphicon-pencil"></span>
                                                 </a>
+                                            </td>
+                                            <td>
+                                                
                                             </td>
                                         </tr>
                                     </tbody>
@@ -557,7 +577,7 @@
                                         <tr ng-repeat="dadoUltimoCusto in dadosUltimoCusto | orderBy:orderBycolumn:reverse">
                                             @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
                                             <td>{{dadoUltimoCusto.CdProduto}}</td>
-                                            <td>{{dadoUltimoCusto.NomeProduto}}</td>
+                                            <td>{{produto.NomeProduto}}</td>
                                             <td>{{dadoUltimoCusto.Pessoa.NomePessoa}}</td>
                                             <td>{{dadoUltimoCusto.Nota}}</td>
                                             <td>{{dadoUltimoCusto.UltimoCusto | currency:"R$"}}</td>
