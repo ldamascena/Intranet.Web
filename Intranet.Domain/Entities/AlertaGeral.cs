@@ -46,13 +46,6 @@ namespace Intranet.Domain.Entities
         public DateTime DataUltimoAlerta { get; set; }
 
         [DataMember]
-        public bool Alterado { get; set; }
-
-        [DataMember]
-        [Column(TypeName = "date")]
-        public DateTime dataModificacaoAlerta { get; set; }
-
-        [DataMember]
         public int Pendente { get; set; }
 
         [DataMember]

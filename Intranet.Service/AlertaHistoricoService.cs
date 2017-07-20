@@ -106,8 +106,6 @@ namespace Intranet.Domain.Services
                     _repository.Add(obj);
                 }
 
-                resultGeral.Alterado = true;
-
                 _repositoryGeral.Update(resultGeral);
             }
             catch (Exception ex)
@@ -136,8 +134,6 @@ namespace Intranet.Domain.Services
                 resultGeral.Severidade = resultGeral.Severidade + 4;
                 resultGeral.AlertaEmAberto = resultGeral.AlertaEmAberto + 1;
             }
-
-            resultGeral.Alterado = true;
 
             try
             {
@@ -188,8 +184,6 @@ namespace Intranet.Domain.Services
 
                     _repository.Add(obj);
                 }
-
-                resultGeral.Alterado = true;
 
                 _repositoryGeral.Update(resultGeral);
             }
