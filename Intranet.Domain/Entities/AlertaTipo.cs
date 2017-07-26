@@ -16,7 +16,7 @@ namespace Intranet.Domain.Entities
         public AlertaTipo()
         {
             AlertasInversao = new HashSet<AlertaInversao>();
-            AlertasUltimoCusto = new HashSet<AlertaUltimoCusto>();
+            AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
         }
 
         [DataMember]
@@ -37,9 +37,7 @@ namespace Intranet.Domain.Entities
 
         public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
 
-        public virtual ICollection<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
-
-        public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
+        public virtual ICollection<AlertaUltimoCusto> AlertaUltimoCusto { get; set; }
 
         //public AlertaTipo()
         //{

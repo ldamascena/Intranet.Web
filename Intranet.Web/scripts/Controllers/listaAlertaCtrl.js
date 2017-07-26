@@ -84,56 +84,56 @@ app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralServic
 
     // Carrega Alerta de Inversão
 
-    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-    //    $scope.dadosinversao = response.data;
-    //})
+    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+        $scope.dadosinversao = response.data;
+    })
 
     // Carrega Alerta de Ultimo Custo
 
-    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-    //    $scope.dadosUltimoCusto = response.data;
-    //    console.log(response.data);
-    //})
+    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+        $scope.dadosUltimoCusto = response.data;
+        console.log(response.data);
+    })
 
-    //AlertaManualService.GetByProduto($scope.idProduto).then(function (response) {
-    //    $scope.dadosManual = response.data;
-    //})
+    AlertaManualService.GetByProduto($scope.idProduto).then(function (response) {
+        $scope.dadosManual = response.data;
+    })
 
-    //AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
-    //    $scope.dadosHistorico = response.data;
-    //});
-
-
-    //// Carrega Todos os históricos
-
-    //AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
-    //    $scope.dadosHistorico = response.data;
+    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
+        $scope.dadosHistorico = response.data;
+    });
 
 
-    //    $scope.paginationLimit = function (data) {
-    //        return pageSize * pagesShown;
-    //    };
+    // Carrega Todos os históricos
 
-    //    $scope.hasMoreItemsToShow = function () {
-    //        return pagesShown < ($scope.dadosHistorico.length / pageSize);
-    //    };
+    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+        $scope.dadosHistorico = response.data;
 
-    //    $scope.showMoreItems = function () {
-    //        pagesShown = pagesShown + 1;
-    //    };
 
-    //});
+        $scope.paginationLimit = function (data) {
+            return pageSize * pagesShown;
+        };
+
+        $scope.hasMoreItemsToShow = function () {
+            return pagesShown < ($scope.dadosHistorico.length / pageSize);
+        };
+
+        $scope.showMoreItems = function () {
+            pagesShown = pagesShown + 1;
+        };
+
+    });
 
     // Função para abrir o modal ao clicar
 
-    $scope.showModal = function (produto, tipoAlerta) {
+    $scope.showModal = function (idProduto, idAlerta, idFilial, tipoAlerta) {
         var modalInstance = $uibModal.open({
             templateUrl: 'myModal.html',
             controller: 'ModalInstanceCtrl',
             scope: $scope
         });
 
-        $scope.produto = produto;
+        $scope.idProduto = idProduto;
         $scope.idAlerta = idAlerta;
         $scope.idFilial = idFilial;
         $scope.tipoAlerta = tipoAlerta;
@@ -188,7 +188,9 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
     $scope.maxSize = 10;
     $scope.filteredTodos = [];
 
-
+    AlertaGeralService.GetStatus().then(function (response) {
+        $scope.AllStatus = response.data;
+    });
 
     $scope.appCtrl.filiais = [];
 
@@ -230,7 +232,8 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
         }
 
         else {
-            AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.selectSituacao).then(function (response) {
+            AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.cdStatus).then(function (response) {
+
                 $scope.produtos = response.data;
                 $scope.totalItems = response.data.length;
 
@@ -244,7 +247,8 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
         }
     }
 
-    AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.selectSituacao).then(function (response) {
+    AlertaGeralService.Getall($scope.selectTipoAlerta, $scope.cdStatus).then(function (response) {
+
         $scope.produtos = response.data;
         $scope.totalItems = response.data.length;
 
@@ -266,25 +270,39 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
 
         $scope.ShowModalProduto = function (produto) {
 
-            $scope.produto = produto;
+            AlertaGeralService.GetStatusExceptNovo().then(function (response) {
+                $scope.statusSelect = response.data;
+            });
+
+            $scope.idProduto = produto.CdProduto;
+            $scope.nomeProduto = produto.NomeProduto;
+
+            AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+                $scope.dadosinversao = response.data;
+                console.log(response.data);
+            });
+
+            AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+                $scope.dadosUltimoCusto = response.data;
+            })
+
+            AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+                $scope.dadosHistorico = response.data;
 
 
-            $scope.dadosinversao = produto.AlertaInversao;
-            $scope.dadosUltimoCusto = produto.AlertaUltimoCusto;
-            $scope.dadosHistorico = produto.AlertasHistorico;
+                $scope.paginationLimit = function (data) {
+                    return pageSize * pagesShown;
+                };
 
-            $scope.paginationLimit = function (data) {
-                return pageSize * pagesShown;
-            };
+                $scope.hasMoreItemsToShow = function () {
+                    return pagesShown < ($scope.dadosHistorico.length / pageSize);
+                };
 
-            $scope.hasMoreItemsToShow = function () {
-                return pagesShown < ($scope.dadosHistorico.length / pageSize);
-            };
+                $scope.showMoreItems = function () {
+                    pagesShown = pagesShown + 1;
+                };
 
-            $scope.showMoreItems = function () {
-                pagesShown = pagesShown + 1;
-            };
-
+            });
 
             $uibModal.open({
                 templateUrl: 'modalTeste.html',

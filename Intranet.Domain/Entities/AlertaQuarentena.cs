@@ -34,5 +34,11 @@ namespace Intranet.Domain.Entities
         [Column(TypeName = "date")]
         public DateTime dtSaida { get; set; }
 
+        public int cdAlerta { get; set; }
+
+        public virtual AlertaInversao tbAlertaInversaoTeste { get; set; }
+
+        public virtual AlertaUltimoCusto tbAlertaUltimoCustoTeste { get; set; }
+
     }
 }

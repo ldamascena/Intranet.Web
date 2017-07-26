@@ -13,20 +13,19 @@ namespace Intranet.Domain.Entities
     [Table("tbAlertaGeral")]
     public class AlertaGeral
     {
-        public AlertaGeral()
-        {
-            AlertaInversao = new HashSet<AlertaInversao>();
-            AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
-            AlertasHistorico = new HashSet<AlertaHistorico>();
-        }
+        //public AlertaGeral()
+        //{
+        //    AlertasHistorico = new HashSet<AlertaHistorico>();
+        //    AlertaInversao = new HashSet<AlertaInversao>();
+        //    AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
+        //}
 
+        [NotMapped]
+        [Column(Order = 0)]
+        public int CdAlertaGeral { get; set; }
 
         [DataMember]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int cdAlertaGeral { get; set; }
-
-        [DataMember]
-        [Key]
+        [Key]   
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdProduto { get; set; }
 
@@ -57,14 +56,14 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public string Vinculado { get; set; }
 
-        [DataMember]
-        public virtual ICollection<AlertaInversao> AlertaInversao { get; set; }
+        //[DataMember]
+        //public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
 
-        [DataMember]
-        public virtual ICollection<AlertaUltimoCusto> AlertaUltimoCusto { get; set; }
+        //[DataMember]
+        //public virtual ICollection<AlertaInversao> AlertaInversao { get; set; }
 
-        [DataMember]
-        public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
+        //[DataMember]
+        //public virtual ICollection<AlertaUltimoCusto> AlertaUltimoCusto { get; set; }
 
         //[DataMember]
         //[Key]

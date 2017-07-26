@@ -1,89 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Intranet.Domain.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+    using System.Runtime.Serialization;
+
     [DataContract]
     [Table("tbAlertaInversao")]
-    public class AlertaInversao
+    public partial class AlertaInversao
     {
+        public AlertaInversao()
+        {
+            //tbAlertaQuarentena = new HashSet<AlertaQuarentena>();
+        }
 
         [DataMember]
         [Key]
-        public int CdAlertaInversao { get; set; }
+        [Column(Order = 0)]
+        
+        public int CdAlertaInv { get; set; }
 
         [DataMember]
         public int CdProduto { get; set; }
 
+        [DataMember]
+        [Key]
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdPessoaFilial { get; set; }
 
         [DataMember]
-        public decimal? QtdEstoque { get; set; }
-
-        [DataMember]
         [Column(TypeName = "date")]
-        public DateTime DataCriacaoAlerta { get; set; }
+        public DateTime UltData { get; set; }
 
-        [DataMember]
-        [Required]
-        [StringLength(30)]
-        public string StatusAlerta { get; set; }
-
-        [DataMember]
-        public virtual Pessoa Pessoa { get; set; }
-
-        public virtual AlertaGeral AlertaGeral { get; set; }
-
+        
+        [Key]
+        [Column(Order = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdTipoAlerta { get; set; }
 
         [DataMember]
-        public virtual AlertaTipo AlertaTipo{ get; set; }
+        public int QtdEstoque { get; set; }
 
-        //public AlertaInversao()
-        //{
-        //    AlertasQuarentena = new HashSet<AlertaQuarentena>();
-        //}
+        
+        public int CdAlertaStatus { get; set; }
 
-        //[DataMember]
-        //[Key]
-        //[Column("cdAlertaInversao")]
-        //public int CdAlertaInversao { get; set; }
+        public virtual AlertaGeral AlertaGeral { get; set; }
 
-        //[DataMember]
-        //public int CdProduto { get; set; }
+        [DataMember]
+        public virtual AlertaStatus AlertaStatus { get; set; }
+
+        [DataMember]
+        public virtual AlertaTipo AlertaTipo { get; set; }
 
         //[DataMember]
-        //public string NomeProduto { get; set; }
+        //public virtual ICollection<AlertaQuarentena> tbAlertaQuarentena { get; set; }
 
-        //public int CdPessoaFilial { get; set; }
-
-        //[DataMember]
-        //public decimal? QtdEstoque { get; set; } 
-
-        //[DataMember]
-        //public int Severidade { get; set; }
-
-        //[DataMember]
-        //public string TipoAlerta { get; set; }
-
-        //[DataMember]
-        //[Column("dataCriacaoAlerta")]
-        //public DateTime DataDeCriacao { get; set; }
-
-        //[DataMember]
-        //[Column("statusAlerta")]
-        //public string Status { get; set; }
-
-        //[DataMember]
-        //public virtual Pessoa Pessoa { get; set; }
-
-        //[DataMember]
-        //public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
+        [DataMember]
+        public virtual Pessoa Pessoa { get; set; }
     }
 }

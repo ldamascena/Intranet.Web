@@ -20,16 +20,14 @@ namespace Intranet.API
 
             // Web API configuration and services
 
-            //var formatters = config.Formatters;
-            //formatters.Clear();
-            //formatters.Add(new JsonMediaTypeFormatter());
+            var formatters = config.Formatters;
+            formatters.Clear();
+            formatters.Add(new JsonMediaTypeFormatter());
 
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
-            
-            config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             // Web API routes
             config.MapHttpAttributeRoutes();

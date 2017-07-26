@@ -17,7 +17,6 @@ namespace Intranet.Data.Repositories
             
         }
 
-
         public IEnumerable<AlertaInversao> GetInvertidosPorProduto(int cdProduto)
         {
             var result = Db.AlertasInversao.Where(x => x.CdProduto == cdProduto).ToList();

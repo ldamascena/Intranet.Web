@@ -58,6 +58,7 @@
     <Compile Include="Repositories\AlertaInversaoRepository.cs" />
     <Compile Include="Repositories\AlertaManualRepository.cs" />
     <Compile Include="Repositories\AlertaQuarentenaRepository.cs" />
+    <Compile Include="Repositories\AlertaStatusRepository.cs" />
     <Compile Include="Repositories\AlertaTipoRepository.cs" />
     <Compile Include="Repositories\AlertaUltimoCustoRepository.cs" />
     <Compile Include="Repositories\ClassificacaoMetaRepository.cs" />

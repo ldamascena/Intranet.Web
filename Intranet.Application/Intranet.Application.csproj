@@ -55,6 +55,7 @@
     <Compile Include="AlertaHistoricoApp.cs" />
     <Compile Include="AlertaInversaoApp.cs" />
     <Compile Include="AlertaManualApp.cs" />
+    <Compile Include="AlertaStatusApp.cs" />
     <Compile Include="AlertaTipoApp.cs" />
     <Compile Include="AlertaUltimoCustoApp.cs" />
     <Compile Include="AppBase.cs" />

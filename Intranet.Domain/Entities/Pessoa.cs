@@ -15,9 +15,10 @@ namespace Intranet.Domain.Entities
     {
         public Pessoa()
         {
-            //AlertasInversao = new HashSet<AlertaInversao>();
             AlertasHistorico = new HashSet<AlertaHistorico>();
-            AlertasManual = new HashSet<AlertaManual>();
+            AlertasInversao = new HashSet<AlertaInversao>();
+            AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
+
         }
 
         [DataMember]
@@ -40,12 +41,11 @@ namespace Intranet.Domain.Entities
         [Column("inMorto")]
         public bool? Morto { get; set; }
 
-        public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
-
-        public virtual ICollection<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
-
         public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }
 
-        public virtual ICollection<AlertaManual> AlertasManual { get; set; }
+        public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
+
+        public virtual ICollection<AlertaUltimoCusto> AlertaUltimoCusto { get; set; }
+
     }
 }

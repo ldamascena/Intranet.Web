@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/select.css">
-    <link rel="stylesheet" href="~/Content/Custom/Alerta/Principal.css" />
+    
 
     <title>Index</title>
 
@@ -50,10 +50,10 @@
                     controller: 'ModalInstanceteste'
                 });
 
-            //    ProdutoService.GetById(parseInt($scope.cdProduto)).then(function (response) {
-            //        $scope.cdProduto = response.data.idProduto
-            //        $scope.produto = response.data.Descricao
-            //    });
+                //    ProdutoService.GetById(parseInt($scope.cdProduto)).then(function (response) {
+                //        $scope.cdProduto = response.data.idProduto
+                //        $scope.produto = response.data.Descricao
+                //    });
             }
 
             $scope.searchByProduto = function () {
@@ -62,13 +62,11 @@
                     controller: 'ModalInstanceteste'
                 });
 
-            //    ProdutoService.GetByNomeProduto($scope.produto).then(function (response) {
-            //        $scope.cdProduto = response.data.idProduto
-            //        $scope.produto = response.data.Descricao
-            //    });
+                //    ProdutoService.GetByNomeProduto($scope.produto).then(function (response) {
+                //        $scope.cdProduto = response.data.idProduto
+                //        $scope.produto = response.data.Descricao
+                //    });
             }
-
-
 
             $scope.addTipoAlerta = function () {
                 $uibModal.open({
@@ -136,15 +134,17 @@
         app.controller("ModalInstanceObsCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, AlertaGeralService) {
             $scope.Gravar = function () {
                 $scope.submitted = true;
-                if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.status != "" && $scope.status != undefined)) {
+                if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.cdStatusSelect != "" && $scope.cdStatusSelect != undefined)) {
                     $scope.obj = {
                         CdProduto: $scope.idProduto, CdAlerta: $scope.idAlerta, DescricaoHistorico: $scope.observacao,
-                        StatusAlertaAtual: $scope.status, cdTipoAlerta: $scope.tipoAlerta, cdPessoaFilial: $scope.idFilial, nomeUsuario: $scope.nomeUsuario
+                        StatusAlertaAtual: $scope.cdStatusSelect.nomeStatus, cdTipoAlerta: $scope.tipoAlerta, cdPessoaFilial: $scope.idFilial, nomeUsuario: $scope.nomeUsuario
                     };
+
+                    alert(angular.toJson($scope.obj));
 
                     switch ($scope.tipoAlerta) {
                         case 1:
-                            AlertaGeralService.CadastrarHistoricoManual(angular.toJson($scope.obj));
+                            //AlertaGeralService.CadastrarHistoricoManual(angular.toJson($scope.obj));
                             break;
                         case 2:
                             AlertaGeralService.CadastrarHistoricoInversao(angular.toJson($scope.obj));
@@ -168,7 +168,7 @@
                     $interval(function () {
                         $uibModalInstance.close();
                     }, 1500);
-                    
+
                 }
             };
 
@@ -183,16 +183,17 @@
 
         app.controller("ModalInstanceTodosCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, AlertaGeralService) {
             $scope.Gravar = function () {
+                alert('teste');
                 $scope.submitted = true;
-                if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.status != "" && $scope.status != undefined)) {
+                if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.cdStatusSelect != "" && $scope.cdStatusSelect != undefined)) {
                     $scope.obj = {
                         CdProduto: $scope.idProduto, DescricaoHistorico: $scope.observacao,
-                        StatusAlertaAtual: $scope.status, cdTipoAlerta: $scope.tipoAlerta, nomeUsuario: $scope.nomeUsuario
+                        StatusAlertaAtual: $scope.cdStatusSelect.nomeStatus, cdTipoAlerta: $scope.tipoAlerta, nomeUsuario: $scope.nomeUsuario
                     };
 
                     switch ($scope.tipoAlerta) {
                         case 1:
-                            AlertaGeralService.CadastrarHistoricosManual(angular.toJson($scope.obj));
+                            //AlertaGeralService.CadastrarHistoricosManual(angular.toJson($scope.obj));
                             break;
                         case 2:
                             AlertaGeralService.CadastrarHistoricosInversao(angular.toJson($scope.obj));
@@ -254,16 +255,16 @@
             width: 37px;
         }
 
-        .Feito {
+        .Concluido {
             background-color: #82af6f !important;
         }
 
-        .Pendente {
-            background-color: #f89406 !important;
+        .Novo {
+            background-color: #337ab7 !important;
         }
 
-        .Problema {
-            background-color: #d15b47 !important;
+        .Analise {
+            background-color: #5bc0de !important;
         }
 
         .ng-hide-add {
@@ -341,7 +342,7 @@
 
         span.glyphicon-remove-sign {
             font-size: 2.0em;
-            color: #f89406 !important;
+            color: #337ab7 !important;
         }
 
         span.glyphicon-question-sign {
@@ -369,15 +370,15 @@
             border-radius: 30px;
         }
 
-        .Feito {
+        .Concluido {
             background-color: #82af6f !important;
         }
 
-        .Pendente {
-            background-color: #f89406 !important;
+        .Novo {
+            background-color: #337ab7 !important;
         }
 
-        .Analisando {
+        .Analise {
             background-color: #5bc0de !important;
         }
 
@@ -414,11 +415,8 @@
 
                     <div class="input-group select-tipoAlerta">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                        <select class="form-control" style="width:200px;" ng-model="selectSituacao">
+                        <select class="form-control" style="width:200px;" ng-model="cdStatus" ng-options="status.cdAlertaStatus as status.nomeStatus for status in AllStatus">
                             <option value="">Selecione a Situação</option>
-                            <option value="Novo">Novo</option>
-                            <option value="Em Análise">Em Análise</option>
-                            <option value="Concluído">Concluído</option>
                         </select>
                     </div>
 
@@ -491,25 +489,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="dado in dadosinversao | orderBy:orderBycolumn:reverse">
+                                        <tr ng-repeat="dadoinversao in dadosinversao | orderBy:orderBycolumn:reverse">
                                             @*ng-class="dado.AlertasQuarentena.length > 0 ? 'danger' : ''"*@
-                                            
+
                                             @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
-                                            <td>{{dado.CdProduto}}</td>
-                                            <td>{{produto.NomeProduto}}</td>
-                                            <td>{{dado.Pessoa.NomePessoa}}</td>
-                                            <td>{{dado.QtdEstoque}}</td>
-                                            <td>{{dado.DataCriacaoAlerta | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dadoinversao.CdProduto}}</td>
+                                            <td>{{nomeProduto}}</td>
+                                            <td>{{dadoinversao.Pessoa.NomePessoa}}</td>
+                                            <td>{{dadoinversao.QtdEstoque}}</td>
+                                            <td>{{dadoinversao.UltData | date:'dd/MM/yyyy'}}</td>
                                             @*<td><label class="label label-warning">Pendente</label></td>*@
-                                            <td><label ng-class="['label {{dado.StatusAlerta}}']">{{dado.StatusAlerta}} </label></td>   
+                                            <td><label ng-class="['label {{dadoinversao.AlertaStatus.nomeStatus}}']">{{dadoinversao.AlertaStatus.nomeStatus}} </label></td>
                                             <td class="icon-td">
-                                                <a href="#" ng-click="showModal(dado.CdProduto, dado.CdAlertaInversao, dado.Pessoa.CdPessoa, 2);" title="Cadastrar Observação">
+                                                <a href="#" ng-click="showModal(dadoinversao.CdProduto, dadoinversao.CdAlertaInv, dadoinversao.Pessoa.CdPessoa, 2);" title="Cadastrar Observação">
                                                     <span class="glyphicon glyphicon-pencil"></span>
                                                 </a>
                                             </td>
-                                            <td>
-                                                
-                                            </td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -519,9 +515,9 @@
                                         <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
                                             <div class="row">
                                                 <div class="col-lg-1">
-                                                    <span ng-class="dadoHistorico.StatusAlertaAtual == 'Feito' ?
+                                                    <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Pendente' ?
+                                              (dadoHistorico.StatusAlertaAtual == 'Novo' ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
@@ -577,15 +573,15 @@
                                         <tr ng-repeat="dadoUltimoCusto in dadosUltimoCusto | orderBy:orderBycolumn:reverse">
                                             @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
                                             <td>{{dadoUltimoCusto.CdProduto}}</td>
-                                            <td>{{produto.NomeProduto}}</td>
+                                            <td>{{nomeProduto}}</td>
                                             <td>{{dadoUltimoCusto.Pessoa.NomePessoa}}</td>
                                             <td>{{dadoUltimoCusto.Nota}}</td>
                                             <td>{{dadoUltimoCusto.UltimoCusto | currency:"R$"}}</td>
                                             <td>{{dadoUltimoCusto.PenultimoCusto | currency:"R$"}}</td>
                                             <td>{{dadoUltimoCusto.Diferenca}}%</td>
-                                            <td>{{dadoUltimoCusto.DataCriacaoAlerta | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dadoUltimoCusto.UltData | date:'dd/MM/yyyy'}}</td>
                                             @*<td><label class="label label-warning">Pendente</label></td>*@
-                                            <td><label ng-class="['label {{dadoUltimoCusto.StatusAlerta}}']">{{dadoUltimoCusto.StatusAlerta}} </label></td>
+                                            <td><label ng-class="['label {{dadoUltimoCusto.AlertaStatus.nomeStatus}}']">{{dadoUltimoCusto.AlertaStatus.nomeStatus}} </label></td>
                                             <td class="icon-td">
                                                 <a href="#" ng-click="showModal(dadoUltimoCusto.CdProduto, dadoUltimoCusto.CdAlertaUltCusto, dadoUltimoCusto.Pessoa.CdPessoa, 3);" title="Cadastrar Observação">
                                                     <span class="glyphicon glyphicon-pencil"></span>
@@ -600,9 +596,9 @@
                                         <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
                                             <div class="row">
                                                 <div class="col-lg-1">
-                                                    <span ng-class="dadoHistorico.StatusAlertaAtual == 'Feito' ?
+                                                    <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Pendente' ?
+                                              (dadoHistorico.StatusAlertaAtual == 'Novo' ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
@@ -659,11 +655,7 @@
 
                             <div style="margin-top: 30px;">
                                 <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Status:</label></label>
-                                <select class="form-control input-sm" style="width: auto;" ng-model="status" ng-required="true" name="status" id="status">
-                                    <option selected="selected" style="color: #5bc0de;">Analisando</option>
-                                    <option style="color: #f0ad4e;">Pendente</option>
-                                    <option style="color: #5cb85c;">Feito</option>
-                                </select>
+                                <select class="form-control" style="width:200px;" ng-model="cdStatusSelect" ng-options="status as status.nomeStatus for status in statusSelect"></select>
                             </div>
                         </form>
                     </div>

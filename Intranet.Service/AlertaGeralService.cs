@@ -37,59 +37,51 @@ namespace Intranet.Domain.Services
             return _repository.GetGeralPorProdutoNome(nomeProduto);
         }
 
-        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null, string situacao = null)
-        {
+        public IEnumerable<AlertaGeral> Get(int? tipoAlerta = null, int? situacao = null)
+       {
             var result = _repository.GetAll().OrderByDescending(x => x.Severidade);
 
             if (tipoAlerta == 2)
             {
-                var resultInversao = _repositoryInversao.GetAll().Select(y => y.CdProduto);
+                var resultInversao = _repositoryInversao.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
 
                 switch (situacao)
                 {
-                    case "Novo":
-                        return result.Where(x => resultInversao.Contains(x.CdProduto)
-                        && x.Pendente > 0
-                        && x.Analise == 0
-                        && x.Concluido == 0);
+                    case 1:
+                        return result.ToList().Where(x => resultInversao.Contains(x.CdProduto)
+                        && x.Pendente > 0);
                         break;
 
-                    case "Em Análise":
-                        return result.Where(x => resultInversao.Contains(x.CdProduto)
+                    case 2:
+                        return result.ToList().Where(x => resultInversao.Contains(x.CdProduto)
                         && x.Analise > 0);
                         break;
-                    case "Concluído":
-                        return result.Where(x => resultInversao.Contains(x.CdProduto)
-                        && x.Pendente == 0
-                        && x.Analise == 0
+                    case 3:
+                        return result.ToList().Where(x => resultInversao.Contains(x.CdProduto)
                         && x.Concluido > 0);
                     default:
-                        return result.Where(x => resultInversao.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
+                        return result;
 
                 }
             }
 
             else if (tipoAlerta == 3)
             {
-                var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Select(y => y.CdProduto);
+                var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
 
                 switch (situacao)
                 {
-                    case "Novo":
+                    case 1:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
-                        && x.Pendente > 0
-                        && x.Analise == 0
-                        && x.Concluido == 0);
+                        && x.Pendente > 0);
                         break;
 
-                    case "Em Análise":
+                    case 2:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
                         && x.Analise > 0);
                         break;
-                    case "Concluído":
+                    case 3:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
-                        && x.Pendente == 0
-                        && x.Analise == 0
                         && x.Concluido > 0);
                     default:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
@@ -100,19 +92,15 @@ namespace Intranet.Domain.Services
             {
                 switch (situacao)
                 {
-                    case "Novo":
-                        return result.Where(x => x.Pendente > 0
-                        && x.Analise == 0
-                        && x.Concluido == 0);
+                    case 1:
+                        return result.Where(x => x.Pendente > 0);
                         break;
 
-                    case "Em Análise":
+                    case 2:
                         return result.Where(x => x.Analise > 0);
                         break;
-                    case "Concluído":
-                        return result.Where(x => x.Pendente == 0
-                        && x.Analise == 0
-                        && x.Concluido > 0);
+                    case 3:
+                        return result.Where(x => x.Concluido > 0);
                     default:
                         return result.Where(x => x.AlertaEmAberto > 0);
                 }

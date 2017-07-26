@@ -18,33 +18,71 @@ namespace Intranet.Data.Context
         }
 
 
-        public virtual DbSet<Alerta> Alertas { get; set; }
-        public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
-        public virtual DbSet<AlertaUltimoCusto> tbAlertaUltimoCusto { get; set; }
-        public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
+        #region Alertas
+
+        #region Geral
+
         public virtual DbSet<AlertaGeral> AlertasGeral { get; set; }
+
+        #endregion
+
+        #region Inversão
+
+        public virtual DbSet<AlertaInversaoHistorico> AlertasInversaoHistorico { get; set; }
+        public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
+        
+        #endregion
+
+        #region Ultimo Custo
+
+        public virtual DbSet<AlertaUltimoCustoHistorico> AlertaUltimoCustoHistorico { get; set; }
+        public virtual DbSet<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
+
+        #endregion
+
+        #region Outras
+
+        public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
         public virtual DbSet<AlertaHistorico> AlertasHistorico { get; set; }
         public virtual DbSet<AlertaTipo> AlertasTipo { get; set; }
-        public virtual DbSet<AlertaAnalitico> AlertasAnalitico { get; set; }
         public virtual DbSet<AlertaQuarentena> AlertasQuarentena { get; set; }
+        public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
 
+        #endregion
+
+        #endregion
+
+        #region Estoque
+
+        public virtual DbSet<EstoqueFisico> EstoquesFisico { get; set; }
+        public virtual DbSet<EstoqueMovimento> EstoquesMovimento { get; set; }
+
+        #endregion
+
+        #region Classificacao produto
+
+        public virtual DbSet<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
+
+        #endregion
+
+        #region Classificação Meta
+
+        public virtual DbSet<ClassificacaoMeta> ClassificacaoMetas { get; set; }
+        public virtual DbSet<VwClassificacaoMeta> VwClassificacaoMeta { get; set; }
+        public virtual DbSet<VwClassificacaoMetaMes> VwClassificacaoMetaMes { get; set; }
+
+        #endregion
 
         public virtual DbSet<Pessoa> Pessoas { get; set; }
         
-        public virtual DbSet<EstoqueFisico> EstoquesFisico { get; set; }
-        public virtual DbSet<EstoqueMovimento> EstoquesMovimento { get; set; }
         public virtual DbSet<Produto> Produtos { get; set; }
-        public virtual DbSet<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
+
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
         public virtual DbSet<PessoaJuridica> PessoasJuridica { get; set; }
         public virtual DbSet<Vendedor> Vendedores { get; set; }
         public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
         public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
         
-        public virtual DbSet<ClassificacaoMeta> ClassificacaoMetas { get; set; }
-        public virtual DbSet<VwClassificacaoMeta> VwClassificacaoMeta { get; set; }
-        public virtual DbSet<VwClassificacaoMetaMes> VwClassificacaoMetaMes { get; set; }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -53,19 +91,7 @@ namespace Intranet.Data.Context
 
             #region Relationships
 
-            //Alerta Inversão com Pessoa
-
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(e => e.AlertasInversao)
-                .WithRequired(e => e.Pessoa)
-                .HasForeignKey(e => e.CdPessoaFilial)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(e => e.AlertasUltimoCusto)
-                .WithRequired(e => e.Pessoa)
-                .HasForeignKey(e => e.CdPessoaFilial)
-                .WillCascadeOnDelete(false);
+           
 
             ////Alerta Manual com Pessoa
 
@@ -83,18 +109,11 @@ namespace Intranet.Data.Context
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
-            //Alerta Histórico com Alerta Tipo
 
-            modelBuilder.Entity<AlertaTipo>()
-                .HasMany(e => e.AlertasHistorico)
-                .WithRequired(e => e.AlertaTipo)
-                .HasForeignKey(e => e.CdTipoAlerta)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<AlertaGeral>()
-                .HasMany(e => e.AlertasHistorico)
-                .WithRequired(e => e.AlertaGeral)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<AlertaGeral>()
+            //    .HasMany(e => e.AlertasHistorico)
+            //    .WithRequired(e => e.AlertaGeral)
+            //    .WillCascadeOnDelete(false);
 
             //ClassificacaoProduto com ClassificacaoProduto
 
@@ -136,27 +155,69 @@ namespace Intranet.Data.Context
             //    .HasForeignKey(e => e.cdAlerta)
             //    .WillCascadeOnDelete(false);
 
-            #endregion
+            //Alerta Inversão com Pessoa
 
-            modelBuilder.Entity<AlertaGeral>()
-                .HasMany(e => e.AlertaInversao)
-                .WithRequired(e => e.AlertaGeral)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Pessoa>()
+            //    .HasMany(e => e.AlertasInversao)
+            //    .WithRequired(e => e.Pessoa)
+            //    .HasForeignKey(e => e.CdPessoaFilial)
+            //    .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<AlertaGeral>()
+            //    .HasMany(e => e.AlertaInversao)
+            //    .WithRequired(e => e.AlertaGeral)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AlertaTipo>()
                 .HasMany(e => e.AlertasInversao)
                 .WithRequired(e => e.AlertaTipo)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<AlertaGeral>()
-                .HasMany(e => e.AlertaUltimoCusto)
-                .WithRequired(e => e.AlertaGeral)
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaInversao)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasInversao)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AlertaTipo>()
-                .HasMany(e => e.AlertasUltimoCusto)
+                .HasMany(e => e.AlertaUltimoCusto)
                 .WithRequired(e => e.AlertaTipo)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+
+            //modelBuilder.Entity<AlertaInversao>()
+            //    .HasMany(e => e.tbAlertaQuarentena)
+            //    .WithRequired(e => e.tbAlertaInversaoTeste)
+            //    .HasForeignKey(e => new { e.cdAlerta, e.cdPessoaFilial, e.cdTipoAlerta })
+            //    .WillCascadeOnDelete(false);
+
+
+            //modelBuilder.Entity<AlertaUltimoCusto>()
+            //    .HasMany(e => e.tbAlertaQuarentena)
+            //    .WithRequired(e => e.tbAlertaUltimoCustoTeste)
+            //    .HasForeignKey(e => new { e.cdAlerta, e.cdPessoaFilial, e.cdTipoAlerta })
+            //    .WillCascadeOnDelete(false);
+
+
+
+            #endregion
+
         }
     }
 }
