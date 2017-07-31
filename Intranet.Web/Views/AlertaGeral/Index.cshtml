@@ -643,7 +643,7 @@
                                                 <div class="col-lg-1">
                                                     <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Em Balanço' ?
+                                              ((dadoHistorico.StatusAlertaAtual == 'Em Balanço' || 'Quarentena') ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
@@ -696,8 +696,8 @@
                                             <td>{{dadoQuarentena.AlertaTipo.NomeAlerta}}</td>
                                             <td>{{dadoQuarentena.DtInclusao | date:'dd/MM/yyyy'}}</td>
                                             <td>{{dadoQuarentena.DtSaida | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dadoQuarentena.Dias}}</td>
                                             <td>{{dadoQuarentena.Motivo}}</td>
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -708,7 +708,7 @@
                                                 <div class="col-lg-1">
                                                     <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Em Balanço' ?
+                                              ((dadoHistorico.StatusAlertaAtual == 'Em Balanço' || 'Quarentena') ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
