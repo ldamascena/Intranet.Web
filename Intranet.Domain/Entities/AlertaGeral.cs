@@ -13,19 +13,20 @@ namespace Intranet.Domain.Entities
     [Table("tbAlertaGeral")]
     public class AlertaGeral
     {
-        //public AlertaGeral()
-        //{
-        //    AlertasHistorico = new HashSet<AlertaHistorico>();
-        //    AlertaInversao = new HashSet<AlertaInversao>();
-        //    AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
-        //}
+        public AlertaGeral()
+        {
+            //    AlertasHistorico = new HashSet<AlertaHistorico>();
+            //    AlertaInversao = new HashSet<AlertaInversao>();
+            //    AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
+            AlertasQuarentena = new HashSet<AlertaQuarentena>();
+        }
 
         [NotMapped]
         [Column(Order = 0)]
         public int CdAlertaGeral { get; set; }
 
         [DataMember]
-        [Key]   
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdProduto { get; set; }
 
@@ -55,6 +56,9 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public string Vinculado { get; set; }
+
+        [DataMember]
+        public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
 
         //[DataMember]
         //public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }

@@ -207,6 +207,7 @@
     <Compile Include="Controllers\AlertaHistoricoController.cs" />
     <Compile Include="Controllers\AlertaInversaoController.cs" />
     <Compile Include="Controllers\AlertaManualController.cs" />
+    <Compile Include="Controllers\AlertaQuarentenaController.cs" />
     <Compile Include="Controllers\AlertaStatusController.cs" />
     <Compile Include="Controllers\AlertaTipoController.cs" />
     <Compile Include="Controllers\AlertaUltimoCustoController.cs" />

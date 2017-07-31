@@ -13,7 +13,7 @@ namespace Intranet.Domain.Entities
     {
         public AlertaUltimoCusto()
         {
-            //tbAlertaQuarentena = new HashSet<AlertaQuarentena>();
+            AlertasQuarentena = new HashSet<AlertaQuarentena>();
         }
 
         [DataMember]
@@ -58,10 +58,8 @@ namespace Intranet.Domain.Entities
 
         public int CdAlertaStatus { get; set; }
 
-        //[DataMember]
-        //public virtual ICollection<AlertaQuarentena> tbAlertaQuarentena { get; set; }
-
-        //public virtual AlertaGeral AlertaGeral { get; set; }
+        [DataMember]
+        public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
 
         [DataMember]
         public virtual AlertaStatus AlertaStatus { get; set; }

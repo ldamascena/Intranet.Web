@@ -21,13 +21,13 @@ namespace Intranet.API.Controllers
         private IAlertaInversaoApp _app;
 
         // GET: api/AlertaInversao
-        //public IEnumerable<AlertaInversao> Get()
-        //{
-        //    _repository = new AlertaInversaoRepository(new CentralContext());
-        //    _service = new AlertaInversaoService(_repository);
-        //    _app = new AlertaInversaoApp(_service);
-        //    return _app.ObterTodas();
-        //}
+        public IEnumerable<AlertaInversao> Get()
+        {
+            _repository = new AlertaInversaoRepository(new CentralContext());
+            _service = new AlertaInversaoService(_repository);
+            _app = new AlertaInversaoApp(_service);
+            return _app.GetAll();
+        }
 
         [HttpGet]
         public IEnumerable<AlertaInversao> GetInvertidosPorProduto(int cdProduto)

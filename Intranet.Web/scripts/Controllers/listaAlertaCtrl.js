@@ -82,26 +82,31 @@ app.controller('listaAlertaCtrl', function ($scope, $uibModal, AlertaGeralServic
     var pageSize = 5;
 
 
-    // Carrega Alerta de Inversão
+    //// Carrega Alerta de Inversão
 
-    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-        $scope.dadosinversao = response.data;
-    })
+    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+    //    $scope.dadosinversao = response.data;
+    //})
 
-    // Carrega Alerta de Ultimo Custo
+    //// Carrega Alerta de Ultimo Custo
 
-    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-        $scope.dadosUltimoCusto = response.data;
-        console.log(response.data);
-    })
+    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+    //    $scope.dadosUltimoCusto = response.data;
+    //})
 
-    AlertaManualService.GetByProduto($scope.idProduto).then(function (response) {
-        $scope.dadosManual = response.data;
-    })
+    //// Carrega Quarentena
 
-    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
-        $scope.dadosHistorico = response.data;
-    });
+    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+    //    $scope.dadosUltimoCusto = response.data;
+    //})
+
+    //AlertaManualService.GetByProduto($scope.idProduto).then(function (response) {
+    //    $scope.dadosManual = response.data;
+    //})
+
+    //AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto, $scope.tipoAlerta).then(function (response) {
+    //    $scope.dadosHistorico = response.data;
+    //});
 
 
     // Carrega Todos os históricos
@@ -277,14 +282,25 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $scope.idProduto = produto.CdProduto;
             $scope.nomeProduto = produto.NomeProduto;
 
+            // Inversão
+
             AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
                 $scope.dadosinversao = response.data;
-                console.log(response.data);
             });
+
+            // Ultimo Custo
 
             AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
                 $scope.dadosUltimoCusto = response.data;
             })
+
+            // Quarentena
+
+            AlertaGeralService.GetAllQuarentenaPorProduto($scope.idProduto).then(function (response) {
+                $scope.dadosQuarentena = response.data;
+            })
+
+            // Histórico
 
             AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
                 $scope.dadosHistorico = response.data;
@@ -325,6 +341,32 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $scope.idFilial = idFilial;
             $scope.tipoAlerta = tipoAlerta;
         };;
+
+        $scope.ShowModalQuarentena = function (cdProduto, cdPessoaFilial, cdTipoAlerta, cdAlerta) {
+            $scope.cdProdutoQuarentena = cdProduto;
+            $scope.cdPessoaFilialQuarentena = cdPessoaFilial;
+            $scope.cdTipoAlertaQuarentena = cdTipoAlerta;
+            $scope.cdAlertaQuarentena = cdAlerta;
+
+            $uibModal.open({
+                templateUrl: 'modalQuarentena.html',
+                controller: 'ModalQuarentenaCtrl',
+                scope: $scope
+            });
+        }
+
+        $scope.ShowModalQuarentenaTodos = function (cdProduto, cdTipoAlerta) {
+            $scope.cdProdutoQuarentena = cdProduto;
+            $scope.cdPessoaFilialQuarentena = undefined;
+            $scope.cdTipoAlertaQuarentena = cdTipoAlerta;
+            $scope.cdAlertaQuarentena = undefined;
+
+            $uibModal.open({
+                templateUrl: 'modalQuarentena.html',
+                controller: 'ModalQuarentenaCtrl',
+                scope: $scope
+            });
+        }
 
         $scope.showModalTodos = function (tipoAlerta) {
             var modalInstance = $uibModal.open({

@@ -37,7 +37,7 @@ namespace Intranet.API.Controllers
             _service = new AlertaUltimoCustoService(_repository);
             _app = new AlertaUltimoCustoApp(_service);
 
-            return _app.GetAll().Where(x => x.CdProduto == cdProduto);
+            return _app.GetAll().Where(x => x.CdProduto == cdProduto && x.AlertasQuarentena.Count == 0);
         }
     }
 }

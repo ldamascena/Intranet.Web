@@ -53,6 +53,7 @@
     <Compile Include="AlertaHistoricoService.cs" />
     <Compile Include="AlertaInversaoService.cs" />
     <Compile Include="AlertaManualService.cs" />
+    <Compile Include="AlertaQuarentenaService.cs" />
     <Compile Include="AlertaStatusService.cs" />
     <Compile Include="AlertaTipoService.cs" />
     <Compile Include="AlertaUltimoCustoService.cs" />

@@ -17,6 +17,7 @@ namespace Intranet.Domain.Entities
         {
             AlertasInversao = new HashSet<AlertaInversao>();
             AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
+            AlertaQuarentena = new HashSet<AlertaQuarentena>();
         }
 
         [DataMember]
@@ -38,6 +39,8 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<AlertaInversao> AlertasInversao { get; set; }
 
         public virtual ICollection<AlertaUltimoCusto> AlertaUltimoCusto { get; set; }
+
+        public virtual ICollection<AlertaQuarentena> AlertaQuarentena { get; set; }
 
         //public AlertaTipo()
         //{

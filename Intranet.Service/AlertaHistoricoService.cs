@@ -18,6 +18,7 @@ namespace Intranet.Domain.Services
         private readonly IAlertaUltimoCustoRepository _repositoryUltimoCusto;
         private readonly IAlertaGeralRepository _repositoryGeral;
         private readonly IAlertaHistoricoRepository _repository;
+        private readonly IAlertaQuarentenaRepository _repositoryQuarentena;
 
         private const int ID_NOVO = 1;
         private const int ID_ANALISE = 2;
@@ -28,7 +29,8 @@ namespace Intranet.Domain.Services
             IAlertaInversaoRepository repositoryInversao,
             IAlertaGeralRepository repositoryGeral,
             IAlertaManualRepository repositoryManual,
-            IAlertaUltimoCustoRepository repositoryUltimoCusto)
+            IAlertaUltimoCustoRepository repositoryUltimoCusto,
+            IAlertaQuarentenaRepository repositoryQuarentena)
             : base(repository)
         {
             this._repository = repository;
@@ -36,6 +38,7 @@ namespace Intranet.Domain.Services
             this._repositoryGeral = repositoryGeral;
             this._repositoryManual = repositoryManual;
             this._repositoryUltimoCusto = repositoryUltimoCusto;
+            this._repositoryQuarentena = repositoryQuarentena;
         }
 
         public void CadastrarHistoricoInversao(AlertaHistorico obj)
@@ -44,9 +47,8 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus;
-            obj.NomeProduto = resultGeral.NomeProduto;
 
-            if ((obj.StatusAlertaAtual == "Concluido" && resultInversao.AlertaStatus.nomeStatus == "Novo") || (obj.StatusAlertaAtual == "Concluido" && resultInversao.AlertaStatus.nomeStatus == "Analise"))
+            if ((obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Novo") || (obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Analise"))
             {
                 resultGeral.Severidade = resultGeral.Severidade - 3;
                 resultGeral.AlertaEmAberto--;
@@ -54,22 +56,40 @@ namespace Intranet.Domain.Services
 
             }
 
-            else if (obj.StatusAlertaAtual == "Analise" && resultInversao.AlertaStatus.nomeStatus == "Novo")
+            else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Novo")
             {
                 resultInversao.CdAlertaStatus = ID_ANALISE;
 
             }
 
-            else if (obj.StatusAlertaAtual == "Analise" && resultInversao.AlertaStatus.nomeStatus == "Concluido")
+            else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Concluido")
             {
                 resultGeral.Severidade = resultGeral.Severidade + 3;
                 resultGeral.AlertaEmAberto++;
                 resultInversao.CdAlertaStatus = ID_ANALISE;
             }
 
+            else if ((obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Novo")
+                        || (obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Analise"))
+            {
+                resultInversao.CdAlertaStatus = ID_BALANCO;
+                _repositoryQuarentena.Add(new AlertaQuarentena
+                {
+                    CdProduto = obj.CdProduto,
+                    CdPessoaFilial = obj.CdPessoaFilial,
+                    CdTipoAlerta = 2,
+                    DtInclusao = DateTime.Now,
+                    DtSaida = DateTime.Now.AddDays(15),
+                    CdAlerta = resultInversao.CdAlertaInv,
+                    Dias = 15,
+                    NomeUsuario = obj.NomeUsuario,
+                    Motivo = "Inclusão automático após status ser colocado em balanço"
+                });
+            }
+
             try
             {
-                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, resultInversao.AlertaStatus.nomeStatus, obj.NomeUsuario);
+                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, obj.StatusAlertaAnterior, obj.NomeUsuario);
                 _repository.Add(obj);
                 
                 _repositoryInversao.Update(resultInversao);
@@ -89,14 +109,13 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultInversao[0].AlertaStatus.nomeStatus;
-            obj.NomeProduto = resultGeral.NomeProduto;
 
             try
             {
                 foreach (var item in resultInversao)
                 {
 
-                    if ((obj.StatusAlertaAtual == "Concluido" && item.AlertaStatus.nomeStatus == "Novo") || (obj.StatusAlertaAtual == "Concluido" && item.AlertaStatus.nomeStatus == "Analise"))
+                    if ((obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Novo") || (obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Analise"))
                     {
                         resultGeral.Severidade = resultGeral.Severidade - 3;
                         resultGeral.AlertaEmAberto--;
@@ -104,21 +123,38 @@ namespace Intranet.Domain.Services
 
                     }
 
-                    else if (obj.StatusAlertaAtual == "Analise" && item.AlertaStatus.nomeStatus == "Novo")
+                    else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Novo")
                     {
                         item.CdAlertaStatus = ID_ANALISE;
 
                     }
 
-                    else if (obj.StatusAlertaAtual == "Analise" && item.AlertaStatus.nomeStatus == "Concluido")
+                    else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Concluido")
                     {
                         resultGeral.Severidade = resultGeral.Severidade + 3;
                         resultGeral.AlertaEmAberto++;
                         item.CdAlertaStatus = ID_ANALISE;
                     }
 
-                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, item.AlertaStatus.nomeStatus, obj.NomeUsuario);
-                    item.AlertaStatus.nomeStatus = obj.StatusAlertaAtual;
+                    else if ((obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Novo")
+                        || (obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Analise"))
+                    {
+                        item.CdAlertaStatus = ID_BALANCO;
+                        _repositoryQuarentena.Add(new AlertaQuarentena
+                        {
+                            CdProduto = obj.CdProduto,
+                            CdPessoaFilial = item.CdPessoaFilial,
+                            CdTipoAlerta = 2,
+                            DtInclusao = DateTime.Now,
+                            DtSaida = DateTime.Now.AddDays(15),
+                            CdAlerta = item.CdAlertaInv,
+                            Dias = 15,
+                            NomeUsuario = obj.NomeUsuario,
+                            Motivo = "Inclusão automático após status ser colocado em balanço"
+                        });
+                    }
+
+                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, obj.StatusAlertaAnterior, obj.NomeUsuario);
                     _repositoryInversao.Update(item);
 
                     obj.CdPessoaFilial = item.CdPessoaFilial;
@@ -142,9 +178,8 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultUltimoCusto.AlertaStatus.nomeStatus;
-            obj.NomeProduto = resultGeral.NomeProduto;
 
-            if ((obj.StatusAlertaAtual == "Concluido" && resultUltimoCusto.AlertaStatus.nomeStatus == "Novo") || (obj.StatusAlertaAtual == "Concluido" && resultUltimoCusto.AlertaStatus.nomeStatus == "Analise"))
+            if ((obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Novo") || (obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Analise"))
             {
                 resultGeral.Severidade = resultGeral.Severidade - 4;
                 resultGeral.AlertaEmAberto--;
@@ -152,24 +187,41 @@ namespace Intranet.Domain.Services
 
             }
 
-            else if (obj.StatusAlertaAtual == "Analise" && resultUltimoCusto.AlertaStatus.nomeStatus == "Novo")
+            else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Novo")
             {
                 resultUltimoCusto.CdAlertaStatus = ID_ANALISE;
 
             }
 
-            else if (obj.StatusAlertaAtual == "Analise" && resultUltimoCusto.AlertaStatus.nomeStatus == "Concluido")
+            else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Concluido")
             {
                 resultGeral.Severidade = resultGeral.Severidade + 4;
                 resultGeral.AlertaEmAberto++;
                 resultUltimoCusto.CdAlertaStatus = ID_ANALISE;
             }
 
+            else if ((obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Novo")
+                        || (obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Analise"))
+            {
+                resultUltimoCusto.CdAlertaStatus = ID_BALANCO;
+                _repositoryQuarentena.Add(new AlertaQuarentena
+                {
+                    CdProduto = obj.CdProduto,
+                    CdPessoaFilial = obj.CdPessoaFilial,
+                    CdTipoAlerta = 3,
+                    DtInclusao = DateTime.Now,
+                    DtSaida = DateTime.Now.AddDays(15),
+                    CdAlerta = resultUltimoCusto.CdAlertaUltCusto,
+                    Dias = 15,
+                    NomeUsuario = obj.NomeUsuario,
+                    Motivo = "Inclusão automático após status ser colocado em balanço"
+                });
+            }
+
             try
             {
-                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, resultUltimoCusto.AlertaStatus.nomeStatus, obj.NomeUsuario);
+                this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, obj.StatusAlertaAnterior, obj.NomeUsuario);
                 _repository.Add(obj);
-                resultUltimoCusto.AlertaStatus.nomeStatus = obj.StatusAlertaAtual;
                 _repositoryUltimoCusto.Update(resultUltimoCusto);
                 _repositoryGeral.Update(resultGeral);
             }
@@ -186,13 +238,13 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultUltimoCusto[0].AlertaStatus.nomeStatus;
-            obj.NomeProduto = resultGeral.NomeProduto;
 
             try
             {
                 foreach (var item in resultUltimoCusto)
                 {
-                    if ((obj.StatusAlertaAtual == "Concluido" && item.AlertaStatus.nomeStatus == "Novo") || (obj.StatusAlertaAtual == "Concluido" && item.AlertaStatus.nomeStatus == "Analise"))
+                    if ((obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Novo") 
+                        || (obj.StatusAlertaAtual == "Concluido" && obj.StatusAlertaAnterior == "Analise"))
                     {
                         resultGeral.Severidade = resultGeral.Severidade - 4;
                         resultGeral.AlertaEmAberto--;
@@ -200,22 +252,38 @@ namespace Intranet.Domain.Services
 
                     }
 
-                    else if (obj.StatusAlertaAtual == "Analise" && item.AlertaStatus.nomeStatus == "Novo")
+                    else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Novo")
                     {
                         item.CdAlertaStatus = ID_ANALISE;
 
                     }
 
-                    else if (obj.StatusAlertaAtual == "Analise" && item.AlertaStatus.nomeStatus == "Concluido")
+                    else if (obj.StatusAlertaAtual == "Analise" && obj.StatusAlertaAnterior == "Concluido")
                     {
                         resultGeral.Severidade = resultGeral.Severidade + 4;
                         resultGeral.AlertaEmAberto++;
                         item.CdAlertaStatus = ID_ANALISE;
                     }
 
+                    else if ((obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Novo") 
+                        || (obj.StatusAlertaAtual == "Em Balanço" && obj.StatusAlertaAnterior == "Analise"))
+                    {
+                        item.CdAlertaStatus = ID_BALANCO;
+                        _repositoryQuarentena.Add(new AlertaQuarentena
+                        {
+                            CdProduto = obj.CdProduto,
+                            CdPessoaFilial = item.CdPessoaFilial,
+                            CdTipoAlerta = 3,
+                            DtInclusao = DateTime.Now,
+                            DtSaida = DateTime.Now.AddDays(15),
+                            CdAlerta = item.CdAlertaUltCusto,
+                            Dias = 15,
+                            NomeUsuario = obj.NomeUsuario,
+                            Motivo = "Inclusão automático após status ser colocado em balanço"
+                        });
+                    }
 
-                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, item.AlertaStatus.nomeStatus, obj.NomeUsuario);
-                    item.AlertaStatus.nomeStatus = obj.StatusAlertaAtual;
+                    this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, obj.StatusAlertaAnterior, obj.NomeUsuario);
                     _repositoryUltimoCusto.Update(item);
 
                     obj.CdPessoaFilial = item.CdPessoaFilial;
@@ -238,7 +306,6 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultManual.StatusAlerta;
-            obj.NomeProduto = resultManual.NomeProduto;
 
             if (obj.StatusAlertaAtual == "Feito")
             {
@@ -265,7 +332,6 @@ namespace Intranet.Domain.Services
             var resultGeral = _repositoryGeral.GetGeralPorProduto(obj.CdProduto);
             obj.DataDoHistorico = DateTime.Now;
             obj.StatusAlertaAnterior = resultManual[0].StatusAlerta;
-            obj.NomeProduto = resultManual[0].NomeProduto;
 
             try
             {
@@ -303,7 +369,7 @@ namespace Intranet.Domain.Services
         {
             var result = _repositoryGeral.Get(x => x.CdProduto == cdProduto);
 
-            #region Feitos
+            #region Concluidos
 
             if (statusAtual == "Concluido" && statusAnterior == "Novo")
             {
@@ -323,7 +389,7 @@ namespace Intranet.Domain.Services
 
             #endregion
 
-            #region Analisando
+            #region Analise
 
             else if (statusAtual == "Analise" && statusAnterior == "Concluido")
             {
@@ -336,7 +402,19 @@ namespace Intranet.Domain.Services
             else if (statusAtual == "Analise" && statusAnterior == "Novo")
             {
                 result.Analise = result.Analise + 1;
-                result.Concluido = result.Pendente - 1;
+                result.Pendente = result.Pendente - 1;
+                result.Vinculado = usuario;
+                _repositoryGeral.Update(result);
+            }
+
+            #endregion
+
+            #region Em Balanço
+
+            else if (statusAtual == "Em Balanço" && statusAnterior == "Novo")
+            {
+                result.Analise = result.Analise + 1;
+                result.Pendente = result.Pendente - 1;
                 result.Vinculado = usuario;
                 _repositoryGeral.Update(result);
             }

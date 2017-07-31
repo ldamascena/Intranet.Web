@@ -32,13 +32,11 @@
 
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/select.css">
-    
+
 
     <title>Index</title>
 
     <script type="text/javascript">
-
-
 
         app.controller("ModalInstanceCtrl", function ($scope, $uibModal, $uibModalInstance, $uibModalStack, $interval, ProdutoService, EmpresaFilialService, AlertaManualService, AlertaTipoService) {
 
@@ -140,8 +138,6 @@
                         StatusAlertaAtual: $scope.cdStatusSelect.nomeStatus, cdTipoAlerta: $scope.tipoAlerta, cdPessoaFilial: $scope.idFilial, nomeUsuario: $scope.nomeUsuario
                     };
 
-                    alert(angular.toJson($scope.obj));
-
                     switch ($scope.tipoAlerta) {
                         case 1:
                             //AlertaGeralService.CadastrarHistoricoManual(angular.toJson($scope.obj));
@@ -153,17 +149,17 @@
                             AlertaGeralService.CadastrarHistoricoUltimoCusto(angular.toJson($scope.obj));
                     }
 
-                    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-                    //    $scope.dadosinversao = response.data;
-                    //});
+                    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosinversao = response.data;
+                    });
 
-                    //AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
-                    //    $scope.dadosHistorico = response.data;
-                    //});
+                    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosHistorico = response.data;
+                    });
 
-                    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-                    //    $scope.dadosUltimoCusto = response.data;
-                    //});
+                    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosUltimoCusto = response.data;
+                    });
 
                     $interval(function () {
                         $uibModalInstance.close();
@@ -179,11 +175,11 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss();
             }
+
         });
 
         app.controller("ModalInstanceTodosCtrl", function ($scope, $uibModal, $uibModalInstance, $interval, AlertaGeralService) {
             $scope.Gravar = function () {
-                alert('teste');
                 $scope.submitted = true;
                 if (($scope.observacao != undefined && $scope.observacao != "") && ($scope.cdStatusSelect != "" && $scope.cdStatusSelect != undefined)) {
                     $scope.obj = {
@@ -211,13 +207,17 @@
                     //$scope.dadosUltimoCusto = produto.AlertaUltimoCusto;
                     //$scope.dadosHistorico = produto.AlertasHistorico;
 
-                    //AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
-                    //    $scope.dadosinversao = response.data;
-                    //});
+                    AlertaGeralService.GetAllInversaoByProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosinversao = response.data;
+                    });
 
-                    //AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
-                    //    $scope.dadosUltimoCusto = response.data;
-                    //});
+                    AlertaGeralService.GetAllUltCustoByProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosUltimoCusto = response.data;
+                    });
+
+                    AlertaGeralService.GetAllHistoricosPorProduto($scope.idProduto).then(function (response) {
+                        $scope.dadosHistorico = response.data;
+                    });
 
                     $interval(function () {
                         $uibModalInstance.close();
@@ -235,6 +235,33 @@
             }
         });
 
+        app.controller("ModalQuarentenaCtrl", function ($scope, $uibModalInstance, $interval, AlertaGeralService) {
+            $scope.Gravar = function () {
+                $scope.submittedQuarentena = true;
+                if ($scope.diasQuarentena != "" && $scope.diasQuarentena != undefined) {
+
+                    $scope.obj = {
+                        CdProduto: $scope.cdProdutoQuarentena, CdPessoaFilial: $scope.cdPessoaFilialQuarentena, CdTipoAlerta: $scope.cdTipoAlertaQuarentena,
+                        CdAlerta: $scope.cdAlertaQuarentena, Dias: $scope.diasQuarentena, Motivo: $scope.motivoQuarentena, NomeUsuario: $scope.nomeUsuario
+                    };
+
+                    AlertaGeralService.IncluirNaQuarentena(angular.toJson($scope.obj));
+
+                    AlertaGeralService.GetAllInversaoByProduto($scope.cdProdutoQuarentena).then(function (response) {
+                        $scope.dadosinversao = response.data;
+                    });
+
+                    AlertaGeralService.GetAllUltCustoByProduto($scope.cdProdutoQuarentena).then(function (response) {
+                        $scope.dadosUltimoCusto = response.data;
+                    });
+
+                    $interval(function () {
+                        $uibModalInstance.close();
+                    }, 1800);
+                }
+            }
+        });
+
     </script>
 
     <style>
@@ -245,6 +272,10 @@
 
         .table {
             font-size: 13px;
+        }
+
+        th {
+            white-space: nowrap;
         }
 
         .container {
@@ -342,7 +373,7 @@
 
         span.glyphicon-remove-sign {
             font-size: 2.0em;
-            color: #337ab7 !important;
+            color: #a94442 !important;
         }
 
         span.glyphicon-question-sign {
@@ -438,13 +469,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="produto in filteredProdutos | orderBy:orderBycolumn:reverse">
+                        <tr ng-repeat="produto in filteredProdutos | orderBy:orderBycolumn:reverse" ng-class="{{produto.AlertasQuarentena.length}} == 0 ? '' : 'Danger'">
                             <td>{{produto.CdProduto}}</td>
                             <td>{{produto.NomeProduto}}</td>
                             <td>{{produto.Severidade}}</td>
                             <td>{{produto.AlertaEmAberto}}</td>
                             <td>{{produto.DataUltimoAlerta | date:'dd/MM/yyyy'}}</td>
-                            <td>
+                            <td align="center">
                                 <span class="label label-primary">{{produto.Pendente}}</span>
                                 <span class="label label-info" uib-popover-html="'<i>{{produto.Vinculado}}</i>'" popover-trigger="'mouseenter'">{{produto.Analise}}</span>
                                 <span class="label label-success">{{produto.Concluido}}</span>
@@ -475,17 +506,21 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th ng-click="orderByMe('CdProduto')">CdProduto &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                            <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                                            <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                            <th ng-click="orderByMe('QtdEstoque')">Qtd.Estoque &nbsp<i ng-show="orderBycolumn === 'QtdEstoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                            <th ng-click="orderByMe('DataDeCriacao')">Data de Criação &nbsp <i ng-show="orderBycolumn === 'UltData'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
-                                            <th ng-click="orderByMe('Status')">Status &nbsp<i ng-show="orderBycolumn === 'Status'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
-                                            <th>
-                                                <a href="#" ng-click="showModalTodos(2);" title="Cadastrar Todos">
-                                                    <span class="glyphicon glyphicon-asterisk red"></span>
-                                                </a>
+                                            <th>CdProduto &nbsp</th>
+                                            <th>Produto &nbsp</th>
+                                            <th>Loja &nbsp</th>
+                                            <th>Qtd.Estoque &nbsp</th>
+                                            <th>Data de Criação &nbsp</th>
+                                            <th style="text-align:center;">Status &nbsp</th>
+                                            <th style="text-align:center;" width="100px;">
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="showModalTodos(2);" title="Cadastrar Todos">
+                                                    <span class="glyphicon glyphicon-asterisk"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="ShowModalQuarentenaTodos(dadosinversao[0].CdProduto, dadosinversao[0].AlertaTipo.CdTipoAlerta);">
+                                                    <span class="glyphicon glyphicon-lock"></span>
+                                                </button>
                                             </th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -499,13 +534,15 @@
                                             <td>{{dadoinversao.QtdEstoque}}</td>
                                             <td>{{dadoinversao.UltData | date:'dd/MM/yyyy'}}</td>
                                             @*<td><label class="label label-warning">Pendente</label></td>*@
-                                            <td><label ng-class="['label {{dadoinversao.AlertaStatus.nomeStatus}}']">{{dadoinversao.AlertaStatus.nomeStatus}} </label></td>
-                                            <td class="icon-td">
-                                                <a href="#" ng-click="showModal(dadoinversao.CdProduto, dadoinversao.CdAlertaInv, dadoinversao.Pessoa.CdPessoa, 2);" title="Cadastrar Observação">
+                                            <td align="center"><label ng-class="['label {{dadoinversao.AlertaStatus.nomeStatus}}']">{{dadoinversao.AlertaStatus.nomeStatus}} </label></td>
+                                            <td class="icon-td" align="center" style="width:100px;">
+                                                <button type="button" class="btn btn-xs btn-info" ng-click="showModal(dadoinversao.CdProduto, dadoinversao.CdAlertaInv, dadoinversao.Pessoa.CdPessoa, 2);" title="Cadastrar Observação">
                                                     <span class="glyphicon glyphicon-pencil"></span>
-                                                </a>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-warning" ng-click="ShowModalQuarentena(dadoinversao.CdProduto, dadoinversao.Pessoa.CdPessoa, dadoinversao.AlertaTipo.CdTipoAlerta, dadoinversao.CdAlertaInv);">
+                                                    <span class="glyphicon glyphicon-lock"></span>
+                                                </button>
                                             </td>
-                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -517,7 +554,7 @@
                                                 <div class="col-lg-1">
                                                     <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Novo' ?
+                                              ((dadoHistorico.StatusAlertaAtual == 'Em Balanço' || 'Quarentena') ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
@@ -553,24 +590,28 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>CdProduto &nbsp</th>
-                                            <th>Produto &nbsp</th>
-                                            <th>Loja &nbsp</th>
-                                            <th>Nota &nbsp</th>
-                                            <th>Ultimo Custo &nbsp</th>
-                                            <th>Penultimo Custo &nbsp</th>
-                                            <th>Diferença &nbsp</th>
-                                            <th>Data de Criação &nbsp</th>
-                                            <th>Status &nbsp</th>
-                                            <th>
-                                                <a href="#" ng-click="showModalTodos(3);" title="Cadastrar Todos">
-                                                    <span class="glyphicon glyphicon-asterisk red"></span>
-                                                </a>
+                                            <th>CdProduto</th>
+                                            <th>Produto</th>
+                                            <th>Loja</th>
+                                            <th>Nota</th>
+                                            <th>Ultimo Custo</th>
+                                            <th>Penultimo Custo</th>
+                                            <th>Diferença</th>
+                                            <th>Data de Criação</th>
+                                            <th style="text-align:center;">Status</th>
+                                            <th style="text-align:center;" width="100px;">
+                                                <button type="button" class="btn btn-xs btn-danger" ng-click="showModalTodos(3);" title="Cadastrar Todos">
+                                                    <span class="glyphicon glyphicon-asterisk"></span>
+                                                </button>
+
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="ShowModalQuarentenaTodos(dadosUltimoCusto[0].CdProduto, dadosUltimoCusto[0].AlertaTipo.CdTipoAlerta);">
+                                                    <span class="glyphicon glyphicon-lock"></span>
+                                                </button>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="dadoUltimoCusto in dadosUltimoCusto | orderBy:orderBycolumn:reverse">
+                                        <tr ng-repeat="dadoUltimoCusto in dadosUltimoCusto">
                                             @*<td style="text-align:center;"><input type="checkbox" ng-model="dado.checked" ng-checked="selectAll"></td>*@
                                             <td>{{dadoUltimoCusto.CdProduto}}</td>
                                             <td>{{nomeProduto}}</td>
@@ -581,11 +622,15 @@
                                             <td>{{dadoUltimoCusto.Diferenca}}%</td>
                                             <td>{{dadoUltimoCusto.UltData | date:'dd/MM/yyyy'}}</td>
                                             @*<td><label class="label label-warning">Pendente</label></td>*@
-                                            <td><label ng-class="['label {{dadoUltimoCusto.AlertaStatus.nomeStatus}}']">{{dadoUltimoCusto.AlertaStatus.nomeStatus}} </label></td>
-                                            <td class="icon-td">
-                                                <a href="#" ng-click="showModal(dadoUltimoCusto.CdProduto, dadoUltimoCusto.CdAlertaUltCusto, dadoUltimoCusto.Pessoa.CdPessoa, 3);" title="Cadastrar Observação">
+                                            <td align="center"><label ng-class="['label {{dadoUltimoCusto.AlertaStatus.nomeStatus}}']">{{dadoUltimoCusto.AlertaStatus.nomeStatus}} </label></td>
+                                            <td class="icon-td" align="center">
+                                                <button type="button" class="btn btn-xs btn-info" ng-click="showModal(dadoUltimoCusto.CdProduto, dadoUltimoCusto.CdAlertaUltCusto, dadoUltimoCusto.Pessoa.CdPessoa, 3);" title="Cadastrar Observação">
                                                     <span class="glyphicon glyphicon-pencil"></span>
-                                                </a>
+                                                </button>
+
+                                                <button type="button" class="btn btn-xs btn-warning" ng-click="ShowModalQuarentena(dadoUltimoCusto.CdProduto, dadoUltimoCusto.Pessoa.CdPessoa, dadoUltimoCusto.AlertaTipo.CdTipoAlerta, dadoUltimoCusto.CdAlertaInv);">
+                                                    <span class="glyphicon glyphicon-lock"></span>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -598,7 +643,7 @@
                                                 <div class="col-lg-1">
                                                     <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
                                               'glyphicon glyphicon-ok-sign' :
-                                              (dadoHistorico.StatusAlertaAtual == 'Novo' ?
+                                              (dadoHistorico.StatusAlertaAtual == 'Em Balanço' ?
                                               'glyphicon glyphicon-remove-sign' :
                                               'glyphicon glyphicon-question-sign')"></span>
                                                 </div>
@@ -615,9 +660,73 @@
                                         </li>
                                     </ul>
                                     @*class="btn btn-circle-sm btn-primary"><span class="glyphicon glyphicon-thumbs-up">*@
-                                    <button class="btn btn-circle-micro btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
+                                    <button class="btn btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
                                 </div>
+                                <div class="chat_list" ng-show="dadosHistorico.length == 0">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div style="text-align:center;">
+                                                Esse produto não possui histórico!
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab heading="Quarentena ({{dadosQuarentena.length}})">
+                            <div class="container">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>CdProduto</th>
+                                            <th>Produto</th>
+                                            <th>Loja</th>
+                                            <th>Alerta</th>
+                                            <th>Data de Inclusão</th>
+                                            <th>Data de Saída</th>
+                                            <th>Dias</th>
+                                            <th>Motivo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dadoQuarentena in dadosQuarentena">
+                                            <td>{{dadoQuarentena.CdProduto}}</td>
+                                            <td>{{nomeProduto}}</td>
+                                            <td>{{dadoQuarentena.Pessoa.NomePessoa}}</td>
+                                            <td>{{dadoQuarentena.AlertaTipo.NomeAlerta}}</td>
+                                            <td>{{dadoQuarentena.DtInclusao | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dadoQuarentena.DtSaida | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{dadoQuarentena.Motivo}}</td>
 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="chat_list" ng-show="dadosHistorico.length > 0">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="dadoHistorico in dadosHistorico | limitTo: paginationLimit()">
+                                            <div class="row">
+                                                <div class="col-lg-1">
+                                                    <span ng-class="dadoHistorico.StatusAlertaAtual == 'Concluido' ?
+                                              'glyphicon glyphicon-ok-sign' :
+                                              (dadoHistorico.StatusAlertaAtual == 'Em Balanço' ?
+                                              'glyphicon glyphicon-remove-sign' :
+                                              'glyphicon glyphicon-question-sign')"></span>
+                                                </div>
+
+                                                <div class="col-lg-11">
+                                                    <small class="pull-right text-muted">{{dadoHistorico.DataDoHistorico | date:'dd/MM/yyyy'}} as {{dadoHistorico.DataDoHistorico | date:'HH:mm'}}</small>
+                                                    <small class="list-group-item-heading text-muted text-primary">{{dadoHistorico.NomeUsuario}}</small>
+                                                    <div><strong>Loja: </strong> {{dadoHistorico.Pessoa.NomePessoa}}</div>
+                                                    <div><strong>Tipo de Aleta: </strong> {{dadoHistorico.AlertaTipo.NomeAlerta}}</div>
+                                                    <div><strong>Alterado de: </strong> {{dadoHistorico.StatusAlertaAnterior}} <strong>para:</strong> {{dadoHistorico.StatusAlertaAtual}} </div>
+                                                    <div><strong>Descrição: </strong>{{dadoHistorico.DescricaoHistorico}}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    @*class="btn btn-circle-sm btn-primary"><span class="glyphicon glyphicon-thumbs-up">*@
+                                    <button class="btn btn-primary glyphicon glyphicon-plus" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()"></button>
+                                </div>
                                 <div class="chat_list" ng-show="dadosHistorico.length == 0">
                                     <ul class="list-group">
                                         <li class="list-group-item">
@@ -655,7 +764,7 @@
 
                             <div style="margin-top: 30px;">
                                 <label class="form-control-label" style="color:red;">*<label style="color: #337ab7;">Status:</label></label>
-                                <select class="form-control" style="width:200px;" ng-model="cdStatusSelect" ng-options="status as status.nomeStatus for status in statusSelect"></select>
+                                <select class="form-control" style="width:200px;" ng-model="cdStatusSelect" ng-required="true" name="cdStatusSelect" id="cdStatusSelect" ng-options="status as status.nomeStatus for status in statusSelect"></select>
                             </div>
                         </form>
                     </div>
@@ -666,7 +775,7 @@
                     </div>
 
                     <div class="alert alert-danger" ng-show="obsForm.observacao.$invalid && submitted">
-                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                         <hr class="message-inner-separator">
                         <p>
                             Preencha o campo <strong>Observação</strong> corretamente!
@@ -674,7 +783,7 @@
                     </div>
 
                     <div class="alert alert-danger" ng-show='obsForm.status.$invalid && submitted'>
-                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                        <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                         <hr class="message-inner-separator">
                         <p>
                             Preencha o campo <strong>Status</strong> corretamente!
@@ -682,7 +791,7 @@
                     </div>
 
                     <div class="alert alert-success" ng-show='(obsForm.status.$valid && obsForm.observacao.$valid) && submitted'>
-                        <span class="glyphicon glyphicon-hand-up"></span> <strong>Sucesso</strong>
+                        <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
                         <hr class="message-inner-separator">
                         <p>
                             <strong>Observação</strong> gravada com sucesso!
@@ -692,6 +801,7 @@
                 </script>
                 @*Fim Modal Observação*@
 
+                @*Inicio Modal Alerta Manual*@
 
                 <script type="text/ng-template" id="modalAddAlertaManual.html">
                     <div class="modal-content">
@@ -756,7 +866,7 @@
                             </form>
 
                             <div class="alert alert-danger" ng-show="addForm.cdProduto.$error.required && submitted">
-                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                                 <hr class="message-inner-separator">
                                 <p>
                                     Preencha o campo <strong>Codigo</strong> corretamente!
@@ -764,7 +874,7 @@
                             </div>
 
                             <div class="alert alert-danger" ng-show="addForm.produto.$error.required && submitted">
-                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                                 <hr class="message-inner-separator">
                                 <p>
                                     Preencha o campo <strong>Produto</strong> corretamente!
@@ -772,7 +882,7 @@
                             </div>
 
                             <div class="alert alert-danger" ng-show="addForm.tipoAlerta.$error.required && submitted">
-                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                                 <hr class="message-inner-separator">
                                 <p>
                                     Preencha o campo <strong>Tipo de Alerta</strong> corretamente!
@@ -780,10 +890,54 @@
                             </div>
 
                             <div class="alert alert-danger" ng-show="appCtrl.filiais == 0 && submitted">
-                                <span class="glyphicon glyphicon-hand-right"></span> <strong>Danger Message</strong>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
                                 <hr class="message-inner-separator">
                                 <p>
                                     Preencha o campo <strong>Filial</strong> corretamente!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="modalQuarentena.html">
+                    <div class="modal-content">
+                        <div class="panel panel-danger" style="margin-bottom:0px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Inclusão Quarentena</h3>
+                            </div>
+                            <form class="form-horizontal" name="quarentenaForm" style="margin-top: 15px; margin-bottom: 15px;">
+                                <div class="form-group">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <label class="form-control-label" style="color:red;">*</label><label>Nº Dias na Quarentena</label>
+                                        <Select class="form-control" ng-model="diasQuarentena" ng-required="true" name="diasQuarentena" id="diasQuarentena">
+                                            <option value="7">7 Dias</option>
+                                            <option value="15">15 Dias</option>
+                                            <option value="30">30 Dias</option>
+                                        </Select>
+                                    </div>
+                                    <div class="col-sm-10 col-sm-offset-1" style="margin-top:25px;">
+                                        <label>Motivo:</label>
+                                        <textarea class="form-control" style="height: 134px;" ng-model="motivoQuarentena"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="modal-footer" style="margin-top: 10px;">
+                                <input type="button" id="Gravar" class="btn btn-primary" value="Gravar" ng-click="Gravar();">
+                            </div>
+                            <div class="alert alert-danger" ng-show='quarentenaForm.diasQuarentena.$invalid && submittedQuarentena'>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Danger Message</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    Preencha a quantidade de <strong>Dias</strong> corretamente!
+                                </p>
+                            </div>
+
+                            <div class="alert alert-success" ng-show='quarentenaForm.diasQuarentena.$valid && submittedQuarentena'>
+                                <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
+                                <hr class="message-inner-separator">
+                                <p>
+                                    <strong>Incluido</strong> na <strong>Quarentena</strong> com sucesso!
                                 </p>
                             </div>
                         </div>

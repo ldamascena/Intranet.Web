@@ -43,7 +43,10 @@ namespace Intranet.Domain.Services
 
             if (tipoAlerta == 2)
             {
-                var resultInversao = _repositoryInversao.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
+
+                var resultInversao = situacao == null ?
+                    _repositoryInversao.GetAll().Select(y => y.CdProduto)
+                    : _repositoryInversao.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
 
                 switch (situacao)
                 {
@@ -59,16 +62,19 @@ namespace Intranet.Domain.Services
                     case 3:
                         return result.ToList().Where(x => resultInversao.Contains(x.CdProduto)
                         && x.Concluido > 0);
+                        break;
                     default:
                         return result;
+                        break;
 
                 }
             }
 
             else if (tipoAlerta == 3)
             {
-                var resultUltimoCusto = _repositoryUltimoCusto.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
-
+                var resultUltimoCusto = situacao == null ? _repositoryUltimoCusto.GetAll().Select(y => y.CdProduto)
+                    : _repositoryUltimoCusto.GetAll().Where(c => c.CdAlertaStatus == situacao).Select(y => y.CdProduto);
+                
                 switch (situacao)
                 {
                     case 1:
@@ -83,8 +89,10 @@ namespace Intranet.Domain.Services
                     case 3:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto)
                         && x.Concluido > 0);
+                        break;
                     default:
                         return result.Where(x => resultUltimoCusto.Contains(x.CdProduto) && x.AlertaEmAberto > 0);
+                        break;
                 }
             }
 
@@ -101,8 +109,10 @@ namespace Intranet.Domain.Services
                         break;
                     case 3:
                         return result.Where(x => x.Concluido > 0);
+                        break;
                     default:
                         return result.Where(x => x.AlertaEmAberto > 0);
+                        break;
                 }
             }
         }

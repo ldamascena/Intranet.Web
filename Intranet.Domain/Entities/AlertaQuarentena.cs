@@ -15,30 +15,48 @@ namespace Intranet.Domain.Entities
     {
         [DataMember]
         [Key]
-        public int cdAlertaQuarentena { get; set; }
+        public int CdAlertaQuarentena { get; set; }
 
         [DataMember]
-        public int cdProduto { get; set; }
+        public int CdProduto { get; set; }
 
         [DataMember]
-        public int cdPessoaFilial { get; set; }
+        public int CdPessoaFilial { get; set; }
 
         [DataMember]
-        public int cdTipoAlerta { get; set; }
-
-        [DataMember]
-        [Column(TypeName = "date")]
-        public DateTime dtInclusao { get; set; }
+        public int CdTipoAlerta { get; set; }
 
         [DataMember]
         [Column(TypeName = "date")]
-        public DateTime dtSaida { get; set; }
+        public DateTime DtInclusao { get; set; }
 
-        public int cdAlerta { get; set; }
+        [DataMember]
+        [Column(TypeName = "date")]
+        public DateTime DtSaida { get; set; }
 
-        public virtual AlertaInversao tbAlertaInversaoTeste { get; set; }
+        [DataMember]
+        public int CdAlerta { get; set; }
 
-        public virtual AlertaUltimoCusto tbAlertaUltimoCustoTeste { get; set; }
+        [DataMember]
+        public int Dias { get; set; }
+
+        [DataMember]
+        public string NomeUsuario { get; set; }
+
+        [DataMember]
+        public string Motivo { get; set; }
+
+        [DataMember]
+        public virtual Pessoa Pessoa { get; set; }
+
+        [DataMember]
+        public virtual AlertaTipo AlertaTipo { get; set; }
+
+        public virtual AlertaInversao AlertaInversao { get; set; }
+
+        public virtual AlertaUltimoCusto AlertaUltimoCusto { get; set; }
+
+        public virtual AlertaGeral AlertaGeral { get; set; }
 
     }
 }

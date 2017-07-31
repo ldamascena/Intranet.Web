@@ -147,14 +147,6 @@ namespace Intranet.Data.Context
             ////    .HasForeignKey(e => e.CdPessoaJuridica)
             ////    .WillCascadeOnDelete(false);
 
-            //// Alerta Geral com Alerta Analitico
-
-            //modelBuilder.Entity<AlertaGeral>()
-            //    .HasMany(e => e.AlertaAnaliticos)
-            //    .WithRequired(e => e.AlertaGeral)
-            //    .HasForeignKey(e => e.cdAlerta)
-            //    .WillCascadeOnDelete(false);
-
             //Alerta Inversão com Pessoa
 
             //modelBuilder.Entity<Pessoa>()
@@ -201,20 +193,35 @@ namespace Intranet.Data.Context
                 .WillCascadeOnDelete(false);
 
 
-            //modelBuilder.Entity<AlertaInversao>()
-            //    .HasMany(e => e.tbAlertaQuarentena)
-            //    .WithRequired(e => e.tbAlertaInversaoTeste)
-            //    .HasForeignKey(e => new { e.cdAlerta, e.cdPessoaFilial, e.cdTipoAlerta })
-            //    .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AlertaInversao>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaInversao)
+                .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
 
 
-            //modelBuilder.Entity<AlertaUltimoCusto>()
-            //    .HasMany(e => e.tbAlertaQuarentena)
-            //    .WithRequired(e => e.tbAlertaUltimoCustoTeste)
-            //    .HasForeignKey(e => new { e.cdAlerta, e.cdPessoaFilial, e.cdTipoAlerta })
-            //    .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AlertaUltimoCusto>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaUltimoCusto)
+                .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
 
 
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaQuarentena)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaTipo>()
+                .HasMany(e => e.AlertaQuarentena)
+                .WithRequired(e => e.AlertaTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaGeral>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaGeral)
+                .WillCascadeOnDelete(false);
 
             #endregion
 

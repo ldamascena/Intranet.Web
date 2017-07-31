@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaManualApp.cs" />
+    <Compile Include="Interfaces\Applications\IAlertaQuarentenaApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaStatusApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaTipoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaUltimoCustoApp.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Interfaces\Repositories\ISolUsuarioRepository.cs" />
     <Compile Include="Interfaces\Repositories\IVendedorRepository.cs" />
     <Compile Include="Interfaces\Repositories\IViewProdutoRepository.cs" />
+    <Compile Include="Interfaces\Services\IAlertaQuarentenaService.cs" />
     <Compile Include="Interfaces\Services\IAlertaStatusService.cs" />
     <Compile Include="Interfaces\Services\IAlertaTipoService.cs" />
     <Compile Include="Interfaces\Services\IAlertaManualService.cs" />

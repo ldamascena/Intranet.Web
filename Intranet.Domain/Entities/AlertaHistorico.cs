@@ -20,8 +20,6 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public int CdProduto { get; set; }
 
-        public string NomeProduto { get; set; }
-
         [DataMember]
         [Column("dataHistorico")]
         public DateTime DataDoHistorico { get; set; }
