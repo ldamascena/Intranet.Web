@@ -12,5 +12,6 @@ namespace Intranet.Domain.Interfaces.Repositories
         List<EstoqueFisico> GetAllTipoProduto();
         List<EstoqueFisico> GetAllTipoProdutoPorProduto(int cdProduto);
         EstoqueFisico GetAllTipoProdutoPorProdutoEmbalagemEQuantidade(int cdProduto, string cdEmbalagem, decimal qtEmbalagem);
+        EstoqueFisico GetByProduto(int cdProduto, int cdPessoaFilial);
     }
 }

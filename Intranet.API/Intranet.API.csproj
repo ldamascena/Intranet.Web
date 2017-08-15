@@ -203,6 +203,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AlertaBalancoController.cs" />
     <Compile Include="Controllers\AlertaGeralController.cs" />
     <Compile Include="Controllers\AlertaHistoricoController.cs" />
     <Compile Include="Controllers\AlertaInversaoController.cs" />

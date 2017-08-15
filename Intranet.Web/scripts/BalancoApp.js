@@ -1,0 +1,1 @@
+﻿var app = angular.module('BalancoApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'checklist-model']);

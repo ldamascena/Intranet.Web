@@ -61,6 +61,7 @@ namespace Intranet.API.Controllers
             _repository = new AlertaQuarentenaRepository(new CentralContext());
             _repositoryInversao = new AlertaInversaoRepository(new CentralContext());
             _repositoryHistorico = new AlertaHistoricoRepository(new CentralContext());
+            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(new CentralContext());
             _service = new AlertaQuarentenaService(_repository, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico);
             _app = new AlertaQuarentenaApp(_service);
 

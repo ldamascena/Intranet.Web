@@ -34,5 +34,12 @@ namespace Intranet.Data.Repositories
             && x.CdEmbalagem == cdEmbalagem
             && x.QtEmbalagem == qtEmbalagem).FirstOrDefault();
         }
+
+        public EstoqueFisico GetByProduto(int cdProduto, int cdPessoaFilial)
+        {
+            return Db.EstoquesFisico.Where(x => x.CdProduto == cdProduto 
+            && x.CdPessoaFilial == cdPessoaFilial 
+            && x.CdEstoqueTipo == 1).FirstOrDefault();
+        }
     }
 }

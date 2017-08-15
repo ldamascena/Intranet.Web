@@ -165,6 +165,7 @@
     <Content Include="bin\System.Web.Webpages.dll" />
     <Content Include="bin\System.Web.Webpages.Razor.dll" />
     <Content Include="Content\abn_tree.css" />
+    <Content Include="Content\Alerta\Custom.css" />
     <Content Include="Content\awesome-bootstrap-checkbox.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -210,6 +211,7 @@
     <Content Include="scripts\angular.js" />
     <Content Include="scripts\angular.min.js" />
     <Content Include="scripts\App.js" />
+    <Content Include="scripts\BalancoApp.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -223,6 +225,7 @@
     <Content Include="Content\awesome-bootstrap-checkbox.scss" />
     <Content Include="Content\awesome-bootstrap-checkbox.less" />
     <Content Include="scripts\ClassificacaoProdutoApp.js" />
+    <Content Include="scripts\Controllers\balancoCtrl.js" />
     <Content Include="scripts\Controllers\ClassificacaoProdutoCtrl.js" />
     <Content Include="scripts\Controllers\EstoqueFisicoCtrl.js" />
     <Content Include="scripts\Controllers\listaAlertaCtrl.js" />
@@ -231,6 +234,7 @@
     <Content Include="scripts\Directive\abn_tree_directive.js" />
     <Content Include="scripts\Directive\angular-filter.js" />
     <Content Include="scripts\Directive\autocomplete.js" />
+    <Content Include="scripts\Directive\checklist-model.js" />
     <Content Include="scripts\Directive\multiselect.js" />
     <Content Include="scripts\Directive\ng-currency-mask.js" />
     <Content Include="scripts\Directive\ngMask.js" />
@@ -1025,6 +1029,7 @@
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\MetaApp.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
+    <Content Include="scripts\Services\AlertaBalancoService.js" />
     <Content Include="scripts\Services\AlertaGeralService.js" />
     <Content Include="scripts\Services\AlertaManualService.js" />
     <Content Include="scripts\Services\AlertaTipoService.js" />
@@ -1041,6 +1046,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AlertaBalancoController.cs" />
     <Compile Include="Controllers\AlertaGeralController.cs" />
     <Compile Include="Controllers\ClassificacaoMetaController.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1085,6 +1091,7 @@
     <Content Include="Templates\multiselect.html" />
     <Content Include="Views\AlertaGeral\SolicitacaoTipoAlerta.cshtml" />
     <Content Include="Views\ClassificacaoMeta\Index.cshtml" />
+    <Content Include="Views\AlertaBalanco\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

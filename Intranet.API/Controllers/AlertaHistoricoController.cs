@@ -28,6 +28,8 @@ namespace Intranet.API.Controllers
         private IAlertaUltimoCustoRepository _alertaUltimoCustoRepository;
         private IAlertaManualRepository _alertaManualRepository;
         private IAlertaQuarentenaRepository _alertaQuarentenaRepository;
+        private IAlertaBalancoRepository _repositoryBalanco;
+        private IEstoqueFisicoRepository _repositoryEstqqueFisico;
 
         #endregion
 
@@ -55,7 +57,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -80,7 +84,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -105,7 +111,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -130,7 +138,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -155,7 +165,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -180,7 +192,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
             try
             {
@@ -205,7 +219,9 @@ namespace Intranet.API.Controllers
             _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
             _alertaManualRepository = new AlertaManualRepository(context);
             _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository);
+            _repositoryBalanco = new AlertaBalancoRepository(context);
+            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
+            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
             _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
 
             return _alertaHistoricoApp.ObterAlertasPorProdutoTipoAlerta(cdProduto).OrderByDescending(x => x.DataDoHistorico);

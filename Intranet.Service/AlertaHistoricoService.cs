@@ -19,6 +19,8 @@ namespace Intranet.Domain.Services
         private readonly IAlertaGeralRepository _repositoryGeral;
         private readonly IAlertaHistoricoRepository _repository;
         private readonly IAlertaQuarentenaRepository _repositoryQuarentena;
+        private readonly IAlertaBalancoRepository _repositoryBalanco;
+        private readonly IEstoqueFisicoRepository _repositoryEstqqueFisico;
 
         private const int ID_NOVO = 1;
         private const int ID_ANALISE = 2;
@@ -30,7 +32,9 @@ namespace Intranet.Domain.Services
             IAlertaGeralRepository repositoryGeral,
             IAlertaManualRepository repositoryManual,
             IAlertaUltimoCustoRepository repositoryUltimoCusto,
-            IAlertaQuarentenaRepository repositoryQuarentena)
+            IAlertaQuarentenaRepository repositoryQuarentena,
+            IAlertaBalancoRepository repositoryBalanco,
+            IEstoqueFisicoRepository repositoryEstqqueFisico)
             : base(repository)
         {
             this._repository = repository;
@@ -39,6 +43,8 @@ namespace Intranet.Domain.Services
             this._repositoryManual = repositoryManual;
             this._repositoryUltimoCusto = repositoryUltimoCusto;
             this._repositoryQuarentena = repositoryQuarentena;
+            this._repositoryBalanco = repositoryBalanco;
+            this._repositoryEstqqueFisico = repositoryEstqqueFisico;
         }
 
         public void CadastrarHistoricoInversao(AlertaHistorico obj)
@@ -85,6 +91,19 @@ namespace Intranet.Domain.Services
                     NomeUsuario = obj.NomeUsuario,
                     Motivo = "Inclusão automático após status ser colocado em balanço"
                 });
+
+                if (_repositoryBalanco.Get(x => x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial) == null)
+                {
+                    _repositoryBalanco.Add(new AlertaBalanco
+                    {
+                        CdProduto = obj.CdProduto,
+                        CdPessoaFilial = obj.CdPessoaFilial,
+                        DtInclusao = DateTime.Now,
+                        NomeProduto = resultGeral.NomeProduto,
+                        Status = 0,
+                        Estoque = _repositoryEstqqueFisico.Get(x => x.CdEmbalagem == "UN" && x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial && x.CdEstoqueTipo == 1).QtEstoqueFisico.Value
+                    });
+                }
             }
 
             try
@@ -152,6 +171,16 @@ namespace Intranet.Domain.Services
                             NomeUsuario = obj.NomeUsuario,
                             Motivo = "Inclusão automático após status ser colocado em balanço"
                         });
+
+                        _repositoryBalanco.Add(new AlertaBalanco
+                        {
+                            CdProduto = obj.CdProduto,
+                            CdPessoaFilial = item.CdPessoaFilial,
+                            DtInclusao = DateTime.Now,
+                            NomeProduto = resultGeral.NomeProduto,
+                            Status = 0,
+                            Estoque = _repositoryEstqqueFisico.Get(x => x.CdEmbalagem == "UN" && x.CdProduto == obj.CdProduto && x.CdPessoaFilial == item.CdPessoaFilial && x.CdEstoqueTipo == 1).QtEstoqueFisico.Value
+                        });
                     }
 
                     this.AtualizarAnalitico(obj.CdProduto, obj.StatusAlertaAtual, obj.StatusAlertaAnterior, obj.NomeUsuario);
@@ -215,6 +244,16 @@ namespace Intranet.Domain.Services
                     Dias = 15,
                     NomeUsuario = obj.NomeUsuario,
                     Motivo = "Inclusão automático após status ser colocado em balanço"
+                });
+
+                _repositoryBalanco.Add(new AlertaBalanco
+                {
+                    CdProduto = obj.CdProduto,
+                    CdPessoaFilial = obj.CdPessoaFilial,
+                    DtInclusao = DateTime.Now,
+                    NomeProduto = resultGeral.NomeProduto,
+                    Status = 0,
+                    Estoque = _repositoryEstqqueFisico.Get(x => x.CdEmbalagem == "UN" && x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial && x.CdEstoqueTipo == 1).QtEstoqueFisico.Value
                 });
             }
 
@@ -280,6 +319,16 @@ namespace Intranet.Domain.Services
                             Dias = 15,
                             NomeUsuario = obj.NomeUsuario,
                             Motivo = "Inclusão automático após status ser colocado em balanço"
+                        });
+
+                        _repositoryBalanco.Add(new AlertaBalanco
+                        {
+                            CdProduto = obj.CdProduto,
+                            CdPessoaFilial = item.CdPessoaFilial,
+                            DtInclusao = DateTime.Now,
+                            NomeProduto = resultGeral.NomeProduto,
+                            Status = 0,
+                            Estoque = _repositoryEstqqueFisico.Get(x => x.CdEmbalagem == "UN" && x.CdProduto == obj.CdProduto && x.CdPessoaFilial == item.CdPessoaFilial && x.CdEstoqueTipo == 1).QtEstoqueFisico.Value
                         });
                     }
 

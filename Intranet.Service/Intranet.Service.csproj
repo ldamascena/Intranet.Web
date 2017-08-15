@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertaBalancoService.cs" />
     <Compile Include="AlertaGeralService.cs" />
     <Compile Include="AlertaHistoricoService.cs" />
     <Compile Include="AlertaInversaoService.cs" />

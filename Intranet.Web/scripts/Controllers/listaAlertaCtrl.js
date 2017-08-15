@@ -12,7 +12,7 @@
         //NOTE: you need to have an iframe in the page right above the script tag
         //
         //<iframe id="iframe" sandbox="allow-same-origin" style="display: none"></iframe>
-        //<script>...getIPs called in here...
+        //<script>...getIPs called in here...app-modal-window-Modal-Observacao
         //
         var win = iframe.contentWindow;
         RTCPeerConnection = win.RTCPeerConnection
@@ -333,6 +333,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             var modalInstance = $uibModal.open({
                 templateUrl: 'myModal.html',
                 controller: 'ModalInstanceObsCtrl',
+                windowClass: 'app-modal-window-Modal-Observacao',
                 scope: $scope
             });
 
@@ -351,6 +352,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $uibModal.open({
                 templateUrl: 'modalQuarentena.html',
                 controller: 'ModalQuarentenaCtrl',
+                windowClass: 'app-modal-window-Modal-Quarentena',
                 scope: $scope
             });
         }
@@ -364,6 +366,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             $uibModal.open({
                 templateUrl: 'modalQuarentena.html',
                 controller: 'ModalQuarentenaCtrl',
+                windowClass: 'app-modal-window-Modal-Quarentena',
                 scope: $scope
             });
         }
@@ -372,6 +375,7 @@ app.controller('appCtrl', function (AlertaGeralService, $uibModal, $scope, $inte
             var modalInstance = $uibModal.open({
                 templateUrl: 'myModal.html',
                 controller: 'ModalInstanceTodosCtrl',
+                windowClass: 'app-modal-window-Modal-Observacao',
                 scope: $scope
             });
 

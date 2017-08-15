@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertaBalancoApp.cs" />
     <Compile Include="AlertaGeralApp.cs" />
     <Compile Include="AlertaHistoricoApp.cs" />
     <Compile Include="AlertaInversaoApp.cs" />

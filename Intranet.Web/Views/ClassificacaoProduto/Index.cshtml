@@ -38,12 +38,19 @@
                 { CdUsuario: 15, NmUsuario: "Marcel Louis" },
                 { CdUsuario: 144, NmUsuario: "Renato Barros" },
                 { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
-                { CdUsuario: 175, NmUsuario: "Wanderson Batista" }
+                { CdUsuario: 13, NmUsuario: "Wanderson Batista" }
             ]
 
             ClassificacaoProdutoService.GetByCdClassificacao($scope.output).then(function (response) {
-                console.log(response.data.Usuario.NmUsuario);
-                $scope.nomeComprador = response.data.Usuario.NmUsuario;
+                console.log(response.data);
+                if (response.data.Usuario == null) {
+                    $scope.nomeComprador = null;    
+                }
+                else {
+                    $scope.nomeComprador = response.data.Usuario.NmUsuario;
+                }
+                    
+                
                 $scope.nrCobertura = response.data.NrCobertura;
                 $scope.nrCoberturaMinima = response.data.NrCoberturaMinima;
                 $scope.prMargem = response.data.PrMargem;
@@ -52,7 +59,7 @@
 
             $scope.saveChanges = function () {
                 $scope.objUpdate = {
-                    "CdComprador": $scope.cdComprador,
+                    "CdComprador": $scope.nomeComprador.CdUsuario,
                     "CdClassificacaoProduto": $scope.output,
                     "nrCobertura": $scope.nrCobertura,
                     "nrCoberturaMinima": $scope.nrCoberturaMinima,
@@ -61,16 +68,13 @@
                 };
 
 
-                ClassificacaoProdutoService.UpdateClassificacao(angular.toJson($scope.objUpdate))
+                alert(angular.toJson($scope.objUpdate));
+                //ClassificacaoProdutoService.UpdateClassificacao(angular.toJson($scope.objUpdate))
                 $uibModal.open({
                     templateUrl: 'modalSucess.html',
                     scope: $scope
                 });
                 $uibModalInstance.close();
-
-                $interval(function () {
-                    location.reload();
-                }, 3000);
             };
 
             $scope.cancel = function () {

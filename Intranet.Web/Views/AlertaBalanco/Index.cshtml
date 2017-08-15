@@ -1,0 +1,226 @@
+﻿<html lang="br" ng-app="BalancoApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Index</title>
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+    @*Iniciação do módulo*@
+
+    <script src="~/scripts/BalancoApp.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Controllers*@
+
+    <script src="~/scripts/Controllers/balancoCtrl.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Services*@
+
+    <script src="~/scripts/Services/AlertaBalancoService.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-cookies.js" type="text/javascript" language="javascript"></script>
+
+
+    @*Iniciação do Diretivas*@
+
+    <script src="~/scripts/Directive/checklist-model.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 15px;
+        }
+
+            .btn-circle.btn-lg {
+                width: 50px;
+                height: 50px;
+                padding: 10px 16px;
+                font-size: 18px;
+                line-height: 1.33;
+                border-radius: 25px;
+            }
+
+            .btn-circle.btn-xl {
+                width: 70px;
+                height: 70px;
+                padding: 10px 16px;
+                font-size: 24px;
+                line-height: 1.33;
+                border-radius: 35px;
+            }
+
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #fffbd1;
+        }
+    </style>
+
+    <script>
+
+        app.controller('ModalInstanceAprovar', function ($scope, $uibModalInstance, AlertaBalancoService, $interval) {
+            $scope.ok = function () {
+                $scope.obj = { "CdAlertaBalanco": $scope.dado.CdAlertaBalanco, "CdProduto": $scope.dado.CdProduto, "CdPessoaFilial": $scope.dado.CdPessoaFilial, "Status": 2 };
+                AlertaBalancoService.UpdateBalanco(angular.toJson($scope.obj));
+                $scope.submitted = true
+
+                $interval(function () {
+                    $scope.submitted = false
+                    $uibModalInstance.close();
+                    location.reload();
+                }, 1500);
+            }
+
+            $scope.cancel = function () {
+                $uibModalInstance.close();
+            }
+        });
+
+        app.controller('ModalInstanceReprovar', function ($scope, $uibModalInstance, AlertaBalancoService, $interval) {
+            $scope.ok = function () {
+                $scope.obj = { "CdAlertaBalanco": $scope.dado.CdAlertaBalanco, "CdProduto": $scope.dado.CdProduto, "CdPessoaFilial": $scope.dado.CdPessoaFilial, "Status": 1, "Motivo": $scope.motivo };
+                AlertaBalancoService.UpdateBalanco(angular.toJson($scope.obj));
+
+                //alert(angular.toJson($scope.obj));
+
+                $scope.submitted = true
+
+                $interval(function () {
+                    $scope.submitted = false
+                    $uibModalInstance.close();
+                    location.reload();
+                }, 1500);
+            }
+
+            $scope.cancel = function () {
+                $uibModalInstance.close();
+            }
+        });
+    </script>
+</head>
+<body ng-controller="balancoCtrl">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Balanço  <small> - Pedidos</small></h1>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Produtos</div>
+            <div class="panel-body">
+                <div class="form-inline">
+                    <input type="text" style="width:400px" class="form-control" ng-model="codigoProduto" placeholder="Codigo ou Produto">
+                    <select class="form-control" style="width:200px; margin-left:20px;" ng-model="situacao">
+                        <option value="">Todos</option>
+                        <option value="0">Novo</option>
+                        <option value="1">Não Feito</option>
+                        <option value="2">Concluido</option>
+                    </select>
+                    <div class="input-group" style="margin-left:20px;">
+                        <input type="text" class="form-control" placeholder="Data de Inclusão" uib-datepicker-popup="yyyy-MM-dd" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" style="padding: 9px 12px" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                    <input type="button" name="name" style="margin-left:20px;" class="btn btn-primary" value="Procurar" ng-click="buscaProduto()" />
+                </div>
+
+                <div style="margin-top:40px;">
+                    <table class="table table-hover table-bordered" style="font-size:13px;">
+                        <thead>
+                            <tr>
+                                <th ng-click="orderByMe('CdProduto')">Codigo &nbsp<i ng-show="orderBycolumn === 'CdProduto'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('NomeProduto')">Produto &nbsp<i ng-show="orderBycolumn === 'NomeProduto'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('Pessoa.NomePessoa')">Loja &nbsp<i ng-show="orderBycolumn === 'Pessoa.NomePessoa'" ng-class="{'glyphicon glyphicon-sort-by-alphabet': !reverse, 'glyphicon glyphicon-sort-by-alphabet-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('Estoque')">Estoque &nbsp<i ng-show="orderBycolumn === 'Estoque'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('DtInclusao')">Data de Inclusão &nbsp<i ng-show="orderBycolumn === 'DtInclusao'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th ng-click="orderByMe('DtConcluido')">Data de Conclusão &nbsp<i ng-show="orderBycolumn === 'DtConcluido'" ng-class="{'glyphicon glyphicon-sort-by-order': !reverse, 'glyphicon glyphicon-sort-by-order-alt': reverse}"></i></th>
+                                <th>Motivo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dado in dados | orderBy:orderBycolumn:reverse">
+                                <td>{{dado.CdProduto}}</td>
+                                <td>{{dado.NomeProduto}}</td>
+                                <td>{{dado.Pessoa.NomePessoa}}</td>
+                                <td>{{dado.Estoque}}</td>
+                                <td>{{dado.DtInclusao | date:'dd/MM/yyyy'}}</td>
+                                <td>{{dado.DtConcluido | date:'dd/MM/yyyy'}}</td>
+                                <td>{{dado.Motivo}}</td>
+                                <td align="center" ng-if="dado.Status == 0">
+                                    <button type="button" class="btn btn-success btn-circle" ng-click="Aprovar(dado)"><i class="glyphicon glyphicon-ok"></i></button>
+                                    <button type="button" class="btn btn-danger btn-circle" ng-click="Reprovar(dado)"><i class="glyphicon glyphicon-remove"></i></button>
+                                </td>
+                                <td align="center" ng-if="dado.Status == 1">
+                                    <label class="label label-danger">Não Feito</label>
+                                </td>
+                                <td align="center" ng-if="dado.Status == 2">
+                                    <label class="label label-success">Concluido</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/ng-template" id="modalAprovar.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Aprovar!</h3>
+                </div>
+                <div class="modal-body">
+                    Deseja realmente alterar o status do vendedor?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">Sim</button>
+                    <button class="btn btn-danger" ng-click="cancel()">Não</button>
+                </div>
+                <div class="alert alert-success" ng-show="submitted">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        <strong>Observação</strong> gravada com sucesso!
+                    </p>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="modalReprovar.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Reprovar!</h3>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div>
+                            <label style="color:#4f555e;">Motivo:</label>
+                            <textarea style="width: 567px; height: 147px;" ng-model="motivo"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">Sim</button>
+                    <button class="btn btn-danger" ng-click="cancel()">Não</button>
+                </div>
+
+                <div class="alert alert-success" ng-show="submitted">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        <strong>Observação</strong> gravada com sucesso!
+                    </p>
+                </div>
+            </script>
+        </div>
+    </div>
+</body>
+</html>

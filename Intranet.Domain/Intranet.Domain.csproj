@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Entities\Alerta.cs" />
     <Compile Include="Entities\AlertaAnalitico.cs" />
+    <Compile Include="Entities\AlertaBalanco.cs" />
     <Compile Include="Entities\AlertaGeral.cs" />
     <Compile Include="Entities\AlertaHistorico.cs" />
     <Compile Include="Entities\AlertaInversaoHistorico.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Entities\ViewProduto.cs" />
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
+    <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaManualApp.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Interfaces\Applications\IVendedorApp.cs" />
     <Compile Include="Interfaces\Applications\IViewProdutoApp.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaAnaliticoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IAlertaBalancoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaManualRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaQuarentenaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaStatusRepository.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Interfaces\Repositories\ISolUsuarioRepository.cs" />
     <Compile Include="Interfaces\Repositories\IVendedorRepository.cs" />
     <Compile Include="Interfaces\Repositories\IViewProdutoRepository.cs" />
+    <Compile Include="Interfaces\Services\IAlertaBalancoService.cs" />
     <Compile Include="Interfaces\Services\IAlertaQuarentenaService.cs" />
     <Compile Include="Interfaces\Services\IAlertaStatusService.cs" />
     <Compile Include="Interfaces\Services\IAlertaTipoService.cs" />

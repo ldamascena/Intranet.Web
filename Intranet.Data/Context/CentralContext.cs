@@ -47,6 +47,7 @@ namespace Intranet.Data.Context
         public virtual DbSet<AlertaTipo> AlertasTipo { get; set; }
         public virtual DbSet<AlertaQuarentena> AlertasQuarentena { get; set; }
         public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
+        public virtual DbSet<AlertaBalanco> AlertasBalanco { get; set; }
 
         #endregion
 
@@ -221,6 +222,12 @@ namespace Intranet.Data.Context
             modelBuilder.Entity<AlertaGeral>()
                 .HasMany(e => e.AlertasQuarentena)
                 .WithRequired(e => e.AlertaGeral)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaBalanco)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
             #endregion
