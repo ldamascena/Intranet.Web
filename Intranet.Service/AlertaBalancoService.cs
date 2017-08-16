@@ -51,7 +51,6 @@ namespace Intranet.Service
             if (obj.Status == 2)
             {
                 var resultGeral = _repositoryGeral.Get(x => x.CdProduto == obj.CdProduto);
-                var resultQuarentena = _repositoryQuarentena.GetAll().Where(x => x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial).ToList();
                 var resultInversao = _repositoryInversao.Get(x => x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial);
 
                 if (resultInversao != null)
@@ -101,16 +100,8 @@ namespace Intranet.Service
                     resultGeral.Severidade = resultGeral.Severidade - 4;
                     _repositoryGeral.Update(resultGeral);
                 }
-                
-
-                foreach (var item in resultQuarentena)
-                {
-                    _repositoryQuarentena.Remove(item);
-                }
             }
             _repository.Update(getProduto);
-
-
         }
         public List<AlertaBalanco> GetAll(int? situacao = null, DateTime? dataInclusao = null)
         {
