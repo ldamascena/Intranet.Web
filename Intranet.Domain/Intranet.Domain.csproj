@@ -63,7 +63,6 @@
     <Compile Include="Entities\AlertaStatus.cs" />
     <Compile Include="Entities\AlertaTipo.cs" />
     <Compile Include="Entities\AlertaUltimoCustoHistorico.cs" />
-    <Compile Include="Entities\Class1.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
