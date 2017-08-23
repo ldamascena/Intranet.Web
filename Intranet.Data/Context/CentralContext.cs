@@ -30,7 +30,7 @@ namespace Intranet.Data.Context
 
         public virtual DbSet<AlertaInversaoHistorico> AlertasInversaoHistorico { get; set; }
         public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
-        
+
         #endregion
 
         #region Ultimo Custo
@@ -57,12 +57,22 @@ namespace Intranet.Data.Context
 
         public virtual DbSet<EstoqueFisico> EstoquesFisico { get; set; }
         public virtual DbSet<EstoqueMovimento> EstoquesMovimento { get; set; }
+        public virtual DbSet<EstoqueContabil> EstoquesContabil { get; set; }
+        public virtual DbSet<EstoqueTipo> EstoqueTipos { get; set; }
+        public virtual DbSet<LogAlteracaoCusto> LogAlteracaoCustos { get; set; }
 
         #endregion
 
         #region Classificacao produto
 
         public virtual DbSet<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
+
+        #endregion
+
+        #region Produto
+
+        public virtual DbSet<SuperProduto> SuperProdutos { get; set; }
+        public virtual DbSet<Produto> Produtos { get; set; }
 
         #endregion
 
@@ -75,15 +85,15 @@ namespace Intranet.Data.Context
         #endregion
 
         public virtual DbSet<Pessoa> Pessoas { get; set; }
-        
-        public virtual DbSet<Produto> Produtos { get; set; }
+
+
 
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
         public virtual DbSet<PessoaJuridica> PessoasJuridica { get; set; }
         public virtual DbSet<Vendedor> Vendedores { get; set; }
         public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
         public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
-        
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -91,8 +101,6 @@ namespace Intranet.Data.Context
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
             #region Relationships
-
-           
 
             ////Alerta Manual com Pessoa
 
@@ -109,12 +117,6 @@ namespace Intranet.Data.Context
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
-
-
-            //modelBuilder.Entity<AlertaGeral>()
-            //    .HasMany(e => e.AlertasHistorico)
-            //    .WithRequired(e => e.AlertaGeral)
-            //    .WillCascadeOnDelete(false);
 
             //ClassificacaoProduto com ClassificacaoProduto
 
@@ -148,18 +150,6 @@ namespace Intranet.Data.Context
             ////    .HasForeignKey(e => e.CdPessoaJuridica)
             ////    .WillCascadeOnDelete(false);
 
-            //Alerta Inversão com Pessoa
-
-            //modelBuilder.Entity<Pessoa>()
-            //    .HasMany(e => e.AlertasInversao)
-            //    .WithRequired(e => e.Pessoa)
-            //    .HasForeignKey(e => e.CdPessoaFilial)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<AlertaGeral>()
-            //    .HasMany(e => e.AlertaInversao)
-            //    .WithRequired(e => e.AlertaGeral)
-            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AlertaTipo>()
                 .HasMany(e => e.AlertasInversao)
@@ -230,6 +220,34 @@ namespace Intranet.Data.Context
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<EmpresaFilial>()
+                .HasMany(x => x.EstoqueContabil)
+                .WithRequired(x => x.EmpresaFilial)
+                .HasForeignKey(x => x.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<SuperProduto>()
+            //    .HasMany(x => x.EstoqueContabil)
+            //    .WithRequired(x => x.SuperProduto)
+            //    .HasForeignKey(x => new { x.CdSuperProduto, x.CdEmpresaProduto })
+            //    .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SuperProduto>()
+                .HasMany(e => e.EstoqueContabil)
+                .WithRequired(e => e.SuperProduto)
+                .HasForeignKey(e => new { e.CdSuperProduto, e.CdEmpresaProduto })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<EstoqueTipo>()
+                .HasMany(e => e.EstoqueContabil)
+                .WithRequired(e => e.EstoqueTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SuperProduto>()
+                .HasMany(e => e.Produto)
+                .WithRequired(e => e.SuperProduto)
+                .HasForeignKey(e => new { e.CdSuperProduto, e.CdEmpresa })
+                .WillCascadeOnDelete(false);
             #endregion
 
         }

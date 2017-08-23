@@ -1,0 +1,152 @@
+﻿<html ng-app="contabilApp">
+<head>
+    <title>AlteraCusto</title>
+
+    <script src="~/scripts/angular.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do módulo*@
+    <script src="~/scripts/EstoqueContabilApp.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Controller*@
+    <script src="~/scripts/Controllers/EstoqueContabilCtrl.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Diretiva*@
+    <script src="~/scripts/Directive/ng-currency-mask.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ngMask.js" type="text/javascript" language="javascript"></script>
+
+    @*Iniciação do Service*@
+    <script src="~/scripts/Services/EstoqueService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/EmpresaFilialService.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Services/SuperProdutoService.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/angular-route.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-cookies.js" type="text/javascript" language="javascript"></script>
+
+        <script src="~/scripts/angular-ui/ui-bootstrap.js" type="text/javascript" language="javascript"></script>
+        <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js" type="text/javascript" language="javascript"></script>
+
+        <link rel="stylesheet" href="~/Content/bootstrap.css" />
+
+    <script>
+        app.controller('ModalInstanceCusto', function ($scope, $uibModalInstance, EstoqueService, $interval) {
+            $scope.save = function () {
+                if ($scope.value == "" || $scope.value == "undefined") {
+                    $scope.submittedError = true;
+                }
+                else {
+                    $scope.obj = { "CdSuperProduto": $scope.item.CdSuperProduto, "CdPessoaFilial": $scope.item.CdPessoaFilial, "VlUltimaCompra": $scope.value }
+                    //alert(angular.toJson($scope.obj));
+                    EstoqueService.AlterarValorDeCusto(angular.toJson($scope.obj));
+                    $scope.submittedSuccess = true;
+
+                    $interval(function () {
+                        $uibModalInstance.close();
+                    }, 1000);
+                }
+            }
+
+            $scope.limpar = function () {
+                $scope.value = "";
+            }
+        });
+
+    </script>
+</head>
+<body ng-controller="contabilCtrl">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Alteração  <small> - Custo</small></h1>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Produto</div>
+            <div class="panel-body">
+                <div class="form-inline">
+                    <input type="text" style="width:400px" class="form-control" ng-model="codigoProduto" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:20" placeholder="Codigo ou Produto">
+                    <select class="form-control" style="width:250px; margin-left:20px;" ng-model="filial" ng-options="loja.cdPessoaFilial as loja.nmFilial for loja in filiais">
+                        <option value="">Seleciona Loja / Depósito</option>
+                    </select>
+                    <input type="button" name="name" style="margin-left:20px;" class="btn btn-primary" value="Procurar" ng-click="buscaProduto();" />
+                </div>
+                <div style="margin-top:40px;">
+                    <table class="table table-hover table-bordered" style="font-size:13px;" ng-show="dados != null">
+                        <thead>
+                            <tr>
+                                <th>CdSuperProduto</th>
+                                <th>NomeProdutoPai</th>
+                                <th>NomeProdutoFilho</th>
+                                <th>Tipo de Estoque</th>
+                                <th>Loja / Depósito</th>
+                                <th>Valor Custo</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{dados.CdSuperProduto}}</td>
+                                <td>{{dados.SuperProduto.NmProdutoPai}}</td>
+                                <td>
+                                    <table class="table table-hover" style="font-size:13px;">
+                                        <tbody>
+                                            <tr ng-repeat="dado in dados.SuperProduto.Produto">
+                                                <td ng-show="dado.DtExclusao == null">{{dado.NomeProduto}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>{{dados.EstoqueTipo.NmEstoqueTipo}}</td>
+                                <td>{{dados.EmpresaFilial.nmFilial}}</td>
+                                <td>{{dados.VlUltimaCompra | currency:"R$ "}}</td>
+                                <td><button class="btn btn-sm btn-default" ng-click="AlteraCusto(dados)"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                                <td><button class="btn btn-sm btn-default" ng-click=""><span class="glyphicon glyphicon-th-list"></span></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-show="dados == null && submittedBusca">
+                    <div class="panel panel-default">
+                        <div class="panel-body" style="text-align:center;" >
+                            <label class="label label-default">Nenhum Resultado encontrado!</label>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <script type="text/ng-template" id="CustoFormModal.html">
+            <div class="modal-header">
+                <h4 class="modal-title">Novo Custo</h4>
+            </div>
+            <div class="modal-body">
+                <form accept-charset="UTF-8" name="formCusto" id="formCusto" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Novo Custo do Super Produto" name="vlCusto" id="vlCusto" type="text" ng-model="value" ng-required="true" ng-currency-mask>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-sm btn-info" ng-click="limpar();" type="button" value="Limpar">
+                <input class="btn btn-sm btn-success" ng-click="save();" type="button" value="Salvar">
+
+                <div class="alert alert-success" ng-show="!formCusto.$error.required && submittedSuccess" style="margin-top: 20px; text-align:center;">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Sucesso</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        <strong>Alteração</strong> feita com sucesso!
+                    </p>
+                </div>
+
+                <div class="alert alert-danger" ng-show="formCusto.$error.required && submittedError" style="margin-top: 20px; text-align:center;">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span> <strong>Atenção</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        Preencha os <strong>campos</strong> corretamente!
+                    </p>
+                </div>
+            </div>
+        </script>
+    </div>
+</body>
+</html>

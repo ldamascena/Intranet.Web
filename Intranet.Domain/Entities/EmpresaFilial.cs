@@ -13,6 +13,11 @@ namespace Intranet.Domain.Entities
     [Table("tbEmpresaFilial")]
     public class EmpresaFilial
     {
+        public EmpresaFilial()
+        {
+            EstoqueContabil = new HashSet<EstoqueContabil>();
+        }
+
         [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -100,5 +105,8 @@ namespace Intranet.Domain.Entities
         public bool? inEcommerce { get; set; }
 
         public bool? inDepositoFechado { get; set; }
+
+        public virtual ICollection<EstoqueContabil> EstoqueContabil { get; set; }
+
     }
 }

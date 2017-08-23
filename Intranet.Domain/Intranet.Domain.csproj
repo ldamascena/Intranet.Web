@@ -42,6 +42,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,11 +63,15 @@
     <Compile Include="Entities\AlertaStatus.cs" />
     <Compile Include="Entities\AlertaTipo.cs" />
     <Compile Include="Entities\AlertaUltimoCustoHistorico.cs" />
+    <Compile Include="Entities\Class1.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
+    <Compile Include="Entities\EstoqueContabil.cs" />
     <Compile Include="Entities\EstoqueFisico.cs" />
     <Compile Include="Entities\EstoqueMovimento.cs" />
+    <Compile Include="Entities\EstoqueTipo.cs" />
+    <Compile Include="Entities\LogAlteracaoCusto.cs" />
     <Compile Include="Entities\MetaMesCompras.cs" />
     <Compile Include="Entities\OrdemServicoDTO.cs" />
     <Compile Include="Entities\Pessoa.cs" />
@@ -74,6 +80,7 @@
     <Compile Include="Entities\SolUsuario.cs" />
     <Compile Include="Entities\AlertaInversao.cs" />
     <Compile Include="Entities\AlertaUltimoCusto.cs" />
+    <Compile Include="Entities\SuperProduto.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
@@ -91,6 +98,7 @@
     <Compile Include="Interfaces\Applications\IClassificacaoMetaApp.cs" />
     <Compile Include="Interfaces\Applications\IClassificacaoProdutoApp.cs" />
     <Compile Include="Interfaces\Applications\IEmpresaFilialApp.cs" />
+    <Compile Include="Interfaces\Applications\IEstoqueContabilApp.cs" />
     <Compile Include="Interfaces\Applications\IEstoqueFisicoApp.cs" />
     <Compile Include="Interfaces\Applications\IEstoqueMovimentoApp.cs" />
     <Compile Include="Interfaces\Applications\IPessoaJuridicaApp.cs" />
@@ -107,10 +115,13 @@
     <Compile Include="Interfaces\Repositories\IClassificacaoMetaRepository.cs" />
     <Compile Include="Interfaces\Repositories\IClassificacaoProdutoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEmpresaFilialRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IEstoqueContabilRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEstoqueFisicoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IEstoqueMovimentoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ILogAlteracaoCustoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPessoaJuridicaRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISolUsuarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ISuperProdutoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IVendedorRepository.cs" />
     <Compile Include="Interfaces\Repositories\IViewProdutoRepository.cs" />
     <Compile Include="Interfaces\Services\IAlertaBalancoService.cs" />
@@ -122,6 +133,7 @@
     <Compile Include="Interfaces\Services\IClassificacaoMetaService.cs" />
     <Compile Include="Interfaces\Services\IClassificacaoProdutoService.cs" />
     <Compile Include="Interfaces\Services\IEmpresaFilialService.cs" />
+    <Compile Include="Interfaces\Services\IEstoqueContabilService.cs" />
     <Compile Include="Interfaces\Services\IEstoqueFisicoService.cs" />
     <Compile Include="Interfaces\Services\IEstoqueMovimentoService.cs" />
     <Compile Include="Interfaces\Services\IPessoaJuridicaService.cs" />

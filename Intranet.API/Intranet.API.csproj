@@ -215,10 +215,12 @@
     <Compile Include="Controllers\ClassificacaoMetaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\EmpresaFilialController.cs" />
+    <Compile Include="Controllers\EstoqueContabilController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Controllers\PessoaJuridicaController.cs" />
     <Compile Include="Controllers\SolUsuarioController.cs" />
+    <Compile Include="Controllers\SuperProdutoController.cs" />
     <Compile Include="Controllers\VendedorController.cs" />
     <Compile Include="Controllers\ViewProdutoController.cs" />
     <Compile Include="Global.asax.cs">

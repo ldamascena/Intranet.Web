@@ -1,0 +1,1 @@
+﻿var app = angular.module('contabilApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngCurrencyMask', 'ngMask']);

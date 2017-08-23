@@ -65,12 +65,15 @@
     <Compile Include="Repositories\ClassificacaoMetaRepository.cs" />
     <Compile Include="Repositories\ClassificacaoProdutoRepository.cs" />
     <Compile Include="Repositories\EmpresaFilialRepository.cs" />
+    <Compile Include="Repositories\EstoqueContabilRepository.cs" />
     <Compile Include="Repositories\EstoqueFisicoRepository.cs" />
     <Compile Include="Repositories\EstoqueMovimentoRepository.cs" />
+    <Compile Include="Repositories\LogAlteracaoCustoRepository.cs" />
     <Compile Include="Repositories\PessoaJuridicaRepository.cs" />
     <Compile Include="Repositories\PessoaRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SolUsuarioRepository.cs" />
+    <Compile Include="Repositories\SuperProdutoRepository.cs" />
     <Compile Include="Repositories\VendedorRepository.cs" />
     <Compile Include="Repositories\ViewProdutoRepository.cs" />
   </ItemGroup>

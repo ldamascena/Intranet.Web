@@ -1,10 +1,16 @@
-﻿app.controller('balancoCtrl', function ($scope, $uibModal, AlertaBalancoService) {
+﻿app.controller('balancoCtrl', function ($scope, $uibModal, AlertaBalancoService, cfpLoadingBar) {
+
+    $scope.exportData = function () {
+        alasql('SELECT CASE WHEN CdPessoaFilial = 1 THEN "TANGUA" WHEN CdPessoaFilial = 3 THEN "MAGÉ" WHEN CdPessoaFilial = 5 THEN "CATARINA" WHEN CdPessoaFilial = 6 THEN "MARICÁ" WHEN CdPessoaFilial = 9 THEN "ARSENAL" WHEN CdPessoaFilial = 10 THEN "AGUA MINERAL" WHEN CdPessoaFilial = 11 THEN "RIO BONITO" WHEN CdPessoaFilial = 12 THEN "ITABORAÍ" WHEN CdPessoaFilial = 13 THEN "MANILHA" WHEN CdPessoaFilial = 14 THEN "MAGÉ 2" WHEN CdPessoaFilial = 15 THEN "BACAXÁ" WHEN CdPessoaFilial = 17 THEN "ARARUAMA" WHEN CdPessoaFilial = 18 THEN "CABO FRIO" ELSE CdPessoaFilial END as Filial, CdProduto, NomeProduto, Estoque, DtInclusao, DtConcluido INTO XLSX("john.xlsx",{headers:true}) FROM ?', [$scope.dados]);
+    }
 
     $scope.submitted = false;
 
     AlertaBalancoService.getAll('','').then(function (response) {
         $scope.dados = response.data
-        
+        console.log(response.data);
+        //$scope.dadosExcel = [response.data.cdProduto, response.data.Pessoa.NomePessoa];
+        //console.log($scope.dadosExcel);
     });
 
     $scope.today = function () {

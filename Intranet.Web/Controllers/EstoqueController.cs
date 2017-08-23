@@ -13,5 +13,10 @@ namespace Intranet.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult AlteraCusto()
+        {
+            return View();
+        }
     }
 }
