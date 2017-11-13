@@ -47,6 +47,9 @@ namespace Intranet.Domain.Entities
         
         public int CdAlertaStatus { get; set; }
 
+        [DataMember]
+        public string NomeProduto { get; set; }
+
         public virtual AlertaGeral AlertaGeral { get; set; }
 
         [DataMember]

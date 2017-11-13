@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,9 +73,9 @@
     <Compile Include="ViewProdutoService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intranet.Data\Intranet.Data.csproj">
+    <ProjectReference Include="..\Intranet.Data\Intranet.Solidcon.Data.csproj">
       <Project>{4C4E1D0D-5082-42CC-825D-5BD676E8AC9A}</Project>
-      <Name>Intranet.Data</Name>
+      <Name>Intranet.Solidcon.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Intranet.Domain\Intranet.Domain.csproj">
       <Project>{56386C9C-1648-4ACA-A329-BFDC60DEBE2E}</Project>

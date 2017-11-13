@@ -1,0 +1,20 @@
+<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Alteracao de Grupo</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao desse grupo.</small>
+    </div>
+    <form role="form" name="signup_form">
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" placeholder="Nome do Grupo" name="grupo" ng-model="grupo" class="form-control" required>
+                <div class="m-t-xs" ng-show="signup_form.grupo.$invalid && signup_form.submitted">
+                    <small class="text-danger" ng-show="signup_form.grupo.$error.required">Preencha o nome do grupo!</small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="editar()">Salvar</button>
+        </div>
+    </form>
+</div>

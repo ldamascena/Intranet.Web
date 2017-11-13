@@ -1,4 +1,4 @@
-﻿using Intranet.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Repositories;
 using System;
@@ -21,16 +21,14 @@ namespace Intranet.Data.Repositories
         {
             return Db.EstoquesContabil.Where(x => x.CdSuperProduto == cdSuperProduto 
             && x.CdPessoaFilial == cdPessoaFilial 
-            && x.CdEstoqueTipo == 1
-            && x.SuperProduto.Produto.Any(e => e.NomeProduto == null)).FirstOrDefault();
+            && x.CdEstoqueTipo == 1).FirstOrDefault();
         }
 
         public EstoqueContabil GetByNomeSuperProduto(string nomeProduto, int cdPessoaFilial)
         {
             return Db.EstoquesContabil.Where(x => x.SuperProduto.NmProdutoPai == nomeProduto
             && x.CdPessoaFilial == cdPessoaFilial
-            && x.CdEstoqueTipo == 1
-            && x.SuperProduto.Produto.Any(e => e.NomeProduto == null)).FirstOrDefault();
+            && x.CdEstoqueTipo == 1).FirstOrDefault();
         }
     }
 }

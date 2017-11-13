@@ -41,15 +41,18 @@ namespace Intranet.Domain.Entities
         [Column(Order = 4)]
         public byte CdEstoqueTipo { get; set; }
 
+        [DataMember]
         [Column(TypeName = "money")]
         public decimal? VlEstoqueContabil { get; set; }
 
+        [DataMember]
         public decimal? QtEstoqueContabil { get; set; }
 
         [DataMember]
         [Column(TypeName = "money")]
         public decimal? VlUltimaCompra { get; set; }
 
+        [DataMember]
         public decimal? VlVerbaComercial { get; set; }
 
         [DataMember]

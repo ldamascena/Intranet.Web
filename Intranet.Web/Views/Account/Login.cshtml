@@ -1,0 +1,86 @@
+﻿<html ng-app="accountApp">
+<head>
+    <meta name="viewport" />
+    <title>Login</title>
+    <style>
+    </style>
+    <script src="~/scripts/angular.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-sanitize.min.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/angular-animate.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/Directive/angular-growl.js" type="text/javascript" language="javascript"></script>
+    <script src="~/scripts/Directive/ngStorage.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/AccountApp.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/Controllers/AccountCtrl.js" type="text/javascript" language="javascript"></script>
+
+    <script src="~/scripts/Services/AccountService.js" type="text/javascript" language="javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+    <link rel="stylesheet" href="~/Content/Account.css">
+    <link rel="stylesheet" href="~/Content/angular-growl.css">
+
+    <script>
+    </script>
+    <style>
+        .label {
+            text-align: left;
+        }
+    </style>
+</head>
+<body ng-controller="accountCtrl">
+    <div growl></div>
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Cadastro</label>
+            <div class="login-form">
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label for="email" class="label">Usuário</label>
+                        <input id="email" type="text" class="input" ng-model="userLogin">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Senha</label>
+                        <input id="pass" type="password" class="input" data-type="password" ng-model="passwordLogin">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Logar" ng-click="logar();">
+                    </div>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="sign-up-htm">
+                    <div class="group">
+                        <label for="email" class="label">Usuário</label>
+                        <input id="email" type="text" class="input" ng-model="userCadastrado">
+                    </div>
+                    <div class="group">
+                        <label for="email" class="label">Email</label>
+                        <input id="email" type="text" class="input" ng-model="emailCadastro">
+                    </div>
+                    <div class="group">
+                        <label for="setor" class="label">Setor</label>
+                        <input id="setor" type="text" class="input" ng-model="setor">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label" ng-model="passwordCadastro">Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Repita Password</label>
+                        <input id="pass" type="password" class="input" data-type="password" ng-model="passwordConfirm">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Solicitar" ng-click="solicitarCadastro();">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

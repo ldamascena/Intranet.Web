@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intranet.Data.Context
+namespace Intranet.Solidcon.Data.Context
 {
     public class CentralContext : DbContext
     {
         public CentralContext()
             : base("CentralContext")
         {
-
+            
         }
 
 
@@ -30,6 +30,7 @@ namespace Intranet.Data.Context
 
         public virtual DbSet<AlertaInversaoHistorico> AlertasInversaoHistorico { get; set; }
         public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
+        public virtual DbSet<VwAlertaInversaoAnalitico> VwAlertasInversaoAnalitico { get; set; }
 
         #endregion
 
@@ -84,15 +85,22 @@ namespace Intranet.Data.Context
 
         #endregion
 
-        public virtual DbSet<Pessoa> Pessoas { get; set; }
-
-
+        #region Sol
 
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
+        public virtual DbSet<SolLog> SolLogs { get; set; }
+        public virtual DbSet<SolParametro> SolParametros { get; set; }
+
+        #endregion
+
+        public virtual DbSet<Pessoa> Pessoas { get; set; }
+
+        
         public virtual DbSet<PessoaJuridica> PessoasJuridica { get; set; }
         public virtual DbSet<Vendedor> Vendedores { get; set; }
         public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
         public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
+        
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -247,6 +255,12 @@ namespace Intranet.Data.Context
                 .HasMany(e => e.Produto)
                 .WithRequired(e => e.SuperProduto)
                 .HasForeignKey(e => new { e.CdSuperProduto, e.CdEmpresa })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.SolParametroPessoa)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
             #endregion
 

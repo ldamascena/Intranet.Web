@@ -1,5 +1,5 @@
-﻿using Intranet.Data.Context;
-using Intranet.Domain.Interfaces;
+﻿using Intranet.Domain.Interfaces;
+using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

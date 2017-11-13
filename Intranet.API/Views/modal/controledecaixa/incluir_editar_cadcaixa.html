@@ -1,0 +1,64 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Cadastro Registro de Caixa</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao e inclusao registro de caixa.</small>
+    </div>
+    <form role="form" name="cadCaixaForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Hora *</label>
+                <input type="datetime" data-mask="99:99" placeholder="Hora" name="hora" ng-model="hora" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadCaixaForm.hora.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.hora.$error.required">Preencha a hora!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Supervisor *</label>
+                <input type="text" placeholder="Supervisor" name="supervisor" ng-model="supervisor" uib-typeahead="supervisorcomplete as supervisorcomplete.Nome +' '+supervisorcomplete.Sobrenome for supervisorcomplete in supervisores | filter:$viewValue | limitTo:8" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadCaixaForm.supervisor.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.supervisor.$error.required">Preencha o supervisor!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Operador *</label>
+                <input type="text" placeholder="Operador" name="operador" ng-model="operador" uib-typeahead="operadorcomplete as operadorcomplete.Nome +' '+operadorcomplete.Sobrenome for operadorcomplete in operadores | filter:$viewValue | limitTo:8" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadCaixaForm.operador.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.operador.$error.required">Preencha o operador!</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Caixa *</label>
+                <select placeholder="Caixa" name="caixa" ng-model="caixa" ng-options="caixacomplete.Id as caixacomplete.Nome for caixacomplete in caixas" class="form-control" required>
+                </select>
+                <div class="m-t-xs" ng-show="cadCaixaForm.caixa.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.caixa.$error.required">Preencha o caixa!</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Valor *</label>
+                <input type="text" placeholder="Valor" name="valor" ng-model="valor" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadCaixaForm.valor.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.valor.$error.required">Preencha o valor!</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Turno *</label>
+                <select class="form-control" ng-model="turno" ng-options="turnoObj.id as turnoObj.nome for turnoObj in turnos">
+                    <option value="">Selecione um turno</option>
+                </select>
+                <div class="m-t-xs" ng-show="cadCaixaForm.turno.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.turno.$error.required">Preencha o turno!</small>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-click="editar()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

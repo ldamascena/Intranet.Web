@@ -1,0 +1,295 @@
+﻿<!-- Wrapper-->
+<div class="wrapper" id="wrapper" ng-controller="controleCaixaCtrl as controleDeCaixa">
+
+    <!-- Page wraper -->
+    <!-- ng-class with current state name give you the ability to extended customization your view -->
+    <div class="gray-bg {{$state.current.name}}">
+        <div class="gray-bg {{$state.current.name}}">
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-1">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Caixa Geral</h5>
+                            <h1 class="no-margins">{{totalCaixaGeral | currency}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Divergencia</h5>
+                            <h3 ng-class="totalComposicao - ((totalCaixaGeral + totalCaixas + totalEntradas) - (totalDespesas + totalOutrasDespesas)) < 0 ? 'text-danger' : 'text-navy'">
+                                <i ng-class="totalComposicao - ((totalCaixaGeral + totalCaixas + totalEntradas) - (totalDespesas + totalOutrasDespesas)) < 0 ? 'fa fa-play fa-rotate-90' : 'fa fa-play fa-rotate-270'"></i> {{totalComposicao - ((totalCaixaGeral + totalCaixas + totalEntradas) - (totalDespesas + totalOutrasDespesas)) | currency}}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Caixa Geral (Atualizado)</h5>
+                            <h1 class="no-margins">{{totalCaixaGeral + totalCaixas - (totalDespesas + totalOutrasDespesas) + totalEntradas | currency}}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Caixas</h5>
+                            <h1 class="no-margins">{{totalCaixas | currency}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Saídas</h5>
+                            <h1 class="no-margins">{{totalDespesas + totalOutrasDespesas | currency}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Composição de Cofre</h5>
+                            <h1 class="no-margins">{{totalComposicao | currency}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <h5>Entradas</h5>
+                            <h1 class="no-margins">{{totalEntradas | currency}}</h1>
+                            <!--<div class="stat-percent font-bold">09/10/2017</div>
+                            <small>Data</small>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeIn">
+                <div class="row">
+                    <div>
+                        <div class="tabs-container">
+                            <uib-tabset>
+                                <uib-tab heading="Caixas">
+                                    <div class="panel-body">
+                                        <div class="ibox float-e-margins">
+                                            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluirCaixa()" ng-disabled="foiFechado"><i class="fa fa-plus"></i> Incluir</button>
+                                            <div class="ibox-title">
+                                                <h5><strong>Caixas</strong></h5>
+                                                <div ibox-tools></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="table-responsive">
+                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Hora</th>
+                                                                <th>Caixa</th>
+                                                                <th>Turno</th>
+                                                                <th>Valor</th>
+                                                                <th>Operador</th>
+                                                                <th>Supervisor</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="caixa in caixas">
+                                                                <td>{{caixa.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{caixa.Caixa.Nome}}</td>
+                                                                <td>{{caixa.Turno}}</td>
+                                                                <td>{{caixa.Valor | currency}}</td>
+                                                                <td>{{caixa.Atendente.Nome}} {{caixa.Atendente.Sobrenome}}</td>
+                                                                <td>{{caixa.Supervisor.Nome}} {{caixa.Supervisor.Sobrenome}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editarCaixa(caixa)" ng-disabled="foiFechado"><i class="fa fa-edit"></i> Alterar</button>
+                                                                    <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluirCaixa(caixa)" ng-disabled="foiFechado"><i class="fa fa-trash"></i> Deletar</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab heading="Saídas (Despesas)">
+                                    <div class="panel-body">
+                                        <div class="ibox float-e-margins">
+                                            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluirDespesa()" ng-disabled="foiFechado"><i class="fa fa-plus"></i> Incluir</button>
+                                            <div class="ibox-title">
+                                                <h5><strong>Despesas</strong></h5>
+                                                <div ibox-tools></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="table-responsive">
+                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Data de Abertura</th>
+                                                                <th>Tipo</th>
+                                                                <th>Solicitante</th>
+                                                                <th>Valor</th>
+                                                                <th>Motivo</th>
+                                                                <th>Status</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="despesa in despesas">
+                                                                <td>{{despesa.DataInclusao | date:'dd/MM/yyyy'}}</td>
+                                                                <td>{{despesa.TipoDespesa.Nome}}</td>
+                                                                <td>{{despesa.UsuarioInclusao.Nome}} {{despesa.UsuarioInclusao.Sobrenome}}</td>
+                                                                <td>{{despesa.VlDespesa | currency}}</td>
+                                                                <td>{{despesa.CadMotivoDesp.Motivo}}</td>
+                                                                <td>
+                                                                    <label ng-class="despesa.CadSitDesp.SitDesp.Situacao == 'Novo' ?
+                                           'badge badge-success' :
+                                           (despesa.CadSitDesp.SitDesp.Situacao == 'Aprovado' ?
+                                           'badge badge-primary' :
+                                           'badge badge-danger')">{{despesa.CadSitDesp.SitDesp.Situacao}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-outline btn-warning btn-rounded" ng-show="despesa.Baixa != 1" type="button" ng-click="baixar(despesa)" ng-disabled="foiFechado"> <i class="fa fa-level-down"></i> Baixar</button>
+                                                                    <label class="badge badge-warning" ng-show="despesa.Baixa == 1"> Baixado</label>
+                                                                </td>
+
+                                                                <td>
+                                                                    <button ng-show="despesa.CadSitDesp.SitDesp.IdSitDesp != 5 && despesa.CadSitDesp.SitDesp.IdSitDesp != 7" class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="visualizar(despesa)"><i class="fa fa-eye"></i> Visualizar</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab heading="Saídas (Outras)">
+                                    <div class="panel-body">
+                                        <div class="ibox float-e-margins">
+                                            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluirOutrasDespesas()" ng-disabled="foiFechado"><i class="fa fa-plus"></i> Incluir</button>
+                                            <div class="ibox-title">
+                                                <h5><strong>Outras Despesas</strong></h5>
+                                                <div ibox-tools></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="table-responsive">
+                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Hora</th>
+                                                                <th>Valor</th>
+                                                                <th>Descricao</th>
+                                                                <th>Observacao</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="outradespesa in outrasdespesas">
+                                                                <td>{{outradespesa.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{outradespesa.Valor | currency}}</td>
+                                                                <td>{{outradespesa.Descricao}}</td>
+                                                                <td>{{outradespesa.Observacao}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editarOutrasDespesas(outradespesa)" ng-disabled="foiFechado"><i class="fa fa-edit"></i> Alterar</button>
+                                                                    <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluirOutrasDespesas(outradespesa)" ng-disabled="foiFechado"><i class="fa fa-trash"></i> Deletar</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab heading="Entrada">
+                                    <div class="panel-body">
+                                        <div class="ibox float-e-margins">
+                                            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluirEntrada()" ng-disabled="foiFechado"><i class="fa fa-plus"></i> Incluir</button>
+                                            <div class="ibox-title">
+                                                <h5><strong>Entradas</strong></h5>
+                                                <div ibox-tools></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Hora</th>
+                                                            <th>Valor</th>
+                                                            <th>Descricao</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="entrada in entradas">
+                                                            <td>{{entrada.DataInclusao | date: 'HH:mm'}}</td>
+                                                            <td>{{entrada.Valor | currency}}</td>
+                                                            <td>{{entrada.Descricao}}</td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editarEntrada(entrada)" ng-disabled="foiFechado"><i class="fa fa-edit"></i> Alterar</button>
+                                                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluirEntrada(entrada)" ng-disabled="foiFechado"><i class="fa fa-trash"></i> Deletar</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab heading="Composiçao de Caixa">
+                                    <div class="panel-body">
+                                        <div class="ibox float-e-margins">
+                                            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluirComposicao()" ng-disabled="foiFechado"><i class="fa fa-plus"></i> Incluir</button>
+                                            <div class="ibox-title">
+                                                <h5><strong>Comp. De Caixa</strong></h5>
+                                                <div ibox-tools></div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="table-responsive">
+                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Hora</th>
+                                                                <th>Valor</th>
+                                                                <th>Descricao</th>
+                                                                <th>Observacao</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="composicao in composicoes">
+                                                                <td>{{composicao.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{composicao.Valor | currency}}</td>
+                                                                <td>{{composicao.Descricao}}</td>
+                                                                <td>{{composicao.Observacao}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editarComposicao(composicao)" ng-disabled="foiFechado"><i class="fa fa-edit"></i> Alterar</button>
+                                                                    <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluirComposicao(composicao)" ng-disabled="foiFechado"><i class="fa fa-trash"></i> Deletar</button>
+                                                                    <button class="btn btn-sm btn-outline btn-warning btn-rounded" type="button" ng-click="baixarComposicao(composicao)" ng-disabled="foiFechado" ng-show="composicao.Baixa == 1"><i class="fa fa-level-down"></i> Baixar</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab disable="foiFechado" ng-click="fechar();">
+                                    <uib-tab-heading class="text-danger">
+                                        Fechar <i class="fa fa-gavel"></i>
+                                    </uib-tab-heading>
+                                </uib-tab>
+                            </uib-tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

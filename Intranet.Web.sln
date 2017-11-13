@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Data", "Intranet.Data\Intranet.Data.csproj", "{4C4E1D0D-5082-42CC-825D-5BD676E8AC9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Solidcon.Data", "Intranet.Data\Intranet.Solidcon.Data.csproj", "{4C4E1D0D-5082-42CC-825D-5BD676E8AC9A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{56386C9C-1648-4ACA-A329-BFDC60DEBE2E} = {56386C9C-1648-4ACA-A329-BFDC60DEBE2E}
 	EndProjectSection
@@ -11,11 +11,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Domain", "Intranet.Domain\Intranet.Domain.csproj", "{56386C9C-1648-4ACA-A329-BFDC60DEBE2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Application", "Intranet.Application\Intranet.Application.csproj", "{36BB8621-236A-47FE-A0A7-F315BDB9368B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.API", "Intranet.API\Intranet.API.csproj", "{B8CED8DD-B123-4D89-B4CE-DC821BA8E48B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{547AF97C-E959-494D-8376-03134FDF9326} = {547AF97C-E959-494D-8376-03134FDF9326}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet", "Intranet\Intranet.csproj", "{880BD8F5-16F6-4EE6-A732-1FF916311470}"
 EndProject
@@ -25,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Service", "Intrane
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Web", "Intranet.Web\Intranet.Web.csproj", "{65A058C0-435F-4DF2-A679-02A6007AF602}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.Alvorada.Data", "Intranet.Alvorada.Data\Intranet.Alvorada.Data.csproj", "{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet.API", "Intranet.API\Intranet.API.csproj", "{322C0CBE-BFE8-4123-8314-30AF07FC07BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +43,6 @@ Global
 		{36BB8621-236A-47FE-A0A7-F315BDB9368B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36BB8621-236A-47FE-A0A7-F315BDB9368B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36BB8621-236A-47FE-A0A7-F315BDB9368B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8CED8DD-B123-4D89-B4CE-DC821BA8E48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8CED8DD-B123-4D89-B4CE-DC821BA8E48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8CED8DD-B123-4D89-B4CE-DC821BA8E48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8CED8DD-B123-4D89-B4CE-DC821BA8E48B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{880BD8F5-16F6-4EE6-A732-1FF916311470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{880BD8F5-16F6-4EE6-A732-1FF916311470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{880BD8F5-16F6-4EE6-A732-1FF916311470}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,6 +55,14 @@ Global
 		{65A058C0-435F-4DF2-A679-02A6007AF602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A058C0-435F-4DF2-A679-02A6007AF602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65A058C0-435F-4DF2-A679-02A6007AF602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{322C0CBE-BFE8-4123-8314-30AF07FC07BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322C0CBE-BFE8-4123-8314-30AF07FC07BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322C0CBE-BFE8-4123-8314-30AF07FC07BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{322C0CBE-BFE8-4123-8314-30AF07FC07BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

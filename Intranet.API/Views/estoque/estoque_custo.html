@@ -1,0 +1,72 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Produtos</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li>
+                <a>Estoque</a>
+            </li>
+            <li class="active">
+                <strong>Estoque</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row" ng-controller="estoqueContabilCtrl">
+        <div class="col-lg-12">
+            <div class="col-sm-3">
+                <input type="text" name="codigo" ng-model="codigo" class="form-control" placeholder="Codigo do Produto" />
+            </div>
+            <div class="col-sm-3">
+                <select chosen id="loja" class="chosen-select" tabindex="4" ng-model="loja" ng-options="loja.cdPessoaFilial as loja.nmFilial for loja in lojas"></select>
+            </div>
+
+            <div class="form-group col-lg-2">
+                <input type="button" class="btn btn-primary btn-rounded" value="Buscar" ng-click="Buscar();" />
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Estoque - <strong>Alteracao de Custo</strong></h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>CdSuperProduto</th>
+                                    <th>Produto</th>
+                                    <th>Tipo de Estoque</th>
+                                    <th>Valor Estoque</th>
+                                    <th>Qtd Estoque</th>
+                                    <th>Valor Ult Compra</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="estCusto in estoquesCusto">
+                                    <td>{{ estCusto.CdSuperProduto }}</td>
+                                    <td>{{ estCusto.SuperProduto.NmProdutoPai }}</td>
+                                    <td>{{ estCusto.EstoqueTipo.NmEstoqueTipo }}</td>
+                                    <td>{{ estCusto.VlEstoqueContabil }}</td>
+                                    <td>{{ estCusto.QtEstoqueContabil }}</td>
+                                    <td>{{ estCusto.VlUltimaCompra | currency}}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editar(estCusto)"><i class="fa fa-edit"></i> Alterar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

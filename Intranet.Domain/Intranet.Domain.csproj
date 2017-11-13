@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +42,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Selectors" />
+    <Reference Include="System.identitymodel.services" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -52,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AccountViewModels.cs" />
     <Compile Include="Entities\Alerta.cs" />
     <Compile Include="Entities\AlertaAnalitico.cs" />
     <Compile Include="Entities\AlertaBalanco.cs" />
@@ -63,6 +68,18 @@
     <Compile Include="Entities\AlertaStatus.cs" />
     <Compile Include="Entities\AlertaTipo.cs" />
     <Compile Include="Entities\AlertaUltimoCustoHistorico.cs" />
+    <Compile Include="Entities\CadFornecedorDesp.cs" />
+    <Compile Include="Entities\CadMotivoDesp.cs" />
+    <Compile Include="Entities\CadSitDesp.cs" />
+    <Compile Include="Entities\CadSolDesp.cs" />
+    <Compile Include="Entities\CadAtendente.cs" />
+    <Compile Include="Entities\CadSupervisor.cs" />
+    <Compile Include="Entities\CadCaixaControle.cs" />
+    <Compile Include="Entities\CadEntradaControle.cs" />
+    <Compile Include="Entities\CadComposicaoControle.cs" />
+    <Compile Include="Entities\CadOutra_DespControle.cs" />
+    <Compile Include="Entities\CadSaldoControle.cs" />
+    <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
@@ -70,18 +87,24 @@
     <Compile Include="Entities\EstoqueFisico.cs" />
     <Compile Include="Entities\EstoqueMovimento.cs" />
     <Compile Include="Entities\EstoqueTipo.cs" />
+    <Compile Include="Entities\Grupo.cs" />
     <Compile Include="Entities\LogAlteracaoCusto.cs" />
     <Compile Include="Entities\MetaMesCompras.cs" />
     <Compile Include="Entities\OrdemServicoDTO.cs" />
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\PessoaJuridica.cs" />
     <Compile Include="Entities\Produto.cs" />
+    <Compile Include="Entities\SituacaoDesp.cs" />
     <Compile Include="Entities\SolUsuario.cs" />
     <Compile Include="Entities\AlertaInversao.cs" />
     <Compile Include="Entities\AlertaUltimoCusto.cs" />
     <Compile Include="Entities\SuperProduto.cs" />
+    <Compile Include="Entities\SolLog.cs" />
+    <Compile Include="Entities\SolParametro.cs" />
+    <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
+    <Compile Include="Entities\VwAlertaInversaoAnalitico.cs" />
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
@@ -159,9 +182,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,5 +1,5 @@
 ﻿using Intranet.Application;
-using Intranet.Data.Context;
+using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
 
 namespace Intranet.API.Controllers
 {
@@ -63,6 +64,33 @@ namespace Intranet.API.Controllers
             catch (Exception ex)
             {
                 return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public IEnumerable<EstoqueContabil> GetByProdutoAndFilial(int cdSuperProduto, int cdPessoaFilial)
+        {
+            var context = new CentralContext();
+
+            return context.EstoquesContabil.Where(x => x.CdSuperProduto == cdSuperProduto && x.CdPessoaFilial == cdPessoaFilial);
+        }
+
+        public HttpResponseMessage Editar(EstoqueContabil model)
+        {
+            var context = new CentralContext();
+
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);

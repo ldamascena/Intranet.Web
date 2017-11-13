@@ -1,0 +1,18 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Alteracao de Parametro</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao de parametro filial.</small>
+    </div>
+    <form role="form" name="parametroFilial">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Modelo do Arquivo</label>
+                <select id="modelo" class="form-control" ng-model="modelo" ng-options="modelocomplete for modelocomplete in modelos"></select>
+                <!--<input type="text" placeholder="Modelo" name="modelo" ng-model="modelo" class="form-control">-->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-click="editar()">Salvar</button>
+        </div>
+    </form>
+</div>

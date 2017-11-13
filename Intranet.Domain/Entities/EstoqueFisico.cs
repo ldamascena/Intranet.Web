@@ -13,11 +13,13 @@ namespace Intranet.Domain.Entities
     [Table("tbEstoqueFisico")]
     public partial class EstoqueFisico
     {
+        [DataMember]
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdPessoaFilial { get; set; }
 
+        [DataMember]
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -29,6 +31,7 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public int CdProduto { get; set; }
 
+        [DataMember]
         [Key]
         [Column(Order = 3)]
         public byte CdEmpresaProduto { get; set; }
@@ -43,6 +46,7 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public decimal QtEmbalagem { get; set; }
 
+        [DataMember]
         [Key]
         [Column(Order = 6)]
         public byte CdEstoqueTipo { get; set; }
@@ -59,8 +63,10 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public decimal? QtComprometida { get; set; }
 
+        [DataMember]
         public DateTime? DtUltimaCompra { get; set; }
 
+        [DataMember]
         public decimal? QtUltimaCompra { get; set; }
 
         //[DataMember]

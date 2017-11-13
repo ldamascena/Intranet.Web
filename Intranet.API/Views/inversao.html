@@ -1,0 +1,61 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Balanco</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Aplicacoes</a>
+            </li>
+            <li>
+                <a>Alertas</a>
+            </li>
+            <li class="active">
+                <strong>Inversao</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row" ng-controller="inversaoCtrl">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Alerta - <strong>Inversao   </strong></h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+
+                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>CdProduto</th>
+                                <th>Nome Produto</th>
+                                <!--<th style="width:5px">N</th>
+                                <th style="width:5px">A</th>
+                                <th style="width:5px">C</th>
+                                <th style="width:5px">B</th>
+                                <th></th>-->
+                                <th></th>
+                                <th></th>
+                                <!--<th>Estoque</th>
+                                <th>Data do Ultimo Inversao</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="inversao in inversoes">
+                                <td>{{inversao.CdProduto}}</td>
+                                <td>{{inversao.NomeProduto}}</td>
+                                <td><button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="visualizar()"><i class="fa fa-eye"></i> Visualizar</button></td>
+                                <td><button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="historico()"><i class="fa fa-stack-exchange"></i> Histórico</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

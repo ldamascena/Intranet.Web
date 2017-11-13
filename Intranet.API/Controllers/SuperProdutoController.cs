@@ -1,4 +1,4 @@
-﻿using Intranet.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Interfaces.Repositories;
 using System;
@@ -7,20 +7,18 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Intranet.Domain.Entities;
 
 namespace Intranet.API.Controllers
 {
     public class SuperProdutoController : ApiController
     {
-        private ISuperProdutoRepository _repository;
-
         // GET: api/SuperProduto
-        public IEnumerable<string> GetAllSuperProdutos()
+        public IEnumerable<SuperProduto> GetAll()
         {
             var context = new CentralContext();
-            _repository = new SuperProdutoRepository(context);
 
-            return _repository.GetAll().Select(x => x.NmProdutoPai);
+            return context.SuperProdutos.ToList();
         }
     }
 }

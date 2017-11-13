@@ -1,5 +1,5 @@
 ﻿using Intranet.Application;
-using Intranet.Data.Context;
+using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
@@ -21,7 +21,7 @@ namespace Intranet.API.Controllers
         private IAlertaInversaoApp _app;
 
         // GET: api/AlertaInversao
-        public IEnumerable<AlertaInversao> Get()
+        public IEnumerable<AlertaInversao> GetAll()
         {
             _repository = new AlertaInversaoRepository(new CentralContext());
             _service = new AlertaInversaoService(_repository);
@@ -29,7 +29,6 @@ namespace Intranet.API.Controllers
             return _app.GetAll();
         }
 
-        [HttpGet]
         public IEnumerable<AlertaInversao> GetInvertidosPorProduto(int cdProduto)
         {
             _repository = new AlertaInversaoRepository(new CentralContext());
@@ -37,6 +36,13 @@ namespace Intranet.API.Controllers
             _app = new AlertaInversaoApp(_service);
 
             return _app.ObterPorProduto(cdProduto);
+        }
+
+        public IEnumerable<VwAlertaInversaoAnalitico> GetAllAnalitico()
+        {
+            var context = new CentralContext();
+
+            return context.VwAlertasInversaoAnalitico.OrderByDescending(x => x.Abertos).ToList();
         }
     }
 }

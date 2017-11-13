@@ -1,0 +1,29 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Supervisor</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao e inclusão de supervisores.</small>
+    </div>
+    <form role="form" name="cadSupervisorForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nome*</label>
+                <input type="text" placeholder="Nome" name="nome" ng-model="nome" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadSupervisorForm.nome.$invalid && cadSupervisorForm.submitted">
+                    <small class="text-danger" ng-show="cadSupervisorForm.nome.$error.required">Preencha o nome do supervisor!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sobrenome*</label>
+                <input type="text" placeholder="Sobrenome" name="sobrenome" ng-model="sobrenome" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadSupervisorForm.sobrenome.$invalid && cadSupervisorForm.submitted">
+                    <small class="text-danger" ng-show="cadSupervisorForm.sobrenome.$error.required">Preencha o sobrenome do supervisor!</small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-click="editar()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

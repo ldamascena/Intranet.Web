@@ -5,7 +5,7 @@
     // Alerta Geral
 
     this.Getall = function (tipoAlerta, situacao) {
-        return $http.get(serviceBaseProducao + "api/AlertaGeral/Get?tipoAlerta=" + tipoAlerta + "&situacao=" + situacao).then(function (response) {
+        return $http.get(serviceBase + "api/AlertaGeral/Get?tipoAlerta=" + tipoAlerta + "&situacao=" + situacao).then(function (response) {
             return response
         }, function (response) {
             return alert("Erro: " + response.status);
@@ -13,7 +13,7 @@
     }
 
     this.GetContainsNomeProduto = function (nomeProduto) {
-        return $http.get(serviceBaseProducao + "api/AlertaGeral/GetContainsNomeProduto?nomeProduto=" + nomeProduto).then(function (response) {
+        return $http.get(serviceBase + "api/AlertaGeral/GetContainsNomeProduto?nomeProduto=" + nomeProduto).then(function (response) {
             return response
         }, function (response) {
             return alert("Erro: " + response.status);
@@ -21,7 +21,7 @@
     }
 
     this.GetGeralPorProduto = function (id) {
-        return $http.get(serviceBaseProducao + "api/AlertaGeral/GetGeralPorProduto?cdProduto=" + id).then(function (response) {
+        return $http.get(serviceBase + "api/AlertaGeral/GetGeralPorProduto?cdProduto=" + id).then(function (response) {
             return response
         }, function (response) {
             return alert("Erro: " + response.status);

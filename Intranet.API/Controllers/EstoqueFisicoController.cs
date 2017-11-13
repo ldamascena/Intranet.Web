@@ -1,5 +1,5 @@
 ﻿using Intranet.Application;
-using Intranet.Data.Context;
+using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
 
 namespace Intranet.API.Controllers
 {
@@ -84,6 +85,40 @@ namespace Intranet.API.Controllers
             catch (Exception ex)
             {
                 return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /* V2 Métodos */
+
+        public IEnumerable<EstoqueFisico> GetAllByCodigoProdutoAndFilial(int cdProduto, int cdFilial, int cdEstoqueTipo)
+        {
+            //_repositoryFisico = new EstoqueFisicoRepository(new CentralContext());
+            //_repositoryMovimento = new EstoqueMovimentoRepository(new CentralContext());
+            //_service = new EstoqueFisicoService(_repositoryFisico, _repositoryMovimento);
+            //_app = new EstoqueFisicoApp(_service);
+
+            var context = new CentralContext();
+
+            return context.EstoquesFisico.Where(x => x.CdProduto == cdProduto && x.CdPessoaFilial == cdFilial && x.CdEstoqueTipo == cdEstoqueTipo).ToList();
+        }
+
+        public HttpResponseMessage Editar(EstoqueFisico model)
+        {
+            var context = new CentralContext();
+
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);

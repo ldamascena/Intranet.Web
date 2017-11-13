@@ -1,5 +1,4 @@
 ﻿using Intranet.Application;
-using Intranet.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
@@ -7,8 +6,10 @@ using Intranet.Domain.Interfaces.Applications;
 using Intranet.Domain.Interfaces.Repositories;
 using Intranet.Domain.Interfaces.Services;
 using Intranet.Service;
+using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,7 +29,7 @@ namespace Intranet.API.Controllers
         private IAlertaBalancoApp _app;
 
         // GET: api/AlertaBalanco
-        public IEnumerable<AlertaBalanco> GetAll(int? situacao = null, DateTime? dataInclusao = null)
+        public IEnumerable<AlertaBalanco> GetAll()
         {
             var context = new CentralContext();
 
@@ -41,7 +42,7 @@ namespace Intranet.API.Controllers
             _service = new AlertaBalancoService(_repository, _repositoryQuarentena, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico, _repositoryGeral);
             _app = new AlertaBalancoApp(_service);
 
-            return _app.GetAll(situacao, dataInclusao);
+            return _app.GetAll().OrderByDescending(x => x.DtInclusao);
         }
 
         public IEnumerable<AlertaBalanco> GetBalancoContainsNomeProduto(string nomeProduto)

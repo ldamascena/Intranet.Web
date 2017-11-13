@@ -1,4 +1,4 @@
-﻿using Intranet.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using System;

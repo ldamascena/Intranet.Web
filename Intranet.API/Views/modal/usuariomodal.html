@@ -1,0 +1,35 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Alteracao de Usuario</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao de usuario.</small>
+    </div>
+    <form role="form" name="usuarioForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nome *</label>
+                <input type="text" placeholder="Nome" name="nome" ng-model="nome" class="form-control" required>
+                <div class="m-t-xs" ng-show="usuarioForm.nome.$invalid && usuarioForm.submitted">
+                    <small class="text-danger" ng-show="usuarioForm.nome.$error.required">Preencha o nome!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nome *</label>
+                <input type="text" placeholder="Sobrenome" name="sobrenome" ng-model="sobrenome" class="form-control" required>
+                <div class="m-t-xs" ng-show="usuarioForm.sobrenome.$invalid && usuarioForm.submitted">
+                    <small class="text-danger" ng-show="usuarioForm.nome.$error.required">Preencha o sobrenome!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nome *</label>
+                <input type="text" placeholder="E-mail" name="email" ng-model="email" class="form-control" required>
+                <div class="m-t-xs" ng-show="usuarioForm.email.$invalid && usuarioForm.submitted">
+                    <small class="text-danger" ng-show="usuarioForm.email.$error.required">Preencha o email!</small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="editar()">Salvar</button>
+        </div>
+    </form>
+</div>

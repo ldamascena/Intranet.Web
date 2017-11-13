@@ -57,15 +57,15 @@ namespace Intranet.Service
                 {
                     _repositoryHistorico.Add(new AlertaHistorico
                     {
-                       CdAlerta = resultInversao.CdAlertaInv,
-                       CdPessoaFilial = resultInversao.CdPessoaFilial,
-                       CdProduto = resultInversao.CdProduto,
-                       CdTipoAlerta = resultInversao.CdTipoAlerta,
-                       DataDoHistorico = DateTime.Now,
-                       DescricaoHistorico = "Retorno de solicitação de balanço do produto",
-                       StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus,
-                       StatusAlertaAtual = "Concluido",
-                       NomeUsuario = "Inventário"
+                        CdAlerta = resultInversao.CdAlertaInv,
+                        CdPessoaFilial = resultInversao.CdPessoaFilial,
+                        CdProduto = resultInversao.CdProduto,
+                        CdTipoAlerta = resultInversao.CdTipoAlerta,
+                        DataDoHistorico = DateTime.Now,
+                        DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço feito",
+                        StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus,
+                        StatusAlertaAtual = "Concluido",
+                        NomeUsuario = "Inventário"
                     });
                     resultInversao.CdAlertaStatus = 3;
                     _repositoryInversao.Update(resultInversao);
@@ -86,7 +86,61 @@ namespace Intranet.Service
                         CdProduto = resultUltimoCusto.CdProduto,
                         CdTipoAlerta = resultUltimoCusto.CdTipoAlerta,
                         DataDoHistorico = DateTime.Now,
-                        DescricaoHistorico = "Retorno de solicitação de balanço do produto",
+                        DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço feito",
+                        StatusAlertaAnterior = resultUltimoCusto.AlertaStatus.nomeStatus,
+                        StatusAlertaAtual = "Concluido",
+                        NomeUsuario = "Inventário"
+                    });
+
+                    resultUltimoCusto.CdAlertaStatus = 3;
+                    _repositoryUltimoCusto.Update(resultUltimoCusto);
+                    resultGeral.Concluido++;
+                    resultGeral.Analise--;
+                    resultGeral.AlertaEmAberto--;
+                    resultGeral.Severidade = resultGeral.Severidade - 4;
+                    _repositoryGeral.Update(resultGeral);
+                }
+            }
+
+            else
+            {
+                var resultGeral = _repositoryGeral.Get(x => x.CdProduto == obj.CdProduto);
+                var resultInversao = _repositoryInversao.Get(x => x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial);
+
+                if (resultInversao != null)
+                {
+                    _repositoryHistorico.Add(new AlertaHistorico
+                    {
+                        CdAlerta = resultInversao.CdAlertaInv,
+                        CdPessoaFilial = resultInversao.CdPessoaFilial,
+                        CdProduto = resultInversao.CdProduto,
+                        CdTipoAlerta = resultInversao.CdTipoAlerta,
+                        DataDoHistorico = DateTime.Now,
+                        DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço não feito",
+                        StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus,
+                        StatusAlertaAtual = "Concluido",
+                        NomeUsuario = "Inventário"
+                    });
+                    resultInversao.CdAlertaStatus = 3;
+                    _repositoryInversao.Update(resultInversao);
+                    resultGeral.Concluido++;
+                    resultGeral.Analise--;
+                    resultGeral.AlertaEmAberto--;
+                    resultGeral.Severidade = resultGeral.Severidade - 3;
+                    _repositoryGeral.Update(resultGeral);
+                }
+
+                var resultUltimoCusto = _repositoryUltimoCusto.Get(x => x.CdProduto == obj.CdProduto && x.CdPessoaFilial == obj.CdPessoaFilial);
+                if (resultUltimoCusto != null)
+                {
+                    _repositoryHistorico.Add(new AlertaHistorico
+                    {
+                        CdAlerta = resultUltimoCusto.CdAlertaUltCusto,
+                        CdPessoaFilial = resultUltimoCusto.CdPessoaFilial,
+                        CdProduto = resultUltimoCusto.CdProduto,
+                        CdTipoAlerta = resultUltimoCusto.CdTipoAlerta,
+                        DataDoHistorico = DateTime.Now,
+                        DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço não feito",
                         StatusAlertaAnterior = resultUltimoCusto.AlertaStatus.nomeStatus,
                         StatusAlertaAtual = "Concluido",
                         NomeUsuario = "Inventário"

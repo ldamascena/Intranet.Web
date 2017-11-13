@@ -1,0 +1,44 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Cadastro Solicitacao</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao e inclusao solicitacao de despesas.</small>
+    </div>
+    <form role="form" name="cadSolDespForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Motivo *</label>
+                <input type="text" placeholder="Motivo" name="motivo" ng-model="motivo" uib-typeahead="motivocomplete as motivocomplete.Motivo for motivocomplete in motivos | filter:$viewValue | limitTo:8" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadSolDespForm.motivo.$invalid && cadSolDespForm.submitted">
+                    <small class="text-danger" ng-show="cadSolDespForm.motivo.$error.required">Preencha o motivo!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Valor *</label>
+                <input type="text" placeholder="Valor" name="valor" ng-model="valor" class="form-control" required >
+                <div class="m-t-xs" ng-show="cadSolDespForm.valor.$invalid && cadSolDespForm.submitted">
+                    <small class="text-danger" ng-show="cadSolDespForm.valor.$error.required">Preencha o valor!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nº Documento</label>
+                <input type="text" placeholder="Documento" name="documento" ng-model="documento" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Favorecido *</label>
+                <input type="text" placeholder="Favorecido" name="favorecido" ng-model="favorecido" class="form-control" required>
+                <div class="m-t-xs" ng-show="cadSolDespForm.favorecido.$invalid && cadSolDespForm.submitted">
+                    <small class="text-danger" ng-show="cadSolDespForm.favorecido.$error.required">Preencha o favorecido!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Observacao</label>
+                <textarea placeholder="Observacao" name="observacao" ng-model="observacao" class="form-control" style="height:150px;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-click="editar()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

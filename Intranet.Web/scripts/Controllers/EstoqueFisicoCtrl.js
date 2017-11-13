@@ -1,6 +1,22 @@
-﻿app.controller('estoqueCtrl', function ($scope, $interval, $filter, $location, $uibModal, EstoqueService) {
+﻿app.controller('estoqueCtrl', function ($scope, $sessionStorage, $interval, $filter, $location, $uibModal, EstoqueService) {
+
+
+
+    if ($sessionStorage.userLogin == undefined) {
+
+
+        window.location.pathname = "Account/Login"
+    }
+
+
+    $scope.logOut = function () {
+        $sessionStorage.$reset();
+    }
 
     $scope.Pesquisar = function () {
+
+        //alert(window.location);
+
         $scope.cdProduto = 0;
         $scope.cdProduto = $scope.pesquisar.cdProduto;
 
