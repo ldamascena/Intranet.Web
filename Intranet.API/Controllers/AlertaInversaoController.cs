@@ -1,5 +1,4 @@
 ﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
@@ -11,36 +10,71 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
+using Intranet.Alvorada.Data.Context;
 
 namespace Intranet.API.Controllers
 {
     public class AlertaInversaoController : ApiController
     {
-        private IAlertaInversaoRepository _repository;
-        private IAlertaInversaoService _service;
-        private IAlertaInversaoApp _app;
-
+        
         // GET: api/AlertaInversao
         public IEnumerable<AlertaInversao> GetAll()
         {
-            _repository = new AlertaInversaoRepository(new CentralContext());
-            _service = new AlertaInversaoService(_repository);
-            _app = new AlertaInversaoApp(_service);
-            return _app.GetAll();
+            var context = new AlvoradaContext();
+
+            return context.AlertasInversao.ToList();
         }
 
         public IEnumerable<AlertaInversao> GetInvertidosPorProduto(int cdProduto)
         {
-            _repository = new AlertaInversaoRepository(new CentralContext());
-            _service = new AlertaInversaoService(_repository);
-            _app = new AlertaInversaoApp(_service);
+            var context = new AlvoradaContext();
 
-            return _app.ObterPorProduto(cdProduto);
+            return context.AlertasInversao.Where(x => x.CdProduto == cdProduto).ToList();
+        }
+
+        public HttpResponseMessage Alterar(AlertaInversao model)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage AlterarTodos(List<AlertaInversao> models)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                foreach (var item in models)
+                {
+                    context.Entry(item).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         public IEnumerable<VwAlertaInversaoAnalitico> GetAllAnalitico()
         {
-            var context = new CentralContext();
+            var context = new AlvoradaContext();
 
             return context.VwAlertasInversaoAnalitico.OrderByDescending(x => x.Abertos).ToList();
         }

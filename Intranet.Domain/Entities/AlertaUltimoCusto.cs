@@ -17,11 +17,12 @@ namespace Intranet.Domain.Entities
         }
 
         [DataMember]
-        [Key]
-        [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CdAlertaUltCusto { get; set; }
 
         [DataMember]
+        [Key]
+        [Column(Order = 0)]
         public int CdProduto { get; set; }
 
         [DataMember]
@@ -51,12 +52,18 @@ namespace Intranet.Domain.Entities
         public DateTime UltData { get; set; }
 
 
+        [DataMember]
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdTipoAlerta { get; set; }
 
+        [DataMember]
         public int CdAlertaStatus { get; set; }
+
+        [DataMember]
+        [Column("nomeProduto")]
+        public string NomeProduto { get; set; }
 
         [DataMember]
         public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }

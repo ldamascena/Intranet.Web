@@ -19,7 +19,7 @@ namespace Intranet.Domain.Entities
             AlertasInversao = new HashSet<AlertaInversao>();
             AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
             AlertaQuarentena = new HashSet<AlertaQuarentena>();
-            AlertaBalanco = new HashSet<AlertaBalanco>();
+            AlertasBalanco = new HashSet<AlertaBalanco>();
             SolParametroPessoa = new HashSet<SolParametro>();
         }
 
@@ -51,7 +51,7 @@ namespace Intranet.Domain.Entities
 
         public virtual ICollection<AlertaQuarentena> AlertaQuarentena { get; set; }
 
-        public virtual ICollection<AlertaBalanco> AlertaBalanco { get; set; }
+        public virtual ICollection<AlertaBalanco> AlertasBalanco { get; set; }
 
         public virtual ICollection<SolParametro> SolParametroPessoa { get; set; }
     }

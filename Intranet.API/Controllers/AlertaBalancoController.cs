@@ -1,4 +1,5 @@
-﻿using Intranet.Application;
+﻿using Intranet.Alvorada.Data.Context;
+using Intranet.Application;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
@@ -9,7 +10,7 @@ using Intranet.Service;
 using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
-
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,91 +20,77 @@ namespace Intranet.API.Controllers
 {
     public class AlertaBalancoController : ApiController
     {
-        private IAlertaBalancoRepository _repository;
-        private IAlertaQuarentenaRepository _repositoryQuarentena;
-        private IAlertaInversaoRepository _repositoryInversao;
-        private IAlertaUltimoCustoRepository _repositoryUltimoCusto;
-        private IAlertaHistoricoRepository _repositoryHistorico;
-        private IAlertaGeralRepository _repositoryGeral;
-        private IAlertaBalancoService _service;
-        private IAlertaBalancoApp _app;
-
+        
         // GET: api/AlertaBalanco
         public IEnumerable<AlertaBalanco> GetAll()
         {
-            var context = new CentralContext();
+            var context = new AlvoradaContext();
 
-            _repository = new AlertaBalancoRepository(context);
-            _repositoryQuarentena = new AlertaQuarentenaRepository(context);
-            _repositoryInversao = new AlertaInversaoRepository(context);
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(context);
-            _repositoryHistorico = new AlertaHistoricoRepository(context);
-            _repositoryGeral = new AlertaGeralRepository(context);
-            _service = new AlertaBalancoService(_repository, _repositoryQuarentena, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico, _repositoryGeral);
-            _app = new AlertaBalancoApp(_service);
-
-            return _app.GetAll().OrderByDescending(x => x.DtInclusao);
+            return context.AlertasBalanco.OrderByDescending(x => x.DtInclusao).ToList();
         }
 
-        public IEnumerable<AlertaBalanco> GetBalancoContainsNomeProduto(string nomeProduto)
+        public HttpResponseMessage Incluir([FromBody] AlertaBalanco obj)
         {
-            var context = new CentralContext();
-
-            _repository = new AlertaBalancoRepository(context);
-            _repositoryQuarentena = new AlertaQuarentenaRepository(context);
-            _repositoryInversao = new AlertaInversaoRepository(context);
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(context);
-            _repositoryHistorico = new AlertaHistoricoRepository(context);
-            _repositoryGeral = new AlertaGeralRepository(context);
-            _service = new AlertaBalancoService(_repository, _repositoryQuarentena, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico, _repositoryGeral);
-            _app = new AlertaBalancoApp(_service);
-
-            return _app.GetBalancoContainsNomeProduto(nomeProduto);
-        }
-
-        public IEnumerable<AlertaBalanco> GetBalancoPorProduto(int cdProduto)
-        {
-            var context = new CentralContext();
-
-            _repository = new AlertaBalancoRepository(context);
-            _repositoryQuarentena = new AlertaQuarentenaRepository(context);
-            _repositoryInversao = new AlertaInversaoRepository(context);
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(context);
-            _repositoryHistorico = new AlertaHistoricoRepository(context);
-            _repositoryGeral = new AlertaGeralRepository(context);
-            _service = new AlertaBalancoService(_repository, _repositoryQuarentena, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico, _repositoryGeral);
-            _app = new AlertaBalancoApp(_service);
-
-            return _app.GetBalancoPorProduto(cdProduto);
-        }
-
-        public HttpResponseMessage UpdateBalanco([FromBody] AlertaBalanco obj)
-        {
-            var context = new CentralContext();
-
-            _repository = new AlertaBalancoRepository(context);
-            _repositoryQuarentena = new AlertaQuarentenaRepository(context);
-            _repositoryInversao = new AlertaInversaoRepository(context);
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(context);
-            _repositoryHistorico = new AlertaHistoricoRepository(context);
-            _repositoryGeral = new AlertaGeralRepository(context);
-            _service = new AlertaBalancoService(_repository, _repositoryQuarentena, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico, _repositoryGeral);
-            _app = new AlertaBalancoApp(_service);
+            var context = new AlvoradaContext();
 
             try
             {
-                _app.UpdateBalanco(obj);
-
+                obj.Status = 0;
+                obj.DtInclusao = DateTime.Now;
+                context.AlertasBalanco.Add(obj);
+                context.SaveChanges();
             }
+
             catch (Exception ex)
             {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
-                {
-                    Error = ex.Message
-                });
+                throw ex;
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+
+        // To do
+
+        public HttpResponseMessage Aprovar([FromBody] AlertaBalanco obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                obj.Status = 2;
+                obj.DtConcluido = DateTime.Now;
+                context.Entry(obj).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+
+        public HttpResponseMessage Reprovar([FromBody] AlertaBalanco obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                obj.Status = 1;
+                obj.DtConcluido = DateTime.Now;
+                context.Entry(obj).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
     }
 }

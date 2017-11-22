@@ -27,6 +27,34 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<CadOutrasDespControle> CadOutrasDespsControle { get; set; }
         public virtual DbSet<CadSaldoControle> CadSaldosControle { get; set; }
 
+        #region Inversão
+
+        public virtual DbSet<AlertaInversaoHistorico> AlertasInversaoHistorico { get; set; }
+        public virtual DbSet<AlertaInversao> AlertasInversao { get; set; }
+        public virtual DbSet<VwAlertaInversaoAnalitico> VwAlertasInversaoAnalitico { get; set; }
+
+        #endregion
+
+        #region Ultimo Custo
+
+        public virtual DbSet<AlertaUltimoCustoHistorico> AlertaUltimoCustoHistorico { get; set; }
+        public virtual DbSet<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
+        public virtual DbSet<VwAlertaUltCustoAnalitico> VwAlertasUltCustoAnalitico { get; set; }
+
+        #endregion
+
+        #region Outras
+
+        public virtual DbSet<AlertaManual> AlertaManuais { get; set; }
+        public virtual DbSet<AlertaHistorico> AlertasHistorico { get; set; }
+        public virtual DbSet<AlertaTipo> AlertasTipo { get; set; }
+        public virtual DbSet<AlertaQuarentena> AlertasQuarentena { get; set; }
+        public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
+        public virtual DbSet<AlertaBalanco> AlertasBalanco { get; set; }
+        public virtual DbSet<VwAlertasAnalitico> VwAlertasAnalitico { get; set; }
+
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
@@ -165,6 +193,91 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.SaldosUsuarioAlteracao)
                 .WithRequired(e => e.UsuarioAlteracao)
                 .HasForeignKey(e => e.IdUsuarioAlteracao)
+                .WillCascadeOnDelete(false);
+
+            //Alerta Histórico
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasHistorico)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.AlertaHistoricos)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Inversão
+
+            modelBuilder.Entity<AlertaTipo>()
+                .HasMany(e => e.AlertasInversao)
+                .WithRequired(e => e.AlertaTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaInversao)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasInversao)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Ultimo Custo
+
+            modelBuilder.Entity<AlertaTipo>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.AlertaTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Quarentena
+
+            modelBuilder.Entity<AlertaInversao>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaInversao)
+                .HasForeignKey(e => new { e.CdProduto, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<AlertaUltimoCusto>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaUltimoCusto)
+                .HasForeignKey(e => new { e.CdProduto, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaQuarentena)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Balanço
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasBalanco)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
         }
     }

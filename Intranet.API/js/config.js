@@ -847,12 +847,26 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             }
         })
         .state('alertas.ultcusto', {
-            url: "/aprovprod",
-            templateUrl: "views/cadprod/aprov_produto.html",
-            data: { pageTitle: 'Produto - Aprov Cadastro de Produto' },
+            url: "/ultcusto",
+            templateUrl: "views/alertas/ultimocusto.html",
+            data: { pageTitle: 'Alerta - Ultimo Custo' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
                         {
                             files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
                         },
@@ -863,7 +877,39 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                     ]);
                 }
             }
-        });
+        })
+        .state('alertas.balanco', {
+        url: "/balanco",
+        templateUrl: "views/alertas/balanco.html",
+        data: { pageTitle: 'Alerta - Balanco' },
+        resolve: {
+            loadPlugin: function ($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                    {
+                        serie: true,
+                        files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                    },
+                    {
+                        serie: true,
+                        name: 'datatables',
+                        files: ['js/plugins/dataTables/angular-datatables.min.js']
+                    },
+                    {
+                        serie: true,
+                        name: 'datatables.buttons',
+                        files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                    },
+                    {
+                        files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                    },
+                    {
+                        name: 'oitozero.ngSweetAlert',
+                        files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                    }
+                ]);
+            }
+        }
+    });
 
 }
 angular

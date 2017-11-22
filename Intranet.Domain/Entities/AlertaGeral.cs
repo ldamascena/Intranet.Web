@@ -18,7 +18,7 @@ namespace Intranet.Domain.Entities
             //    AlertasHistorico = new HashSet<AlertaHistorico>();
             //    AlertaInversao = new HashSet<AlertaInversao>();
             //    AlertaUltimoCusto = new HashSet<AlertaUltimoCusto>();
-            AlertasQuarentena = new HashSet<AlertaQuarentena>();
+            //AlertasQuarentena = new HashSet<AlertaQuarentena>();
         }
 
         [NotMapped]
@@ -57,8 +57,8 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public string Vinculado { get; set; }
 
-        [DataMember]
-        public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
+        //[DataMember]
+        //public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
 
         //[DataMember]
         //public virtual ICollection<AlertaHistorico> AlertasHistorico { get; set; }

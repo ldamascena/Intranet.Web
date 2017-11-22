@@ -1,0 +1,31 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao de Observacao</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao de observacao de inversao.</small>
+    </div>
+    <form role="form" name="cadSolDespForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Observacao</label>
+                <textarea placeholder="Observacao" name="observacao" ng-model="observacao" class="form-control" style="height:150px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select placeholder="Status" name="status" ng-model="status" ng-options="statuscomplete as statuscomplete.nomeStatus for statuscomplete in statusAll" class="form-control" required></select>
+                <div class="m-t-xs" ng-show="cadCaixaForm.status.$invalid && cadCaixaForm.submitted">
+                    <small class="text-danger" ng-show="cadCaixaForm.status.$error.required">Preencha o status!</small>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="tipo == 2">
+                <label>Codigo Produto Invertido</label>
+                <input type="text" placeholder="Produto invertido" name="invertido" ng-model="invertido" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="alterar()">Salvar</button>
+        </div>
+    </form>
+</div>

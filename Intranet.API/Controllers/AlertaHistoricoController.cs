@@ -1,5 +1,4 @@
 ﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
@@ -13,222 +12,76 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Intranet.Alvorada.Data.Context;
 
 namespace Intranet.API.Controllers
 {
     public class AlertaHistoricoController : ApiController
     {
-        private CentralContext context;
+        private AlvoradaContext context;
 
-        #region Repositories 
+        #region Controllers Methods
 
-        private IAlertaHistoricoRepository _alertaHistoricoRepository;
-        private IAlertaGeralRepository _alertaGeralRepository;
-        private IAlertaInversaoRepository _alertaInversaoRepository;
-        private IAlertaUltimoCustoRepository _alertaUltimoCustoRepository;
-        private IAlertaManualRepository _alertaManualRepository;
-        private IAlertaQuarentenaRepository _alertaQuarentenaRepository;
-        private IAlertaBalancoRepository _repositoryBalanco;
-        private IEstoqueFisicoRepository _repositoryEstqqueFisico;
-
-        #endregion
-
-        #region Services
-
-        private IAlertaHistoricoService _alertaHistoricoService;
-
-        #endregion
-
-        #region App
-
-        private IAlertaHistoricoApp _alertaHistoricoApp;
-
-        #endregion
-
-    #region Controllers Methods
-
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricoManual([FromBody] AlertaHistorico obj)
+        public IEnumerable<AlertaHistorico> GetAll()
         {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
+            context = new AlvoradaContext();
+
+            return context.AlertasHistorico.ToList();
+        }
+
+        public IEnumerable<AlertaHistorico> GetHistoricoByProdutoFilialTipoAlerta(int cdProduto, int cdPessoaFilial, int cdTipoAlerta)
+        {
+            context = new AlvoradaContext();
+
+            return context.AlertasHistorico
+                .Where(x => x.CdProduto == cdProduto && x.CdPessoaFilial == cdPessoaFilial && x.CdTipoAlerta == cdTipoAlerta)
+                .OrderByDescending(x => x.DataDoHistorico)
+                .ToList();
+        }
+
+        public HttpResponseMessage Incluir([FromBody] AlertaHistorico model)
+        {
+            context = new AlvoradaContext();
+
             try
             {
-                _alertaHistoricoApp.CadastrarHistoricoManual(obj);
-
+                model.DataDoHistorico = DateTime.Now;
+                context.AlertasHistorico.Add(model);
+                context.SaveChanges();
             }
+
             catch (Exception ex)
             {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                throw ex;
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricosManual([FromBody] AlertaHistorico obj)
+        public HttpResponseMessage IncluirTodos([FromBody] List<AlertaHistorico> models)
         {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
+            context = new AlvoradaContext();
+
             try
             {
-                _alertaHistoricoApp.CadastrarHistoricosManual(obj);
-
+                foreach (var item in models)
+                {
+                    item.DataDoHistorico = DateTime.Now;
+                    context.AlertasHistorico.Add(item);
+                    context.SaveChanges();
+                }
+                
             }
+
             catch (Exception ex)
             {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                throw ex;
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricoInversao([FromBody] AlertaHistorico obj)
-        {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
-            try
-            {
-                _alertaHistoricoApp.CadastrarHistoricoInversao(obj);
-
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricosInversao([FromBody] AlertaHistorico obj)
-        {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
-            try
-            {
-                _alertaHistoricoApp.CadastrarHistoricosInversao(obj);
-
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricoUltimoCusto([FromBody] AlertaHistorico obj)
-        {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
-            try
-            {
-                _alertaHistoricoApp.CadastrarHistoricoUltimoCusto(obj);
-
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpPost]
-        public HttpResponseMessage CadastrarHistoricosUltimoCusto([FromBody] AlertaHistorico obj)
-        {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
-            try
-            {
-                _alertaHistoricoApp.CadastrarHistoricosUltimoCusto(obj);
-
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpGet]
-        public IEnumerable<AlertaHistorico> GetHistoricoPorProduto(int cdProduto)
-        {
-            context = new CentralContext();
-            _alertaHistoricoRepository = new AlertaHistoricoRepository(context);
-            _alertaGeralRepository = new AlertaGeralRepository(context);
-            _alertaInversaoRepository = new AlertaInversaoRepository(context);
-            _alertaUltimoCustoRepository = new AlertaUltimoCustoRepository(context);
-            _alertaManualRepository = new AlertaManualRepository(context);
-            _alertaQuarentenaRepository = new AlertaQuarentenaRepository(context);
-            _repositoryBalanco = new AlertaBalancoRepository(context);
-            _repositoryEstqqueFisico = new EstoqueFisicoRepository(context);
-            _alertaHistoricoService = new AlertaHistoricoService(_alertaHistoricoRepository, _alertaInversaoRepository, _alertaGeralRepository, _alertaManualRepository, _alertaUltimoCustoRepository, _alertaQuarentenaRepository, _repositoryBalanco, _repositoryEstqqueFisico);
-            _alertaHistoricoApp = new AlertaHistoricoApp(_alertaHistoricoService);
-
-            return _alertaHistoricoApp.ObterAlertasPorProdutoTipoAlerta(cdProduto).OrderByDescending(x => x.DataDoHistorico);
         }
 
         #endregion
-
     }
 }
 

@@ -72,5 +72,12 @@ namespace Intranet.API.Controllers
 
             return _app.GetGeralPorProdutoNome(nomeProduto);
         }
+
+        public IEnumerable<VwAlertasAnalitico> GetAllAnalitico()
+        {
+            var context = new CentralContext();
+
+            return context.VwAlertasAnalitico.OrderByDescending(x => x.Severidade).ToList();
+        }
     }
 }

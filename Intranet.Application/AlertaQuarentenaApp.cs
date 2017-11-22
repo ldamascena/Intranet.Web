@@ -18,10 +18,5 @@ namespace Intranet.Application
         {
             this._service = service;
         }
-
-        public void IncluirNaQuarentena(AlertaQuarentena obj)
-        {
-            _service.IncluirNaQuarentena(obj);
-        }
     }
 }

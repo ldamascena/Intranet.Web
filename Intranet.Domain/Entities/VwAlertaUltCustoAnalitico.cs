@@ -1,12 +1,16 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Spatial;
 using System.Runtime.Serialization;
 
 namespace Intranet.Domain.Entities
 {
+
     [DataContract]
-    [Table("VwAlertaInversao_Analitico")]
-    public partial class VwAlertaInversaoAnalitico
+    [Table("VwAlertaUltCusto_Analitico")]
+    public partial class VwAlertaUltCustoAnalitico
     {
         [DataMember]
         [Key]

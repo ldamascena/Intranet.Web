@@ -9,6 +9,6 @@ namespace Intranet.Domain.Interfaces.Services
 {
     public interface IAlertaQuarentenaService : IServiceBase<AlertaQuarentena>
     {
-        void IncluirNaQuarentena(AlertaQuarentena obj);
+        
     }
 }

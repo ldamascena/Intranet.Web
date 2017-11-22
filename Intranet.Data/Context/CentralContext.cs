@@ -38,6 +38,7 @@ namespace Intranet.Solidcon.Data.Context
 
         public virtual DbSet<AlertaUltimoCustoHistorico> AlertaUltimoCustoHistorico { get; set; }
         public virtual DbSet<AlertaUltimoCusto> AlertasUltimoCusto { get; set; }
+        public virtual DbSet<VwAlertaUltCustoAnalitico> VwAlertasUltCustoAnalitico { get; set; }
 
         #endregion
 
@@ -49,6 +50,7 @@ namespace Intranet.Solidcon.Data.Context
         public virtual DbSet<AlertaQuarentena> AlertasQuarentena { get; set; }
         public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
         public virtual DbSet<AlertaBalanco> AlertasBalanco { get; set; }
+        public virtual DbSet<VwAlertasAnalitico> VwAlertasAnalitico { get; set; }
 
         #endregion
 
@@ -192,18 +194,18 @@ namespace Intranet.Solidcon.Data.Context
                 .WillCascadeOnDelete(false);
 
 
-            modelBuilder.Entity<AlertaInversao>()
-                .HasMany(e => e.AlertasQuarentena)
-                .WithRequired(e => e.AlertaInversao)
-                .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<AlertaInversao>()
+            //    .HasMany(e => e.AlertasQuarentena)
+            //    .WithRequired(e => e.AlertaInversao)
+            //    .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
+            //    .WillCascadeOnDelete(false);
 
 
-            modelBuilder.Entity<AlertaUltimoCusto>()
-                .HasMany(e => e.AlertasQuarentena)
-                .WithRequired(e => e.AlertaUltimoCusto)
-                .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<AlertaUltimoCusto>()
+            //    .HasMany(e => e.AlertasQuarentena)
+            //    .WithRequired(e => e.AlertaUltimoCusto)
+            //    .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
+            //    .WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Pessoa>()
@@ -217,16 +219,10 @@ namespace Intranet.Solidcon.Data.Context
                 .WithRequired(e => e.AlertaTipo)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<AlertaGeral>()
-                .HasMany(e => e.AlertasQuarentena)
-                .WithRequired(e => e.AlertaGeral)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(e => e.AlertaBalanco)
-                .WithRequired(e => e.Pessoa)
-                .HasForeignKey(e => e.CdPessoaFilial)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<AlertaGeral>()
+            //    .HasMany(e => e.AlertasQuarentena)
+            //    .WithRequired(e => e.AlertaGeral)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<EmpresaFilial>()
                 .HasMany(x => x.EstoqueContabil)

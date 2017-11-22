@@ -57,15 +57,13 @@ namespace Intranet.Service
                 {
                     _repositoryHistorico.Add(new AlertaHistorico
                     {
-                        CdAlerta = resultInversao.CdAlertaInv,
                         CdPessoaFilial = resultInversao.CdPessoaFilial,
                         CdProduto = resultInversao.CdProduto,
                         CdTipoAlerta = resultInversao.CdTipoAlerta,
                         DataDoHistorico = DateTime.Now,
                         DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço feito",
                         StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus,
-                        StatusAlertaAtual = "Concluido",
-                        NomeUsuario = "Inventário"
+                        StatusAlertaAtual = "Concluido"
                     });
                     resultInversao.CdAlertaStatus = 3;
                     _repositoryInversao.Update(resultInversao);
@@ -81,15 +79,13 @@ namespace Intranet.Service
                 {
                     _repositoryHistorico.Add(new AlertaHistorico
                     {
-                        CdAlerta = resultUltimoCusto.CdAlertaUltCusto,
                         CdPessoaFilial = resultUltimoCusto.CdPessoaFilial,
                         CdProduto = resultUltimoCusto.CdProduto,
                         CdTipoAlerta = resultUltimoCusto.CdTipoAlerta,
                         DataDoHistorico = DateTime.Now,
                         DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço feito",
                         StatusAlertaAnterior = resultUltimoCusto.AlertaStatus.nomeStatus,
-                        StatusAlertaAtual = "Concluido",
-                        NomeUsuario = "Inventário"
+                        StatusAlertaAtual = "Concluido"
                     });
 
                     resultUltimoCusto.CdAlertaStatus = 3;
@@ -111,15 +107,13 @@ namespace Intranet.Service
                 {
                     _repositoryHistorico.Add(new AlertaHistorico
                     {
-                        CdAlerta = resultInversao.CdAlertaInv,
                         CdPessoaFilial = resultInversao.CdPessoaFilial,
                         CdProduto = resultInversao.CdProduto,
                         CdTipoAlerta = resultInversao.CdTipoAlerta,
                         DataDoHistorico = DateTime.Now,
                         DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço não feito",
                         StatusAlertaAnterior = resultInversao.AlertaStatus.nomeStatus,
-                        StatusAlertaAtual = "Concluido",
-                        NomeUsuario = "Inventário"
+                        StatusAlertaAtual = "Concluido"
                     });
                     resultInversao.CdAlertaStatus = 3;
                     _repositoryInversao.Update(resultInversao);
@@ -135,15 +129,13 @@ namespace Intranet.Service
                 {
                     _repositoryHistorico.Add(new AlertaHistorico
                     {
-                        CdAlerta = resultUltimoCusto.CdAlertaUltCusto,
                         CdPessoaFilial = resultUltimoCusto.CdPessoaFilial,
                         CdProduto = resultUltimoCusto.CdProduto,
                         CdTipoAlerta = resultUltimoCusto.CdTipoAlerta,
                         DataDoHistorico = DateTime.Now,
                         DescricaoHistorico = "Retorno de solicitação de balanço do produto, balanço não feito",
                         StatusAlertaAnterior = resultUltimoCusto.AlertaStatus.nomeStatus,
-                        StatusAlertaAtual = "Concluido",
-                        NomeUsuario = "Inventário"
+                        StatusAlertaAtual = "Concluido"
                     });
 
                     resultUltimoCusto.CdAlertaStatus = 3;

@@ -1,5 +1,4 @@
 ﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -12,32 +11,26 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Intranet.Alvorada.Data.Context;
 
 namespace Intranet.API.Controllers
 {
     public class AlertaStatusController : ApiController
     {
-        private IAlertaStatusRepository _repositoryStatusAlerta;
-        private IAlertaStatusService _serviceStatusAlerta;
-        private IAlertaStatusApp _appStatusAlerta;
 
         // GET: api/AlertaStatus
-        public IEnumerable<AlertaStatus> Get()
+        public IEnumerable<AlertaStatus> GetAll()
         {
-            _repositoryStatusAlerta = new AlertaStatusRepository(new CentralContext());
-            _serviceStatusAlerta = new AlertaStatusService(_repositoryStatusAlerta);
-            _appStatusAlerta = new AlertaStatusApp(_serviceStatusAlerta);
+            var context = new AlvoradaContext();
 
-            return _appStatusAlerta.GetAll();
+            return context.AlertaStatus.ToList();
         }
 
-        public IEnumerable<AlertaStatus> GetExceptNovo()
+        public IEnumerable<AlertaStatus> GetAllExceptNovo()
         {
-            _repositoryStatusAlerta = new AlertaStatusRepository(new CentralContext());
-            _serviceStatusAlerta = new AlertaStatusService(_repositoryStatusAlerta);
-            _appStatusAlerta = new AlertaStatusApp(_serviceStatusAlerta);
+            var context = new AlvoradaContext();
 
-            return _appStatusAlerta.GetAll().Skip(1);
+            return context.AlertaStatus.Where(x => x.nomeStatus != "Novo").ToList();
         }
     }
 }

@@ -12,32 +12,51 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Intranet.Alvorada.Data.Context;
+using System.Data.Entity;
 
 namespace Intranet.API.Controllers
 {
     public class AlertaUltimoCustoController : ApiController
     {
-        private IAlertaUltimoCustoRepository _repository;
-        private IAlertaUltimoCustoService _service;
-        private IAlertaUltimoCustoApp _app;
 
-        // GET: api/AlertaInversao
-        //public IEnumerable<AlertaInversao> Get()
-        //{
-        //    _repository = new AlertaInversaoRepository(new CentralContext());
-        //    _service = new AlertaInversaoService(_repository);
-        //    _app = new AlertaInversaoApp(_service);
-        //    return _app.ObterTodas();
-        //}
+        public IEnumerable<AlertaUltimoCusto> GetAll()
+        {
+            var context = new AlvoradaContext();
 
-        [HttpGet]
+            return context.AlertasUltimoCusto.ToList();
+        }
+
         public IEnumerable<AlertaUltimoCusto> GetUltimoCustoPorProduto(int cdProduto)
         {
-            _repository = new AlertaUltimoCustoRepository(new CentralContext());
-            _service = new AlertaUltimoCustoService(_repository);
-            _app = new AlertaUltimoCustoApp(_service);
+            var context = new AlvoradaContext();
 
-            return _app.GetAll().Where(x => x.CdProduto == cdProduto && x.AlertasQuarentena.Count == 0);
+            return context.AlertasUltimoCusto.Where(x => x.CdProduto == cdProduto).ToList();
+        }
+
+        public HttpResponseMessage Alterar(AlertaUltimoCusto model)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public IEnumerable<VwAlertaUltCustoAnalitico> GetAllAnalitico()
+        {
+            var context = new AlvoradaContext();
+
+            return context.VwAlertasUltCustoAnalitico.OrderByDescending(x => x.Abertos).ToList();
         }
     }
 }

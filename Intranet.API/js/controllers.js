@@ -661,6 +661,7 @@ function balancoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -688,8 +689,6 @@ function balancoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
     $scope.aprovar = function (balanco) {
 
-        $scope.obj = { "CdAlertaBalanco": balanco.CdAlertaBalanco, "CdProduto": balanco.CdProduto, "CdPessoaFilial": balanco.CdPessoaFilial, "Status": 2 };
-
         SweetAlert.swal({
             title: "Deseja confimar?",
             text: "Não será possivel mudar depois de confimardo!",
@@ -703,7 +702,7 @@ function balancoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
         },
             function (isConfirm) {
                 if (isConfirm) {
-                    $http.post("http://localhost:50837/api/AlertaBalanco/UpdateBalanco", $scope.obj).then(function (response) {
+                    $http.post("http://localhost:50837/api/AlertaBalanco/Aprovar", balanco).then(function (response) {
                         SweetAlert.swal("Confirmado!", "O status do produto foi alterado!", "success");
                     }, function (response) {
                         return alert("Erro: " + response.status);
@@ -733,9 +732,13 @@ function balancoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
 function balancoModalInstanceCtrl($scope, $uibModalInstance, $http, balancoSelected) {
     $scope.confirmar = function () {
-        $scope.obj = { "CdAlertaBalanco": balancoSelected.CdAlertaBalanco, "CdProduto": balancoSelected.CdProduto, "CdPessoaFilial": balancoSelected.CdPessoaFilial, "Status": 1, "Motivo": $scope.motivo };
+        $scope.obj = {
+            CdAlertaBalanco: balancoSelected.CdAlertaBalanco, CdProduto: balancoSelected.CdProduto,
+            CdPessoaFilial: balancoSelected.CdPessoaFilial, NomeProduto: balancoSelected.NomeProduto,
+            Estoque: balancoSelected.Estoque, Motivo: $scope.motivo, DtInclusao: balancoSelected.DtInclusao
+        };
 
-        $http.post("http://localhost:50837/api/AlertaBalanco/UpdateBalanco", $scope.obj).then(function (response) {
+        $http.post("http://localhost:50837/api/AlertaBalanco/Reprovar", $scope.obj).then(function (response) {
             $uibModalInstance.close();
         }, function (response) {
             return alert("Erro: " + response.status);
@@ -774,24 +777,448 @@ function inversaoCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
         ]);
 
     $scope.inversoes;
+    $scope.produtosInversao;
 
     $http.get("http://localhost:50837/api/AlertaInversao/GetAllAnalitico").then(function (response) {
         $scope.inversoes = response.data;
     });
 
-    $scope.visualizar = function () {
-        $uibModal.open({
-            templateUrl: 'Views/modal_example.html',
-            controller: 'inversaoModalInstanceCtrl',
-            backdrop: false,
-            windowClass: "app-modal-window animated fadeIn"
+    $scope.visualizar = function (produto) {
+        $http.get("http://localhost:50837/api/AlertaInversao/GetInvertidosPorProduto?cdProduto=" + produto.cdProduto).then(function (response) {
+            $scope.produtosInversao = response.data;
+
         });
     }
 
+    $scope.cadastrarObs = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentena = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.historico = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/historico.html',
+            controller: 'historicoModalCtrl',
+            windowClass: "animated fadeIn",
+            size: 'lg',
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.cadastrarObsTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentenaTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
 }
 
-function inversaoModalInstanceCtrl($scope, $uibModalInstance)
-{ }
+function ultimocustoCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [3, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.ultimoscusto;
+    $scope.produtosUltimoCusto
+
+    $http.get("http://localhost:50837/api/AlertaUltimoCusto/GetAllAnalitico").then(function (response) {
+        $scope.ultimoscusto = response.data;
+    });
+
+    $scope.visualizar = function (produto) {
+        $http.get("http://localhost:50837/api/AlertaUltimoCusto/GetUltimoCustoPorProduto?cdProduto=" + produto.cdProduto).then(function (response) {
+            $scope.produtosUltimoCusto = response.data;
+
+        });
+    }
+
+    $scope.cadastrarObs = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentena = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.historico = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/historico.html',
+            controller: 'historicoModalCtrl',
+            windowClass: "animated fadeIn",
+            size: 'lg',
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.cadastrarObsTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentenaTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+}
+
+function historicoModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
+    $scope.historicos;
+
+    $http.get("http://localhost:50837/api/AlertaHistorico/GetHistoricoByProdutoFilialTipoAlerta?cdProduto=" + produtoAlertaSelected.CdProduto + "&cdPessoaFilial=" + produtoAlertaSelected.CdPessoaFilial + "&cdTipoAlerta=" + produtoAlertaSelected.CdTipoAlerta).then(function (response) {
+        $scope.historicos = response.data;
+    });
+}
+
+function quarentenaModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
+
+    $scope.incluir = function () {
+
+        $scope.obj = {
+            CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+            CdProduto: produtoAlertaSelected.CdProduto,
+            CdTipoAlerta: produtoAlertaSelected.CdTipoAlerta,
+            Motivo: $scope.motivo,
+            IdUsuario: $sessionStorage.user.Id
+        };
+
+        $http.post("http://localhost:50837/api/AlertaQuarentena/Incluir", $scope.obj).then(function (response) {
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+
+        $scope.objHistorico = {
+            CdProduto: produtoAlertaSelected.CdProduto,
+            StatusAlertaAtual: "Quarentena",
+            StatusAlertaAnterior: produtoAlertaSelected.AlertaStatus.nomeStatus,
+            CdTipoAlerta: produtoAlertaSelected.CdTipoAlerta,
+            CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+            DescricaoHistorico: $scope.motivo,
+            IdUsuario: $sessionStorage.user.Id
+        }
+
+        $http.post("http://localhost:50837/api/AlertaHistorico/Incluir", $scope.objHistorico).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+}
+
+function observacaoModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
+
+    $scope.statusAll;
+
+    $scope.tipo = produtoAlertaSelected.CdTipoAlerta
+
+    $http.get("http://localhost:50837/api/AlertaStatus/GetAllExceptNovo").then(function (response) {
+        $scope.statusAll = response.data;
+    });
+
+    $scope.alterar = function () {
+
+        if ($scope.tipo == 2) {
+            $scope.objInversao = {
+                CdAlertaInv: produtoAlertaSelected.CdAlertaInv, CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+                CdProduto: produtoAlertaSelected.CdProduto, CdAlertaStatus: $scope.status.cdAlertaStatus,
+                NomeProduto: produtoAlertaSelected.NomeProduto, QtdEstoque: produtoAlertaSelected.QtdEstoque,
+                UltData: produtoAlertaSelected.UltData, CdTipoAlerta: $scope.tipo
+            }
+
+            $http.post("http://localhost:50837/api/AlertaInversao/Alterar", $scope.objInversao).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+
+        else if ($scope.tipo == 3)
+        {
+            $scope.objInversao = {
+                CdAlertaUltCusto: produtoAlertaSelected.CdAlertaUltCusto, CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+                CdProduto: produtoAlertaSelected.CdProduto, CdAlertaStatus: $scope.status.cdAlertaStatus,
+                NomeProduto: produtoAlertaSelected.NomeProduto, UltData: produtoAlertaSelected.UltData, CdTipoAlerta: $scope.tipo,
+                Nota: produtoAlertaSelected.Nota, UltimoCusto: produtoAlertaSelected.UltimoCusto, PenultimoCusto: produtoAlertaSelected.PenultimoCusto, 
+                Classificacao: produtoAlertaSelected.Classificacao, Diferenca: produtoAlertaSelected.Diferenca
+            }
+
+            $http.post("http://localhost:50837/api/AlertaUltimoCusto/Alterar", $scope.objInversao).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+
+        $scope.objHistorico = {
+            CdProduto: produtoAlertaSelected.CdProduto,
+            StatusAlertaAtual: $scope.status.nomeStatus,
+            StatusAlertaAnterior: produtoAlertaSelected.AlertaStatus.nomeStatus,
+            CdTipoAlerta: $scope.tipo,
+            CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+            DescricaoHistorico: $scope.observacao,
+            IdUsuario: $sessionStorage.user.Id
+        }
+
+        $http.post("http://localhost:50837/api/AlertaHistorico/Incluir", $scope.objHistorico).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+
+        if ($scope.status.cdAlertaStatus == 4) {
+            $scope.objBalanco = {CdProduto:produtoAlertaSelected.CdProduto, CdPessoaFilial:produtoAlertaSelected.CdPessoaFilial,
+                NomeProduto: produtoAlertaSelected.NomeProduto, Estoque: produtoAlertaSelected.QtdEstoque, CdProdutoInvertido: $scope.invertido
+            }
+
+            $http.post("http://localhost:50837/api/AlertaBalanco/Incluir", $scope.objBalanco).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+            $scope.objQuarentena = {
+                CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
+                CdProduto: produtoAlertaSelected.CdProduto,
+                CdTipoAlerta: produtoAlertaSelected.CdTipoAlerta,
+                Motivo: $scope.motivo,
+                IdUsuario: $sessionStorage.user.Id
+            };
+
+            $http.post("http://localhost:50837/api/AlertaQuarentena/Incluir", $scope.objQuarentena).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+    }
+}
+
+function observacaoTodosModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
+
+    $scope.statusAll;
+
+    console.log(produtoAlertaSelected);
+
+    $scope.tipo = produtoAlertaSelected[0].CdTipoAlerta
+
+    $http.get("http://localhost:50837/api/AlertaStatus/GetAllExceptNovo").then(function (response) {
+        $scope.statusAll = response.data;
+    });
+
+    $scope.alterar = function () {
+
+        for (var i = 0; i < produtoAlertaSelected.length; i++) {
+
+            if ($scope.tipo == 2) {
+                $scope.objInversao = {
+                    CdAlertaInv: produtoAlertaSelected[i].CdAlertaInv, CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                    CdProduto: produtoAlertaSelected[i].CdProduto, CdAlertaStatus: $scope.status.cdAlertaStatus,
+                    NomeProduto: produtoAlertaSelected[i].NomeProduto, QtdEstoque: produtoAlertaSelected[i].QtdEstoque,
+                    UltData: produtoAlertaSelected[i].UltData, CdTipoAlerta: $scope.tipo
+                }
+
+                $http.post("http://localhost:50837/api/AlertaInversao/Alterar", $scope.objInversao).then(function (response) {
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            else if ($scope.tipo == 3) {
+                $scope.objInversao = {
+                    CdAlertaUltCusto: produtoAlertaSelected[i].CdAlertaUltCusto, CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                    CdProduto: produtoAlertaSelected[i].CdProduto, CdAlertaStatus: $scope.status.cdAlertaStatus,
+                    NomeProduto: produtoAlertaSelected[i].NomeProduto, UltData: produtoAlertaSelected[i].UltData, CdTipoAlerta: $scope.tipo,
+                    Nota: produtoAlertaSelected[i].Nota, UltimoCusto: produtoAlertaSelected[i].UltimoCusto, PenultimoCusto: produtoAlertaSelected[i].PenultimoCusto,
+                    Classificacao: produtoAlertaSelected[i].Classificacao, Diferenca: produtoAlertaSelected[i].Diferenca
+                }
+
+                $http.post("http://localhost:50837/api/AlertaUltimoCusto/Alterar", $scope.objInversao).then(function (response) {
+                    $uibModalInstance.close();
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+
+            $scope.objHistorico = {
+                CdProduto: produtoAlertaSelected[i].CdProduto,
+                StatusAlertaAtual: $scope.status.nomeStatus,
+                StatusAlertaAnterior: produtoAlertaSelected[i].AlertaStatus.nomeStatus,
+                CdTipoAlerta: $scope.tipo,
+                CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                DescricaoHistorico: $scope.observacao,
+                IdUsuario: $sessionStorage.user.Id
+            }
+
+            $http.post("http://localhost:50837/api/AlertaHistorico/Incluir", $scope.objHistorico).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+            if ($scope.status.cdAlertaStatus == 4) {
+                $scope.objBalanco = {
+                    CdProduto: produtoAlertaSelected[i].CdProduto, CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                    NomeProduto: produtoAlertaSelected[i].NomeProduto, Estoque: produtoAlertaSelected[i].QtdEstoque, CdProdutoInvertido: $scope.invertido
+                }
+
+                $http.post("http://localhost:50837/api/AlertaBalanco/Incluir", $scope.objBalanco).then(function (response) {
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+
+                $scope.objQuarentena = {
+                    CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                    CdProduto: produtoAlertaSelected[i].CdProduto,
+                    CdTipoAlerta: produtoAlertaSelected[i].CdTipoAlerta,
+                    Motivo: $scope.motivo,
+                    IdUsuario: $sessionStorage.user.Id
+                };
+
+                $http.post("http://localhost:50837/api/AlertaQuarentena/Incluir", $scope.objQuarentena).then(function (response) {
+                    $uibModalInstance.close();
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+        }
+        $uibModalInstance.close();
+    }
+}
+
+function quarentenaTodosModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
+
+    $scope.incluir = function () {
+        for (var i = 0; i < produtoAlertaSelected.length; i++) {
+
+            $scope.obj = {
+                CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                CdProduto: produtoAlertaSelected[i].CdProduto,
+                CdTipoAlerta: produtoAlertaSelected[i].CdTipoAlerta,
+                Motivo: $scope.motivo,
+                IdUsuario: $sessionStorage.user.Id
+            };
+
+            $http.post("http://localhost:50837/api/AlertaQuarentena/Incluir", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+            $scope.objHistorico = {
+                CdProduto: produtoAlertaSelected[i].CdProduto,
+                StatusAlertaAtual: "Quarentena",
+                StatusAlertaAnterior: produtoAlertaSelected[i].AlertaStatus.nomeStatus,
+                CdTipoAlerta: produtoAlertaSelected[i].CdTipoAlerta,
+                CdPessoaFilial: produtoAlertaSelected[i].CdPessoaFilial,
+                DescricaoHistorico: $scope.motivo,
+                IdUsuario: $sessionStorage.user.Id
+            }
+
+            $http.post("http://localhost:50837/api/AlertaHistorico/Incluir", $scope.objHistorico).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+        $uibModalInstance.close();
+    }
+    
+}
 
 function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
@@ -3904,7 +4331,12 @@ angular
     .controller('balancoCtrl', balancoCtrl)
     .controller('balancoModalInstanceCtrl', balancoModalInstanceCtrl)
     .controller('inversaoCtrl', inversaoCtrl)
-    .controller('inversaoModalInstanceCtrl', inversaoModalInstanceCtrl)
+    .controller('ultimocustoCtrl', ultimocustoCtrl)
+    .controller('observacaoModalCtrl', observacaoModalCtrl)
+    .controller('historicoModalCtrl', historicoModalCtrl)
+    .controller('quarentenaModalCtrl', quarentenaModalCtrl)
+    .controller('observacaoTodosModalCtrl', observacaoTodosModalCtrl)
+    .controller('quarentenaTodosModalCtrl', quarentenaTodosModalCtrl)
     .controller('despSituacaoCtrl', despSituacaoCtrl)
     .controller('despSituacaoModalInstanceCtrl', despSituacaoModalInstanceCtrl)
     .controller('despMotivoCtrl', despMotivoCtrl)

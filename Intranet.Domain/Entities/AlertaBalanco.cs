@@ -30,7 +30,7 @@ namespace Intranet.Domain.Entities
         public string NomeProduto { get; set; }
 
         [DataMember]
-        public decimal Estoque { get; set; }
+        public decimal? Estoque { get; set; }
 
         [DataMember]
         public int Status { get; set; }
@@ -45,6 +45,10 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public string Motivo { get; set; }
+
+        [DataMember]
+        [Column("cdProdutoInvertido")]
+        public int? CdProdutoInvertido { get; set; }
 
         [DataMember]
         public virtual Pessoa Pessoa { get; set; }

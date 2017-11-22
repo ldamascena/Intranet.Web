@@ -1,0 +1,36 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Historico</h4>
+    </div>
+    <div class="modal-body">
+        <div id="vertical-timeline" class="vertical-container light-timeline no-margins" ng-repeat="historico in historicos">
+            <div class="vertical-timeline-block">
+                <div ng-class="historico.StatusAlertaAtual == 'Analise' ?
+                                           'vertical-timeline-icon lazur-bg' :
+                                           (historico.StatusAlertaAtual == 'Concluido' ?
+                                           'vertical-timeline-icon navy-bg' :
+                                           'vertical-timeline-icon red-bg')">
+                    <i ng-class="historico.StatusAlertaAtual == 'Analise' ?
+                                           'fa fa-question' :
+                                           (historico.StatusAlertaAtual == 'Concluido' ?
+                                           'fa fa-check' :
+                                           'fa fa-times')"></i>
+                </div>
+                <div class="vertical-timeline-content">
+                    <h2>{{historico.Usuario.Nome}} {{historico.Usuario.Sobrenome}}</h2>
+                    <p>
+                        Status alterado para: {{historico.StatusAlertaAtual}}
+                    </p>
+                    <p>
+                        Descricao: {{historico.DescricaoHistorico}}
+                    </p>
+                    <span class="vertical-date">
+                        <small>{{historico.DataDoHistorico | date:'dd/MM/yyyy - HH:mm:ss'}}</small>
+                    </span>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

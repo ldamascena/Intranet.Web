@@ -105,6 +105,8 @@
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
     <Compile Include="Entities\VwAlertaInversaoAnalitico.cs" />
+    <Compile Include="Entities\VwAlertasAnalitico.cs" />
+    <Compile Include="Entities\VwAlertaUltCustoAnalitico.cs" />
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />

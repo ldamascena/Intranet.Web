@@ -2477,6 +2477,7 @@
     <Content Include="js\ui-router\angular-ui-router.min.js" />
     <Content Include="Views\alertas\balanco.html" />
     <Content Include="Views\alertas\inversao.html" />
+    <Content Include="Views\alertas\ultimocusto.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
     <Content Include="Views\cadprod\sol_produto.html" />
     <Content Include="Views\common\content.html" />
@@ -2512,6 +2513,8 @@
     <Content Include="Views\markdown.html" />
     <Content Include="Views\masonry.html" />
     <Content Include="Views\metrics.html" />
+    <Content Include="Views\modal\alertas\historico.html" />
+    <Content Include="Views\modal\alertas\inversao\inversao_modal.html" />
     <Content Include="Views\modal\aprovar_reprovar_desp.html" />
     <Content Include="Views\modal\balancoReprovar.html" />
     <Content Include="Views\modal\change_password.html" />
@@ -2529,6 +2532,7 @@
     <Content Include="Views\modal\incluir_editar_cadsoldespesa.html" />
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />
+    <Content Include="Views\modal\alertas\quarentena.html" />
     <Content Include="Views\modal\usuariomodal.html" />
     <Content Include="Views\modal\visualizar_despesa.html" />
     <Content Include="Views\modal_example.html" />

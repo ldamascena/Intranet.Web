@@ -34,17 +34,14 @@ namespace Intranet.Domain.Entities
         public string DescricaoHistorico { get; set; }
 
         [DataMember]
-        public int CdAlerta { get; set; }
-
-        [DataMember]
         public int CdTipoAlerta { get; set; }
 
         [DataMember]
         public int CdPessoaFilial { get; set; }
 
         [DataMember]
-        [Column("nomeUsuario")]
-        public string NomeUsuario { get; set; }
+        [Column("idUsuario")]
+        public int? IdUsuario { get; set; }
 
         [DataMember]
         public virtual AlertaTipo AlertaTipo { get; set; }
@@ -53,5 +50,8 @@ namespace Intranet.Domain.Entities
         public virtual Pessoa Pessoa { get; set; }
 
         public virtual AlertaGeral AlertaGeral { get; set; }
+
+        [DataMember]
+        public virtual Usuario Usuario { get; set; }
     }
 }

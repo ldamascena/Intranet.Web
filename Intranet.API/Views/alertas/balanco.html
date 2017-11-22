@@ -6,9 +6,6 @@
                 <a ui-sref="principal.instutucional">Home</a>
             </li>
             <li>
-                <a>Aplicacoes</a>
-            </li>
-            <li>
                 <a>Alertas</a>
             </li>
             <li class="active">
@@ -37,6 +34,7 @@
                                 <th>Produto</th>
                                 <th>Loja</th>
                                 <th>Estoque</th>
+                                <th>CdInvertido</th>
                                 <th>Data de Conclusão</th>
                                 <th>Motivo</th>
                                 <th style="width:150px;"></th>
@@ -44,12 +42,13 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="alertabalanco in alertabalancos">
-                                <td>{{alertabalanco.DtInclusao | date:'dd/MM/yyyy'}}</td>
+                                <td>{{alertabalanco.DtInclusao | date:'yyyy-MM-dd'}}</td>
                                 <td>{{alertabalanco.CdProduto}}</td>
                                 <td>{{alertabalanco.NomeProduto}}</td>
                                 <td>{{alertabalanco.Pessoa.NomePessoa}}</td>
                                 <td>{{alertabalanco.Estoque}}</td>
-                                <td>{{alertabalanco.DtConcluido | date:'dd/MM/yyyy'}}</td>
+                                <td>{{alertabalanco.CdProdutoInvertido}}</td>
+                                <td>{{alertabalanco.DtConcluido | date:'yyyy-MM-dd'}}</td>
                                 <td>{{alertabalanco.Motivo}}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-outline btn-primary btn-rounded" ng-show="alertabalanco.Status == 0" ng-click="aprovar(alertabalanco)"><i class="fa fa-check-square-o"> Fazer</i></button>

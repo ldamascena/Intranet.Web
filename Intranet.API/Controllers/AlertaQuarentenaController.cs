@@ -13,69 +13,59 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Intranet.Alvorada.Data.Context;
 
 namespace Intranet.API.Controllers
 {
     public class AlertaQuarentenaController : ApiController
     {
-        private IAlertaQuarentenaRepository _repository;
-        private IAlertaInversaoRepository _repositoryInversao;
-        private IAlertaUltimoCustoRepository _repositoryUltimoCusto;
-        private IAlertaHistoricoRepository _repositoryHistorico;
-        private IAlertaQuarentenaService _service;
-        private IAlertaQuarentenaApp _app;
-
-
-        [HttpGet]
-        // GET: api/AlertaQuarentena
-        public IEnumerable<AlertaQuarentena> Get()
+        public IEnumerable<AlertaQuarentena> GetAll()
         {
-            _repository = new AlertaQuarentenaRepository(new CentralContext());
-            _repositoryInversao = new AlertaInversaoRepository(new CentralContext());
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(new CentralContext());
-            _repositoryHistorico = new AlertaHistoricoRepository(new CentralContext());
-            _service = new AlertaQuarentenaService(_repository, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico);
-            _app = new AlertaQuarentenaApp(_service);
+            var context = new AlvoradaContext();
 
-            return _app.GetAll();
+            return context.AlertasQuarentena.ToList();
         }
 
-        [HttpGet]
-        // GET: api/AlertaQuarentena
-        public IEnumerable<AlertaQuarentena> GetQuarentenaPorProduto(int cdProduto)
+        public HttpResponseMessage Incluir(AlertaQuarentena model)
         {
-            _repository = new AlertaQuarentenaRepository(new CentralContext());
-            _repositoryInversao = new AlertaInversaoRepository(new CentralContext());
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(new CentralContext());
-            _repositoryHistorico = new AlertaHistoricoRepository(new CentralContext());
-            _service = new AlertaQuarentenaService(_repository, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico);
-            _app = new AlertaQuarentenaApp(_service);
-
-            return _app.GetAll().Where(x => x.CdProduto == cdProduto);
-        }
-
-
-        [HttpPost]
-        public HttpResponseMessage IncluirNaQuarentena([FromBody] AlertaQuarentena obj)
-        {
-            _repository = new AlertaQuarentenaRepository(new CentralContext());
-            _repositoryInversao = new AlertaInversaoRepository(new CentralContext());
-            _repositoryHistorico = new AlertaHistoricoRepository(new CentralContext());
-            _repositoryUltimoCusto = new AlertaUltimoCustoRepository(new CentralContext());
-            _service = new AlertaQuarentenaService(_repository, _repositoryInversao, _repositoryUltimoCusto, _repositoryHistorico);
-            _app = new AlertaQuarentenaApp(_service);
+            var context = new AlvoradaContext();
 
             try
             {
-                _app.IncluirNaQuarentena(obj);
-
+                model.Dias = 30;
+                model.DtInclusao = DateTime.Now;
+                model.DtSaida = DateTime.Now.AddDays(model.Dias);
+                context.AlertasQuarentena.Add(model);
+                context.SaveChanges();
             }
+
             catch (Exception ex)
             {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage IncluirTodos(List<AlertaQuarentena> models)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                foreach (var item in models)
                 {
-                    Error = ex.Message
-                });
+                    item.Dias = 30;
+                    item.DtInclusao = DateTime.Now;
+                    item.DtSaida = DateTime.Now.AddDays(item.Dias);
+                    context.AlertasQuarentena.Add(item);
+                    context.SaveChanges();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);

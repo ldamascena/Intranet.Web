@@ -35,16 +35,14 @@ namespace Intranet.Domain.Entities
         public DateTime DtSaida { get; set; }
 
         [DataMember]
-        public int CdAlerta { get; set; }
-
-        [DataMember]
         public int Dias { get; set; }
 
         [DataMember]
-        public string NomeUsuario { get; set; }
+        public string Motivo { get; set; }
 
         [DataMember]
-        public string Motivo { get; set; }
+        [Column("idUsuario")]
+        public int? IdUsuario { get; set; }
 
         [DataMember]
         public virtual Pessoa Pessoa { get; set; }
@@ -52,11 +50,14 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public virtual AlertaTipo AlertaTipo { get; set; }
 
+        [DataMember]
+        public virtual Usuario Usuario { get; set; }
+
         public virtual AlertaInversao AlertaInversao { get; set; }
 
         public virtual AlertaUltimoCusto AlertaUltimoCusto { get; set; }
 
-        public virtual AlertaGeral AlertaGeral { get; set; }
+        //public virtual AlertaGeral AlertaGeral { get; set; }
 
     }
 }

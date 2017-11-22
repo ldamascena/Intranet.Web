@@ -17,11 +17,11 @@ namespace Intranet.Domain.Entities
         }
 
         [DataMember]
-        [Key]
-        [Column(Order = 0)]
-        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CdAlertaInv { get; set; }
 
+        [Key]
+        [Column(Order = 0)]
         [DataMember]
         public int CdProduto { get; set; }
 
@@ -39,23 +39,24 @@ namespace Intranet.Domain.Entities
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DataMember]
         public int CdTipoAlerta { get; set; }
 
         [DataMember]
         public int QtdEstoque { get; set; }
 
-        
+        [DataMember]
         public int CdAlertaStatus { get; set; }
 
         [DataMember]
         public string NomeProduto { get; set; }
 
-        public virtual AlertaGeral AlertaGeral { get; set; }
+        //public virtual AlertaGeral AlertaGeral { get; set; }
 
         [DataMember]
         public virtual AlertaStatus AlertaStatus { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public virtual AlertaTipo AlertaTipo { get; set; }
 
         [DataMember]

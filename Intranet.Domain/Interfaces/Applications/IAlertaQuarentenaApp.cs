@@ -9,6 +9,5 @@ namespace Intranet.Domain.Interfaces.Applications
 {
     public interface IAlertaQuarentenaApp : IAppBase<AlertaQuarentena>
     {
-        void IncluirNaQuarentena(AlertaQuarentena obj);
     }
 }
