@@ -1,5 +1,6 @@
 namespace Intranet.Alvorada.Data.Context
 {
+    using Domain;
     using Domain.Entities;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -52,6 +53,7 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
         public virtual DbSet<AlertaBalanco> AlertasBalanco { get; set; }
         public virtual DbSet<VwAlertasAnalitico> VwAlertasAnalitico { get; set; }
+        public virtual DbSet<VwAlertaGeralAnalitico> VwAlertasGeralAnalitico { get; set; }
 
         #endregion
 

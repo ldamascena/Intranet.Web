@@ -961,6 +961,114 @@ function ultimocustoCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
     }
 }
 
+function geralCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [3, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.gerais;
+    $scope.produtosUltimoCusto;
+    $scope.produtosInversao;
+
+    $http.get("http://localhost:50837/api/AlertaGeral/GetAllAnalitico").then(function (response) {
+        $scope.gerais = response.data;
+    });
+
+    $scope.visualizar = function (produto) {
+        $http.get("http://localhost:50837/api/AlertaUltimoCusto/GetUltimoCustoPorProduto?cdProduto=" + produto.cdProduto).then(function (response) {
+            $scope.produtosUltimoCusto = response.data;
+        });
+        $http.get("http://localhost:50837/api/AlertaInversao/GetInvertidosPorProduto?cdProduto=" + produto.cdProduto).then(function (response) {
+            $scope.produtosInversao = response.data;
+        });
+    }
+
+    $scope.cadastrarObs = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentena = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+
+            }
+        });
+    }
+
+    $scope.historico = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/historico.html',
+            controller: 'historicoModalCtrl',
+            windowClass: "animated fadeIn",
+            size: 'lg',
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.cadastrarObsTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/inversao/inversao_modal.html',
+            controller: 'observacaoTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+
+    $scope.quarentenaTodos = function (produtoAlerta) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/alertas/quarentena.html',
+            controller: 'quarentenaTodosModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                produtoAlertaSelected: function () {
+                    return produtoAlerta;
+                }
+            }
+        });
+    }
+}
+
 function historicoModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $http, $sessionStorage) {
     $scope.historicos;
 
@@ -4332,6 +4440,7 @@ angular
     .controller('balancoModalInstanceCtrl', balancoModalInstanceCtrl)
     .controller('inversaoCtrl', inversaoCtrl)
     .controller('ultimocustoCtrl', ultimocustoCtrl)
+    .controller('geralCtrl', geralCtrl)
     .controller('observacaoModalCtrl', observacaoModalCtrl)
     .controller('historicoModalCtrl', historicoModalCtrl)
     .controller('quarentenaModalCtrl', quarentenaModalCtrl)

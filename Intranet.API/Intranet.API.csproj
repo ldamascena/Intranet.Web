@@ -2476,6 +2476,7 @@
     <Content Include="js\ui-router\angular-ui-router.js" />
     <Content Include="js\ui-router\angular-ui-router.min.js" />
     <Content Include="Views\alertas\balanco.html" />
+    <Content Include="Views\alertas\geral.html" />
     <Content Include="Views\alertas\inversao.html" />
     <Content Include="Views\alertas\ultimocusto.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
