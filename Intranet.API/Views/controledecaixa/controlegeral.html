@@ -4,8 +4,19 @@
     <!-- Page wraper -->
     <!-- ng-class with current state name give you the ability to extended customization your view -->
     <div class="gray-bg {{$state.current.name}}">
+        <div class="row">
+            <div class="form-group col-lg-2 col-lg-offset-1">
+                <div class="input-group date">
+                    <input type="datetime" class="form-control" ng-model="date" data-mask="9999-99-99" placeholder="aaaa-mm-dd">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <input type="button" class="btn btn-primary btn-rounded" value="Definir" ng-click="Definir();" />
+            </div>
+        </div>
         <div class="gray-bg {{$state.current.name}}">
-            <div class="row">
+            <div class="row" ng-show="date != undefined">
                 <div class="col-lg-4 col-lg-offset-1">
                     <div class="ibox">
                         <div class="ibox-content">
@@ -33,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="date != undefined">
                 <div class="col-lg-3">
                     <div class="ibox">
                         <div class="ibox-content">
@@ -70,7 +81,7 @@
                 </div>
             </div>
             <div class="wrapper wrapper-content animated fadeIn">
-                <div class="row">
+                <div class="row" ng-show="date != undefined">
                     <div>
                         <div class="tabs-container">
                             <uib-tabset>
@@ -98,7 +109,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr ng-repeat="caixa in caixas">
-                                                                <td>{{caixa.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{caixa.Hora | date: 'HH:mm'}}</td>
                                                                 <td>{{caixa.Caixa.Nome}}</td>
                                                                 <td>{{caixa.Turno}}</td>
                                                                 <td>{{caixa.Valor | currency}}</td>
@@ -126,7 +137,7 @@
                                             </div>
                                             <div class="ibox-content">
                                                 <div class="table-responsive">
-                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <table datatable="ng" dt-options="dtOptions2" class="table table-striped table-bordered table-hover dataTables-example">
                                                         <thead>
                                                             <tr>
                                                                 <th>Data de Abertura</th>
@@ -179,10 +190,10 @@
                                             </div>
                                             <div class="ibox-content">
                                                 <div class="table-responsive">
-                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <table datatable="ng" dt-options="dtOptions2" class="table table-striped table-bordered table-hover dataTables-example">
                                                         <thead>
                                                             <tr>
-                                                                <th>Hora</th>
+                                                                <th>Data</th>
                                                                 <th>Valor</th>
                                                                 <th>Descricao</th>
                                                                 <th>Observacao</th>
@@ -191,7 +202,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr ng-repeat="outradespesa in outrasdespesas">
-                                                                <td>{{outradespesa.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{outradespesa.DataInclusao | date: 'dd/MM/yyyy'}}</td>
                                                                 <td>{{outradespesa.Valor | currency}}</td>
                                                                 <td>{{outradespesa.Descricao}}</td>
                                                                 <td>{{outradespesa.Observacao}}</td>
@@ -216,10 +227,10 @@
                                                 <div ibox-tools></div>
                                             </div>
                                             <div class="ibox-content">
-                                                <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                <table datatable="ng" dt-options="dtOptions2" class="table table-striped table-bordered table-hover dataTables-example">
                                                     <thead>
                                                         <tr>
-                                                            <th>Hora</th>
+                                                            <th>Data</th>
                                                             <th>Valor</th>
                                                             <th>Descricao</th>
                                                             <th></th>
@@ -227,7 +238,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr ng-repeat="entrada in entradas">
-                                                            <td>{{entrada.DataInclusao | date: 'HH:mm'}}</td>
+                                                            <td>{{entrada.DataInclusao | date: 'dd/MM/yyyy'}}</td>
                                                             <td>{{entrada.Valor | currency}}</td>
                                                             <td>{{entrada.Descricao}}</td>
                                                             <td>
@@ -251,10 +262,10 @@
                                             </div>
                                             <div class="ibox-content">
                                                 <div class="table-responsive">
-                                                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                                    <table datatable="ng" dt-options="dtOptions2" class="table table-striped table-bordered table-hover dataTables-example">
                                                         <thead>
                                                             <tr>
-                                                                <th>Hora</th>
+                                                                <th>Data</th>
                                                                 <th>Valor</th>
                                                                 <th>Descricao</th>
                                                                 <th>Observacao</th>
@@ -263,7 +274,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr ng-repeat="composicao in composicoes">
-                                                                <td>{{composicao.DataInclusao | date: 'HH:mm'}}</td>
+                                                                <td>{{composicao.DataInclusao | date: 'dd/MM/yyyy'}}</td>
                                                                 <td>{{composicao.Valor | currency}}</td>
                                                                 <td>{{composicao.Descricao}}</td>
                                                                 <td>{{composicao.Observacao}}</td>

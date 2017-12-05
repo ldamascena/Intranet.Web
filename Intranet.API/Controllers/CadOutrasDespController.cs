@@ -33,7 +33,6 @@ namespace Intranet.API.Controllers
 
             try
             {
-                model.DataInclusao = DateTime.Now;
                 context.CadOutrasDespsControle.Add(model);
                 context.SaveChanges();
             }

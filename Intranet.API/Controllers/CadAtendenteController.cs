@@ -16,7 +16,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.CadAtendentes.ToList();
+            return context.CadAtendentes.Where(x => x.Bloqueado == false).ToList();
         }
 
         public HttpResponseMessage Incluir(CadAtendente model)

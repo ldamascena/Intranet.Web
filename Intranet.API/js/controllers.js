@@ -1139,13 +1139,12 @@ function observacaoModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $
             });
         }
 
-        else if ($scope.tipo == 3)
-        {
+        else if ($scope.tipo == 3) {
             $scope.objInversao = {
                 CdAlertaUltCusto: produtoAlertaSelected.CdAlertaUltCusto, CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
                 CdProduto: produtoAlertaSelected.CdProduto, CdAlertaStatus: $scope.status.cdAlertaStatus,
                 NomeProduto: produtoAlertaSelected.NomeProduto, UltData: produtoAlertaSelected.UltData, CdTipoAlerta: $scope.tipo,
-                Nota: produtoAlertaSelected.Nota, UltimoCusto: produtoAlertaSelected.UltimoCusto, PenultimoCusto: produtoAlertaSelected.PenultimoCusto, 
+                Nota: produtoAlertaSelected.Nota, UltimoCusto: produtoAlertaSelected.UltimoCusto, PenultimoCusto: produtoAlertaSelected.PenultimoCusto,
                 Classificacao: produtoAlertaSelected.Classificacao, Diferenca: produtoAlertaSelected.Diferenca
             }
 
@@ -1172,7 +1171,8 @@ function observacaoModalCtrl($scope, $uibModalInstance, produtoAlertaSelected, $
         });
 
         if ($scope.status.cdAlertaStatus == 4) {
-            $scope.objBalanco = {CdProduto:produtoAlertaSelected.CdProduto, CdPessoaFilial:produtoAlertaSelected.CdPessoaFilial,
+            $scope.objBalanco = {
+                CdProduto: produtoAlertaSelected.CdProduto, CdPessoaFilial: produtoAlertaSelected.CdPessoaFilial,
                 NomeProduto: produtoAlertaSelected.NomeProduto, Estoque: produtoAlertaSelected.QtdEstoque, CdProdutoInvertido: $scope.invertido
             }
 
@@ -1325,7 +1325,7 @@ function quarentenaTodosModalCtrl($scope, $uibModalInstance, produtoAlertaSelect
         }
         $uibModalInstance.close();
     }
-    
+
 }
 
 function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
@@ -1736,6 +1736,7 @@ function solDespesaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert, 
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -2014,6 +2015,7 @@ function aprovDespesaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -2733,6 +2735,7 @@ function atendenteModalInstanceCtrl($scope, $uibModalInstance, $http, atendenteS
 function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert, $sessionStorage, $interval, $location) {
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [1, 'asc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -2752,6 +2755,38 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             }
         ]);
 
+    $scope.dtOptions2 = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) { dd = '0' + dd }
+    if (mm < 10) { mm = '0' + mm }
+
+    today = yyyy.toString() + mm.toString() + dd.toString();
+
+    $scope.date = today;
+
     $scope.totalCaixas = 0;
     $scope.totalDespesas = 0;
     $scope.totalOutrasDespesas = 0;
@@ -2759,40 +2794,72 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     $scope.totalComposicao = 0;
     $scope.totalCaixaGeral = 0;
 
-
-    $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalCaixas = response.data;
-    });
-
-    $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalDespesas = response.data;
-    });
-
-    $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalOutrasDespesas = response.data;
-    });
-
-    $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalEntradas = response.data;
-    });
-
-    $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalComposicao = response.data;
-    });
-
-    $http.get("http://localhost:50837/api/CadSaldo/GetLastSaldoByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.totalCaixaGeral = response.data.Saldo;
-    });
-
-    $http.get("http://localhost:50837/api/CadSaldo/GetCurrentSaldoByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.foiFechado = response.data;
-    });
-
     $scope.caixas;
+    $scope.entradas;
+    $scope.composicoes;
+    $scope.despesas;
+    $scope.outrasdespesas;
 
-    $http.get("http://localhost:50837/api/CadCaixa/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.caixas = response.data;
-    });
+    $scope.Definir = function () {
+
+        $http.get("http://localhost:50837/api/CadSaldo/GetFechado?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.foiFechado = response.data;
+        }); 
+
+        // Registros 
+
+        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.caixas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.outrasdespesas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.entradas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.composicoes = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $scope.despesas = response.data;
+        });
+
+        // Totais
+
+
+        $http.get("http://localhost:50837/api/CadSaldo/GetSaldoByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalCaixaGeral = response.data.Saldo;
+        });
+
+        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalCaixas = response.data;
+        });
+
+
+        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalDespesas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalOutrasDespesas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalEntradas = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
+            $scope.totalComposicao = response.data;
+        });
+    }
+
+    //$http.get("http://localhost:50837/api/CadCaixa/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+    //    $scope.caixas = response.data;
+    //});
 
     $scope.editarCaixa = function (caixa) {
 
@@ -2806,13 +2873,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Alteracao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadCaixa/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.caixas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalCaixas = response.data;
             });
         });
@@ -2830,13 +2900,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Inclusao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadCaixa/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.caixas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalCaixas = response.data;
             });
         });
@@ -2857,10 +2930,10 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadCaixa/Excluir", caixa).then(function (response) {
-                        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.caixas = response.data;
                         });
-                        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.totalCaixas = response.data;
                         });
                         SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
@@ -2874,12 +2947,9 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             });
     }
 
-
-    $scope.entradas;
-
-    $http.get("http://localhost:50837/api/CadEntrada/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.entradas = response.data;
-    });
+    //$http.get("http://localhost:50837/api/CadEntrada/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+    //    $scope.entradas = response.data;
+    //});
 
     $scope.editarEntrada = function (entrada) {
 
@@ -2893,13 +2963,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Alteracao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadEntrada/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.entradas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalEntradas = response.data;
             });
         });
@@ -2920,13 +2993,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 buscaSelected: function () {
                     return true;
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadEntrada/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.entradas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalEntradas = response.data;
             });
         });
@@ -2947,10 +3023,10 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadEntrada/Excluir", entrada).then(function (response) {
-                        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.entradas = response.data;
                         });
-                        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.totalEntradas = response.data;
                         });
                         SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
@@ -2965,12 +3041,9 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     }
 
 
-
-    $scope.composicoes;
-
-    $http.get("http://localhost:50837/api/CadComposicao/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.composicoes = response.data;
-    });
+    //$http.get("http://localhost:50837/api/CadComposicao/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+    //    $scope.composicoes = response.data;
+    //});
 
     $scope.editarComposicao = function (composicao) {
 
@@ -2984,13 +3057,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Alteracao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadComposicao/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.composicoes = response.data;
             });
-            $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalComposicao = response.data;
             });
         });
@@ -3008,13 +3084,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Inclusao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadComposicao/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.composicoes = response.data;
             });
-            $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalComposicao = response.data;
             });
         });
@@ -3035,10 +3114,10 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadComposicao/Excluir", composicao).then(function (response) {
-                        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.composicoes = response.data;
                         });
-                        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.totalComposicao = response.data;
                         });
                         SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
@@ -3085,12 +3164,9 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     }
 
 
-
-    $scope.despesas;
-
-    $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.despesas = response.data;
-    });
+    //$http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+    //    $scope.despesas = response.data;
+    //});
 
     $scope.editar = function (solicitacaodesp) {
 
@@ -3170,7 +3246,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                         $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
                             $scope.despesas = response.data;
                         });
-                        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.totalDespesas = response.data;
                         });
                         SweetAlert.swal("Baixado!", "Registro baixado com sucesso", "success");
@@ -3185,11 +3261,9 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     }
 
 
-    $scope.outrasdespesas;
-
-    $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
-        $scope.outrasdespesas = response.data;
-    });
+    //$http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+    //    $scope.outrasdespesas = response.data;
+    //});
 
     $scope.editarOutrasDespesas = function (outrasDespesas) {
 
@@ -3203,13 +3277,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Alteracao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.outrasdespesas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalOutrasDespesas = response.data;
             });
         });
@@ -3227,13 +3304,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 },
                 tipo: function () {
                     return "Inclusao";
+                },
+                date: function () {
+                    return $scope.date;
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.outrasdespesas = response.data;
             });
-            $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+            $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                 $scope.totalOutrasDespesas = response.data;
             });
         });
@@ -3254,10 +3334,10 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadOutrasDesp/Excluir", outrasDespesas).then(function (response) {
-                        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.outrasdespesas = response.data;
                         });
-                        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
                             $scope.totalOutrasDespesas = response.data;
                         });
                         SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
@@ -3270,7 +3350,6 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                 }
             });
     }
-
 
     $scope.fechar = function () {
 
@@ -3296,10 +3375,10 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                             $scope.saldodivergencia = (Math.round($scope.saldodivergencia * 100) / 100) * -1;
 
                             $scope.objSaida = {
-                                IdUsuario: $sessionStorage.user.Id, Valor: $scope.saldodivergencia, Descricao: "Quebra"
+                                IdUsuario: $sessionStorage.user.Id, DataInclusao: $scope.date, Valor: $scope.saldodivergencia, Descricao: "Quebra"
                             };
 
-                            $scope.obj = { IdUsuario: $sessionStorage.user.Id, Saldo: Math.round(($scope.saldo - $scope.saldodivergencia) * 100) / 100 };
+                            $scope.obj = { IdUsuario: $sessionStorage.user.Id, DataInclusao: $scope.date, Saldo: Math.round(($scope.saldo - $scope.saldodivergencia) * 100) / 100 };
 
                             $http.post("http://localhost:50837/api/CadOutrasDesp/Incluir", $scope.objSaida).then(function (response) {
                                 $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
@@ -3318,16 +3397,16 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                         }
                         else {
 
-                            $scope.obj = { IdUsuario: $sessionStorage.user.Id, Saldo: Math.round(($scope.saldo + $scope.saldodivergencia) * 100) / 100 };
+                            $scope.obj = { IdUsuario: $sessionStorage.user.Id, DataInclusao: $scope.date, Saldo: Math.round(($scope.saldo + $scope.saldodivergencia) * 100) / 100 };
 
                             $scope.objEntrada = {
-                                IdUsuario: $sessionStorage.user.Id, Valor: Math.round($scope.saldodivergencia * 100) / 100, Descricao: "Sobra"
+                                IdUsuario: $sessionStorage.user.Id, DataInclusao: $scope.date, Valor: Math.round($scope.saldodivergencia * 100) / 100, Descricao: "Sobra"
                             };
 
                             $http.post("http://localhost:50837/api/CadEntrada/Incluir", $scope.objEntrada).then(function (response) {
                                 $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
                                     SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
-                                    $interval(function () {
+                                    $interval(function () { 
                                         location.reload();
                                     }, 3000);
                                 }, function (response) {
@@ -3357,7 +3436,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     }
 }
 
-function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected, tipo, $sessionStorage) {
+function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected, tipo, $sessionStorage, date) {
     $scope.tipo = tipo;
     $scope.supervisores;
     $scope.operadores;
@@ -3379,7 +3458,7 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
     });
 
     if ($scope.tipo == "Alteracao") {
-        $scope.hora = caixaSelected.DataInclusao.substring(11, 16);
+        $scope.hora = caixaSelected.Hora
         $scope.data = caixaSelected.DataInclusao;
         $scope.supervisor = caixaSelected.Supervisor;
         $scope.operador = caixaSelected.Atendente;
@@ -3393,8 +3472,8 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
 
         if ($scope.cadCaixaForm.$valid) {
             $scope.obj = {
-                DataInclusao: $scope.hora, IdUsuario: $sessionStorage.user.Id, IdSupervisor: $scope.supervisor.Id,
-                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno
+                DataInclusao: date, IdUsuario: $sessionStorage.user.Id, IdSupervisor: $scope.supervisor.Id,
+                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, Hora: $scope.hora
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Incluir", $scope.obj).then(function (response) {
@@ -3414,7 +3493,8 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
         if ($scope.cadCaixaForm.$valid) {
             $scope.obj = {
                 Id: caixaSelected.Id, DataInclusao: $scope.data, IdUsuario: caixaSelected.IdUsuario, IdSupervisor: $scope.supervisor.Id,
-                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, IdUsuarioAlteracao: $sessionStorage.user.Id
+                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, IdUsuarioAlteracao: $sessionStorage.user.Id,
+                Hora: $scope.hora
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Editar", $scope.obj).then(function (response) {
@@ -3433,7 +3513,7 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
     };
 }
 
-function entradaModalInstanceCtrl($scope, $uibModalInstance, $http, entradaSelected, tipo, $sessionStorage, buscaSelected) {
+function entradaModalInstanceCtrl($scope, $uibModalInstance, $http, entradaSelected, tipo, $sessionStorage, buscaSelected, date) {
     $scope.tipo = tipo;
 
     if ($scope.tipo == "Alteracao") {
@@ -3457,7 +3537,7 @@ function entradaModalInstanceCtrl($scope, $uibModalInstance, $http, entradaSelec
 
         if ($scope.cadEntradaForm.$valid) {
             $scope.obj = {
-                IdUsuario: $scope.usuario, DataInclusao: $scope.dataInclusao, Valor: $scope.valor, Descricao: $scope.descricao
+                IdUsuario: $scope.usuario, DataInclusao: date, Valor: $scope.valor, Descricao: $scope.descricao
             };
 
             $http.post("http://localhost:50837/api/CadEntrada/Incluir", $scope.obj).then(function (response) {
@@ -3497,8 +3577,9 @@ function entradaModalInstanceCtrl($scope, $uibModalInstance, $http, entradaSelec
     };
 }
 
-function composicaoModalInstanceCtrl($scope, $uibModalInstance, $http, composicaoSelected, tipo, $sessionStorage) {
+function composicaoModalInstanceCtrl($scope, $uibModalInstance, $http, composicaoSelected, tipo, $sessionStorage, date) {
     $scope.tipo = tipo;
+
     $scope.descricoes = ["Moedas", "Nota R$2", "Nota R$5", "Nota R$10", "Nota R$20", "Nota R$50", "Nota R$100", "Caixinha", "Copinho", "Troco", "Boca de Lobo", "Outros"];
     if ($scope.tipo == "Alteracao") {
         $scope.valor = composicaoSelected.Valor;
@@ -3512,7 +3593,7 @@ function composicaoModalInstanceCtrl($scope, $uibModalInstance, $http, composica
 
         if ($scope.cadComposicaoForm.$valid) {
             $scope.obj = {
-                IdUsuario: $sessionStorage.user.Id, Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao, Baixa: $scope.baixa
+                IdUsuario: $sessionStorage.user.Id, DataInclusao: date, Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao, Baixa: $scope.baixa
             };
 
             $http.post("http://localhost:50837/api/CadComposicao/Incluir", $scope.obj).then(function (response) {
@@ -3553,9 +3634,10 @@ function composicaoModalInstanceCtrl($scope, $uibModalInstance, $http, composica
     };
 }
 
-function outrasdespesasModalInstanceCtrl($scope, $uibModalInstance, $http, outrasdespesasSelected, tipo, $sessionStorage) {
+function outrasdespesasModalInstanceCtrl($scope, $uibModalInstance, $http, outrasdespesasSelected, tipo, $sessionStorage, date) {
     $scope.tipo = tipo;
-    $scope.descricoes = ["Boca de Lobo", "Transferencia"];
+
+    $scope.descricoes = ["Boca de Lobo", "Transferencia Cofre (GTV)", "Transferencia Filial"];
     if ($scope.tipo == "Alteracao") {
         $scope.valor = outrasdespesasSelected.Valor;
         $scope.descricao = outrasdespesasSelected.Descricao;
@@ -3567,7 +3649,7 @@ function outrasdespesasModalInstanceCtrl($scope, $uibModalInstance, $http, outra
 
         if ($scope.cadOutrasDespesasForm.$valid) {
             $scope.obj = {
-                IdUsuario: $sessionStorage.user.Id, Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao
+                IdUsuario: $sessionStorage.user.Id, DataInclusao: date, Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao
             };
 
             $http.post("http://localhost:50837/api/CadOutrasDesp/Incluir", $scope.obj).then(function (response) {

@@ -33,8 +33,6 @@ namespace Intranet.API.Controllers
 
             try
             {
-                if (model.DataInclusao.Year == 1)
-                    model.DataInclusao = DateTime.Now;
                 context.CadEntradasControle.Add(model);
                 context.SaveChanges();
             }

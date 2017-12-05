@@ -30,7 +30,7 @@ namespace Intranet.Domain.Entities
         public string NomeProduto { get; set; }
 
         [DataMember]
-        public decimal? Estoque { get; set; }
+        public int? Estoque { get; set; }
 
         [DataMember]
         public int Status { get; set; }

@@ -26,7 +26,6 @@ namespace Intranet.API.Controllers
 
             try
             {
-                model.DataInclusao = DateTime.Now;
                 context.CadSaldosControle.Add(model);
                 context.SaveChanges();
             }
@@ -39,32 +38,13 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public bool GetCurrentSaldoByUser(int idUsuario)
-        {
-            var context = new AlvoradaContext();
-
-            var result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao.Date == DateTime.Now.Date)
-              .OrderByDescending(x => x.DataInclusao).FirstOrDefault();
-
-            if (result == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         public CadSaldoControle GetSaldoByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
 
             return context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao.Date== date.Date).OrderByDescending(x => x.DataInclusao).FirstOrDefault();
+            && x.DataInclusao.Date != date.Date).OrderByDescending(x => x.DataInclusao).FirstOrDefault();
         }
-
 
         public HttpResponseMessage Alterar(CadSaldoControle model)
         {
@@ -94,6 +74,19 @@ namespace Intranet.API.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public bool GetFechado(int idUsuario, DateTime date) {
+
+            var context = new AlvoradaContext();
+
+            var result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao.Date == date.Date).FirstOrDefault();
+
+            if (result != null)
+                return true;
+
+            return false;
         }
 
     }
