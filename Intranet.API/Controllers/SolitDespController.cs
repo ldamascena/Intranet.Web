@@ -187,7 +187,7 @@ namespace Intranet.API.Controllers
             {
                 var result = context.CadSolicitacoesDesp.Where(x => x.IdCadSolDesp == obj.IdCadSolDesp).FirstOrDefault();
                 result.Baixa = true;
-                result.DataBaixa = DateTime.Now;
+                result.DataBaixa = obj.DataBaixa;
                 context.SaveChanges();
             }
             catch (Exception ex)

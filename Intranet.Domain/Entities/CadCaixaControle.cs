@@ -24,10 +24,10 @@ namespace Intranet.Domain.Entities
         public int? IdUsuarioAlteracao { get; set; }
 
         [DataMember]
-        public int IdSupervisor { get; set; }
+        public int? IdSupervisor { get; set; }
 
         [DataMember]
-        public int IdAtendente { get; set; }
+        public int? IdAtendente { get; set; }
 
         [DataMember]
         public int IdCaixa { get; set; }
@@ -40,10 +40,10 @@ namespace Intranet.Domain.Entities
         public DateTime? DataAlteracao { get; set; }
 
         [DataMember]
-        public int Turno { get; set; }
+        public int? Turno { get; set; }
 
         [DataMember]
-        public TimeSpan Hora { get; set; }
+        public TimeSpan? Hora { get; set; }
 
         [DataMember]
         public virtual CadAtendente Atendente { get; set; }

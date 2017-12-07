@@ -2735,7 +2735,7 @@ function atendenteModalInstanceCtrl($scope, $uibModalInstance, $http, atendenteS
 function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert, $sessionStorage, $interval, $location) {
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
-        .withOption('order', [1, 'asc'])
+        .withOption('order', [0, 'asc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -2776,17 +2776,6 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             }
         ]);
 
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    if (dd < 10) { dd = '0' + dd }
-    if (mm < 10) { mm = '0' + mm }
-
-    today = yyyy.toString() + mm.toString() + dd.toString();
-
-    $scope.date = today;
-
     $scope.totalCaixas = 0;
     $scope.totalDespesas = 0;
     $scope.totalOutrasDespesas = 0;
@@ -2804,7 +2793,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
 
         $http.get("http://localhost:50837/api/CadSaldo/GetFechado?idUsuario=" + $sessionStorage.user.Id + "&date=" + $scope.date).then(function (response) {
             $scope.foiFechado = response.data;
-        }); 
+        });
 
         // Registros 
 
@@ -3229,6 +3218,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     };
 
     $scope.baixar = function (solicitacaodesp) {
+        solicitacaodesp.DataBaixa = $scope.date;
         SweetAlert.swal({
             title: "Deseja dar baixa?",
             text: "Não será possivel recuperar depois de dado baixa!",
@@ -3406,7 +3396,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                             $http.post("http://localhost:50837/api/CadEntrada/Incluir", $scope.objEntrada).then(function (response) {
                                 $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
                                     SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
-                                    $interval(function () { 
+                                    $interval(function () {
                                         location.reload();
                                     }, 3000);
                                 }, function (response) {
@@ -3438,20 +3428,20 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
 
 function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected, tipo, $sessionStorage, date) {
     $scope.tipo = tipo;
-    $scope.supervisores;
-    $scope.operadores;
+    //$scope.supervisores;
+    //$scope.operadores;
     $scope.caixas;
     $scope.data;
 
-    $scope.turnos = [{ id: 1, nome: "Manhã" }, { id: 2, nome: "Tarde" }];
+    //$scope.turnos = [{ id: 1, nome: "Manhã" }, { id: 2, nome: "Tarde" }];
 
-    $http.get("http://localhost:50837/api/CadSupervisor/GetAll").then(function (response) {
-        $scope.supervisores = response.data;
-    });
+    //$http.get("http://localhost:50837/api/CadSupervisor/GetAll").then(function (response) {
+    //    $scope.supervisores = response.data;
+    //});
 
-    $http.get("http://localhost:50837/api/CadAtendente/GetAll").then(function (response) {
-        $scope.operadores = response.data;
-    });
+    //$http.get("http://localhost:50837/api/CadAtendente/GetAll").then(function (response) {
+    //    $scope.operadores = response.data;
+    //});
 
     $http.get("http://localhost:50837/api/Caixa/GetAll").then(function (response) {
         $scope.caixas = response.data;
@@ -3471,9 +3461,14 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
         $scope.valor = $scope.valor.toString().replace(",", ".");
 
         if ($scope.cadCaixaForm.$valid) {
+            //$scope.obj = {
+            //    DataInclusao: date, IdUsuario: $sessionStorage.user.Id, IdSupervisor: $scope.supervisor.Id,
+            //    IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, Hora: $scope.hora
+            //};
+
             $scope.obj = {
-                DataInclusao: date, IdUsuario: $sessionStorage.user.Id, IdSupervisor: $scope.supervisor.Id,
-                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, Hora: $scope.hora
+                DataInclusao: date, IdUsuario: $sessionStorage.user.Id, IdCaixa: $scope.caixa,
+                Valor: $scope.valor
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Incluir", $scope.obj).then(function (response) {
@@ -3491,10 +3486,15 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
         $scope.valor = $scope.valor.toString().replace(",", ".");
 
         if ($scope.cadCaixaForm.$valid) {
+            //$scope.obj = {
+            //    Id: caixaSelected.Id, DataInclusao: $scope.data, IdUsuario: caixaSelected.IdUsuario, IdSupervisor: $scope.supervisor.Id,
+            //    IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, IdUsuarioAlteracao: $sessionStorage.user.Id,
+            //    Hora: $scope.hora
+            //};
+
             $scope.obj = {
-                Id: caixaSelected.Id, DataInclusao: $scope.data, IdUsuario: caixaSelected.IdUsuario, IdSupervisor: $scope.supervisor.Id,
-                IdAtendente: $scope.operador.Id, IdCaixa: $scope.caixa, Valor: $scope.valor, Turno: $scope.turno, IdUsuarioAlteracao: $sessionStorage.user.Id,
-                Hora: $scope.hora
+                Id: caixaSelected.Id, DataInclusao: caixaSelected.DataInclusao, IdUsuario: caixaSelected.IdUsuario,
+                Valor: $scope.valor, IdUsuarioAlteracao: $sessionStorage.user.Id, IdCaixa: $scope.caixa
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Editar", $scope.obj).then(function (response) {
@@ -3718,7 +3718,14 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
     $scope.totalComposicao = 0;
     $scope.totalCaixaGeral = 0;
 
+    $scope.caixas;
+    $scope.entradas;
+    $scope.composicoes;
+    $scope.despesas;
+    $scope.outrasdespesas;
+
     $scope.lojas;
+    $scope.foiFechado;
 
     $http.get("http://localhost:50837/api/Usuario/GetAllTesoureiras").then(function (response) {
         $scope.lojas = response.data;
@@ -3727,58 +3734,60 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
     $scope.Buscar = function () {
 
+        $http.get("http://localhost:50837/api/CadSaldo/GetFechado?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
+            $scope.foiFechado = response.data;
+        });
+
         // Registros 
 
-        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.caixas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.outrasdespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.entradas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.composicoes = response.data;
         });
 
-        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $scope.loja).then(function (response) {
             $scope.despesas = response.data;
         });
 
         // Totais
 
 
-        $http.get("http://localhost:50837/api/CadSaldo/GetSaldoByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadSaldo/GetSaldoByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalCaixaGeral = response.data.Saldo;
         });
 
-        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalCaixas = response.data;
         });
 
 
-        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalDespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalOutrasDespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalEntradas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.date).then(function (response) {
+        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.date).then(function (response) {
             $scope.totalComposicao = response.data;
         });
     }
-
-    $scope.caixas;
 
     $scope.editarCaixa = function (caixa) {
 
@@ -3861,8 +3870,6 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
     }
 
 
-
-    $scope.entradas;
 
     $scope.editarEntrada = function (entrada) {
 
@@ -3949,8 +3956,6 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
 
 
-    $scope.composicoes;
-
     $scope.editarComposicao = function (composicao) {
 
         var modalInstance = $uibModal.open({
@@ -4032,8 +4037,6 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
     }
 
 
-
-    $scope.despesas;
 
     $scope.editar = function (solicitacaodesp) {
 
@@ -4129,8 +4132,6 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
 
 
-    $scope.outrasdespesas;
-
     $scope.editarOutrasDespesas = function (outrasDespesas) {
 
         var modalInstance = $uibModal.open({
@@ -4213,77 +4214,36 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
     $scope.fechar = function () {
 
-        $scope.saldodivergencia = $scope.totalComposicao - (($scope.totalCaixaGeral + $scope.totalCaixas + $scope.totalEntradas) - ($scope.totalDespesas + $scope.totalOutrasDespesas));
+        $scope.obj = { IdUsuario: $scope.loja, DataInclusao: $scope.date };
 
-        $scope.saldo = ($scope.totalCaixaGeral + $scope.totalCaixas + $scope.totalEntradas) - ($scope.totalDespesas + $scope.totalOutrasDespesas);
-
-        SweetAlert.swal({
-            title: "Deseja fechar o dia?",
-            text: "Você tem uma divergência de: " + Math.round(($scope.totalComposicao - $scope.saldo) * 100) / 100 + " deseja continuar o fechamento?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Sim, fechar!",
-            cancelButtonText: "Não, cancelar!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-            function (isConfirm) {
-                if (isConfirm) {
-                    if (Math.round($scope.saldodivergencia * 100) / 100 < 0) {
-                        $scope.saldodivergencia = (Math.round($scope.saldodivergencia * 100) / 100) * -1;
-
-                        $scope.objSaida = {
-                            IdUsuario: $sessionStorage.user.Id, Valor: $scope.saldodivergencia, Descricao: "Quebra"
-                        };
-
-                        $scope.obj = { IdUsuario: $sessionStorage.user.Id, IdUsuarioAlteracao: $sessionStorage.user.Id, DataInclusao: $scope.date, Saldo: Math.round(($scope.saldo - $scope.saldodivergencia) * 100) / 100 };
-
-                        $http.post("http://localhost:50837/api/CadOutrasDesp/Incluir", $scope.objSaida).then(function (response) {
-                            $http.post("http://localhost:50837/api/CadSaldo/Alterar", $scope.obj).then(function (response) {
-                                SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
-                                $interval(function () {
-                                    location.reload();
-                                }, 3000);
-                            }, function (response) {
-                                SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
-                                $interval(function () {
-                                    location.reload();
-                                }, 3000);
-                            });
-
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
+        alert($scope.foiFechado);
+        if ($scope.foiFechado) {
+            SweetAlert.swal({
+                title: "Deseja reabrir o dia?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, fechar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $http.post("http://localhost:50837/api/CadSaldo/Excluir", $scope.obj).then(function (response) {
+                            $scope.foiFechado = response.data;
+                            SweetAlert.swal("Reaberto!", "Dia reaberto com sucesso!", "success");
                         });
-
+                        
                     }
                     else {
-
-                        $scope.obj = { IdUsuario: $sessionStorage.user.Id, IdUsuarioAlteracao: $sessionStorage.user.Id, DataInclusao: $scope.date, Saldo: Math.round(($scope.saldo + $scope.saldodivergencia) * 100) / 100 };
-
-                        $scope.objEntrada = {
-                            IdUsuario: $sessionStorage.user.Id, Valor: Math.round($scope.saldodivergencia * 100) / 100, Descricao: "Sobra"
-                        };
-
-                        $http.post("http://localhost:50837/api/CadEntrada/Incluir", $scope.objEntrada).then(function (response) {
-                            $http.post("http://localhost:50837/api/CadSaldo/Alterar", $scope.obj).then(function (response) {
-                                SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
-                                $interval(function () {
-                                    location.reload();
-                                }, 3000);
-                            }, function (response) {
-                                return alert("Erro: " + response.status);
-                            });
-
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
-                        });
+                        SweetAlert.swal("Cancelado", "Você cancelou a reabertura do dia!", "error");
                     }
-
-                } else {
-                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão do registro", "error");
-                }
-            });
+                });
+        }
+        else {
+            SweetAlert.swal("Cancelado", "Dia ainda não foi fechado!", "error");
+        }
     }
 }
 

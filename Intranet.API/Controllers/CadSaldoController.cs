@@ -2,6 +2,7 @@
 using Intranet.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,41 +43,39 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
+            var result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao.Date == date.Date.AddDays(-1)).FirstOrDefault();
+
+            if (result == null)
+                result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
             && x.DataInclusao.Date != date.Date).OrderByDescending(x => x.DataInclusao).FirstOrDefault();
+
+            return result;
         }
 
-        public HttpResponseMessage Alterar(CadSaldoControle model)
+        public HttpResponseMessage Excluir(CadSaldoControle model)
         {
             var context = new AlvoradaContext();
-
-            var result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == model.IdUsuario
-            && x.DataInclusao.Date == model.DataInclusao.Date).FirstOrDefault();
-
-            var saldoAtual = model.Saldo - result.Saldo;
-
-            var list = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == model.IdUsuario && x.DataInclusao > model.DataInclusao).ToList();
+            var result = context.CadSaldosControle.ToList().Where(x => x.DataInclusao.Date == model.DataInclusao.Date && x.IdUsuario == model.IdUsuario).FirstOrDefault();
 
             try
             {
-                foreach (var item in list)
-                {
-                    item.Saldo = item.Saldo + saldoAtual;
-                    item.DataAlteracao = DateTime.Now;
-                    context.CadSaldosControle.Add(model);
-                    context.SaveChanges();
-                }
+                context.Entry(result).State = EntityState.Deleted;
+                context.SaveChanges();
             }
-
             catch (Exception ex)
             {
-                throw ex;
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public bool GetFechado(int idUsuario, DateTime date) {
+        public bool GetFechado(int idUsuario, DateTime date)
+        {
 
             var context = new AlvoradaContext();
 
