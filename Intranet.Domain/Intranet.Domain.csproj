@@ -104,6 +104,7 @@
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
+    <Compile Include="Entities\VwAcompanhamentoControleCaixa.cs" />
     <Compile Include="Entities\VwAlertaGeralAnalitico.cs" />
     <Compile Include="Entities\VwAlertaInversaoAnalitico.cs" />
     <Compile Include="Entities\VwAlertasAnalitico.cs" />

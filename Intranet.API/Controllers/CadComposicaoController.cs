@@ -132,5 +132,15 @@ namespace Intranet.API.Controllers
                 .GroupBy(x => x.IdUsuario)
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
+
+        public IEnumerable<VwAcompanhamentoControleCaixa> GetAnalitcoByUser(int idUsuario, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            return context.VwAcompanhamentoControleCaixa.
+                ToList().Where(x => x.IdUsuario == idUsuario 
+                && (x.Data.Value.Date > dataInicio.AddDays(-1).Date 
+                && x.Data.Value.Date <= dataFim.Date)).ToList();
+        }
     }
 }

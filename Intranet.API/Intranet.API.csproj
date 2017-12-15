@@ -2497,7 +2497,9 @@
     <Content Include="Views\controledecaixa\cadatendente.html" />
     <Content Include="Views\controledecaixa\cadsupervisor.html" />
     <Content Include="Views\controledecaixa\controlegeral.html" />
+    <Content Include="Views\controledecaixa\relacompanhamento.html" />
     <Content Include="Views\controledecaixa\supcontrolegeral.html" />
+    <Content Include="Views\controledecaixa\suprelacompanhamento.html" />
     <Content Include="Views\despesas\aprovdespesa.html" />
     <Content Include="Views\despesas\cadfornecedor.html" />
     <Content Include="Views\despesas\cadmotivo.html" />

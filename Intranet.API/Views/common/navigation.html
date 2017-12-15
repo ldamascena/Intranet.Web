@@ -3,29 +3,26 @@
         <ul side-navigation class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="profile-element" uib-dropdown>
-                    <img alt="image" class="img-circle" style="width:180px; height:90px;" src="/img/Logo-SM-horisontal.png"/>
+                    <img alt="image" class="img-circle" style="width:180px; height:90px;" src="/img/Logo-SM-horisontal.png" />
                     <a>
-                            <!--<span class="clear">
-                                <span class="block m-t-xs">
-                                    <strong class="font-bold">Supermarket</strong>
-                             </span>
-                                <span class="text-muted text-xs block">Alvorada</span>
-                            </span>-->
+                        <!--<span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">Supermarket</strong>
+                         </span>
+                            <span class="text-muted text-xs block">Alvorada</span>
+                        </span>-->
                     </a>
                 </div>
                 <div class="logo-element">
                     <img alt="image" class="img-circle" style="width:70px; height:40px;" src="/img/Logo-SM-horisontal.png" />
                 </div>
             </li>
-
             <li ui-sref-active="active">
                 <a ui-sref="principal.instutucional"><i class="fa fa-diamond"></i> <span class="nav-label">{{ 'Instutucional' | translate }}</span> </a>
             </li>
-
             <!--<li ui-sref-active="active">
                 <a ui-sref="departamentos"><i class="fa fa-building"></i> <span class="nav-label">{{ 'Departamentos' | translate }}</span> </a>
             </li>-->
-
             <li ng-class="{active: $state.includes('alertas')}" ng-show="grupo == 1 || grupo == 7 || grupo == 10 || grupo == 11">
                 <a href="#"><i class="fa fa-free-code-camp"></i> <span class="nav-label">{{ 'Alertas' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('alertas')}">
@@ -36,37 +33,25 @@
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 7"><a ui-sref="alertas.balanco">Balanco</a></li>
                 </ul>
             </li>
-
-            <li ng-class="{active: $state.includes('aplicacoes')}" ng-show="grupo == 1 || grupo == 4 || grupo == 5"">
-                <a href=""><i class="fa fa-laptop"></i> <span class="nav-label">{{ 'Aplicacoes' | translate }}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level" ng-show="grupo == 1 || grupo == 4 || grupo == 5">
-                    <li ng-class="{active: $state.includes('aplicacoes.cadmotivo') || $state.includes('aplicacoes.cadsituacao') || $state.includes('aplicacoes.cadfornecedor') || $state.includes('aplicacoes.cadsoldespesa') || $state.includes('aplicacoes.aprovdespesa')}">
-                        <a href="">Despesas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadmotivo')}" ng-show="grupo != 5" ui-sref="aplicacoes.cadmotivo">Cadastro de Motivo</a></li>
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadsituacao')}" ng-show="grupo != 5" ui-sref="aplicacoes.cadsituacao">Cadastro de Situacao</a></li>
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadfornecedor')}" ng-show="grupo != 5" ui-sref="aplicacoes.cadfornecedor">Cadastro de Fornecedor</a></li>
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadsoldespesa')}" ui-sref="aplicacoes.cadsoldespesa">Cadastro de Soliticacao de Despesa</a></li>
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.aprovdespesa')}" ng-show="grupo != 5" ui-sref="aplicacoes.aprovdespesa">Aprovacao de Despesa</a></li>
-                        </ul>
-                    </li>
+            <li ng-class="{active: $state.includes('despesas')}" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12">
+                <a href="#"><i class="fa fa-money"></i> <span class="nav-label">{{ 'Despesas' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('despesas')}">
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('despesas.cadmotivo')}" ng-show="grupo != 5" ui-sref="despesas.cadmotivo">Cadastro de Motivo</a></li>
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('despesas.cadsituacao')}" ng-show="grupo != 5" ui-sref="despesas.cadsituacao">Cadastro de Situacao</a></li>
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('despesas.cadfornecedor')}" ng-show="grupo != 5" ui-sref="despesas.cadfornecedor">Cadastro de Fornecedor</a></li>
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('despesas.cadsoldespesa')}" ui-sref="despesas.cadsoldespesa">Cadastro de Soliticacao de Despesa</a></li>
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('despesas.aprovdespesa')}" ng-show="grupo != 5" ui-sref="despesas.aprovdespesa">Aprovacao de Despesa</a></li>
                 </ul>
-                <ul class="nav nav-second-level" ng-show="grupo != 7">
-                    <li ng-class="{active: $state.includes('aplicacoes.controlegeral') || $state.includes('aplicacoes.cadsupervisor') || $state.includes('aplicacoes.cadatendente') || $state.includes('aplicacoes.supcontrolegeral')}">
-                        <a href="">Controle de Cx<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.controlegeral')}" ng-show="grupo != 5" ui-sref="aplicacoes.controlegeral">Controle Geral</a></li>
-                        </ul>
-                        <ul class="nav nav-third-level">
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadsupervisor')}" ng-show="grupo != 5" ui-sref="aplicacoes.cadsupervisor">Cadastro de Supervisor</a></li>
-                        </ul>
-                        <ul class="nav nav-third-level">
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadatendente')}" ng-show="grupo != 5" ui-sref="aplicacoes.cadatendente">Cadastro de Atendente</a></li>
-                        </ul>
-                        <ul class="nav nav-third-level">
-                            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.supcontrolegeral')}" ng-show="grupo == 1" ui-sref="aplicacoes.supcontrolegeral">Supervisao Controle Geral</a></li>
-                        </ul>
-                    </li>
+            </li>
+            <li ng-class="{active: $state.includes('controledecaixa')}" ng-show="grupo == 1 || grupo == 5 || grupo == 12 || grupo == 13 || grupo == 14">
+                <a href="#"><i class="fa fa-laptop"></i> <span class="nav-label">{{ 'Controle de Cx' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('controledecaixa')}">
+                    <li ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.controlegeral')}" ui-sref="controledecaixa.controlegeral">Controle Geral</a></li>
+                    <li ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.relacompanhamento')}" ui-sref="controledecaixa.relacompanhamento">Relatorio Acompanhamento</a></li>
+                    <!--<li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadsupervisor')}" ng-show="grupo == 1" ui-sref="aplicacoes.cadsupervisor">Cadastro de Supervisor</a></li>
+                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadatendente')}" ng-show="grupo == 1" ui-sref="aplicacoes.cadatendente">Cadastro de Atendente</a></li>-->
+                    <li ng-show="grupo != 5"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.supcontrolegeral')}" ui-sref="controledecaixa.supcontrolegeral">Supervisao Controle Geral</a></li>
+                    <li ng-show="grupo != 5"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.suprelacompanhamento')}" ui-sref="controledecaixa.suprelacompanhamento">Relatorio Acompanhamento</a></li>
                 </ul>
             </li>
             <li ng-class="{active: $state.includes('estoque')}" ng-show="grupo == 1 || grupo == 11">
@@ -126,6 +111,5 @@
                 </ul>
             </li>-->
         </ul>
-
     </div>
 </nav>

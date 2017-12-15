@@ -12,13 +12,22 @@ namespace Intranet.Alvorada.Data.Context
         {
         }
 
+        
+        public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Grupo> Grupos { get; set; }
+
+        #region Despesas
+
         public virtual DbSet<CadMotivoDesp> CadMotivosDesp { get; set; }
         public virtual DbSet<CadSitDesp> CadSituacoesDesp { get; set; }
         public virtual DbSet<CadFornecedorDesp> CadFornecedoresDesp { get; set; }
         public virtual DbSet<CadSolDesp> CadSolicitacoesDesp { get; set; }
         public virtual DbSet<SituacaoDesp> SituacoesDesp { get; set; }
-        public virtual DbSet<Usuario> Usuarios { get; set; }
-        public virtual DbSet<Grupo> Grupos { get; set; }
+
+        #endregion
+
+        #region Controle de Caixa
+
         public virtual DbSet<CadAtendente> CadAtendentes { get; set; }
         public virtual DbSet<CadSupervisor> CadSupervisores { get; set; }
         public virtual DbSet<Caixa> Caixas { get; set; }
@@ -27,6 +36,9 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<CadComposicaoControle> CadComposicoesControle { get; set; }
         public virtual DbSet<CadOutrasDespControle> CadOutrasDespsControle { get; set; }
         public virtual DbSet<CadSaldoControle> CadSaldosControle { get; set; }
+        public virtual DbSet<VwAcompanhamentoControleCaixa> VwAcompanhamentoControleCaixa { get; set; }
+
+        #endregion
 
         #region Inversão
 
