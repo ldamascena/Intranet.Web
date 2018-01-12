@@ -79,6 +79,9 @@
     <Compile Include="Entities\CadComposicaoControle.cs" />
     <Compile Include="Entities\CadOutra_DespControle.cs" />
     <Compile Include="Entities\CadSaldoControle.cs" />
+    <Compile Include="Entities\CadSolProd.cs" />
+    <Compile Include="Entities\CadSolProdGrade.cs" />
+    <Compile Include="Entities\CadSolProdLog.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
@@ -95,6 +98,7 @@
     <Compile Include="Entities\PessoaJuridica.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\SituacaoDesp.cs" />
+    <Compile Include="Entities\SitCadProd.cs" />
     <Compile Include="Entities\SolUsuario.cs" />
     <Compile Include="Entities\AlertaInversao.cs" />
     <Compile Include="Entities\AlertaUltimoCusto.cs" />

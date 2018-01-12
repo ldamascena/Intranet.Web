@@ -1,0 +1,71 @@
+<fieldset style="height: 400px;">
+    <h2>Informacoes do Produto</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Descricao *</label>
+                <input id="descricao" ng-model="formData.descricao" name="descricao" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Comprador *</label>
+                <select chosen class="chosen-select" id="comprador" name="comprador" tabindex="7" ng-model="formData.comprador">
+                    <option value="Alexandre Martins">Alexandre Martins</option>
+                    <option value="Diego Goncalves">Diego Goncalves</option>
+                    <option value="Geraldo Bonifacio">Geraldo Bonifacio</option>
+                    <option value="Julio Ruiz">Julio Ruiz</option>
+                    <option value="Leandro Moreira">Leandro Moreira</option>
+                    <option value="Marcel Louis">Marcel Louis</option>
+                    <option value="Nilo Sergio Coelho de Oliveira">Nilo Sergio Coelho de Oliveira</option>
+                    <option value="Renato Barros">Renato Barros</option>
+                    <option value="Thiago Amaral">Thiago Amaral</option>
+                    <option value="Vinicius Bonifacio">Vinicius Bonifacio</option>
+                    <option value="Wanderson Batista">Wanderson Batista</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Fornecedor *</label>
+                <input type="text" ng-model="formData.fornecedor" uib-typeahead="fonecedor.RazaoSocial for fonecedor in fonecedores | filter:$viewValue | limitTo:8" class="form-control">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Abastecimento *</label>
+                <select chosen class="chosen-select" id="abastecimento" name="abastecimento" tabindex="3" ng-model="formData.abastecimento">
+                    <option value="Indefinido">Indefinido</option>
+                    <option value="EDL">EDL</option>
+                    <option value="CCEDL">CCEDL</option>
+                    <option value="Centralizado">Centralizado</option>
+                    <option value="Cross-Docking">Cross-Docking</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Concorrencia Sensibilidade *</label>
+                <select chosen class="chosen-select" id="concorrencia" name="concorrencia" tabindex="3" ng-model="formData.concorrencia">
+                    <option value="Ultra Notavel">Ultra Notavel</option>
+                    <option value="Super Notavel">Super Notavel</option>
+                    <option value="Notavel">Notavel</option>
+                    <option value="Sazonal">Sazonal</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Custo Aquisicao</label>
+                <input id="custo" ng-model="formData.custo" name="custo" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Preco de Venda</label>
+                <input id="venda" ng-model="formData.venda" name="venda" type="text" class="form-control">
+            </div>
+        </div>
+    </div>
+    <a ui-sref="produto.solproduto.grade_prod" class="btn btn-primary">Proximo</a>
+</fieldset>

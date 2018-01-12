@@ -1,0 +1,72 @@
+﻿<fieldset>
+    <h2>Mix e Caracteristica do Produto</h2>
+    <div class="row">
+        <!--<div class="col-lg-6">
+            <div class="form-group">
+                <label>Embalagem *</label>
+                <select multiple chosen id="states" class="chosen-select" tabindex="4" ng-model="state" ng-options="s for s in main.states"></select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Embalagem *</label>
+                <select multiple chosen id="states" class="chosen-select" tabindex="4" ng-model="state" ng-options="s for s in main.states"></select>
+            </div>
+        </div>-->
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label>Mix *</label>
+                <select multiple chosen class="chosen-select" tabindex="3" id="mix" name="mix" ng-model="formData.mix">
+                    <option value="TODOS">TODOS</option>
+                    <option value="ÁGUA MINERAL">ÁGUA MINERAL</option>
+                    <option value="ARARUAMA">ARARUAMA</option>
+                    <option value="ARSENAL">ARSENAL</option>
+                    <option value="BACAXÁ">BACAXÁ</option>
+                    <option value="CABO FRIO">CABO FRIO</option>
+                    <option value="CD MANILHA">CD MANILHA</option>
+                    <option value="CD MATRIZ">CD MATRIZ</option>
+                    <option value="COLUBANDE">COLUBANDE</option>
+                    <option value="ITABORAI">ITABORAI</option>
+                    <option value="JARDIM CATARINA">JARDIM CATARINA</option>
+                    <option value="MAGE">MAGE</option>
+                    <option value="MAGÉ 2">MAGÉ 2</option>
+                    <option value="MARICÁ">MARICÁ</option>
+                    <option value="RIO BONITO">RIO BONITO</option>
+                    <option value="TANGUÁ">TANGUÁ</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label>Caracteristica</label>
+                <select multiple chosen class="chosen-select" tabindex="3" ng-model="formData.caracteristica">
+                    <option value="Bonificação">Bonificação</option>
+                    <option value="Fornece Promotor">Fornece Promotor</option>
+                    <option value="Fornece Troca">Fornece Troca</option>
+                    <option value="Verba">Verba</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Justificativa Resumida *</label>
+                <select chosen class="chosen-select" tabindex="3" ng-model="formData.justificativa">
+                    <option value="Produto Fechado na Rede">Produto Fechado na Rede</option>
+                    <option value="Introducao do Mix de loja">Introducao do Mix de loja</option>
+                    <option value="Oportunidade Comercial">Oportunidade Comercial</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Observacao</label>
+                <textarea id="observacao" ng-model="formData.observacao" name="observacao" class="form-control" />
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="m-t-md">
+    <a ui-sref="produto.solproduto.dim_prod" class="btn btn-default">Voltar</a>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</fieldset>

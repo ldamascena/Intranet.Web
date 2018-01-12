@@ -12,7 +12,7 @@ namespace Intranet.Domain.Entities
     public partial class VwAcompanhamentoControleCaixa
     {
         [DataMember]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public string CustomId { get; set; }
 

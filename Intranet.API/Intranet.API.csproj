@@ -93,11 +93,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -188,6 +196,9 @@
     <Compile Include="Controllers\CadOutrasDespController.cs" />
     <Compile Include="Controllers\CadSaldoController.cs" />
     <Compile Include="Controllers\CadSitDespController.cs" />
+    <Compile Include="Controllers\CadSolProdController.cs" />
+    <Compile Include="Controllers\CadSolProdGradeController.cs" />
+    <Compile Include="Controllers\CadSolProdLogController.cs" />
     <Compile Include="Controllers\CadSupervisorController.cs" />
     <Compile Include="Controllers\CaixaController.cs" />
     <Compile Include="Controllers\ClassificacaoMetaController.cs" />
@@ -2536,6 +2547,9 @@
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />
     <Content Include="Views\modal\alertas\quarentena.html" />
+    <Content Include="Views\modal\produto\historico.html" />
+    <Content Include="Views\modal\produto\validate.html" />
+    <Content Include="Views\modal\produto\vis_editar_produto.html" />
     <Content Include="Views\modal\usuariomodal.html" />
     <Content Include="Views\modal\visualizar_despesa.html" />
     <Content Include="Views\modal_example.html" />
@@ -2546,13 +2560,16 @@
     <Content Include="Views\modal_window.html" />
     <Content Include="Views\parametro\parametro_filial.html" />
     <Content Include="Views\principal.html" />
+    <Content Include="Views\produto\sollistaprodutos.html" />
+    <Content Include="Views\produto\wizard\mix_prod.html" />
     <Content Include="Views\register.html" />
+    <Content Include="Views\produto\solproduto.html" />
     <Content Include="Views\table_basic.html" />
     <Content Include="Views\table_data_tables.html" />
     <Content Include="Views\usuarios.html" />
-    <Content Include="Views\wizard\step_one.html" />
-    <Content Include="Views\wizard\step_three.html" />
-    <Content Include="Views\wizard\step_two.html" />
+    <Content Include="Views\produto\wizard\info_prod.html" />
+    <Content Include="Views\produto\wizard\dim_prod.html" />
+    <Content Include="Views\produto\wizard\grade_prod.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

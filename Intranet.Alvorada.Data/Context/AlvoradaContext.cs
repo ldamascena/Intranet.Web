@@ -69,6 +69,11 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
+        public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }
+        public virtual DbSet<SitCadProd> SitCadProd { get; set; }
+        public virtual DbSet<CadSolProdLog> CadSolProdLogs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
@@ -292,6 +297,41 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.AlertasBalanco)
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Situação Produto
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolProd)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            // Solicitação Cadastro de Produto
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolProd)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Log Solicitacao Cadastro de Produto
+
+            modelBuilder.Entity<CadSolProd>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.CadSolProd)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
         }
     }

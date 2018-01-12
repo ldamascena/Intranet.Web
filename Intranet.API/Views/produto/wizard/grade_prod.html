@@ -1,0 +1,35 @@
+<fieldset>
+    <h2>Grade do Produto</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+                <th> Cod no Fornecedor</th>
+                <th>Descricao / Sabor *</th>
+                <th>EAN *</th>
+                <th>DUN *</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="grade in grades">
+                <td><input type="checkbox" ng-model="grade.selected" /></td>
+                <td><input id="codfornecedor" ng-model="grade.codfornecedor" name="codfornecedor" type="text" class="form-control"></td>
+                <td><input id="descricaosabor" ng-model="grade.descricaosabor" name="descricaosabor" type="text" class="form-control"></td>
+                <td><input id="EAN" ng-model="grade.EAN" name="EAN" type="text" class="form-control"></td>
+                <td><input id="DUN" ng-model="grade.DUN" name="DUN" type="text" class="form-control"></td>
+                <td>
+                    <button class="btn btn-success btn-circle" type="button" ng-click="addNew();">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-circle" type="button" ng-click="remove();">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a ui-sref="produto.solproduto.info_prod" class="btn btn-default">Voltar</a>
+    <a ui-sref="produto.solproduto.dim_prod" class="btn btn-primary">Proximo</a>
+</fieldset>

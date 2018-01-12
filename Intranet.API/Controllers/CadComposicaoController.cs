@@ -137,10 +137,11 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.VwAcompanhamentoControleCaixa.
-                ToList().Where(x => x.IdUsuario == idUsuario 
-                && (x.Data.Value.Date > dataInicio.AddDays(-1).Date 
-                && x.Data.Value.Date <= dataFim.Date)).ToList();
+            var result = context.VwAcompanhamentoControleCaixa.Where(x => x.IdUsuario == idUsuario
+                && x.Data.Value >= dataInicio
+                && x.Data.Value <= dataFim).Distinct().ToList().OrderBy(x => x.Data);
+
+            return result;
         }
     }
 }

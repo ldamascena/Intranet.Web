@@ -1,0 +1,13 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Campos obrigatorios</h4>
+    </div>
+    <div class="modal-body">
+        <ul ng-repeat="error in listaDeErros">
+            <li style="color:#a94442; padding:5px;">{{error}}</li>
+        </ul>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+        </div>
+    </div>
+</div>

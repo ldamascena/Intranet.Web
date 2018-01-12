@@ -370,15 +370,468 @@ function registerCtrl($scope, $http) {
     }
 }
 
-function wizardCtrl($scope, $rootScope) {
+function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, $sessionStorage) {
     // All data will be store in this object
     $scope.formData = {};
+    $scope.grades = [{}];
+    $scope.IdCadSolProd;
 
-    // After process wizard
-    $scope.processForm = function () {
-        alert('Wizard completed');
+    $http.get("http://localhost:50837/api/PessoaJuridica/GetAll").then(function (response) {
+        $scope.fonecedores = response.data;
+    }, function (response) {
+        return alert("Erro: " + response.status);
+    });
+
+    $scope.addNew = function (grade) {
+        $scope.grades.push({});
     };
 
+    $scope.remove = function () {
+        var newDataList = [];
+        $scope.selectedAll = false;
+        angular.forEach($scope.grades, function (selected) {
+            if (!selected.selected) {
+                newDataList.push(selected);
+            }
+        });
+        $scope.grades = newDataList;
+    };
+
+    $scope.checkAll = function () {
+        if (!$scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+        angular.forEach($scope.grades, function (grade) {
+            grade.selected = $scope.selectedAll;
+        });
+    };
+
+    $scope.saveInfoProduto = function (obj) {
+        $http.post("http://localhost:50837/api/CadSolProd/Incluir", obj).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.saveGrade = function (obj) {
+        $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", obj).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        })
+    }
+
+    $scope.processForm = function () {
+        $http.get("http://localhost:50837/api/CadSolProd/GetLastId").then(function (response) {
+            $scope.IdCadSolProd = response.data + 1;
+        });
+
+        if ($scope.IdCadSolProd == undefined)
+            $scope.IdCadSolProd = 1;
+
+        $scope.validate = [];
+
+        // Informações do Produto
+
+        if ($scope.formData.descricao == "" || $scope.formData.descricao == undefined)
+            $scope.validate.push("Preencha o campo descricao!");
+        if ($scope.formData.abastecimento == "" || $scope.formData.abastecimento == undefined)
+            $scope.validate.push("Preencha o campo abastecimento!");
+        if ($scope.formData.fornecedor == "" || $scope.formData.fornecedor == undefined)
+            $scope.validate.push("Preencha o campo fornecedor!");
+        if ($scope.formData.concorrencia == "" || $scope.formData.concorrencia == undefined)
+            $scope.validate.push("Preencha o campo concorrencia!");
+
+        //console.log($scope.grades[0].EAN);
+
+        if ($scope.grades != undefined) {
+            for (var i = 0; i < $scope.grades.length; i++) {
+                if ($scope.grades[i].descricaosabor == "" || $scope.grades[i].descricaosabor == undefined)
+                    $scope.validate.push("Preencha o campo descricao / sabor!");
+                if ($scope.grades[i].EAN == "" || $scope.grades[i].EAN == undefined)
+                    $scope.validate.push("Preencha o campo EAN!");
+                if ($scope.grades[i].DUN == "" || $scope.grades[i].DUN == undefined)
+                    $scope.validate.push("Preencha o campo DUN!");
+            }
+        }
+
+        // Dimensoes do Produto
+
+        if ($scope.formData.embalagem == "" || $scope.formData.embalagem == undefined)
+            $scope.validate.push("Preencha o campo embalagem!");
+        if ($scope.formData.embalagem != "Unidade" && ($scope.formData.qtdEmbalagem == undefined || $scope.formData.qtdEmbalagem == ""))
+            $scope.validate.push("Preencha o campo quantidade da embalagem!");
+
+        // Mix do Produto
+
+        if ($scope.formData.mix == "" || $scope.formData.mix == undefined)
+            $scope.validate.push("Preencha o campo mix!");
+        if ($scope.formData.justificativa == "" || $scope.formData.justificativa == undefined)
+            $scope.validate.push("Preencha o campo justificativa resumida!");
+
+        if ($scope.validate.length) {
+            $uibModal.open({
+                templateUrl: 'Views/modal/produto/validate.html',
+                controller: 'validadeModalInstanceCtrl',
+                windowClass: "animated fadeIn",
+                resolve: {
+                    errors: function () {
+                        return $scope.validate;
+                    }
+                }
+            });
+        }
+
+        else {
+
+            SweetAlert.swal({
+                title: "Deseja confirmar?",
+                text: "Não será possivel excluir o registro depois de incluir!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, incluir!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $scope.objProduto = {
+                        Descricao: $scope.formData.descricao, Comprador: $scope.formData.comprador, Fornecedor: $scope.formData.fornecedor, Abastecimento: $scope.formData.abastecimento,
+                        ConcSensibilidade: $scope.formData.concorrencia, Custo: $scope.formData.custo, Venda: $scope.formData.venda, Embalagem: $scope.formData.embalagem,
+                        QtdEmbalagem: $scope.formData.qtdEmbalagem, Peso: $scope.formData.peso, Altura: $scope.formData.altura, Largura: $scope.formData.largura,
+                        Comprimento: $scope.formData.comprimento, Lastro: $scope.formData.lastro, Camadas: $scope.formData.camadas, Mix: $scope.formData.mix.toString(),
+                        Caracteristica: $scope.formData.caracteristica.toString(), JustificativaResumida: $scope.formData.justificativa, Observacao: $scope.formData.observacao,
+                        IdUsuario: $sessionStorage.user.Id
+                    }
+
+                    $scope.saveInfoProduto($scope.objProduto);
+
+                    
+
+                    $timeout(function () {
+                        for (var i = 0; i < $scope.grades.length; i++) {
+                            $scope.objgrade = {
+                                IdCadSolProd: $scope.IdCadSolProd,
+                                CodFornecedor: $scope.grades[i].codfornecedor,
+                                DescricaoSabor: $scope.grades[i].descricaosabor,
+                                EAN: $scope.grades[i].EAN,
+                                DUN: $scope.grades[i].DUN
+
+                            }
+                            $scope.saveGrade($scope.objgrade);
+                        }
+                        SweetAlert.swal("Incluído!", "O registro foi incluído com sucesso.", "success");
+                        $scope = {};
+                        $scope.grades = [{}];
+                    }, 2000);
+
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a inclusão do registro", "error");
+                }
+            });
+        }
+    };
+}
+
+function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.solicitacoesProd;
+    $scope.grupo = $sessionStorage.user.Grupo[0].Id;
+
+    $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+        $scope.solicitacoesProd = response.data;
+    });
+
+    $scope.aprovarComercial = function (solicitacaoProd) {
+        $scope.objLog = {IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario:$sessionStorage.user.Id, IdStatus: 2};
+
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                   }
+               });
+
+    };
+    $scope.reprovarComercial = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $sessionStorage.user.Id, IdStatus: 3 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                       
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                   }
+               });
+
+    };
+
+    $scope.aprovarDiretoria = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $sessionStorage.user.Id, IdStatus: 4 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                               SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                   }
+               });
+
+    };
+    $scope.reprovarDiretoria = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $sessionStorage.user.Id, IdStatus: 5 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                               SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                   }
+               });
+
+    };
+
+    $scope.concluir = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $sessionStorage.user.Id, IdStatus: 6 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/Concluir", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
+                   }
+               });
+
+    };
+
+    $scope.visualizar = function (solicitacaoProd) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/vis_editar_produto.html',
+            controller: 'solListaProdModalInstanceCtrl',
+            size: "lg",
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacaoProdSelected: function () {
+                    return solicitacaoProd;
+                }
+            }
+        });
+
+        //.result.then(function () {
+        //    $http.get("http://localhost:50837/api/SolitDesp/GetAllByUser?idUsuario=" + $sessionStorage.user.Id).then(function (response) {
+        //        $scope.solicitacoesdesp = response.data;
+        //    });
+        //});
+    }
+
+    $scope.historico = function (solicitacaoProd) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/historico.html',
+            controller: 'solProdHistoricoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacaoProdSelected: function () {
+                    return solicitacaoProd;
+                }
+            }
+        });
+    }
+}
+
+function validadeModalInstanceCtrl($scope, $uibModalInstance, $http, errors) {
+
+    $scope.listaDeErros = errors;
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+};
+
+function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaoProdSelected) {
+    $scope.grades;
+
+    $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
+        $scope.grades = response.data;
+    });
+
+    $scope.descricao = solicitacaoProdSelected.Descricao;
+    $scope.comprador = solicitacaoProdSelected.Comprador;
+    $scope.fornecedor = solicitacaoProdSelected.Fornecedor;
+    $scope.abastecimento = solicitacaoProdSelected.Abastecimento;
+    $scope.concorrencia = solicitacaoProdSelected.ConcSensibilidade;
+    $scope.custo = solicitacaoProdSelected.Custo;
+    $scope.venda = solicitacaoProdSelected.Venda;
+    $scope.embalagem = solicitacaoProdSelected.Embalagem;
+    $scope.qtdEmbalagem = solicitacaoProdSelected.QtdEmbalagem;
+    $scope.peso = solicitacaoProdSelected.Peso;
+    $scope.altura = solicitacaoProdSelected.Altura;
+    $scope.largura = solicitacaoProdSelected.Largura;
+    $scope.comprimento = solicitacaoProdSelected.Comprimento;
+    $scope.lastro = solicitacaoProdSelected.Lastro;
+    $scope.camadas = solicitacaoProdSelected.Camadas;
+    $scope.mix = solicitacaoProdSelected.Mix;
+    $scope.caracteristica = solicitacaoProdSelected.Caracteristica;
+    $scope.justificativa = solicitacaoProdSelected.JustificativaResumida;
+    $scope.observacao = solicitacaoProdSelected.Observacao;
+
+
+
+
+
+
+
+
+
+    //$scope.IdCadSolProd;
+    //$scope.grades[i].codfornecedor;
+    //$scope.grades[i].descricaosabor;
+    //$scope.grades[i].EAN;
+    //$scope.grades[i].DUN;
+}
+
+function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSelected, $http, $sessionStorage) {
+    $scope.historicos;
+    solicitacaoProdSelected.IdCadSolProd
+
+    $http.get("http://localhost:50837/api/CadSolProdLog/GetAllByCadProd?IdCadSolProd=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
+        $scope.historicos = response.data;
+        console.log($scope.historicos)
+    });
 }
 
 function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
@@ -4536,9 +4989,27 @@ function estoqueCustoModalInstanceCtrl($scope, $http, $uibModalInstance, estoque
     };
 }
 
-function cadProdutoCtrl($scope, $sessionStorage) {
-    $scope.usuario = $sessionStorage.user.Username;
-    $scope.password = $sessionStorage.passwordNoHash;
+function cadProdutoCtrl($scope, $sessionStorage, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 }
 
 /**
@@ -4553,6 +5024,10 @@ angular
     .controller('topNavCtrl', topNavCtrl)
     .controller('navigationCtrl', navigationCtrl)
     .controller('wizardCtrl', wizardCtrl)
+    .controller('solListaProdCtrl', solListaProdCtrl)
+    .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
+    .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
+    .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
     .controller('rolesUserCtrl', rolesUserCtrl)
     .controller('rolesUserModalInstanceCtrl', rolesUserModalInstanceCtrl)
     .controller('adminUsuarioCtrl', adminUsuarioCtrl)
@@ -4604,17 +5079,17 @@ angular
     .controller('composicaoModalInstanceCtrl', composicaoModalInstanceCtrl)
     .controller('outrasdespesasModalInstanceCtrl', outrasdespesasModalInstanceCtrl)
     .controller('supcontroleCaixaCtrl', supcontroleCaixaCtrl)
-    .controller('supRelAcompanhamentoCtrl', supRelAcompanhamentoCtrl).filter('sumByKey', function() {
-        return function(data, key) {
-            if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
+    .controller('supRelAcompanhamentoCtrl', supRelAcompanhamentoCtrl).filter('sumByKey', function () {
+        return function (data, key) {
+            if (typeof (data) === 'undefined' || typeof (key) === 'undefined') {
                 return 0;
             }
- 
+
             var sum = 0;
             for (var i = data.length - 1; i >= 0; i--) {
                 sum += data[i][key];
             }
- 
+
             return sum;
         }
     })

@@ -1,0 +1,56 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Wizard</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Forms</a>
+            </li>
+            <li class="active">
+                <strong>Wizard</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content wizard">
+                    <div class="steps clearfix">
+                        <ul>
+                            <li ui-sref-active="current">
+                                <a ui-sref=".info_prod" class="btn-default"><span>1</span> Informacoes do Produto</a>
+                            </li>
+                            <li ui-sref-active="current">
+                                <a ng-dissabled="true" ui-sref=".grade_prod" class="btn-default"><span>2</span> Grade do Produto</a>
+                            </li>
+                            <li ui-sref-active="current">
+                                <a ui-sref=".dim_prod" class="btn-default"><span>3</span> Dimensoes do Produto</a>
+                            </li>
+                            <li ui-sref-active="current">
+                                <a ui-sref=".mix_prod" class="btn-default"><span>4 </span> Mix e Caracteristica do Produto</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="wizard">
+                        <div class="content">
+                            <form name="signupForm" ng-submit="processForm()" class="p-lg">
+                                <!-- our nested state views will be injected here -->
+                                <div id="form-views" ui-view></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

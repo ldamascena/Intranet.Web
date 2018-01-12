@@ -27,6 +27,8 @@ namespace Intranet.Domain.Entities
             SaldosUsuarioAlteracao = new HashSet<CadSaldoControle>();
             AlertaHistoricos = new HashSet<AlertaHistorico>();
             AlertasQuarentena = new HashSet<AlertaQuarentena>();
+            CadSolProd = new HashSet<CadSolProd>();
+            CadSolProdLogs = new HashSet<CadSolProdLog>();
         }
 
         [DataMember]
@@ -97,7 +99,11 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<AlertaHistorico> AlertaHistoricos { get; set; }
 
         public virtual ICollection<AlertaQuarentena> AlertasQuarentena { get; set; }
+
+        public virtual ICollection<CadSolProd> CadSolProd { get; set; }
         
+        public virtual ICollection<CadSolProdLog> CadSolProdLogs { get; set; }
+
 
     }
 }
