@@ -2,6 +2,7 @@
 using Intranet.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,6 +26,26 @@ namespace Intranet.API.Controllers
             return context.CadSolProdGrades.Where(x => x.IdCadSolProd == idCadProduto).ToList();
         }
 
+        public HttpResponseMessage GetGetByIdProdutoExcluir(int IdCadSolProd)
+        {
+            var context = new AlvoradaContext();
+            try
+            {
+                var result = context.CadSolProdGrades.Where(x => x.IdCadSolProd == IdCadSolProd).ToList();
+                foreach (var item in result)
+                {
+                    context.CadSolProdGrades.Remove(item);
+                }
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
 
         public HttpResponseMessage Incluir([FromBody] CadSolProdGrade obj)
         {

@@ -52,6 +52,8 @@
                                                 'btn btn-xs btn-rounded btn-danger')" ng-click="historico(solicitacaoProd);"><i class="fa fa-comments-o"></i>  {{solicitacaoProd.SitCadProd.Situacao}}</button>
                                     </td>
                                     <td>
+                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 8 || grupo == 1)" ng-click="excluir(solicitacaoProd)"><i class="fa fa-ban"></i> Excluir</button>
+                                        
                                         <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 1)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
                                         <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 1)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
 

@@ -500,9 +500,10 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                 if (isConfirm) {
                     $scope.objProduto = {
                         Descricao: $scope.formData.descricao, Comprador: $scope.formData.comprador, Fornecedor: $scope.formData.fornecedor, Abastecimento: $scope.formData.abastecimento,
-                        ConcSensibilidade: $scope.formData.concorrencia, Custo: $scope.formData.custo, Venda: $scope.formData.venda, Embalagem: $scope.formData.embalagem,
-                        QtdEmbalagem: $scope.formData.qtdEmbalagem, Peso: $scope.formData.peso, Altura: $scope.formData.altura, Largura: $scope.formData.largura,
-                        Comprimento: $scope.formData.comprimento, Lastro: $scope.formData.lastro, Camadas: $scope.formData.camadas, Mix: $scope.formData.mix.toString(),
+                        ConcSensibilidade: $scope.formData.concorrencia, Custo: $scope.formData.custo.toString().replace(",", "."), Venda: $scope.formData.venda.toString().replace(",", "."),
+                        Embalagem: $scope.formData.embalagem, QtdEmbalagem: $scope.formData.qtdEmbalagem.toString().replace(",", "."), Peso: $scope.formData.peso.toString().replace(",", "."),
+                        Altura: $scope.formData.altura.toString().replace(",", "."), Largura: $scope.formData.largura.toString().replace(",", "."), Comprimento: $scope.formData.comprimento.toString().replace(",", "."),
+                        Lastro: $scope.formData.lastro.toString().replace(",", "."), Camadas: $scope.formData.camadas.toString().replace(",", "."), Mix: $scope.formData.mix.toString(),
                         Caracteristica: $scope.formData.caracteristica.toString(), JustificativaResumida: $scope.formData.justificativa, Observacao: $scope.formData.observacao,
                         IdUsuario: $sessionStorage.user.Id
                     }
@@ -757,6 +758,39 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         //    });
         //});
     }
+
+    $scope.excluir = function (solicitacaoProd) {
+        SweetAlert.swal({
+            title: "Deseja excluir?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadSolProd/Excluir", solicitacaoProd).then(function (response) {
+                           $http.get("http://localhost:50837/api/CadSolProdGrade/GetGetByIdProdutoExcluir?IdCadSolProd=" + solicitacaoProd.IdCadSolProd).then(function (response) {
+                               SweetAlert.swal("Excluido!", "Exclusão feita com sucesso!", "success");
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
+                   }
+               });
+
+    };
 
     $scope.historico = function (solicitacaoProd) {
         var modalInstance = $uibModal.open({

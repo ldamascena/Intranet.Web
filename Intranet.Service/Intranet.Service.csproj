@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,6 +61,7 @@
     <Compile Include="AlertaTipoService.cs" />
     <Compile Include="AlertaUltimoCustoService.cs" />
     <Compile Include="ClassificacaoMetaService.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="EstoqueContabilService.cs" />
     <Compile Include="EstoqueFisicoService.cs" />
     <Compile Include="ClassificacaoProdutoService.cs" />
