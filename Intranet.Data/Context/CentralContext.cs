@@ -1,4 +1,5 @@
-﻿using Intranet.Domain.Entities;
+﻿using Intranet.Domain;
+using Intranet.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -51,6 +52,7 @@ namespace Intranet.Solidcon.Data.Context
         public virtual DbSet<AlertaStatus> AlertaStatus { get; set; }
         public virtual DbSet<AlertaBalanco> AlertasBalanco { get; set; }
         public virtual DbSet<VwAlertasAnalitico> VwAlertasAnalitico { get; set; }
+        public virtual DbSet<VwAlertaGeralAnalitico> VwAlertasGeralAnalitico { get; set; }
 
         #endregion
 
@@ -77,6 +79,9 @@ namespace Intranet.Solidcon.Data.Context
         public virtual DbSet<SuperProduto> SuperProdutos { get; set; }
         public virtual DbSet<Produto> Produtos { get; set; }
 
+        public virtual DbSet<VwEmbalagensProdutoEAN> VwEmbalagensProdutoEAN { get; set; }
+        public virtual DbSet<VwProdutoEAN> VwProdutoEAN { get; set; }
+
         #endregion
 
         #region Classificação Meta
@@ -95,6 +100,12 @@ namespace Intranet.Solidcon.Data.Context
 
         #endregion
 
+
+        public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
+        public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }
+        public virtual DbSet<SitCadProd> SitCadProd { get; set; }
+        public virtual DbSet<CadSolProdLog> CadSolProdLogs { get; set; }
+
         public virtual DbSet<Pessoa> Pessoas { get; set; }
 
         
@@ -102,8 +113,33 @@ namespace Intranet.Solidcon.Data.Context
         public virtual DbSet<Vendedor> Vendedores { get; set; }
         public virtual DbSet<ViewProduto> ViewProdutos { get; set; }
         public virtual DbSet<EmpresaFilial> EmpresaFiliais { get; set; }
-        
 
+        #region Despesas
+
+        public virtual DbSet<CadMotivoDesp> CadMotivosDesp { get; set; }
+        public virtual DbSet<CadSitDesp> CadSituacoesDesp { get; set; }
+        public virtual DbSet<CadFornecedorDesp> CadFornecedoresDesp { get; set; }
+        public virtual DbSet<CadSolDesp> CadSolicitacoesDesp { get; set; }
+        public virtual DbSet<SituacaoDesp> SituacoesDesp { get; set; }
+
+        #endregion
+
+        #region Controle de Caixa
+
+        public virtual DbSet<CadAtendente> CadAtendentes { get; set; }
+        public virtual DbSet<CadSupervisor> CadSupervisores { get; set; }
+        public virtual DbSet<Caixa> Caixas { get; set; }
+        public virtual DbSet<CadCaixaControle> CadCaixasControle { get; set; }
+        public virtual DbSet<CadEntradaControle> CadEntradasControle { get; set; }
+        public virtual DbSet<CadComposicaoControle> CadComposicoesControle { get; set; }
+        public virtual DbSet<CadOutrasDespControle> CadOutrasDespsControle { get; set; }
+        public virtual DbSet<CadSaldoControle> CadSaldosControle { get; set; }
+        public virtual DbSet<VwAcompanhamentoControleCaixa> VwAcompanhamentoControleCaixa { get; set; }
+
+        #endregion
+
+        public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Grupo> Grupos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -111,14 +147,6 @@ namespace Intranet.Solidcon.Data.Context
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
             #region Relationships
-
-            ////Alerta Manual com Pessoa
-
-            //modelBuilder.Entity<Pessoa>()
-            //    .HasMany(e => e.AlertasManual)
-            //    .WithRequired(e => e.Pessoa)
-            //    .HasForeignKey(e => e.CdPessoaFilial)
-            //    .WillCascadeOnDelete(false);
 
             //Alerta Histórico com Pessoa
 
@@ -142,24 +170,6 @@ namespace Intranet.Solidcon.Data.Context
                 .WithRequired(e => e.Usuario)
                 .HasForeignKey(e => e.CdComprador)
                 .WillCascadeOnDelete(false);
-
-            ////Vendedor com SolUsuario
-
-            //modelBuilder.Entity<SolUsuario>()
-            //    .HasMany(e => e.Vendedores)
-            //    .WithRequired(e => e.Usuario)
-            //    .HasForeignKey(e => e.CdComprador)
-            //    .WillCascadeOnDelete(false);
-
-
-            ////Vendedor com PessoaJuridica
-
-            ////modelBuilder.Entity<PessoaJuridica>()
-            ////    .HasMany(e => e.Vendedores)
-            ////    .WithRequired(e => e.PessoaJuridica)
-            ////    .HasForeignKey(e => e.CdPessoaJuridica)
-            ////    .WillCascadeOnDelete(false);
-
 
             modelBuilder.Entity<AlertaTipo>()
                 .HasMany(e => e.AlertasInversao)
@@ -193,21 +203,6 @@ namespace Intranet.Solidcon.Data.Context
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
 
-
-            //modelBuilder.Entity<AlertaInversao>()
-            //    .HasMany(e => e.AlertasQuarentena)
-            //    .WithRequired(e => e.AlertaInversao)
-            //    .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
-            //    .WillCascadeOnDelete(false);
-
-
-            //modelBuilder.Entity<AlertaUltimoCusto>()
-            //    .HasMany(e => e.AlertasQuarentena)
-            //    .WithRequired(e => e.AlertaUltimoCusto)
-            //    .HasForeignKey(e => new { e.CdAlerta, e.CdPessoaFilial, e.CdTipoAlerta })
-            //    .WillCascadeOnDelete(false);
-
-
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.AlertaQuarentena)
                 .WithRequired(e => e.Pessoa)
@@ -219,22 +214,11 @@ namespace Intranet.Solidcon.Data.Context
                 .WithRequired(e => e.AlertaTipo)
                 .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<AlertaGeral>()
-            //    .HasMany(e => e.AlertasQuarentena)
-            //    .WithRequired(e => e.AlertaGeral)
-            //    .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<EmpresaFilial>()
                 .HasMany(x => x.EstoqueContabil)
                 .WithRequired(x => x.EmpresaFilial)
                 .HasForeignKey(x => x.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<SuperProduto>()
-            //    .HasMany(x => x.EstoqueContabil)
-            //    .WithRequired(x => x.SuperProduto)
-            //    .HasForeignKey(x => new { x.CdSuperProduto, x.CdEmpresaProduto })
-            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SuperProduto>()
                 .HasMany(e => e.EstoqueContabil)
@@ -258,8 +242,264 @@ namespace Intranet.Solidcon.Data.Context
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.CdPessoaFilial)
                 .WillCascadeOnDelete(false);
-            #endregion
 
+            modelBuilder.Entity<Grupo>()
+                .HasMany(e => e.Usuarios)
+                .WithMany(e => e.Grupo)
+                .Map(m => m.ToTable("UsuarioGrupo").MapLeftKey("GrupoId").MapRightKey("UsuarioId"));
+
+            modelBuilder.Entity<CadMotivoDesp>()
+                .Property(e => e.Motivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CadMotivoDesp>()
+                .HasMany(e => e.CadSolicitacoesDesp)
+                .WithRequired(e => e.CadMotivoDesp)
+                .HasForeignKey(e => e.IdMotivo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CadSitDesp>()
+                .Property(e => e.Descricao)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CadSitDesp>()
+                .HasMany(e => e.CadSolicitacoesDesp)
+                .WithRequired(e => e.CadSitDesp)
+                .HasForeignKey(e => e.IdSitDesp)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CadSolDesp>()
+                .Property(e => e.VlDespesa)
+                .HasPrecision(15, 2)
+                .HasColumnType("money");
+
+            modelBuilder.Entity<CadSolDesp>()
+                .Property(e => e.Documento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CadSolDesp>()
+                .Property(e => e.Observacao)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CadSolDesp>()
+                .Property(e => e.ObservacaoAprovacao)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<SituacaoDesp>()
+                .Property(e => e.Situacao)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<SituacaoDesp>()
+                .HasMany(e => e.CadSituacoesDesp)
+                .WithRequired(e => e.SitDesp)
+                .HasForeignKey(e => e.IdSit)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.Aprovadores)
+                .WithRequired(e => e.Aprovador)
+                .HasForeignKey(e => e.IdAprovador)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuariosInclusao)
+                .WithRequired(e => e.UsuarioInclusao)
+                .HasForeignKey(e => e.IdUsuarioInclusao)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CaixasControleUsuario)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Caixa>()
+                .HasMany(e => e.CadCaixaControle)
+                .WithRequired(e => e.Caixa)
+                .HasForeignKey(e => e.IdCaixa)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CadSupervisor>()
+                .HasMany(e => e.CaixasControle)
+                .WithRequired(e => e.Supervisor)
+                .HasForeignKey(e => e.IdSupervisor)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CadAtendente>()
+                .HasMany(e => e.CaixasControle)
+                .WithRequired(e => e.Atendente)
+                .HasForeignKey(e => e.IdAtendente)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.EntradasControleUsuario)
+                .WithOptional(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.ComposicaoControleUsuario)
+                .WithOptional(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.OutrasDespControleUsuario)
+                .WithOptional(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.SaldosUsuario)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CaixasControleUsuarioAlteracao)
+                .WithOptional(e => e.UsuarioAlteracao)
+                .HasForeignKey(e => e.IdUsuarioAlteracao);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.EntradasControleUsuarioAlteracao)
+                .WithOptional(e => e.UsuarioAlteracao)
+                .HasForeignKey(e => e.IdUsuarioAlteracao);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.ComposicaoControleUsuarioAlteracao)
+                .WithOptional(e => e.UsuarioAlteracao)
+                .HasForeignKey(e => e.IdUsuarioAlteracao);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.OutrasDespControleUsuarioAlteracao)
+                .WithOptional(e => e.UsuarioAlteracao)
+                .HasForeignKey(e => e.IdUsuarioAlteracao);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.SaldosUsuarioAlteracao)
+                .WithRequired(e => e.UsuarioAlteracao)
+                .HasForeignKey(e => e.IdUsuarioAlteracao)
+                .WillCascadeOnDelete(false);
+
+            //Alerta Histórico
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasHistorico)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.AlertaHistoricos)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Inversão
+
+            modelBuilder.Entity<AlertaTipo>()
+                .HasMany(e => e.AlertasInversao)
+                .WithRequired(e => e.AlertaTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaInversao)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasInversao)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Ultimo Custo
+
+            modelBuilder.Entity<AlertaTipo>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.AlertaTipo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AlertaStatus>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.AlertaStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaUltimoCusto)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Quarentena
+
+            modelBuilder.Entity<AlertaInversao>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaInversao)
+                .HasForeignKey(e => new { e.CdProduto, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<AlertaUltimoCusto>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.AlertaUltimoCusto)
+                .HasForeignKey(e => new { e.CdProduto, e.CdPessoaFilial, e.CdTipoAlerta })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertaQuarentena)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.AlertasQuarentena)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Balanço
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.AlertasBalanco)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.CdPessoaFilial)
+                .WillCascadeOnDelete(false);
+
+            // Situação Produto
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolProd)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            // Solicitação Cadastro de Produto
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolProd)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Log Solicitacao Cadastro de Produto
+
+            modelBuilder.Entity<CadSolProd>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.CadSolProd)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolProdLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            #endregion
         }
     }
 }

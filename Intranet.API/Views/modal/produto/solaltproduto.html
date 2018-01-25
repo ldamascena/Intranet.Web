@@ -1,0 +1,40 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Solicitacao</h4>
+        <small class="font-bold">Tela exclusivamente para solicitacao de alteracao.</small>
+    </div>
+    <form role="form" name="altForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Campo</label>
+                <select class="form-control" name="campo" ng-model="campo" ng-required="true">
+                    <option value="Descricao">Descricao</option>
+                    <option value="Tipo de Embalagem">Tipo de Embalagem</option>
+                    <option value="Quantidade Embalagem">Quantidade Embalagem</option>
+                    <option value="EAN">EAN</option>
+                    <option value="Abastecimento">Abastecimento</option>
+                    <option value="Classificacao">Classificacao</option>
+                    <option value="Infomacoes Logisticas">Infomacoes Logisticas</option>
+                    <option value="Mix">Mix</option>
+                </select>
+                <div class="m-t-xs" ng-show="altForm.campo.$invalid && campo.submitted">
+                    <small class="text-danger" ng-show="altForm.campo.$error.required">Preencha o nome da descricao!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Detalhe</label>
+                <textarea ng-model="detalhe" name="detalhe" class="form-control" ng-required="true"></textarea>
+                <div class="m-t-xs" ng-show="altForm.detalhe.$invalid && altForm.submitted">
+                    <small class="text-danger" ng-show="altForm.detalhe.$error.required">Preencha o nome da descricao!</small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <!--<button type="submit" class="btn btn-primary" ng-click="editar()">Salvar</button>-->
+            <button type="submit" class="btn btn-primary" ng-click="incluir()">Salvar</button>
+            <!--<button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-click="editar()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-click="incluir()">Salvar</button>-->
+        </div>
+    </form>
+</div>

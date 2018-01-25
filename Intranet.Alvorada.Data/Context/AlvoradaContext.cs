@@ -74,6 +74,9 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<SitCadProd> SitCadProd { get; set; }
         public virtual DbSet<CadSolProdLog> CadSolProdLogs { get; set; }
 
+        public virtual DbSet<CadSolAlterProd> CadSolAlterProdutos { get; set; }
+        public virtual DbSet<CadSolAlterProdLog> CadSolAlterProdLogs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
@@ -332,6 +335,32 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.CadSolProdLogs)
                 .WithRequired(e => e.Usuario)
                 .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Solicitacao Alteração de Produto
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolAlterProdutos)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadSolAlterProdLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolAlterProd)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadSolAlterProdLog)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
                 .WillCascadeOnDelete(false);
         }
     }

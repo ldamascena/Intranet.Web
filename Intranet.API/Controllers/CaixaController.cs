@@ -1,5 +1,6 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace Intranet.API.Controllers
         public IEnumerable<Caixa> GetAll()
         {
             var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            emailService.SendEmail("ldamascena@smalvorada.com", "Teste");
 
             return context.Caixas.ToList();
         }

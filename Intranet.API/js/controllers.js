@@ -500,18 +500,26 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                 if (isConfirm) {
                     $scope.objProduto = {
                         Descricao: $scope.formData.descricao, Comprador: $scope.formData.comprador, Fornecedor: $scope.formData.fornecedor, Abastecimento: $scope.formData.abastecimento,
-                        ConcSensibilidade: $scope.formData.concorrencia, Custo: $scope.formData.custo.toString().replace(",", "."), Venda: $scope.formData.venda.toString().replace(",", "."),
-                        Embalagem: $scope.formData.embalagem, QtdEmbalagem: $scope.formData.qtdEmbalagem.toString().replace(",", "."), Peso: $scope.formData.peso.toString().replace(",", "."),
-                        Altura: $scope.formData.altura.toString().replace(",", "."), Largura: $scope.formData.largura.toString().replace(",", "."), Comprimento: $scope.formData.comprimento.toString().replace(",", "."),
-                        Lastro: $scope.formData.lastro.toString().replace(",", "."), Camadas: $scope.formData.camadas.toString().replace(",", "."), Mix: $scope.formData.mix.toString(),
-                        Caracteristica: $scope.formData.caracteristica.toString(), JustificativaResumida: $scope.formData.justificativa, Observacao: $scope.formData.observacao,
+                        ConcSensibilidade: $scope.formData.concorrencia,
+                        Custo: $scope.formData.custo == undefined ? $scope.formData.custo : $scope.formData.custo.toString().replace(",", "."),
+                        Venda: $scope.formData.venda == undefined ? $scope.formData.venda : $scope.formData.venda.toString().replace(",", "."),
+                        Embalagem: $scope.formData.embalagem,
+                        QtdEmbalagem: $scope.formData.qtdEmbalagem == undefined ? $scope.formData.qtdEmbalagem : $scope.formData.qtdEmbalagem.toString().replace(",", "."),
+                        Peso: $scope.formData.peso == undefined ? $scope.formData.peso : $scope.formData.peso.toString().replace(",", "."),
+                        Altura: $scope.formData.altura == undefined ? $scope.formData.altura : $scope.formData.altura.toString().replace(",", "."),
+                        Largura: $scope.formData.largura == undefined ? $scope.formData.largura : $scope.formData.largura.toString().replace(",", "."),
+                        Comprimento: $scope.formData.comprimento == undefined ? $scope.formData.comprimento : $scope.formData.comprimento.toString().replace(",", "."),
+                        Lastro: $scope.formData.lastro == undefined ? $scope.formData.lastro : $scope.formData.lastro.toString().replace(",", "."),
+                        Camadas: $scope.formData.camadas == undefined ? $scope.formData.camadas : $scope.formData.camadas.toString().replace(",", "."),
+                        Mix: $scope.formData.mix.toString(),
+                        Caracteristica: $scope.formData.caracteristica == undefined ? $scope.formData.caracteristica : $scope.formData.caracteristica.toString(),
+                        JustificativaResumida: $scope.formData.justificativa, Observacao: $scope.formData.observacao,
                         IdUsuario: $sessionStorage.user.Id
                     }
 
+                    SweetAlert.swal("Incluído!", "O registro foi incluído com sucesso.", "success");
+
                     $scope.saveInfoProduto($scope.objProduto);
-
-                    
-
                     $timeout(function () {
                         for (var i = 0; i < $scope.grades.length; i++) {
                             $scope.objgrade = {
@@ -524,10 +532,10 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                             }
                             $scope.saveGrade($scope.objgrade);
                         }
-                        SweetAlert.swal("Incluído!", "O registro foi incluído com sucesso.", "success");
+
                         $scope = {};
                         $scope.grades = [{}];
-                    }, 2000);
+                    }, 1000);
 
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou a inclusão do registro", "error");
@@ -568,7 +576,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
     });
 
     $scope.aprovarComercial = function (solicitacaoProd) {
-        $scope.objLog = {IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario:$sessionStorage.user.Id, IdStatus: 2};
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $sessionStorage.user.Id, IdStatus: 2 };
 
         SweetAlert.swal({
             title: "Deseja confimar?",
@@ -583,9 +591,9 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProd).then(function (response) {
                            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
@@ -617,9 +625,9 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProd).then(function (response) {
                            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
@@ -629,7 +637,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
                        }, function (response) {
                            return alert("Erro: " + response.status);
                        });
-                       
+
                    } else {
                        SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
                    }
@@ -652,12 +660,12 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
                            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
-                               SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
                            })
                        }, function (response) {
                            return alert("Erro: " + response.status);
@@ -685,12 +693,12 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
                            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
-                               SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
                            })
                        }, function (response) {
                            return alert("Erro: " + response.status);
@@ -720,9 +728,9 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/Concluir", solicitacaoProd).then(function (response) {
                            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
@@ -773,9 +781,9 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $sessionStorage,
         },
                function (isConfirm) {
                    if (isConfirm) {
+                       SweetAlert.swal("Excluido!", "Exclusão feita com sucesso!", "success");
                        $http.post("http://localhost:50837/api/CadSolProd/Excluir", solicitacaoProd).then(function (response) {
                            $http.get("http://localhost:50837/api/CadSolProdGrade/GetGetByIdProdutoExcluir?IdCadSolProd=" + solicitacaoProd.IdCadSolProd).then(function (response) {
-                               SweetAlert.swal("Excluido!", "Exclusão feita com sucesso!", "success");
                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
                                    $scope.solicitacoesProd = response.data;
                                });
@@ -860,11 +868,153 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
 
 function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSelected, $http, $sessionStorage) {
     $scope.historicos;
-    solicitacaoProdSelected.IdCadSolProd
 
     $http.get("http://localhost:50837/api/CadSolProdLog/GetAllByCadProd?IdCadSolProd=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
         $scope.historicos = response.data;
         console.log($scope.historicos)
+    });
+}
+
+function altProd($scope, $uibModal, $http, SweetAlert, $sessionStorage) {
+
+    $scope.produto;
+    $scope.embalagens;
+
+    $scope.Buscar = function () {
+        $http.get("http://localhost:50837/api/ViewProduto/GetByEAN?Ean=" + $scope.Ean).then(function (response) {
+            $scope.produto = response.data;
+            console.log($scope.produto);
+        })
+
+        $http.get("http://localhost:50837/api/ViewProduto/GetEmbalagensByEAN?Ean=" + $scope.Ean).then(function (response) {
+            $scope.embalagens = response.data;
+            console.log($scope.embalagens);
+        })
+    }
+
+    $scope.solicitar = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/solaltproduto.html',
+            controller: 'altProdModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                altSelected: function () {
+                    return { Ean: $scope.Ean };
+                }
+            }
+        });
+    }
+}
+
+function altProdModalInstanceCtrl($scope, $uibModalInstance, altSelected, $http, $sessionStorage) {
+
+    $scope.incluir = function () {
+        if ($scope.altForm.$valid) {
+            $scope.obj = { Ean: altSelected.Ean, Campo: $scope.campo, Detalhe: $scope.detalhe, IdUsuario: $sessionStorage.user.Id }
+            $http.post("http://localhost:50837/api/CadSolAlterProd/Incluir", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        } else {
+            $scope.altForm.submitted = true;
+        }
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
+
+function listaAltProd($scope, $uibModal, $http, SweetAlert, $sessionStorage, DTOptionsBuilder) {
+    $scope.grupo = $sessionStorage.user.Grupo[0].Id;
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.solicitacoes;
+
+    $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
+        $scope.solicitacoes = response.data;
+    });
+
+    $scope.concluir = function (solicitacao) {
+        $scope.objLog = { IdSolAlterProd: solicitacao.Id, IdUsuario: $sessionStorage.user.Id, IdStatus: 6 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
+                       $http.post("http://localhost:50837/api/CadSolAlterProd/Concluir", solicitacao).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolAlterProdLog/Incluir", $scope.objLog).then(function (response) {
+                               $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
+                                   $scope.solicitacoes = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
+                   }
+               });
+    }
+
+    $scope.excluir = function (solicitacao) {
+
+    }
+
+    $scope.historico = function (solicitacao) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/historicoAlteracao.html',
+            controller: 'solAltProdHistoricoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacaoSelected: function () {
+                    return solicitacao;
+                }
+            }
+        });
+    }
+}
+
+function solAltProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoSelected, $http, $sessionStorage) {
+    $scope.historicos;
+
+    console.log(solicitacaoSelected);
+
+    $http.get("http://localhost:50837/api/CadSolAlterProdLog/GetById?id=" + solicitacaoSelected.Id).then(function (response) {
+        $scope.historicos = response.data;
     });
 }
 
@@ -1235,9 +1385,6 @@ function balancoModalInstanceCtrl($scope, $uibModalInstance, $http, balancoSelec
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     }
-
-
-
 }
 
 function inversaoCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
@@ -5062,6 +5209,10 @@ angular
     .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
     .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
     .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
+    .controller('altProd', altProd)
+    .controller('altProdModalInstanceCtrl', altProdModalInstanceCtrl)
+    .controller('listaAltProd', listaAltProd)
+    .controller('solAltProdHistoricoModalCtrl', solAltProdHistoricoModalCtrl)
     .controller('rolesUserCtrl', rolesUserCtrl)
     .controller('rolesUserModalInstanceCtrl', rolesUserModalInstanceCtrl)
     .controller('adminUsuarioCtrl', adminUsuarioCtrl)

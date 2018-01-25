@@ -1167,9 +1167,9 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             name: 'frapontillo.bootstrap-duallistbox',
                             files: ['js/plugins/dualListbox/angular-bootstrap-duallistbox.js']
                         }
-                                ]);
-                            }
-                        }
+                    ]);
+                }
+            }
 
         })
         .state('produto.solproduto.info_prod', {
@@ -1595,7 +1595,82 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                     ]);
                 }
             }
-        });
+        })
+        .state('produto.altproduto', {
+            url: "/altproduto",
+            templateUrl: "views/produto/altproduto.html",
+            data: { pageTitle: 'Solicitacoes - Alteracao Produtos' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'localytics.directives',
+                            files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('produto.altlistaprodutos', {
+            url: "/altlistaprodutos",
+            templateUrl: "views/produto/altlistaprodutos.html",
+        data: { pageTitle: 'Solicitacoes - Lista Alteracao Produtos' },
+        resolve: {
+            loadPlugin: function ($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                    {
+                        serie: true,
+                        files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                    },
+                    {
+                        serie: true,
+                        name: 'datatables',
+                        files: ['js/plugins/dataTables/angular-datatables.min.js']
+                    },
+                    {
+                        serie: true,
+                        name: 'datatables.buttons',
+                        files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                    },
+                    {
+                        files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                    },
+                    {
+                        name: 'oitozero.ngSweetAlert',
+                        files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                    },
+                    {
+                        insertBefore: '#loadBefore',
+                        name: 'localytics.directives',
+                        files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                    }
+                ]);
+            }
+        }
+    })
+    ;
 }
 angular
     .module('inspinia')

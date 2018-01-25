@@ -196,6 +196,8 @@
     <Compile Include="Controllers\CadOutrasDespController.cs" />
     <Compile Include="Controllers\CadSaldoController.cs" />
     <Compile Include="Controllers\CadSitDespController.cs" />
+    <Compile Include="Controllers\CadSolAlterProdController.cs" />
+    <Compile Include="Controllers\CadSolAlterProdLogController.cs" />
     <Compile Include="Controllers\CadSolProdController.cs" />
     <Compile Include="Controllers\CadSolProdGradeController.cs" />
     <Compile Include="Controllers\CadSolProdLogController.cs" />
@@ -2548,6 +2550,8 @@
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />
     <Content Include="Views\modal\alertas\quarentena.html" />
     <Content Include="Views\modal\produto\historico.html" />
+    <Content Include="Views\modal\produto\historicoAlteracao.html" />
+    <Content Include="Views\modal\produto\solaltproduto.html" />
     <Content Include="Views\modal\produto\validate.html" />
     <Content Include="Views\modal\produto\vis_editar_produto.html" />
     <Content Include="Views\modal\usuariomodal.html" />
@@ -2560,6 +2564,8 @@
     <Content Include="Views\modal_window.html" />
     <Content Include="Views\parametro\parametro_filial.html" />
     <Content Include="Views\principal.html" />
+    <Content Include="Views\produto\altlistaprodutos.html" />
+    <Content Include="Views\produto\altproduto.html" />
     <Content Include="Views\produto\sollistaprodutos.html" />
     <Content Include="Views\produto\wizard\mix_prod.html" />
     <Content Include="Views\register.html" />

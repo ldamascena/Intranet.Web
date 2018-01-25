@@ -79,7 +79,9 @@
                 <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'Cadastro de Produto' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('solproduto')}">
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="produto.solproduto.info_prod">Solicitacao de Cadastro</a></li>
-                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 6 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.sollistaprodutos">Lista de Solicitacoes</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 6 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.sollistaprodutos">Lista de Solicitacoes de Cadastro</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altproduto">Alteracao de Produto</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altlistaprodutos">Lista de Solicitacoes de Alteracao</a></li>
                 </ul>
             </li>
 

@@ -1,5 +1,6 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -37,6 +38,7 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage Incluir([FromBody] CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var emailService = new EmailService();
 
             try
             {
@@ -44,6 +46,8 @@ namespace Intranet.API.Controllers
                 obj.DataCriacao = DateTime.Now;
                 context.CadSolProdutos.Add(obj);
                 context.SaveChanges();
+                //emailService.SendEmail("marcelgestorcomercial@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
 
             catch(Exception ex)
@@ -93,12 +97,15 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage AprovarComercial(CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var emailService = new EmailService();
 
             try
             {
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 2;
                 context.SaveChanges();
+                //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
 
             catch (Exception ex)
@@ -131,12 +138,15 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage AprovarDiretoria(CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var emailService = new EmailService();
 
             try
             {
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 4;
                 context.SaveChanges();
+                //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Cadastro de Produto - Pendente");
+                emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente");
             }
 
             catch (Exception ex)

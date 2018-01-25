@@ -82,6 +82,8 @@
     <Compile Include="Entities\CadSolProd.cs" />
     <Compile Include="Entities\CadSolProdGrade.cs" />
     <Compile Include="Entities\CadSolProdLog.cs" />
+    <Compile Include="Entities\CadSolAlterProd.cs" />
+    <Compile Include="Entities\CadSolAlterProdLog.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
@@ -115,6 +117,8 @@
     <Compile Include="Entities\VwAlertaUltCustoAnalitico.cs" />
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
+    <Compile Include="Entities\VwEmbalagensProdutoEAN.cs" />
+    <Compile Include="Entities\VwProdutoEAN.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
