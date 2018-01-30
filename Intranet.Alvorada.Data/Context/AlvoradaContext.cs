@@ -318,6 +318,12 @@ namespace Intranet.Alvorada.Data.Context
                 .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsersLock)
+                .WithRequired(e => e.UsuarioLock)
+                .HasForeignKey(e => e.IdUserLock)
+                .WillCascadeOnDelete(false);
+
             // Log Solicitacao Cadastro de Produto
 
             modelBuilder.Entity<CadSolProd>()

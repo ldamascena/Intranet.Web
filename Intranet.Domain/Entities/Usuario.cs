@@ -31,6 +31,7 @@ namespace Intranet.Domain.Entities
             CadSolProdLogs = new HashSet<CadSolProdLog>();
             CadSolAlterProdutos = new HashSet<CadSolAlterProd>();
             CadSolAlterProdLogs = new HashSet<CadSolAlterProdLog>();
+            UsersLock = new HashSet<CadSolProd>();
         }
 
         [DataMember]
@@ -110,6 +111,6 @@ namespace Intranet.Domain.Entities
 
         public virtual ICollection<CadSolAlterProdLog> CadSolAlterProdLogs { get; set; }
 
-
+        public virtual ICollection<CadSolProd> UsersLock { get; set; }
     }
 }

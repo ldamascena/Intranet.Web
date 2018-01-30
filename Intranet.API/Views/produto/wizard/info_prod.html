@@ -7,10 +7,10 @@
                 <input id="descricao" ng-model="formData.descricao" name="descricao" type="text" class="form-control">
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group">
                 <label>Comprador *</label>
-                <select chosen class="chosen-select" id="comprador" name="comprador" tabindex="7" ng-model="formData.comprador">
+                <select chosen class="chosen-select" id="comprador" name="comprador" ng-model="formData.comprador">
                     <option value="Alexandre Martins">Alexandre Martins</option>
                     <option value="Diego Goncalves">Diego Goncalves</option>
                     <option value="Geraldo Bonifacio">Geraldo Bonifacio</option>
@@ -25,17 +25,29 @@
                 </select>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group">
                 <label>Fornecedor *</label>
                 <input type="text" ng-model="formData.fornecedor" uib-typeahead="fonecedor.RazaoSocial for fonecedor in fonecedores | filter:$viewValue | limitTo:8" class="form-control">
             </div>
         </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label>Segmento</label>
+                <select class="form-control" id="segmento" name="segmento" ng-model="formData.segmento">
+                    <option value="">Selecione o Segmento</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Basico">Basico</option>
+                    <option value="Popular">Popular</option>
+                    <option value="Marca Propria">Marca Propria</option>
+                </select>
+            </div>
+        </div>
         <div class="col-lg-3">
             <div class="form-group">
                 <label>Abastecimento *</label>
-                <select chosen class="chosen-select" id="abastecimento" name="abastecimento" tabindex="3" ng-model="formData.abastecimento">
-                    <option value="Indefinido">Indefinido</option>
+                <select class="form-control" id="abastecimento" name="abastecimento" tabindex="3" ng-model="formData.abastecimento">
+                    <option value="">Selecione o Abastecimento</option>
                     <option value="EDL">EDL</option>
                     <option value="CCEDL">CCEDL</option>
                     <option value="Centralizado">Centralizado</option>
@@ -45,8 +57,9 @@
         </div>
         <div class="col-lg-3">
             <div class="form-group">
-                <label>Concorrencia Sensibilidade *</label>
-                <select chosen class="chosen-select" id="concorrencia" name="concorrencia" tabindex="3" ng-model="formData.concorrencia">
+                <label>Sensibilidade Concorrencia *</label>
+                <select class="form-control" id="concorrencia" name="concorrencia" tabindex="3" ng-model="formData.concorrencia">
+                    <option value="">Selecione a Sensibilidade</option>
                     <option value="Ultra Notavel">Ultra Notavel</option>
                     <option value="Super Notavel">Super Notavel</option>
                     <option value="Notavel">Notavel</option>
@@ -57,13 +70,13 @@
         <div class="col-lg-3">
             <div class="form-group">
                 <label>Custo Aquisicao</label>
-                <input id="custo" ng-model="formData.custo" name="custo" type="text" class="form-control">
+                <input id="custo" ng-model="formData.custo" name="custo" type="text" class="form-control" money-mask>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="form-group">
                 <label>Preco de Venda</label>
-                <input id="venda" ng-model="formData.venda" name="venda" type="text" class="form-control">
+                <input id="venda" ng-model="formData.venda" name="venda" type="text" class="form-control" money-mask>
             </div>
         </div>
     </div>

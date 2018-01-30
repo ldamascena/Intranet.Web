@@ -12,7 +12,7 @@
         'ngSanitize',                   // ngSanitize
         'ngStorage',
         'angular.filter',
-        'ngMask'
+        'rw.moneymask'
     ])
 })();
 

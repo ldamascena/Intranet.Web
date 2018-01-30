@@ -15,41 +15,47 @@
                         <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{descricao}}" /> 
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label>Comprador *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{comprador}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="comprador" value="{{comprador}}" /> 
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label>Fornecedor *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{fornecedor}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="fornecedor" value="{{fornecedor}}" /> 
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Segmento </label>
+                        <input class="form-control" ng-disabled="true" type="text" name="segmento" value="{{segmento}}" />
+                    </div>
+                </div>
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label>Abastecimento *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{abastecimento}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="abastecimento" value="{{abastecimento}}" /> 
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label>Concorrencia Sensibilidade *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{concorrencia}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="concorrencia" value="{{concorrencia}}" /> 
                         
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Custo Aquisicao</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{custo}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="custo" value="{{custo}}" /> 
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Preco de Venda</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{venda}}" /> 
+                        <input class="form-control" ng-disabled="true" type="text" name="venda" value="{{venda}}" /> 
                     </div>
                 </div>
             </div>
@@ -63,26 +69,32 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Mix *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{mix}}" />
+                        <input class="form-control" ng-disabled="true" type="text" name="mix" value="{{mix}}" />
                     </div>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Caracteristica</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{caracteristica}}" />
+                        <input class="form-control" ng-disabled="true" type="text" name="caracteristica" value="{{caracteristica}}" />
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Justificativa Resumida *</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{justificativa}}" />
+                        <input class="form-control" ng-disabled="true" type="text" name="justificativa" value="{{justificativa}}" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Tipo de Cadastro </label>
+                        <input class="form-control" ng-disabled="true" type="text" name="tipoCadastro" value="{{tipoCadastro}}" />
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Observacao</label>
-                        <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{observacao}}" />
+                        <input class="form-control" ng-disabled="true" type="text" name="observacao" value="{{observacao}}" />
                     </div>
                 </div>
             </div>
@@ -94,6 +106,12 @@
                     <h3>Grade</h3>
                 </div>
                 <div ng-repeat="grade in grades">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Produto a ser Inativado</label>
+                            <input class="form-control" ng-disabled="true" type="text" name="descricao" value="{{grade.ProdutoInativado}}" />
+                        </div>
+                    </div>
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label>Cod no Fornecedor</label>

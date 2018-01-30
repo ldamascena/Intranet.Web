@@ -107,6 +107,18 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public DateTime? DataCriacao { get; set; }
 
+        [DataMember]
+        public string Segmento { get; set; }
+
+        [DataMember]
+        public string TipoCadastro { get; set; }
+
+        [DataMember]
+        public int? IdUserLock { get; set; }
+
+        [DataMember]
+        public virtual Usuario UsuarioLock { get; set; }
+
         public virtual ICollection<CadSolProdLog> CadSolProdLogs { get; set; }
     }
 }

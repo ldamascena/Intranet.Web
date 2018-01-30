@@ -25,6 +25,10 @@
                     <div ibox-tools></div>
                 </div>
                 <div class="ibox-content wizard">
+                    <div style="padding-left: 10px;">
+                        <label><small style="color:#ed5565">O campos com "*" são campos obrigatórios para o cadastro!</small></label>
+                    </div>
+                    <br />
                     <div class="steps clearfix">
                         <ul>
                             <li ui-sref-active="current">
@@ -34,7 +38,7 @@
                                 <a ng-dissabled="true" ui-sref=".grade_prod" class="btn-default"><span>2</span> Grade do Produto</a>
                             </li>
                             <li ui-sref-active="current">
-                                <a ui-sref=".dim_prod" class="btn-default"><span>3</span> Dimensoes do Produto</a>
+                                <a ui-sref=".dim_prod" class="btn-default"><span>3</span> Inf. Logistica do Produto</a>
                             </li>
                             <li ui-sref-active="current">
                                 <a ui-sref=".mix_prod" class="btn-default"><span>4 </span> Mix e Caracteristica do Produto</a>

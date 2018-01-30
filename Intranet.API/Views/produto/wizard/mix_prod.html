@@ -16,7 +16,7 @@
         <div class="col-lg-8">
             <div class="form-group">
                 <label>Mix *</label>
-                <select multiple chosen class="chosen-select" tabindex="3" id="mix" name="mix" ng-model="formData.mix">
+                <select multiple chosen class="chosen-select" id="mix" name="mix" ng-model="formData.mix">
                     <option value="TODOS">TODOS</option>
                     <option value="ÁGUA MINERAL">ÁGUA MINERAL</option>
                     <option value="ARARUAMA">ARARUAMA</option>
@@ -40,7 +40,7 @@
         <div class="col-lg-4">
             <div class="form-group">
                 <label>Caracteristica</label>
-                <select multiple chosen class="chosen-select" tabindex="3" ng-model="formData.caracteristica">
+                <select multiple chosen class="chosen-select" ng-model="formData.caracteristica">
                     <option value="Bonificação">Bonificação</option>
                     <option value="Fornece Promotor">Fornece Promotor</option>
                     <option value="Fornece Troca">Fornece Troca</option>
@@ -51,16 +51,27 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label>Justificativa Resumida *</label>
-                <select chosen class="chosen-select" tabindex="3" ng-model="formData.justificativa">
+                <select class="form-control" ng-model="formData.justificativa">
+                    <option value="">Selecione a Justificativa</option>
                     <option value="Produto Fechado na Rede">Produto Fechado na Rede</option>
                     <option value="Introducao do Mix de loja">Introducao do Mix de loja</option>
                     <option value="Oportunidade Comercial">Oportunidade Comercial</option>
                 </select>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Tipo de Cadastro </label>
+                <select class="form-control" ng-model="formData.tipoCadastro">
+                    <option value="">Selecione um Tipo de Cadastro</option>
+                    <option value="Reativacao">Reativacao</option>
+                    <option value="Substituicao">Substituicao</option>
+                </select>
+            </div>
+        </div>
         <div class="col-lg-12">
             <div class="form-group">
-                <label>Observacao</label>
+                <label>Justificativa Detalhada *</label>
                 <textarea id="observacao" ng-model="formData.observacao" name="observacao" class="form-control" />
             </div>
         </div>

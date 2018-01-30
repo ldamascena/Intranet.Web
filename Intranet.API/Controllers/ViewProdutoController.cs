@@ -17,28 +17,12 @@ namespace Intranet.API.Controllers
 {
     public class ViewProdutoController : ApiController
     {
-        private IViewProdutoRepository _repository;
-        private IViewProdutoService _service;
-        private IViewProdutoApp _app;
-
         // GET: api/ViewProduto
-        public ViewProduto GetByNomeProduto(string nomeProduto)
+        public IEnumerable<string> GetAll()
         {
-            _repository = new ViewProdutoRepository(new CentralContext());
-            _service = new ViewProdutoService(_repository);
-            _app = new ViewProdutoApp(_service);
+            var context = new CentralContext();
 
-            return _app.Get(x => x.Descricao == nomeProduto);
-        }
-
-        // GET: api/ViewProduto/5
-        public ViewProduto GetById(int id)
-        {
-            _repository = new ViewProdutoRepository(new CentralContext());
-            _service = new ViewProdutoService(_repository);
-            _app = new ViewProdutoApp(_service);
-
-            return _app.Get(x => x.idProduto == id);
+            return context.VwProdutoEAN.Select(x => x.Produto).ToList().Distinct();
         }
 
         public VwProdutoEAN GetByEAN(long Ean)

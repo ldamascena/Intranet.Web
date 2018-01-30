@@ -46,8 +46,9 @@ namespace Intranet.API.Controllers
                 obj.DataCriacao = DateTime.Now;
                 context.CadSolProdutos.Add(obj);
                 context.SaveChanges();
+                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
                 //emailService.SendEmail("marcelgestorcomercial@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
+                //emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
 
             catch(Exception ex)
@@ -105,7 +106,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 2;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
 
             catch (Exception ex)
@@ -146,7 +147,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 4;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Cadastro de Produto - Pendente");
-                emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente");
+                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Produto - Pendente");
             }
 
             catch (Exception ex)
@@ -184,6 +185,43 @@ namespace Intranet.API.Controllers
             {
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 6;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage Lock(CadSolProd obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage Unlock(CadSolProd obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                obj.IdUserLock = null;
                 context.SaveChanges();
             }
 

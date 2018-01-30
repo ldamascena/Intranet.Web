@@ -17,8 +17,6 @@ namespace Intranet.API.Controllers
             var context = new AlvoradaContext();
             var emailService = new EmailService();
 
-            emailService.SendEmail("ldamascena@smalvorada.com", "Teste");
-
             return context.Caixas.ToList();
         }
     }

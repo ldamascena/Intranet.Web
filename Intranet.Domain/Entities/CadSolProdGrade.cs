@@ -34,5 +34,8 @@ namespace Intranet.Domain.Entities
         [Required]
         [StringLength(15)]
         public string DUN { get; set; }
+
+        [DataMember]
+        public string ProdutoInativado { get; set; }
     }
 }
