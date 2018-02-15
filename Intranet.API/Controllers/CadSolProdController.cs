@@ -4,6 +4,7 @@ using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -46,15 +47,31 @@ namespace Intranet.API.Controllers
                 obj.DataCriacao = DateTime.Now;
                 context.CadSolProdutos.Add(obj);
                 context.SaveChanges();
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
                 //emailService.SendEmail("marcelgestorcomercial@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
                 //emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
 
-            catch(Exception ex)
+
+            catch (DbEntityValidationException e)
             {
-                throw ex;
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entidade do tipo \"{0}\" no estado \"{1}\" tem os seguintes erros de validação:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Erro: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
             }
+
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -106,7 +123,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 2;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
             }
 
             catch (Exception ex)
@@ -147,7 +164,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 4;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Cadastro de Produto - Pendente");
-                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Produto - Pendente");
+                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
             }
 
             catch (Exception ex)

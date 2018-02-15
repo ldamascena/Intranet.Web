@@ -11,13 +11,11 @@ namespace Intranet.Domain.Entities
     [Table("Cad_Sol_Prod")]
     public partial class CadSolProd
     {
-        public CadSolProd()
-        {
-            CadSolProdLogs = new HashSet<CadSolProdLog>();
-        }
-
         [DataMember]
         [Key]
+        public int Id { get; set; }
+
+        [DataMember]
         public int IdCadSolProd { get; set; }
 
         [DataMember]
@@ -118,7 +116,5 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public virtual Usuario UsuarioLock { get; set; }
-
-        public virtual ICollection<CadSolProdLog> CadSolProdLogs { get; set; }
     }
 }

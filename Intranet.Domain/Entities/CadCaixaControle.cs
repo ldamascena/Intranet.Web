@@ -46,6 +46,9 @@ namespace Intranet.Domain.Entities
         public TimeSpan? Hora { get; set; }
 
         [DataMember]
+        public string Observacao { get; set; }
+
+        [DataMember]
         public virtual CadAtendente Atendente { get; set; }
 
         [DataMember]

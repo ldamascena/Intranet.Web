@@ -27,9 +27,6 @@ namespace Intranet.Domain.Entities
         public DateTime DataLog { get; set; }
 
         [DataMember]
-        public virtual CadSolProd CadSolProd { get; set; }
-
-        [DataMember]
         public virtual SitCadProd SitCadProd { get; set; }
 
         [DataMember]

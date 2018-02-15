@@ -57,10 +57,12 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
             var result = context.CadSaldosControle.ToList().Where(x => x.DataInclusao.Date == model.DataInclusao.Date && x.IdUsuario == model.IdUsuario).FirstOrDefault();
+            var saldosPosteriores = context.CadSaldosControle.ToList().Where(x => x.DataInclusao.Date > model.DataInclusao.Date && x.IdUsuario == model.IdUsuario).ToList();
 
             try
             {
-                context.Entry(result).State = EntityState.Deleted;
+                context.CadSaldosControle.Remove(result);
+                context.CadSaldosControle.RemoveRange(saldosPosteriores);
                 context.SaveChanges();
             }
             catch (Exception ex)

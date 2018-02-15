@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-3">
                     <div class="ibox">
                         <div class="ibox-content">
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="wrapper wrapper-content animated fadeIn">
-                <div class="row" >
+                <div class="row">
                     <div>
                         <div class="tabs-container">
                             <uib-tabset>
@@ -104,6 +104,7 @@
                                                                 <th>Valor</th>
                                                                 <!--<th>Operador</th>
                                                                 <th>Supervisor</th>-->
+                                                                <th>Observacao</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -115,6 +116,7 @@
                                                                 <td>{{caixa.Valor | currency}}</td>
                                                                 <!--<td>{{caixa.Atendente.Nome}} {{caixa.Atendente.Sobrenome}}</td>
                                                                 <td>{{caixa.Supervisor.Nome}} {{caixa.Supervisor.Sobrenome}}</td>-->
+                                                                <td>{{caixa.Observacao}}</td>
                                                                 <td>
                                                                     <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editarCaixa(caixa)" ng-disabled="foiFechado"><i class="fa fa-edit"></i> Alterar</button>
                                                                     <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluirCaixa(caixa)" ng-disabled="foiFechado"><i class="fa fa-trash"></i> Deletar</button>

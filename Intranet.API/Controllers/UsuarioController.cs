@@ -29,11 +29,11 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Username == username).FirstOrDefault();
         }
 
-        public IEnumerable<Usuario> GetAllTesoureiras()
+        public IEnumerable<Usuario> GetAllTesoureirasAndDepositos()
         {
             var context = new AlvoradaContext();
 
-            return context.Usuarios.Where(x => x.Nome == "Tesouraria").ToList();
+            return context.Usuarios.Where(x => x.Nome == "Tesouraria" || x.Nome == "Deposito").ToList();
         }
 
         public int Autenticate(Usuario model)
@@ -42,7 +42,7 @@ namespace Intranet.API.Controllers
 
             var result = context.Usuarios.Where(x => x.Username == model.Username).FirstOrDefault();
 
-            if(result != null)
+            if (result != null)
             {
                 if (result.Bloqueado)
                 {
@@ -59,6 +59,19 @@ namespace Intranet.API.Controllers
                         return 4;
                     }
                 }
+            }
+            return 4;
+        }
+
+        public int Autenticate2(Usuario model)
+        {
+            var context = new AlvoradaContext();
+
+            var result = context.Usuarios.Where(x => x.Username == model.Username).FirstOrDefault();
+
+            if (result != null)
+            {
+                return 1;
             }
             return 4;
         }

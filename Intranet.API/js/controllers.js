@@ -315,7 +315,7 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
 
                 $scope.obj = { Username: $scope.username, PasswordHash: $scope.password }
 
-                $http.post("http://localhost:50837/api/Usuario/Autenticate", $scope.obj).then(function (response) {
+                $http.post("http://localhost:50837/api/Usuario/Autenticate2", $scope.obj).then(function (response) {
                     switch (response.data) {
                         case 1:
                             toaster.pop({
@@ -415,8 +415,6 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
     }
 
     $scope.processForm = function () {
-
-
         if ($scope.IdCadSolProd == undefined)
             $scope.IdCadSolProd = 1;
 
@@ -2945,7 +2943,7 @@ function ordemModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaodes
         $scope.motivos = response.data;
     });
 
-    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureiras").then(function (response) {
+    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
         $scope.usuariosDestino = response.data;
     });
 
@@ -4182,6 +4180,8 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
         $scope.caixa = caixaSelected.Caixa.Id;
         $scope.valor = caixaSelected.Valor;
         $scope.turno = caixaSelected.Turno;
+        $scope.observacao = caixaSelected.Observacao;
+
     }
 
     $scope.incluir = function () {
@@ -4195,7 +4195,7 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
 
             $scope.obj = {
                 DataInclusao: date, IdUsuario: $localStorage.user.Id, IdCaixa: $scope.caixa,
-                Valor: $scope.valor
+                Valor: $scope.valor, Observacao: $scope.observacao
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Incluir", $scope.obj).then(function (response) {
@@ -4221,7 +4221,7 @@ function caixaModalInstanceCtrl($scope, $uibModalInstance, $http, caixaSelected,
 
             $scope.obj = {
                 Id: caixaSelected.Id, DataInclusao: caixaSelected.DataInclusao, IdUsuario: caixaSelected.IdUsuario,
-                Valor: $scope.valor, IdUsuarioAlteracao: $localStorage.user.Id, IdCaixa: $scope.caixa
+                Valor: $scope.valor, IdUsuarioAlteracao: $localStorage.user.Id, IdCaixa: $scope.caixa, Observacao: $scope.observacao
             };
 
             $http.post("http://localhost:50837/api/CadCaixa/Editar", $scope.obj).then(function (response) {
@@ -4454,7 +4454,7 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
     $scope.lojas;
     $scope.foiFechado;
 
-    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureiras").then(function (response) {
+    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
         $scope.lojas = response.data;
 
     });
@@ -4988,7 +4988,7 @@ function supRelAcompanhamentoCtrl($scope, $http) {
     $scope.dtini;
     $scope.dtfim;
 
-    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureiras").then(function (response) {
+    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
         $scope.lojas = response.data;
     });
 

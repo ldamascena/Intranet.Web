@@ -32,7 +32,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 1;
                 context.CadSolAlterProdutos.Add(obj);
                 context.SaveChanges();
-                emailService.SendEmail("indicador@smalvorada.com", "Nova Alteração de Produto - Pendente");
+                emailService.SendEmail("indicador@smalvorada.com", "Nova Alteração de Produto - Pendente", emailService.BodySolicitacaoCadastro());
             }
 
             catch (Exception ex)

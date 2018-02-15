@@ -12,7 +12,7 @@ namespace Intranet.Service
     public class EmailService
     {
 
-        public void SendEmail(string para, string assunto)
+        public void SendEmail(string para, string assunto, string body)
         {
             try
             {
@@ -24,7 +24,24 @@ namespace Intranet.Service
                 mail.From = new MailAddress("ldamascena2307@gmail.com");
                 mail.To.Add(para);
                 mail.Subject = assunto;
-                mail.Body = @"<html>
+                mail.Body = body;
+                mail.IsBodyHtml = true;
+                SmtpServer.Port = 587;
+                //SmtpServer.Port = 465;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("ldamascena2307@gmail.com", "ldamascena");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string BodySolicitacaoCadastro()
+        {
+            string body = @"<html>
 <head>
     <meta name=viewport content=width=device-width />
     <meta http-equiv=Content-Type content=text/html; charset=UTF-8 />
@@ -348,49 +365,8 @@ a {
 
 </body>
 </html>";
-                mail.IsBodyHtml = true;
-                SmtpServer.Port = 587;
-                //SmtpServer.Port = 465;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("ldamascena2307@gmail.com", "ldamascena");
-                SmtpServer.EnableSsl = true;
 
-                SmtpServer.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return body;
         }
-
-        //public void SendEmail2(string para, string assunto)
-        //{
-        //    try
-        //    {
-        //        using (StreamReader reader = File.OpenText()) // Path to your 
-        //        {                                                         // HTML file
-        //            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-        //            MailMessage myMail = new MailMessage();
-
-        //            myMail.From = new MailAddress("ldamascena2307@gmail.com");
-        //            myMail.To.Add(para);
-        //            myMail.Subject = "HTML Message";
-        //            myMail.IsBodyHtml = true;
-        //            myMail. = MailFormat.Html;
-        //            myMail.Body = reader.ReadToEnd();  // Load the content from your file...
-
-        //            SmtpServer.Port = 587;
-        //            //SmtpServer.Port = 465;
-        //            SmtpServer.Credentials = new System.Net.NetworkCredential("ldamascena2307@gmail.com", "ldamascena");
-        //            SmtpServer.EnableSsl = true;
-
-        //            SmtpServer.Send(myMail);
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
     }
 }

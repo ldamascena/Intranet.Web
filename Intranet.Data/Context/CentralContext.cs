@@ -482,11 +482,6 @@ namespace Intranet.Solidcon.Data.Context
 
             // Log Solicitacao Cadastro de Produto
 
-            modelBuilder.Entity<CadSolProd>()
-                .HasMany(e => e.CadSolProdLogs)
-                .WithRequired(e => e.CadSolProd)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<SitCadProd>()
                 .HasMany(e => e.CadSolProdLogs)
                 .WithRequired(e => e.SitCadProd)
