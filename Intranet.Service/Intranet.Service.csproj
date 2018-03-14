@@ -68,6 +68,7 @@
     <Compile Include="EstoqueMovimentoService.cs" />
     <Compile Include="EmpresaFilialService.cs" />
     <Compile Include="PessoaJuridicaService.cs" />
+    <Compile Include="PlanoDeContasService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicebase.cs" />
     <Compile Include="SolUsuarioService.cs" />
@@ -75,6 +76,10 @@
     <Compile Include="ViewProdutoService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Intranet.Alvorada.Data\Intranet.Alvorada.Data.csproj">
+      <Project>{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}</Project>
+      <Name>Intranet.Alvorada.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Intranet.Data\Intranet.Solidcon.Data.csproj">
       <Project>{4C4E1D0D-5082-42CC-825D-5BD676E8AC9A}</Project>
       <Name>Intranet.Solidcon.Data</Name>

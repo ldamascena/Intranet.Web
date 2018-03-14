@@ -86,6 +86,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -116,9 +120,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -209,9 +210,11 @@
     <Compile Include="Controllers\EstoqueContabilController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
+    <Compile Include="Controllers\LancamentoCntController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Controllers\PessoaJuridicaController.cs" />
+    <Compile Include="Controllers\PromocaoController.cs" />
     <Compile Include="Controllers\SitDespController.cs" />
     <Compile Include="Controllers\SolitDespController.cs" />
     <Compile Include="Controllers\SolLogController.cs" />
@@ -328,6 +331,7 @@
     <Content Include="css\plugins\textSpinners\spinners.css" />
     <Content Include="css\plugins\toastr\toastr.min.css" />
     <Content Include="css\plugins\touchspin\jquery.bootstrap-touchspin.min.css" />
+    <Content Include="css\plugins\tree-grid\treeGrid.css" />
     <Content Include="css\plugins\ui-select\select.min.css" />
     <Content Include="css\plugins\uiTree\angular-ui-tree.min.css" />
     <Content Include="css\style.css" />
@@ -2476,6 +2480,7 @@
     <Content Include="js\plugins\toastr\toastr.min.js" />
     <Content Include="js\plugins\topojson\topojson.js" />
     <Content Include="js\plugins\touchspin\jquery.bootstrap-touchspin.min.js" />
+    <Content Include="js\plugins\tree-grid\tree-grid-directive.js" />
     <Content Include="js\plugins\ui-codemirror\ui-codemirror.min.js" />
     <Content Include="js\plugins\ui-select\select.min.js" />
     <Content Include="js\plugins\ui-sortable\sortable.js" />
@@ -2519,6 +2524,7 @@
     <Content Include="Views\despesas\cadmotivo.html" />
     <Content Include="Views\despesas\cadsituacao.html" />
     <Content Include="Views\despesas\cadsoldespesa.html" />
+    <Content Include="Views\dre\principal.html" />
     <Content Include="Views\estoque\estoque.html" />
     <Content Include="Views\estoque\estoque_custo.html" />
     <Content Include="Views\grupos.html" />
@@ -2569,6 +2575,7 @@
     <Content Include="Views\produto\altproduto.html" />
     <Content Include="Views\produto\sollistaprodutos.html" />
     <Content Include="Views\produto\wizard\mix_prod.html" />
+    <Content Include="Views\promocao\principal.html" />
     <Content Include="Views\register.html" />
     <Content Include="Views\produto\solproduto.html" />
     <Content Include="Views\table_basic.html" />

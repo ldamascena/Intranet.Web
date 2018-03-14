@@ -69,6 +69,16 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        #region LancamentoContabil
+
+        public virtual DbSet<VwLancamentoContabilRaizFive> VwLancamentoContabilRaizFive { get; set; }
+        public virtual DbSet<VwLancamentoContabilRaizFour> VwLancamentoContabilRaizFour { get; set; }
+        public virtual DbSet<VwLancamentoContabilRaizOne> VwLancamentoContabilRaizOne { get; set; }
+        public virtual DbSet<VwLancamentoContabilRaizThree> VwLancamentoContabilRaizThree { get; set; }
+        public virtual DbSet<VwLancamentoContabilRaizTwo> VwLancamentoContabilRaizTwo { get; set; }
+
+        #endregion
+
         public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
         public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }
         public virtual DbSet<SitCadProd> SitCadProd { get; set; }

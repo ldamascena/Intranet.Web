@@ -39,6 +39,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -87,6 +91,7 @@
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
+    <Compile Include="Entities\DTOS\PlanoDeContasDTO.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
     <Compile Include="Entities\EstoqueContabil.cs" />
     <Compile Include="Entities\EstoqueFisico.cs" />
@@ -107,6 +112,7 @@
     <Compile Include="Entities\SuperProduto.cs" />
     <Compile Include="Entities\SolLog.cs" />
     <Compile Include="Entities\SolParametro.cs" />
+    <Compile Include="Entities\AjustePrecoVenda.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
@@ -118,7 +124,14 @@
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
     <Compile Include="Entities\VwEmbalagensProdutoEAN.cs" />
+    <Compile Include="Entities\VwLancamentoContabilRaizFive.cs" />
+    <Compile Include="Entities\VwLancamentoContabilRaizFour.cs" />
+    <Compile Include="Entities\VwLancamentoContabilRaizOne.cs" />
+    <Compile Include="Entities\VwLancamentoContabilRaizThree.cs" />
+    <Compile Include="Entities\VwLancamentoContabilRaizTwo.cs" />
     <Compile Include="Entities\VwProdutoEAN.cs" />
+    <Compile Include="Entities\VwPromocao.cs" />
+    <Compile Include="Entities\VwPromocaoItem.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />

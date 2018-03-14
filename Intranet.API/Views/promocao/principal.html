@@ -1,0 +1,134 @@
+﻿-<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Promocao</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li>
+                <a>Promoção</a>
+            </li>
+            <li class="active">
+                <strong>Agendamento Ajuste Promoção</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="promocaoCtrl">
+    <div class="row">
+        <div class="col-lg-3">
+            <!--<input type="text" class="form-control" ng-model="promocaoTipo" />-->
+            <select ng-model="promocaoTipo" class="form-control">
+                <option value="">Selecione Tipo de Promocao</option>
+                <option value="tabloide">Tabloide</option>
+            </select>
+        </div>
+        <div class="col-lg-2">
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="dtinicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+        <div class="col-lg-2">
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="dtfim" is-open="popup2.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+        <div class="col-lg-1">
+            <div class="checkbox checkbox-info">
+                <input id="checkbox4" type="checkbox" ng-model="ativo">
+                <label for="checkbox4">
+                    Ativos
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="checkbox checkbox-info">
+                <input id="checkbox4" type="checkbox" ng-model="concluido">
+                <label for="checkbox4">
+                    Concluidos
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-offset-1 col-lg-2">
+            <input type="button" value="Buscar" class="btn btn-rounded btn-primary" ng-click="pesquisar();" />
+        </div>
+    </div>
+    <div class="row">
+        <div ng-show="promocoesItem.length > 0">
+            <div class="ibox float-e-margins">
+                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="ativarPromocao(promocoesItem)"><i class="fa fa-check"></i> Ativar</button>
+                <div class="ibox-title">
+                    <h5><strong>Promoção Item</strong></h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table datatable="ng" dt-options="dtOptions2" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>CdSuperProduto</th>
+                                    <th>Super Produto</th>
+                                    <th>Valor Promocao</th>
+                                    <th>Valor Venda</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="promocaoItem in promocoesItem">
+                                    <td>{{ promocaoItem.cdSuperProduto }}</td>
+                                    <td>{{ promocaoItem.Produto }}</td>
+                                    <td>{{ promocaoItem.vlPromocao | currency}}</td>
+                                    <td>{{ promocaoItem.vlVenda | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><strong>Promoção</strong></h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Tipo Promocao</th>
+                                    <th>Dt Inicio</th>
+                                    <th>Dt Fim</th>
+                                    <th>Ativo</th>  
+                                    <th>Concluido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="promocao in promocoes | filter:ativo | filter:concluido">
+                                    <td><a href="" ng-click="visualizarPromocao(promocao.cdPromocao, promocao.dtInicio, promocao.dtFim, promocao.Ativo);">{{ promocao.cdPromocao }}</a></td>
+                                    <td>{{ promocao.nmTipoPromocao }}</td>
+                                    <td>{{ promocao.dtInicio | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{ promocao.dtFim | date: 'dd/MM/yyyy'}}</td>
+                                    <td><i ng-class="promocao.Ativo == true ? 'fa fa-check text-navy' : (promocao.Ativo == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                    <td><i ng-class="promocao.Concluido == true ? 'fa fa-check text-navy' : (promocao.Concluido == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

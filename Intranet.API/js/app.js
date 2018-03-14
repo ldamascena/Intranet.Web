@@ -12,7 +12,9 @@
         'ngSanitize',                   // ngSanitize
         'ngStorage',
         'angular.filter',
-        'rw.moneymask'
+        'rw.moneymask',
+        'treeGrid',
+        'ngAnimate'
     ])
 })();
 

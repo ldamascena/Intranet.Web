@@ -45,14 +45,14 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Editar(CadComposicaoControle model)
+        public HttpResponseMessage Editar([FromBody] CadComposicaoControle obj)
         {
             var context = new AlvoradaContext();
 
             try
             {
-                model.DataAlteracao = DateTime.Now;
-                context.Entry(model).State = EntityState.Modified;
+                obj.DataAlteracao = DateTime.Now;
+                context.Entry(obj).State = EntityState.Modified;
                 context.SaveChanges();
             }
 

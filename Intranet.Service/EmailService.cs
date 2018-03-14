@@ -344,7 +344,7 @@ a {
                                 </tr>
                                 <tr>
                                     <td class=content-block>
-                                        <a href=https://192.168.1.199/Intranet.API/#/produto/sollistaprodutos class=btn-primary>Visualizar</a>
+                                        <a href=http://192.168.1.116:8080/Intranet.API/#/produto/sollistaprodutos class=btn-primary>Visualizar</a>
                                     </td>
                                 </tr>
                             </table>

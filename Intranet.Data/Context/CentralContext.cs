@@ -18,7 +18,6 @@ namespace Intranet.Solidcon.Data.Context
             
         }
 
-
         #region Alertas
 
         #region Geral
@@ -97,6 +96,14 @@ namespace Intranet.Solidcon.Data.Context
         public virtual DbSet<SolUsuario> SolUsuarios { get; set; }
         public virtual DbSet<SolLog> SolLogs { get; set; }
         public virtual DbSet<SolParametro> SolParametros { get; set; }
+
+        #endregion
+
+        #region Promocao
+
+        public virtual DbSet<VwPromocao> vwPromocao { get; set; }
+        public virtual DbSet<VwPromocaoItem> vwPromocaoItem { get; set; }
+        public virtual DbSet<AjustePrecoVenda> AjustePrecosVenda { get; set; }
 
         #endregion
 

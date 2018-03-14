@@ -4336,24 +4336,22 @@ function composicaoModalInstanceCtrl($scope, $uibModalInstance, $http, composica
 
     $scope.editar = function () {
 
-        $scope.valor = $scope.valor.toString().replace(",", ".");
 
-        if ($scope.cadComposicaoForm.$valid) {
-            $scope.obj = {
-                Id: composicaoSelected.Id, DataInclusao: composicaoSelected.DataInclusao, IdUsuario: composicaoSelected.IdUsuario,
-                Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao, IdUsuarioAlteracao: $localStorage.user.Id,
-                Baixa: $scope.baixa, DataBaixa: composicaoSelected.Baixa
-            };
 
-            $http.post("http://localhost:50837/api/CadComposicao/Editar", $scope.obj).then(function (response) {
-                $uibModalInstance.close();
+        $scope.obj = {
+            Id: composicaoSelected.Id, DataInclusao: composicaoSelected.DataInclusao, IdUsuario: composicaoSelected.IdUsuario,
+            Valor: $scope.valor, Descricao: $scope.descricao, Observacao: $scope.observacao, IdUsuarioAlteracao: $localStorage.user.Id,
+            Baixa: $scope.baixa, DataBaixa: composicaoSelected.Baixa
+        };
 
-            }, function (response) {
-                return alert("Erro: " + response.status);
-            });
-        } else {
-            $scope.cadComposicaoForm.submitted = true;
-        }
+
+        $http.post("http://localhost:50837/api/CadComposicao/Editar", angular.toJson($scope.obj)).then(function (response) {
+            $uibModalInstance.close();
+
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+
     }
 
     $scope.cancel = function () {
@@ -5249,6 +5247,268 @@ function cadProdutoCtrl($scope, $localStorage, DTOptionsBuilder) {
         ]);
 }
 
+function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
+
+
+
+    //$scope.clickThird = false;
+
+    //$scope.tree_data = [];
+
+    ////$scope.ativospassivos = [{ "Row": 663, "NomeContabil": "ATIVO", "CodigoContabil": 1, "nmPessoa": "COLUBANDE", "Valor": 192741926.9900, "ValorMesAnt": 137248248.40, "ValorAnoAnt": 4699721.80, "MesNumber": 7, "Ano": 2017 }, { "Row": 669, "NomeContabil": "CONTAS DE RESULTADO - RECEITAS", "CodigoContabil": 196, "nmPessoa": "COLUBANDE", "Valor": 15896219.7600, "ValorMesAnt": 15553876.02, "ValorAnoAnt": 191.56, "MesNumber": 7, "Ano": 2017 }, { "Row": 670, "NomeContabil": "PASSIVO", "CodigoContabil": 142, "nmPessoa": "COLUBANDE", "Valor": 32256533.9000, "ValorMesAnt": 5517326.92, "ValorAnoAnt": 24.00, "MesNumber": 7, "Ano": 2017 }, { "Row": 673, "NomeContabil": "CONTAS DE RESULTADO - CUSTOS DESPESAS", "CodigoContabil": 230, "nmPessoa": "COLUBANDE", "Valor": 4387879.5900, "ValorMesAnt": 678639.90, "ValorAnoAnt": 830.62, "MesNumber": 7, "Ano": 2017 }];
+    ////$scope.ativospassivos = [{ "Row": 663, "NomeContabil": "ATIVO", "CodigoContabil": 1, "nmPessoa": "COLUBANDE", "Valor": 192741926.9900, "ValorMesAnt": 137248248.40, "ValorAnoAnt": 4699721.80, "MesNumber": 7, "Ano": 2017 }];
+    ////$scope.segundoNivel = [{ "Row": 1101, "NomeContabil": "ATIVO CIRCULANTE", "CodigoContabil": 2, "CodigoContabilPai": 1, "nmPessoa": "COLUBANDE", "Valor": 192056817.1100, "ValorMesAnt": 136180617.88, "ValorAnoAnt": 4673723.40, "MesNumber": 7, "Ano": 2017 }, { "Row": 1116, "NomeContabil": "ATIVO NÃO CIRCULANTE", "CodigoContabil": 112, "CodigoContabilPai": 1, "nmPessoa": "COLUBANDE", "Valor": 486521.5700, "ValorMesAnt": 82400.50, "ValorAnoAnt": 25998.40, "MesNumber": 7, "Ano": 2017 }, { "Row": 1129, "NomeContabil": "CONTAS DE COMPENSAÇÃO", "CodigoContabil": 459, "CodigoContabilPai": 1, "nmPessoa": "COLUBANDE", "Valor": 198588.3100, "ValorMesAnt": 985230.02, "ValorAnoAnt": null, "MesNumber": 7, "Ano": 2017 }];
+    ////$scope.terceiroNivel;
+    ////$scope.quartoNivel;
+    ////$scope.quintoNivel;
+
+    //$scope.ativospassivos;
+    //$scope.segundoNivel;
+
+    //$scope.dtOptions = DTOptionsBuilder.newOptions()
+    //    .withDOM('<"html5buttons"B>lTfgitp')
+    //    .withButtons([
+    //        { extend: 'copy' },
+    //        { extend: 'csv' },
+    //        { extend: 'excel', title: 'ExampleFile' },
+    //        { extend: 'pdf', title: 'ExampleFile' },
+
+    //        {
+    //            extend: 'print',
+    //            customize: function (win) {
+    //                $(win.document.body).addClass('white-bg');
+    //                $(win.document.body).css('font-size', '10px');
+
+    //                $(win.document.body).find('table')
+    //                    .addClass('compact')
+    //                    .css('font-size', 'inherit');
+    //            }
+    //        }
+    //    ]);
+
+    //$http.get("http://localhost:50837/api/LancamentoCnt/GetAllByAnoMesFilialOne?ano=2017&mes=7&filial=COLUBANDE").then(function (response) {
+    //    $scope.ativospassivos = response.data;
+    //});
+
+    //$http.get("http://localhost:50837/api/LancamentoCnt/GetAllAnoMesFilialTwo?ano=2017&mes=7&filial=COLUBANDE&cdContabilPai=1").then(function (response) {
+    //    $scope.segundoNivel = response.data;
+    //});
+
+    //$scope.findFirst = function () {
+    //    $scope.clickThird = true;
+    //}
+
+    $scope.Definir = function () {
+        $http.get("http://localhost:50837/api/LancamentoCnt/GetAllPlanoDeContas?ano=2017&mes=7&filial=COLUBANDE").then(function (response) {
+            $scope.tree_data = response.data;
+        });
+    }
+
+    $scope.itemId = 1;
+    $scope.isExpend = true;
+
+    $scope.itemClick = function (id, expend) {
+        $scope.itemId = id;
+        $scope.isExpend = !expend
+    };
+
+    //$scope.col_defs = [
+    //{
+    //    field: "Valor",
+    //    displayName: "Valor"
+    //},
+    //{
+    //    field: "ValorMesAnt",
+    //    displayName: "ValorMesAnt"
+    //},
+    //{
+    //    field: "ValorAnoAnt",
+    //    displayName: "ValorAnoAnt"
+    //},
+    //];
+}
+
+function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert) {
+    $scope.promocoesItem;
+    $scope.promocoes;
+    $scope.DataInicioClick;
+    $scope.DataFimClick;
+    $scope.CdPromocaoClick;
+    $scope.AtivoClick;
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.dtOptions2 = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.today = function () {
+        $scope.dtinicio = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.dtinicio = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+        var date = data.date,
+          mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.dtinicio = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+          mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.pesquisar = function () {
+        $http.get("http://localhost:50837/api/promocao/GetPromocaoByTipoStatusData?tipoPromocao=" + $scope.promocaoTipo + "&dataInicio=" + $scope.dtinicio + "&dataFim=" + $scope.dtfim).then(function (response) {
+            $scope.promocoes = response.data;
+        });
+    }
+
+    $scope.visualizarPromocao = function (codigo, dtini, dtfim, ativo) {
+        $http.get("http://localhost:50837/api/promocao/GetAllPromocoesItemByCodigo?codigo=" + codigo).then(function (response) {
+            $scope.promocoesItem = response.data;
+            $scope.DataInicioClick = dtini;
+            $scope.DataFimClick = dtfim;
+            $scope.CdPromocaoClick = codigo;
+            $scope.AtivoClick = ativo;
+        });
+    }
+
+    $scope.ativarPromocao = function (promocaoItens) {
+        if ($scope.AtivoClick) {
+            SweetAlert.swal("Atenção", "Agendamento de alteração já ativada", "warning");
+        }
+
+        else {
+
+            SweetAlert.swal({
+                title: "Deseja Ativar?",
+                text: "Não será desativar depois de executado!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, ativar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        for (var i = 0; i < promocaoItens.length; i++) {
+                            $scope.obj = {
+                                cdPromocao: $scope.CdPromocaoClick, cdSuperProduto: promocaoItens[i].cdSuperProduto, vlVenda: promocaoItens[i].vlPromocao,
+                                Data: $scope.DataInicioClick, vlVendaAnt: promocaoItens[i].vlVenda, DataRetorno: $scope.DataFimClick, Ativo: true, Concluido: false,
+                                Usuario: $localStorage.user.Nome + $localStorage.user.Sobrenome
+                            };
+
+                            $http.post("http://localhost:50837/api/Promocao/Incluir", $scope.obj).then(function (response) {
+                            }, function (response) {
+                                return alert("Erro: " + response.status);
+                            });
+                            SweetAlert.swal("Ativado!", "Agendamento ativado com sucesso!", "success");
+                        }
+                    } else {
+                        SweetAlert.swal("Cancelado", "Você cancelou a ativacao da promocao", "error");
+                    }
+                });
+        }
+    }
+}
+
 /**
  *
  * Pass all functions into module
@@ -5340,4 +5600,34 @@ angular
     .controller('estoqueModalInstanceCtrl', estoqueModalInstanceCtrl)
     .controller('estoqueContabilCtrl', estoqueContabilCtrl)
     .controller('estoqueCustoModalInstanceCtrl', estoqueCustoModalInstanceCtrl)
-    .controller('cadProdutoCtrl', cadProdutoCtrl);
+    .controller('cadProdutoCtrl', cadProdutoCtrl)
+    .controller('bpdreCtrl', bpdreCtrl).filter('filterTreeItem', function () {
+        function recursive(obj, newObj, level, itemId, isExpend) {
+            console.log(obj, newObj, level, itemId, isExpend)
+            angular.forEach(obj, function (o) {
+                if (o.children && o.children.length != 0) {
+                    o.level = level;
+                    o.leaf = false;
+                    newObj.push(o);
+                    if (o.id == itemId) {
+                        o.expend = isExpend;
+                    }
+                    if (o.expend == true) {
+                        recursive(o.children, newObj, o.level + 1, itemId, isExpend);
+                    }
+                } else {
+                    o.level = level;
+                    o.leaf = true;
+                    newObj.push(o);
+                    return false;
+                }
+            });
+        }
+
+        return function (obj, itemId, isExpend) {
+            var newObj = [];
+            recursive(obj, newObj, 0, itemId, isExpend);
+            return newObj;
+        }
+    })
+    .controller('promocaoCtrl', promocaoCtrl);
