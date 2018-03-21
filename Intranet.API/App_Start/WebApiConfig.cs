@@ -2,6 +2,7 @@
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebApiContrib.Formatting;
 
 namespace Intranet.API
 {
@@ -15,8 +16,7 @@ namespace Intranet.API
             // Web API configuration and services
 
             var formatters = config.Formatters;
-            formatters.Clear();
-            formatters.Add(new JsonMediaTypeFormatter());
+            //formatters.Add(new ProtoBufFormatter());
 
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;

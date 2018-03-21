@@ -69,5 +69,29 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
 
         }
+
+        public HttpResponseMessage Remover([FromBody] int cdpromocao)
+        {
+
+            var context = new CentralContext();
+
+            var result = context.AjustePrecosVenda.Where(x => x.cdPromocao == cdpromocao);
+
+            try
+            {
+                context.AjustePrecosVenda.RemoveRange(result);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+
+        }
     }
 }

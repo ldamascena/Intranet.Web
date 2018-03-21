@@ -85,6 +85,13 @@
                 </ul>
             </li>
 
+            <li ng-class="{active: $state.includes('classificacaoproduto')}" ng-show="grupo == 1 && grupo == 10">
+                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Classificao Produto' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('classificacaoproduto.principal')}">
+                    <li ui-sref-active="active" ng-show="grupo == 1 && grupo == 10"><a ui-sref="classificacaoproduto.principal">Mercado Logica</a></li>
+                </ul>
+            </li>
+
             <li ng-class="{active: $state.includes('DRE')}" ng-show="grupo == 1">
                 <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'BP - DRE' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('DRE.principal')}">
@@ -92,10 +99,10 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('promocao')}" ng-show="grupo == 1">
-                <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'Promocao' | translate }}</span><span class="fa arrow"></span></a>
+            <li ng-class="{active: $state.includes('promocao')}" ng-show="grupo == 1 && grupo == 8">
+                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Promocao' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('promocao.principal')}">
-                    <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 && grupo == 8"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
                 </ul>
             </li>
 

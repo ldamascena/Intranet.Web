@@ -1,24 +1,24 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Intranet.API.Controllers
 {
     public class SolitDespController : ApiController
     {
-        public IEnumerable<CadSolDesp> GetAll()
+        public async Task <IEnumerable<CadSolDesp>> GetAll()
         {
             var context = new AlvoradaContext();
 
-            var result = context.CadSolicitacoesDesp.ToList();
-
-            return result;
+            return await context.CadSolicitacoesDesp.Take(250).OrderByDescending(x => x.DataInclusao).ToListAsync();
         }
         public IEnumerable<CadSolDesp> GetAllByUser(int idUsuario)
         {
