@@ -196,6 +196,8 @@
     <Compile Include="Controllers\AlertaStatusController.cs" />
     <Compile Include="Controllers\AlertaTipoController.cs" />
     <Compile Include="Controllers\AlertaUltimoCustoController.cs" />
+    <Compile Include="Controllers\CadAssProdController.cs" />
+    <Compile Include="Controllers\CadAssProdGradeController.cs" />
     <Compile Include="Controllers\CadAtendenteController.cs" />
     <Compile Include="Controllers\CadCaixaController.cs" />
     <Compile Include="Controllers\CadComposicaoController.cs" />
@@ -1655,7 +1657,6 @@
     <Content Include="Views\alertas\ultimocusto.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
     <Content Include="Views\cadprod\sol_produto.html" />
-    <Content Include="Views\classificacaoproduto\principal.html" />
     <Content Include="Views\common\content.html" />
     <Content Include="Views\common\content_top_navigation.html" />
     <Content Include="Views\common\footer.html" />
@@ -1697,7 +1698,6 @@
     <Content Include="Views\modal\aprovar_reprovar_desp.html" />
     <Content Include="Views\modal\balancoReprovar.html" />
     <Content Include="Views\modal\change_password.html" />
-    <Content Include="Views\modal\classificacaoproduto\classificacao_editar.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadcaixa.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadatendente.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadoutrasdespesas.html" />
@@ -1713,6 +1713,8 @@
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />
     <Content Include="Views\modal\alertas\quarentena.html" />
+    <Content Include="Views\modal\produto\associacao_incluir_editar.html" />
+    <Content Include="Views\modal\produto\classificacao_editar.html" />
     <Content Include="Views\modal\produto\historico.html" />
     <Content Include="Views\modal\produto\historicoAlteracao.html" />
     <Content Include="Views\modal\produto\solaltproduto.html" />
@@ -1730,6 +1732,8 @@
     <Content Include="Views\principal.html" />
     <Content Include="Views\produto\altlistaprodutos.html" />
     <Content Include="Views\produto\altproduto.html" />
+    <Content Include="Views\produto\associacao.html" />
+    <Content Include="Views\produto\classificacaoproduto.html" />
     <Content Include="Views\produto\sollistaprodutos.html" />
     <Content Include="Views\produto\wizard\mix_prod.html" />
     <Content Include="Views\promocao\principal.html" />

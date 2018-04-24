@@ -529,7 +529,7 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
 
                     $interval(function () {
                         location.reload();
-                    }, 2000);
+                    }, 3000);
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou a inclusão do registro", "error");
                 }
@@ -907,12 +907,33 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.justificativa = solicitacaoProdSelected.JustificativaResumida;
     $scope.tipoCadastro = solicitacaoProdSelected.TipoCadastro;
     $scope.observacao = solicitacaoProdSelected.Observacao;
+    $scope.status = solicitacaoProdSelected.IdStatus;
 
 
+    $scope.editar = function () {
+        $scope.obj = {
+            Id: solicitacaoProdSelected.Id, IdCadSolProd: solicitacaoProdSelected.IdCadSolProd, Descricao: $scope.descricao,
+            Comprador: $scope.comprador, Fornecedor: $scope.fornecedor, Abastecimento: $scope.abastecimento, ConcSensibilidade: $scope.concorrencia,
+            Custo: $scope.custo, Venda: $scope.venda, Embalagem: $scope.embalagem, QtdEmbalagem: $scope.qtdEmbalagem,
+            Peso: $scope.peso, Altura: $scope.altura, Largura: $scope.largura, Comprimento: $scope.comprimento, Lastro: $scope.lastro,
+            Camadas: $scope.camadas, Mix: $scope.mix, Caracteristica: $scope.caracteristica,
+            JustificativaResumida: $scope.justificativa, Observacao: $scope.observacao, idStatus: solicitacaoProdSelected.IdStatus,
+            IdUsuario: solicitacaoProdSelected.IdUsuario, DataCriacao: solicitacaoProdSelected.DataCriacao, Segmento: $scope.segmento,
+            TipoCadastro: $scope.tipoCadastro, IdUserLocksolicitacaoProdSelected: solicitacaoProdSelected.IdUserLocksolicitacaoProdSelected
+        };
 
 
+        $http.post("http://localhost:50837/api/CadSolProd/Editar", $scope.obj).then(function (response) {
+            $uibModalInstance.dismiss();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        })
 
+    }
 
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
 
 
 
@@ -5253,16 +5274,32 @@ function cadProdutoCtrl($scope, $localStorage, DTOptionsBuilder) {
 function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 
     $scope.Definir = function () {
-        $http.get("http://localhost:50837/api/LancamentoCnt/GetAllPlanoDeContas?ano=2017&mes=7&filial=COLUBANDE").then(function (response) {
-            $scope.tree_data = response.data;
-        });
+        //$http.get("http://localhost:50837/api/LancamentoCnt/GetAllPlanoDeContas?ano=2017&mes=7&filial=COLUBANDE").then(function (response) {
+        //    $scope.tree_data = response.data;
+        //});
+
+        $scope.ativos = [{ "children": [{ "children": [{ "children": [{ "children": [{ "NomeContabil": "CARTOES DE CREDITO A RECEBER", "id": 62, "nmPessoa": "ARSENAL", "Valor": 1582564.1400, "ValorMesAnt": 1537409.77, "VarMes": null, "ValorAnoAnt": 1158576.80, "VarAno": null }, { "NomeContabil": "TICKET A RECEBER", "id": 63, "nmPessoa": "ARSENAL", "Valor": 414190.4400, "ValorMesAnt": 432961.59, "VarMes": null, "ValorAnoAnt": 272732.93, "VarAno": null }], "NomeContabil": "RECEBIMENTOS PF E PJ", "id": 61, "Valor": 1996754.5800, "ValorMesAnt": 1970371.36, "VarMes": null, "ValorAnoAnt": 1431309.73, "VarAno": null }], "NomeContabil": "CLIENTES", "id": 60, "nmPessoa": "ARSENAL", "Valor": 1996754.5800, "ValorMesAnt": 1970371.36, "VarMes": null, "ValorAnoAnt": 1431309.73, "VarAno": null }, { "children": [{ "children": [{ "NomeContabil": "CONTAS A RECEBER", "id": 471, "nmPessoa": "ARSENAL", "Valor": 14700.1400, "ValorMesAnt": 30961.49, "VarMes": null, "ValorAnoAnt": 17623.95, "VarAno": null }], "NomeContabil": "TITULOS A RECEBER", "id": 80, "Valor": 14700.1400, "ValorMesAnt": 30961.49, "VarMes": null, "ValorAnoAnt": 17623.95, "VarAno": null }], "NomeContabil": "TITULOS A RECEBER", "id": 79, "nmPessoa": "ARSENAL", "Valor": 14700.1400, "ValorMesAnt": 30961.49, "VarMes": null, "ValorAnoAnt": 17623.95, "VarAno": null }, { "children": [{ "children": [{ "NomeContabil": "ICMS A RECUPERAR", "id": 89, "nmPessoa": "ARSENAL", "Valor": 38731.6400, "ValorMesAnt": 34200.39, "VarMes": null, "ValorAnoAnt": 26390.27, "VarAno": null }], "NomeContabil": "ICMS A RECUPERAR", "id": 88, "Valor": 38731.6400, "ValorMesAnt": 34200.39, "VarMes": null, "ValorAnoAnt": 26390.27, "VarAno": null }, { "children": [{ "NomeContabil": "PIS A RECUPERAR", "id": 91, "nmPessoa": "ARSENAL", "Valor": 6282.7900, "ValorMesAnt": 5417.97, "VarMes": null, "ValorAnoAnt": 3220.35, "VarAno": null }, { "NomeContabil": "COFINS A RECUPERAR", "id": 92, "nmPessoa": "ARSENAL", "Valor": 28939.4900, "ValorMesAnt": 24955.66, "VarMes": null, "ValorAnoAnt": 14857.14, "VarAno": null }], "NomeContabil": "PIS COFINS A RECUPERAR", "id": 90, "Valor": 35222.2800, "ValorMesAnt": 30373.63, "VarMes": null, "ValorAnoAnt": 18077.49, "VarAno": null }], "NomeContabil": "IMPOSTOS A RECUPERAR", "id": 87, "nmPessoa": "ARSENAL", "Valor": 73953.9200, "ValorMesAnt": 64574.02, "VarMes": null, "ValorAnoAnt": 44467.76, "VarAno": null }, { "children": [{ "children": [{ "NomeContabil": "MERCADORIAS PARA REVENDA", "id": 99, "nmPessoa": "ARSENAL", "Valor": 916852.5000, "ValorMesAnt": 892420.22, "VarMes": null, "ValorAnoAnt": 537804.09, "VarAno": null }], "NomeContabil": "ESTOQUES DE MERCADORIAS", "id": 98, "Valor": 916852.5000, "ValorMesAnt": 892420.22, "VarMes": null, "ValorAnoAnt": 537804.09, "VarAno": null }, { "children": [{ "NomeContabil": "MATERIAL USO E CONSUMO", "id": 102, "nmPessoa": "ARSENAL", "Valor": 27250.2300, "ValorMesAnt": 49723.22, "VarMes": null, "ValorAnoAnt": 24364.98, "VarAno": null }], "NomeContabil": "OUTROS ESTOQUES", "id": 100, "Valor": 27250.2300, "ValorMesAnt": 49723.22, "VarMes": null, "ValorAnoAnt": 24364.98, "VarAno": null }], "NomeContabil": "ESTOQUES", "id": 97, "nmPessoa": "ARSENAL", "Valor": 944102.7300, "ValorMesAnt": 942143.44, "VarMes": null, "ValorAnoAnt": 562169.07, "VarAno": null }], "NomeContabil": "ATIVO CIRCULANTE", "id": 2, "Valor": 3029511.3700, "ValorMesAnt": 3008050.31, "VarMes": null, "ValorAnoAnt": 2055570.51, "VarAno": null }, { "children": [{ "children": [{ "children": [{ "NomeContabil": "MAQUINAS E EQUIPAMENTOS", "id": 122, "nmPessoa": "ARSENAL", "Valor": 26942.0000, "ValorMesAnt": 58300.00, "VarMes": null, "ValorAnoAnt": 44720.00, "VarAno": null }], "NomeContabil": "BENS MOVEIS", "id": 121, "Valor": 26942.0000, "ValorMesAnt": 58300.00, "VarMes": null, "ValorAnoAnt": 44720.00, "VarAno": null }, { "children": [{ "NomeContabil": "TERRENOS", "id": 127, "nmPessoa": "ARSENAL", "Valor": 25000.0000, "ValorMesAnt": 125000.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "BENS IMÓVEIS", "id": 126, "Valor": 25000.0000, "ValorMesAnt": 125000.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "IMOBILIZADO", "id": 120, "nmPessoa": "ARSENAL", "Valor": 51942.0000, "ValorMesAnt": 183300.00, "VarMes": null, "ValorAnoAnt": 44720.00, "VarAno": null }], "NomeContabil": "ATIVO NÃO CIRCULANTE", "id": 112, "Valor": 51942.0000, "ValorMesAnt": 183300.00, "VarMes": null, "ValorAnoAnt": 44720.00, "VarAno": null }, { "children": [{ "children": [{ "children": [{ "NomeContabil": "TRANSFERENCIA MERCADORIAS", "id": 467, "nmPessoa": "ARSENAL", "Valor": 1700980.8900, "ValorMesAnt": 1802660.54, "VarMes": null, "ValorAnoAnt": 1444960.38, "VarAno": null }], "NomeContabil": "ATIVAS", "id": 461, "Valor": 1700980.8900, "ValorMesAnt": 1802660.54, "VarMes": null, "ValorAnoAnt": 1444960.38, "VarAno": null }], "NomeContabil": "COMPENSAÇÃO ATIVA", "id": 460, "nmPessoa": "ARSENAL", "Valor": 1700980.8900, "ValorMesAnt": 1802660.54, "VarMes": null, "ValorAnoAnt": 1444960.38, "VarAno": null }], "NomeContabil": "CONTAS DE COMPENSAÇÃO", "id": 459, "Valor": 1700980.8900, "ValorMesAnt": 1802660.54, "VarMes": null, "ValorAnoAnt": 1444960.38, "VarAno": null }], "NomeContabil": "ATIVO", "id": 1, "Valor": 4782434.2600, "ValorMesAnt": 4994010.85, "VarMes": null, "ValorAnoAnt": 3545250.89, "VarAno": null }];
+        $scope.passivos = [{ "children": [{ "children": [{ "children": [{ "children": [{ "NomeContabil": "MERCADORIAS PARA REVENDA", "id": 146, "nmPessoa": "COLUBANDE", "Valor": 29648933.0200, "ValorMesAnt": 4395176.99, "VarMes": null, "ValorAnoAnt": 24.00, "VarAno": null }, { "NomeContabil": "OUTROS FORNECEDORES", "id": 147, "nmPessoa": "COLUBANDE", "Valor": 1990011.3400, "ValorMesAnt": 163753.06, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "FORNECEDORES", "id": 145, "Valor": 31638944.3600, "ValorMesAnt": 4558930.05, "VarMes": null, "ValorAnoAnt": 24.00, "VarAno": null }, { "children": [{ "NomeContabil": "ENERGIA A PAGAR", "id": 151, "nmPessoa": "COLUBANDE", "Valor": 105619.3000, "ValorMesAnt": 78.59, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TELEFONE A PAGAR", "id": 152, "nmPessoa": "COLUBANDE", "Valor": 7426.7000, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "AGUA E ESGOTO A PAGAR", "id": 153, "nmPessoa": "COLUBANDE", "Valor": 4885.5100, "ValorMesAnt": 1407.05, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ALUGUEL LOJAS A PAGAR", "id": 154, "nmPessoa": "COLUBANDE", "Valor": 233931.5800, "ValorMesAnt": 62339.50, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ALUGUEL ESTACIONAMENTOS A PAGAR", "id": 155, "nmPessoa": "COLUBANDE", "Valor": 19880.1800, "ValorMesAnt": 6491.40, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ALUGUEIS DIVERSOS", "id": 156, "nmPessoa": "COLUBANDE", "Valor": 45189.6200, "ValorMesAnt": 6376.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "CONTAS A PAGAR", "id": 150, "Valor": 416932.8900, "ValorMesAnt": 76692.54, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "RESCISOES A PAGAR", "id": 160, "nmPessoa": "COLUBANDE", "Valor": 830.7400, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "FOLHA DIVERSOS", "id": 163, "nmPessoa": "COLUBANDE", "Valor": 7153.4300, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "FOLHA DE PAGAMENTOS", "id": 158, "Valor": 7984.1700, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "INSS A PAGAR (2100)", "id": 166, "nmPessoa": "COLUBANDE", "Valor": 2517.9800, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "FGTS A RECOLHER", "id": 167, "nmPessoa": "COLUBANDE", "Valor": 36801.3100, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "ENCARGOS SOCIAIS A PAGAR", "id": 164, "Valor": 39319.2900, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "ICMS A PAGAR", "id": 170, "nmPessoa": "COLUBANDE", "Valor": 68597.0000, "ValorMesAnt": 2086.41, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "PIS A PAGAR", "id": 171, "nmPessoa": "COLUBANDE", "Valor": 392.6700, "ValorMesAnt": 37.63, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "COFINS A PAGAR", "id": 172, "nmPessoa": "COLUBANDE", "Valor": 1812.3000, "ValorMesAnt": 173.65, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "CSLL A PAGAR", "id": 174, "nmPessoa": "COLUBANDE", "Valor": 3480.5100, "ValorMesAnt": 3112.73, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "IRRF A PAGAR", "id": 175, "nmPessoa": "COLUBANDE", "Valor": 5496.1200, "ValorMesAnt": 751.32, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TAXAS DIVERSAS", "id": 449, "nmPessoa": "COLUBANDE", "Valor": 17832.3000, "ValorMesAnt": 1432.93, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ISS A PAGAR", "id": 450, "nmPessoa": "COLUBANDE", "Valor": 15.6600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "IMPOSTOS E CONTRIBUIÇÕES A PAGAR", "id": 169, "Valor": 97626.5600, "ValorMesAnt": 7594.67, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "OBRIGAÇÃO COM TERCEIROS", "id": 144, "nmPessoa": "COLUBANDE", "Valor": 32200807.2700, "ValorMesAnt": 4643217.26, "VarMes": null, "ValorAnoAnt": 24.00, "VarAno": null }], "NomeContabil": "PASSIVO CIRCULANTE", "id": 143, "Valor": 32200807.2700, "ValorMesAnt": 4643217.26, "VarMes": null, "ValorAnoAnt": 24.00, "VarAno": null }, { "children": [{ "children": [{ "children": [{ "NomeContabil": "BENS COMODATO", "id": 466, "nmPessoa": "COLUBANDE", "Valor": 2780.0000, "ValorMesAnt": 4948.12, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TRANSFERENCIA DE MERCADORIAS", "id": 468, "nmPessoa": "COLUBANDE", "Valor": 195811.5100, "ValorMesAnt": 980555.17, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "PASSIVA", "id": 465, "Valor": 198591.5100, "ValorMesAnt": 985503.29, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "COMPENSAÇÃO PASSIVA", "id": 464, "nmPessoa": "COLUBANDE", "Valor": 198591.5100, "ValorMesAnt": 985503.29, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "CONTAS DE COMPENSAÇÃO", "id": 463, "Valor": 198591.5100, "ValorMesAnt": 985503.29, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "PASSIVO", "id": 142, "Valor": 32399398.7800, "ValorMesAnt": 5628720.55, "VarMes": null, "ValorAnoAnt": 24.00, "VarAno": null }];
+        $scope.dre = [{ "children": [{ "children": [{ "children": [{ "children": [{ "NomeContabil": "RECEITA A VISTA", "id": 200, "nmPessoa": "MARICÁ", "Valor": 4435318.5800, "ValorMesAnt": 4556949.67, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "RECEITA BRUTA VENDAS", "id": 199, "Valor": 4435318.5800, "ValorMesAnt": 4556949.67, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "RECEITAS OPERACIONAIS VENDAS E SERVIÇOS", "id": 198, "nmPessoa": "MARICÁ", "Valor": 4435318.5800, "ValorMesAnt": 4556949.67, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "children": [{ "NomeContabil": "BONIFICACOES", "id": 228, "nmPessoa": "MARICÁ", "Valor": 3804.0800, "ValorMesAnt": 1663.25, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "OUTRAS RECEITAS", "id": 227, "Valor": 3804.0800, "ValorMesAnt": 1663.25, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "OUTRAS RECEITAS OPERACIONAIS", "id": 215, "nmPessoa": "MARICÁ", "Valor": 3804.0800, "ValorMesAnt": 1663.25, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "RECEITAS", "id": 197, "Valor": 4439122.6600, "ValorMesAnt": 4558612.92, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "CONTAS DE RESULTADO - RECEITAS", "id": 196, "Valor": 4439122.6600, "ValorMesAnt": 4558612.92, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "children": [{ "children": [{ "children": [{ "NomeContabil": "CMV", "id": 234, "nmPessoa": "MARICÁ", "Valor": 2142.2700, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "CUSTOS DAS MERCADORIAS VENDIDAS", "id": 233, "Valor": 2142.2700, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "PERDAS DE MERCADORIAS", "id": 236, "nmPessoa": "MARICÁ", "Valor": 5548.1900, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": 2578.85, "VarAno": null }], "NomeContabil": "QUEBRA DE MERCADORIAS", "id": 235, "Valor": 5548.1900, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": 2578.85, "VarAno": null }], "NomeContabil": "CUSTOS DAS MERCADORIAS E PRODUTOS", "id": 232, "nmPessoa": "MARICÁ", "Valor": 7690.4600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": 2578.85, "VarAno": null }], "NomeContabil": "CUSTOS", "id": 231, "Valor": 7690.4600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": 2578.85, "VarAno": null }, { "children": [{ "children": [{ "children": [{ "NomeContabil": "COFRES", "id": 251, "nmPessoa": "MARICÁ", "Valor": 1594.0000, "ValorMesAnt": 1594.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ESTACIONAMENTOS", "id": 252, "nmPessoa": "MARICÁ", "Valor": 5529.1900, "ValorMesAnt": 5529.19, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "IMPRESSORAS", "id": 253, "nmPessoa": "MARICÁ", "Valor": 256.4500, "ValorMesAnt": 248.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "LOJAS E DEPOSITOS", "id": 254, "nmPessoa": "MARICÁ", "Valor": 28831.0000, "ValorMesAnt": 28831.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "ALUGUEIS", "id": 250, "Valor": 36210.6400, "ValorMesAnt": 36202.19, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "EXAMES COMPLEMENTARES", "id": 268, "nmPessoa": "MARICÁ", "Valor": 306.0000, "ValorMesAnt": 274.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "MEDICINA DO TRABALHO", "id": 274, "nmPessoa": "MARICÁ", "Valor": 310.4200, "ValorMesAnt": 310.42, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "PESSOAL", "id": 263, "Valor": 616.4200, "ValorMesAnt": 584.42, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "CONTRIB SINDICAL", "id": 294, "nmPessoa": "MARICÁ", "Valor": 222.1200, "ValorMesAnt": 4692.66, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "GPS (2100)", "id": 301, "nmPessoa": "MARICÁ", "Valor": 46903.7000, "ValorMesAnt": 46115.15, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ICMS DARJ", "id": 303, "nmPessoa": "MARICÁ", "Valor": 5924.1900, "ValorMesAnt": 5609.16, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ICMS ST", "id": 304, "nmPessoa": "MARICÁ", "Valor": 401.9600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "IPTU", "id": 306, "nmPessoa": "MARICÁ", "Valor": 312.6000, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "IPVA", "id": 307, "nmPessoa": "MARICÁ", "Valor": 34.2300, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "IRRF S/ SALARIOS (0561)", "id": 311, "nmPessoa": "MARICÁ", "Valor": 220.1900, "ValorMesAnt": 149.29, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TAXA BOMBEIROS", "id": 315, "nmPessoa": "MARICÁ", "Valor": 852.7000, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TAXA FISCALIZAÇÃO CONTROLE", "id": 317, "nmPessoa": "MARICÁ", "Valor": 1231.4600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "TAXA INSPEÇÃO SANITARIA", "id": 318, "nmPessoa": "MARICÁ", "Valor": 4452.4500, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "ISS A PAGAR", "id": 451, "nmPessoa": "MARICÁ", "Valor": 49.4600, "ValorMesAnt": null, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "IMPOSTOS - CONTRIBUICOES - TAXAS", "id": 289, "Valor": 60605.0600, "ValorMesAnt": 68416.11, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "CAMERAS - ALARMES", "id": 329, "nmPessoa": "MARICÁ", "Valor": 328.9700, "ValorMesAnt": 328.97, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "GERADOR", "id": 331, "nmPessoa": "MARICÁ", "Valor": 480.0000, "ValorMesAnt": 480.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "RELOGIO DE PONTO", "id": 338, "nmPessoa": "MARICÁ", "Valor": 316.2700, "ValorMesAnt": 316.27, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "MANUTENCOES", "id": 327, "Valor": 1125.2400, "ValorMesAnt": 3227.24, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "MENSALIDADE REDE", "id": 345, "nmPessoa": "MARICÁ", "Valor": 12120.2000, "ValorMesAnt": 13159.72, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "PROPAGANDA E MARKETING", "id": 340, "Valor": 12120.2000, "ValorMesAnt": 13159.72, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "children": [{ "NomeContabil": "AUTOMAÇÃO", "id": 361, "nmPessoa": "MARICÁ", "Valor": 1530.0000, "ValorMesAnt": 1530.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "CARRO DE SOM", "id": 362, "nmPessoa": "MARICÁ", "Valor": 153.9000, "ValorMesAnt": 273.90, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "CARRO FORTE", "id": 363, "nmPessoa": "MARICÁ", "Valor": 5993.2100, "ValorMesAnt": 3388.70, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "CONTABILIDADE", "id": 366, "nmPessoa": "MARICÁ", "Valor": 2645.0000, "ValorMesAnt": 2645.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "DEDETIZAÇÃO", "id": 368, "nmPessoa": "MARICÁ", "Valor": 885.0000, "ValorMesAnt": 535.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "SERV MANUT MAQUINAS", "id": 375, "nmPessoa": "MARICÁ", "Valor": 1080.0000, "ValorMesAnt": 5355.75, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }, { "NomeContabil": "SOLIDCON", "id": 382, "nmPessoa": "MARICÁ", "Valor": 1029.0000, "ValorMesAnt": 1029.00, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "SERVIÇOS TERCEIROS", "id": 356, "Valor": 13316.1100, "ValorMesAnt": 14757.35, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "DESPESAS OPERACIONAIS", "id": 238, "nmPessoa": "MARICÁ", "Valor": 123993.6700, "ValorMesAnt": 137097.03, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "DESPESAS GERAIS", "id": 237, "Valor": 123993.6700, "ValorMesAnt": 137097.03, "VarMes": null, "ValorAnoAnt": null, "VarAno": null }], "NomeContabil": "CONTAS DE RESULTADO - CUSTOS DESPESAS", "id": 230, "Valor": 131684.1300, "ValorMesAnt": 137097.03, "VarMes": null, "ValorAnoAnt": 2578.85, "VarAno": null }];
     }
 
-    $scope.itemId = 1;
+    $scope.itemAtivo = 1;
+    $scope.itemPassivo = 142;
+    $scope.itemId = 230;
     $scope.isExpend = true;
 
     $scope.itemClick = function (id, expend) {
         $scope.itemId = id;
+        $scope.isExpend = !expend
+    }
+
+    $scope.itemClickAtivo = function (id, expend) {
+        $scope.itemAtivo = id;
+        $scope.isExpend = !expend
+    };
+
+    $scope.itemClickPassivo = function (id, expend) {
+        $scope.itemPassivo = id;
         $scope.isExpend = !expend
     };
 }
@@ -5483,7 +5520,7 @@ function classificacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
 
     $scope.visualizar = function (id) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'Views/modal/classificacaoproduto/classificacao_editar.html',
+            templateUrl: 'Views/modal/produto/classificacao_editar.html',
             controller: 'classificacaoModalInstanceCtrl',
             windowClass: "animated fadeIn",
             resolve: {
@@ -5542,6 +5579,105 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+}
+
+function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
+
+    $scope.incluir = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/associacao_incluir_editar.html',
+            controller: 'associacaoProdutoModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            size: "lg"
+        });
+    }
+
+}
+
+function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance) {
+    $scope.produtos;
+    $scope.Eans;
+
+    $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
+        $scope.IdCadAssProd = response.data + 1;
+    });
+
+    $http.get('http://localhost:50837/api/ViewProduto/GetAllAtivosEInativos').then(function (response) {
+        $scope.produtos = response.data;
+    });
+
+    $scope.onSelect = function ($item, $model, $label) {
+        $http.get('http://localhost:50837/api/ViewProduto/GetProdutoById?produto=' + $item).then(function (response) {
+            $scope.Eans = response.data;
+        });
+    };
+
+    $scope.incluir = function () {
+        if ($scope.IdCadAssProd == undefined)
+            $scope.IdCadAssProd = 1;
+
+        if ($scope.associacaoForm.$valid) {
+            $http.post("http://localhost:50837/api/CadSolProd/Incluir", obj).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+            $timeout(function () {
+                for (var i = 0; i < $scope.grades.length; i++) {
+                    $scope.objgrade = { 
+                        IdCadSolProd: $scope.IdCadSolProd,
+                        CodFornecedor: $scope.grades[i].codfornecedor,
+                        DescricaoSabor: $scope.grades[i].descricaosabor,
+                        EAN: $scope.grades[i].EAN,
+                        DUN: $scope.grades[i].DUN,
+                        ProdutoInativado: $scope.grades[i].produto
+                    }
+
+                    $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", obj).then(function (response) {
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    })
+                }
+
+                $scope = {};
+                $scope.grades = [{}];
+            }, 1000);
+
+            $uibModalInstance.close();
+        } else {
+            $scope.associacaoForm.submitted = true;
+        }
+    }
+
+    $scope.grades = [{}];
+
+    $scope.addNew = function (grade) {
+        $scope.grades.push({});
+    };
+
+    $scope.remove = function (grade) {
+        if ($scope.grades.length > 1) {
+            $scope.grades.pop({});
+        }
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    //$scope.saveInfoProduto = function (obj) {
+    //    $http.post("http://localhost:50837/api/CadSolProd/Incluir", obj).then(function (response) {
+    //    }, function (response) {
+    //        return alert("Erro: " + response.status);
+    //    });
+    //}
+
+    //$scope.saveGrade = function (obj) {
+    //    $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", obj).then(function (response) {
+    //    }, function (response) {
+    //        return alert("Erro: " + response.status);
+    //    })
+    //}
 }
 
 /**
@@ -5694,4 +5830,6 @@ angular
             return newObj;
         }
     })
-    .controller('classificacaoModalInstanceCtrl', classificacaoModalInstanceCtrl);
+    .controller('classificacaoModalInstanceCtrl', classificacaoModalInstanceCtrl)
+    .controller('associacaoProdutoCtrl', associacaoProdutoCtrl)
+    .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl);

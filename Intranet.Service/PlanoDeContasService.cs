@@ -44,7 +44,7 @@ namespace Intranet.Service
                 planoDeContas.Add(new PlanoDeContasDTO
                 {
                     Ano = item.Ano,
-                    CodigoContabil = item.CodigoContabil,
+                    id = item.CodigoContabil,
                     MesNumber = item.MesNumber,
                     nmPessoa = item.nmPessoa,
                     Valor = item.Valor,
@@ -71,7 +71,7 @@ namespace Intranet.Service
                 segundoNivel.Add(new SegundoNivelDTO
                 {
                     Ano = item.Ano,
-                    CodigoContabil = item.CodigoContabil,
+                    id = item.CodigoContabil,
                     MesNumber = item.MesNumber,
                     nmPessoa = item.nmPessoa,
                     NomeContabil = item.NomeContabil,
@@ -96,7 +96,7 @@ namespace Intranet.Service
                 terceiroNivel.Add(new TerceiroNivelDTO
                 {
                     Ano = item.Ano,
-                    CodigoContabil = item.CodigoContabil,
+                    id = item.CodigoContabil,
                     MesNumber = item.MesNumber,
                     nmPessoa = item.nmPessoa,
                     NomeContabil = item.NomeContabil,
@@ -121,7 +121,7 @@ namespace Intranet.Service
                 quartoNivel.Add(new QuartoNivelDTO
                 {
                     Ano = item.Ano,
-                    CodigoContabil = item.CodigoContabil,
+                    id = item.CodigoContabil,
                     MesNumber = item.MesNumber,
                     nmPessoa = item.nmPessoa,
                     NomeContabil = item.NomeContabil,
@@ -146,7 +146,7 @@ namespace Intranet.Service
                 quintoNivel.Add(new QuintoNivelDTO
                 {
                     Ano = item.Ano,
-                    CodigoContabil = item.CodigoContabil,
+                    id = item.CodigoContabil,
                     MesNumber = item.MesNumber,
                     nmPessoa = item.nmPessoa,
                     NomeContabil = item.NomeContabil,
@@ -173,12 +173,12 @@ namespace Intranet.Service
 
                 foreach (var item2 in segundoNivel)
                 {
-                    if (item2.CodigoContabilPai == item.CodigoContabil)
+                    if (item2.CodigoContabilPai == item.id)
                     {
                         item.children.Add(new SegundoNivelDTO
                         {
                             Ano = item2.Ano,
-                            CodigoContabil = item2.CodigoContabil,
+                            id = item2.id,
                             MesNumber = item2.MesNumber,
                             nmPessoa = item2.nmPessoa,
                             NomeContabil = item2.NomeContabil,
@@ -188,7 +188,7 @@ namespace Intranet.Service
                             ValorAnoAnt = item2.ValorAnoAnt,
                             VarAno = item2.VarAno,
                             Row = item2.Row,
-                            CodigoContabilPai = item.CodigoContabil
+                            CodigoContabilPai = item.id
                         });
                     }
                 }
@@ -204,17 +204,17 @@ namespace Intranet.Service
 
                     foreach(var item3 in terceiroNivel)
 
-                    if (item3.CodigoContabilPai == item2.CodigoContabil)
+                    if (item3.CodigoContabilPai == item2.id)
                     {
                         item2.children.Add(new TerceiroNivelDTO
                         {
                             Ano = item3.Ano,
-                            CodigoContabil = item3.CodigoContabil,
+                            id = item3.id,
                             MesNumber = item3.MesNumber,
                             nmPessoa = item3.nmPessoa,
                             NomeContabil = item3.NomeContabil,
                             Row = item3.Row,
-                            CodigoContabilPai = item2.CodigoContabil,
+                            CodigoContabilPai = item2.id,
                             Valor = item3.Valor,
                             ValorMesAnt = item3.ValorMesAnt,
                             VarMes = item3.VarMes,
@@ -235,17 +235,17 @@ namespace Intranet.Service
                     {
                         foreach (var item4 in quartoNivel)
                         {
-                            if (item4.CodigoContabilPai == item3.CodigoContabil)
+                            if (item4.CodigoContabilPai == item3.id)
                             {
                                 item3.children.Add(new QuartoNivelDTO
                                 {
                                     Ano = item4.Ano,
-                                    CodigoContabil = item4.CodigoContabil,
+                                    id = item4.id,
                                     MesNumber = item4.MesNumber,
                                     nmPessoa = item4.nmPessoa,
                                     NomeContabil = item4.NomeContabil,
                                     Row = item4.Row,
-                                    CodigoContabilPai = item3.CodigoContabil,
+                                    CodigoContabilPai = item3.id,
                                     Valor = item4.Valor,
                                     ValorMesAnt = item4.ValorMesAnt,
                                     VarMes = item4.VarMes,
@@ -270,17 +270,17 @@ namespace Intranet.Service
                         {
                             foreach (var item5 in quintoNivel)
                             {
-                                if (item5.CodigoContabilPai == item4.CodigoContabil)
+                                if (item5.CodigoContabilPai == item4.id)
                                 {
                                     item4.children.Add(new QuintoNivelDTO
                                     {
                                         Ano = item5.Ano,
-                                        CodigoContabil = item5.CodigoContabil,
+                                        id = item5.id,
                                         MesNumber = item5.MesNumber,
                                         nmPessoa = item5.nmPessoa,
                                         NomeContabil = item5.NomeContabil,
                                         Row = item5.Row,
-                                        CodigoContabilPai = item4.CodigoContabil,
+                                        CodigoContabilPai = item4.id,
                                         Valor = item5.Valor,
                                         ValorMesAnt = item5.ValorMesAnt,
                                         VarMes = item5.VarMes,

@@ -76,19 +76,14 @@
             </li>
 
             <li ng-class="{active: $state.includes('produto')}" ng-show="grupo == 1 || grupo == 6 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11">
-                <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'Cadastro de Produto' | translate }}</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'Produto' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('solproduto')}">
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="produto.solproduto.info_prod">Solicitacao de Cadastro</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 6 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.sollistaprodutos">Lista de Solicitacoes de Cadastro</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altproduto">Alteracao de Produto</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altlistaprodutos">Lista de Solicitacoes de Alteracao</a></li>
-                </ul>
-            </li>
-
-            <li ng-class="{active: $state.includes('classificacaoproduto')}" ng-show="grupo == 1 && grupo == 10">
-                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Classificao Produto' | translate }}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('classificacaoproduto.principal')}">
-                    <li ui-sref-active="active" ng-show="grupo == 1 && grupo == 10"><a ui-sref="classificacaoproduto.principal">Mercado Logica</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10"><a ui-sref="produto.classificacaoproduto">Classificacao de Produtos</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10"><a ui-sref="produto.associacao">Associacao de Produtos</a></li>
                 </ul>
             </li>
 

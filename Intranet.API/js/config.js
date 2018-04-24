@@ -1632,92 +1632,86 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('produto.altlistaprodutos', {
             url: "/altlistaprodutos",
             templateUrl: "views/produto/altlistaprodutos.html",
-        data: { pageTitle: 'Solicitacoes - Lista Alteracao Produtos' },
-        resolve: {
-            loadPlugin: function ($ocLazyLoad) {
-                return $ocLazyLoad.load([
-                    {
-                        serie: true,
-                        files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
-                    },
-                    {
-                        serie: true,
-                        name: 'datatables',
-                        files: ['js/plugins/dataTables/angular-datatables.min.js']
-                    },
-                    {
-                        serie: true,
-                        name: 'datatables.buttons',
-                        files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
-                    },
-                    {
-                        files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                    },
-                    {
-                        name: 'oitozero.ngSweetAlert',
-                        files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
-                    },
-                    {
-                        insertBefore: '#loadBefore',
-                        name: 'localytics.directives',
-                        files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
-                    }
-                ]);
+            data: { pageTitle: 'Solicitacoes - Lista Alteracao Produtos' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'localytics.directives',
+                            files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                        }
+                    ]);
+                }
             }
-        }
         })
-
-        .state('DRE', {
-            abstract: true,
-            url: "/DRE",
-            templateUrl: "views/common/content.html"
-        })
-        .state('DRE.principal', {
-        url: "/principal",
-        templateUrl: "views/dre/principal.html",
-        data: { pageTitle: 'DRE - Demonstracao do Resultado do Exercicio' },
-        resolve: {
-            loadPlugin: function ($ocLazyLoad) {
-                return $ocLazyLoad.load([
-                    //{
-                    //    serie: true,
-                    //    files: ['js/plugins/tree-grid/tree-grid-directive.js', 'css/plugins/tree-grid/treeGrid.css']
-                    //},
-                    //{
-                    //    files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                    //},
-                    {
-                        serie: true,
-                        files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
-                    },
-                    {
-                        serie: true,
-                        name: 'datatables',
-                        files: ['js/plugins/dataTables/angular-datatables.min.js']
-                    },
-                    {
-                        serie: true,
-                        name: 'datatables.buttons',
-                        files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
-                    },
-                    {
-                        name: 'oitozero.ngSweetAlert',
-                        files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
-                    }
-                ]);
+        .state('produto.classificacaoproduto', {
+            url: "/classificacaoproduto",
+            templateUrl: "views/produto/classificacaoproduto.html",
+            data: { pageTitle: 'Classificacao Produto' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        }
+                    ]);
+                }
             }
-        }
         })
-        
-        .state('promocao', {
-            abstract: true,
-            url: "/promocao",
-            templateUrl: "views/common/content.html"
-        })
-        .state('promocao.principal', {
-            url: "/principal",
-            templateUrl: "views/promocao/principal.html",
-            data: { pageTitle: 'Ajuste Preco Promocao' },
+        .state('produto.associacao', {
+            url: "/associacao",
+            templateUrl: "views/produto/associacao.html",
+            data: { pageTitle: 'Associacao Produto' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
@@ -1757,15 +1751,57 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             }
         })
 
-        .state('classificacaoproduto', {
+        .state('DRE', {
             abstract: true,
-            url: "/classificacaoproduto",
+            url: "/DRE",
             templateUrl: "views/common/content.html"
         })
-        .state('classificacaoproduto.principal', {
+        .state('DRE.principal', {
             url: "/principal",
-            templateUrl: "views/classificacaoproduto/principal.html",
-            data: { pageTitle: 'Classificacao Produto' },
+            templateUrl: "views/dre/principal.html",
+            data: { pageTitle: 'DRE - Demonstracao do Resultado do Exercicio' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        //{
+                        //    serie: true,
+                        //    files: ['js/plugins/tree-grid/tree-grid-directive.js', 'css/plugins/tree-grid/treeGrid.css']
+                        //},
+                        //{
+                        //    files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        //},
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        }
+                    ]);
+                }
+            }
+        })
+
+        .state('promocao', {
+            abstract: true,
+            url: "/promocao",
+            templateUrl: "views/common/content.html"
+        })
+        .state('promocao.principal', {
+            url: "/principal",
+            templateUrl: "views/promocao/principal.html",
+            data: { pageTitle: 'Ajuste Preco Promocao' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([

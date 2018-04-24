@@ -19,8 +19,7 @@ namespace Intranet.Domain.Entities.DTOS
 
         public string NomeContabil { get; set; }
 
-        [JsonIgnore]
-        public int? CodigoContabil { get; set; }
+        public int? id { get; set; }
 
         [JsonIgnore]
         public string nmPessoa { get; set; }
@@ -56,8 +55,7 @@ namespace Intranet.Domain.Entities.DTOS
 
         public string NomeContabil { get; set; }
 
-        [JsonIgnore]
-        public int? CodigoContabil { get; set; }
+        public int? id { get; set; }
 
         [JsonIgnore]
         public int? CodigoContabilPai { get; set; }
@@ -96,8 +94,7 @@ namespace Intranet.Domain.Entities.DTOS
 
         public string NomeContabil { get; set; }
 
-        [JsonIgnore]
-        public int? CodigoContabil { get; set; }
+        public int? id { get; set; }
 
         [JsonIgnore]
         public int? CodigoContabilPai { get; set; }
@@ -135,8 +132,7 @@ namespace Intranet.Domain.Entities.DTOS
 
         public string NomeContabil { get; set; }
 
-        [JsonIgnore]
-        public int? CodigoContabil { get; set; }
+        public int? id { get; set; }
 
         [JsonIgnore]
         public int? CodigoContabilPai { get; set; }
@@ -170,8 +166,7 @@ namespace Intranet.Domain.Entities.DTOS
 
         public string NomeContabil { get; set; }
 
-        [JsonIgnore]
-        public int? CodigoContabil { get; set; }
+        public int? id { get; set; }
 
         [JsonIgnore]
         public int? CodigoContabilPai { get; set; }

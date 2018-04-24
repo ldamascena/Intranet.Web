@@ -14,6 +14,9 @@ namespace Intranet.Domain.Entities
         [DataMember]
         [Key]
         [Column(Order = 0)]
+        public Int64 Row { get; set; }
+
+        [DataMember]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Codigo { get; set; }
 
@@ -22,8 +25,6 @@ namespace Intranet.Domain.Entities
         public string Produto { get; set; }
 
         [DataMember]
-        [Key]
-        [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CdSuperProduto { get; set; }
 
@@ -34,23 +35,15 @@ namespace Intranet.Domain.Entities
         public decimal? QtVenda { get; set; }
 
         [DataMember]
-        [Key]
-        [Column(Order = 2)]
         public bool Morto { get; set; }
 
         [DataMember]
-        [Key]
-        [Column(Order = 3)]
         public bool Sazonal { get; set; }
 
         [DataMember]
-        [Key]
-        [Column(Order = 4)]
         public bool UsoConsumo { get; set; }
 
         [DataMember]
-        [Key]
-        [Column(Order = 5)]
         public bool Fracionado { get; set; }
 
         [DataMember]

@@ -16,12 +16,10 @@ namespace Intranet.Service
         {
             try
             {
-
-
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-                mail.From = new MailAddress("ldamascena2307@gmail.com");
+                mail.From = new MailAddress("ldamascena2307@smalvorada.com");
                 mail.To.Add(para);
                 mail.Subject = assunto;
                 mail.Body = body;

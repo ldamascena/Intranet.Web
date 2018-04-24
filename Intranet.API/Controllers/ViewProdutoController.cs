@@ -38,5 +38,19 @@ namespace Intranet.API.Controllers
 
             return context.VwEmbalagensProdutoEAN.Where(x => x.CdEAN == Ean).ToList();
         }
+
+        public IEnumerable<string> GetAllAtivosEInativos()
+        {
+            var context = new CentralContext();
+
+            return context.VwProdutoEAN.Where(x => x.Morto == false).Select(x => x.Produto).ToList().Distinct();
+        }
+
+        public IEnumerable<VwProdutoEAN> GetProdutoById(string produto)
+        {
+            var context = new CentralContext();
+
+            return context.VwProdutoEAN.Where(x => x.Morto == false && x.Produto == produto).ToList();
+        }
     }
 }

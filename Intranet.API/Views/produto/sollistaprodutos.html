@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Lista de produtos - <strong>Solicitacoes</strong></h5>
+                    <h5>Lista de produtos - <strong>Solicitacoes de Produto</strong></h5>
                     <div ibox-tools></div>
                 </div>
                 <div class="ibox-content">
@@ -44,9 +44,11 @@
                                         <button ng-click="unlock(solicitacaoProd)" tooltip-placement="bottom" uib-tooltip="{{solicitacaoProd.UsuarioLock.Nome}} {{solicitacaoProd.UsuarioLock.Sobrenome}}" class="btn btn-success btn-circle btn-outline" type="button" ng-show="solicitacaoProd.SitCadProd.IdSitProd == 4 && solicitacaoProd.IdUserLock != null" ng-disabled="(solicitacaoProd.IdUserLock != usuarioLogado)">
                                             <i class="fa fa-unlock"></i>
                                         </button>
-                                        <button ng-click="lock(solicitacaoProd)" class="btn btn-success btn-circle btn-outline" type="button" ng-show="solicitacaoProd.SitCadProd.IdSitProd == 4 && solicitacaoProd.IdUserLock == null" ng-disabled="!(usuarioLogado != 1 || usuarioLogado != 22 || usuarioLogado != 30 )">
+                                        <button ng-click="lock(solicitacaoProd)" class="btn btn-success btn-circle btn-outline" type="button" 
+                                                ng-show="solicitacaoProd.SitCadProd.IdSitProd == 4 && solicitacaoProd.IdUserLock == null && (grupo == 10 || grupo == 11 || grupo == 1)" ng-disabled="!(usuarioLogado != 1 || usuarioLogado != 22 || usuarioLogado != 30 )">
                                             <i class="fa fa-lock"></i>
                                         </button>
+                                        
                                     </td>
                                     <td>{{solicitacaoProd.IdCadSolProd}}</td>
                                     <td><a href="" ng-click="visualizar(solicitacaoProd)">{{solicitacaoProd.Descricao}}</a></td>
@@ -64,12 +66,12 @@
                                     <td>
                                         <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 8 || grupo == 1)" ng-click="excluir(solicitacaoProd)"><i class="fa fa-ban"></i> Excluir</button>
 
-                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 1)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 1)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
+                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
+                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
 
                                         <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2 && (grupo == 6 || grupo == 1)" ng-click="aprovarDiretoria(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
                                         <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
-
+                                        
                                         <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 4 && (grupo == 10 || grupo == 11 || grupo == 1) && (solicitacaoProd.IdUserLock == usuarioLogado)" ng-click="concluir(solicitacaoProd)"><i class="fa fa-edit"></i> Concluir</button>
                                     </td>
                                 </tr>

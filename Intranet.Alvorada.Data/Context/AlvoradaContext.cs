@@ -79,10 +79,18 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        #region CadSol e CadAss (Produto)
+
         public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
         public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }
         public virtual DbSet<SitCadProd> SitCadProd { get; set; }
         public virtual DbSet<CadSolProdLog> CadSolProdLogs { get; set; }
+
+        public virtual DbSet<CadAssProd> CadAssProd { get; set; }
+        public virtual DbSet<CadAssProdGrade> CadAssProdGrade { get; set; }
+
+        #endregion
+
 
         public virtual DbSet<CadSolAlterProd> CadSolAlterProdutos { get; set; }
         public virtual DbSet<CadSolAlterProdLog> CadSolAlterProdLogs { get; set; }

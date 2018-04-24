@@ -1,0 +1,81 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Associacao</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao/alteracao de associacao.</small>
+    </div>
+    <form role="form" name="associacaoForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Chave NF-E</label>
+                <input type="number" placeholder="Chave NF-E" name="nfe" ng-model="nfe" class="form-control" ng-required="true" ng-minlength="42">
+                <div class="m-t-xs" ng-show="associacaoForm.nfe.$invalid && associacaoForm.submitted">
+                    <small class="text-danger" ng-show="associacaoForm.nfe.$error.required">Preencha a Chave NF-E!</small>
+                </div>
+                <div class="m-t-xs" ng-show="associacaoForm.nfe.$invalid && associacaoForm.submitted">
+                    <small class="text-danger" ng-show="associacaoForm.nfe.$error.minlength">NF-E deve possuir no minimo 42 numeros!</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>CNPJ</label>
+                <input type="number" placeholder="CNPJ" name="cnpj" ng-model="cnpj" class="form-control" ng-required="true" ng-minlength="14">
+                <div class="m-t-xs" ng-show="associacaoForm.cnpj.$invalid && associacaoForm.submitted">
+                    <small class="text-danger" ng-show="associacaoForm.cnpj.$error.required">Preencha o CNPJ!</small>
+                </div>
+                <div class="m-t-xs" ng-show="associacaoForm.cnpj.$invalid && associacaoForm.submitted">
+                    <small class="text-danger" ng-show="associacaoForm.cnpj.$error.minlength">CNPJ deve possuir no minimo 14 numeros!</small>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label>Produto</label>
+                <input type="text" placeholder="Produto" name="produto" ng-model="produto" class="form-control" required>
+                <label>EAN/DUN</label>
+                <input type="text" placeholder="EAN/DUN" name="ean" ng-model="ean" class="form-control" required>
+            </div>-->
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Produto *</th>
+                            <th>EAN/DUN *</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="grade in grades">
+                            <td class="col-lg-8">
+                                <input type="text" ng-model="grade.produto" name="produto" typeahead-on-select="onSelect($item, $model, $label)" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:5" class="form-control" ng-required="true">
+                                <div class="m-t-xs" ng-show="associacaoForm.produto.$invalid && associacaoForm.submitted">
+                                    <small class="text-danger" ng-show="associacaoForm.produto.$error.required">Preencha o Produto!</small>
+                                </div>  
+                            </td>
+
+                            <!--<td class="col-lg-4">
+                                <select id="EAN" ng-model="grade.EAN" name="EAN" type="text" class="form-control" ng-options="Ean.CdEAN as Ean.CdEAN for Ean in Eans"></select>
+                            </td>-->
+                            <td class="col-lg-4">
+                                <input  id="EAN" ng-model="grade.EAN" name="EAN" type="number" class="form-control" ng-required="true"/>
+                                <div class="m-t-xs" ng-show="associacaoForm.EAN.$invalid && associacaoForm.submitted">
+                                    <small class="text-danger" ng-show="associacaoForm.EAN.$error.required">Preencha o EAN!</small>
+                                </div>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-success btn-circle" type="button" ng-click="addNew();">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-circle" type="button" ng-click="remove(grade);">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

@@ -122,13 +122,31 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        public IEnumerable<PlanoDeContasDTO> GetAllPlanoDeContas(int ano, int mes, string filial)
+        public IEnumerable<PlanoDeContasDTO> GetAllPlanoDeContasAtivos(int ano, int mes, string filial)
         {
             var context = new AlvoradaContext();
 
             var _service = new PlanoDeContasService(context);
 
-            return _service.Unir(ano, mes, filial).Where(x => x.CodigoContabil == 1);
+            return _service.Unir(ano, mes, filial).Where(x => x.id == 1);
+        }
+
+        public IEnumerable<PlanoDeContasDTO> GetAllPlanoDeContasPassivos(int ano, int mes, string filial)
+        {
+            var context = new AlvoradaContext();
+
+            var _service = new PlanoDeContasService(context);
+
+            return _service.Unir(ano, mes, filial).Where(x => x.id == 142);
+        }
+
+        public IEnumerable<PlanoDeContasDTO> GetAllPlanoDeContasDRE(int ano, int mes, string filial)
+        {
+            var context = new AlvoradaContext();
+
+            var _service = new PlanoDeContasService(context);
+
+            return _service.Unir(ano, mes, filial).Where(x => x.id == 196 || x.id == 230);
         }
     }
 }
