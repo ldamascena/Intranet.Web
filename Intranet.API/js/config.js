@@ -1730,21 +1730,14 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
                         },
                         {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
                             name: 'oitozero.ngSweetAlert',
                             files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
                         },
                         {
-                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            files: ['js/plugins/moment/moment.min.js']
-                        },
-                        {
-                            name: 'datePicker',
-                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
-                        },
-                        {
-                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                            files: ['js/plugins/jasny/jasny-bootstrap.min.js']
                         }
                     ]);
                 }

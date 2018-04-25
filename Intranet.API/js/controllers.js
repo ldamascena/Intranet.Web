@@ -5581,22 +5581,176 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
     };
 }
 
-function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
+function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOptionsBuilder, SweetAlert) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'asc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+
+    $scope.idUsuarioLogado = $localStorage.user.Id;
+    $scope.grupo = $localStorage.user.Grupo[0].Id;
+
+    $scope.associacoes;
+
+    $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
+        $scope.associacoes = response.data;
+    });
 
     $scope.incluir = function () {
         var modalInstance = $uibModal.open({
             templateUrl: 'Views/modal/produto/associacao_incluir_editar.html',
             controller: 'associacaoProdutoModalInstanceCtrl',
             windowClass: "animated fadeIn",
-            size: "lg"
+            size: "lg",
+            resolve: {
+                associacaoSelected: function () {
+                    return undefined;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
+                $scope.associacoes = response.data;
+            });
         });
+    }
+
+    $scope.visualizar = function (idCadAss) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/vis_associacao.html',
+            controller: 'associacaoProdutoModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            size: "lg",
+            resolve: {
+                associacaoSelected: function () {
+                    return idCadAss;
+                }
+            }
+        });
+    }
+
+    $scope.excluir = function (associacao) {
+        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacao.IdCadAssProd).then(function (response) {
+            $scope.assGrades = response.data;
+        });
+
+        SweetAlert.swal({
+            title: "Deseja excluir?",
+            text: "Não será possivel recuperar depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, deletar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/CadAssProd/Excluir", associacao).then(function (response) {
+
+                        $http.post("http://localhost:50837/api/CadAssProdGrade/Excluir", $scope.assGrades).then(function (response) {
+                        },
+                        function (response) { return alert("Erro: " + response.status); });
+
+
+                        $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
+                            $scope.associacoes = response.data;
+                        });
+                        SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão do registro", "error");
+                }
+            });
+    }
+
+    $scope.historico = function (idCadAss) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/historico.html',
+            controller: 'assProdHistoricoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                associacaoSelected: function () {
+                    return idCadAss;
+                }
+            }
+        });
+    }
+
+    $scope.concluir = function (associacao) {
+        $scope.objLog = { IdCadAssProd: associacao.IdCadAssProd, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
+
+        SweetAlert.swal({
+            title: "Deseja concluir?",
+            text: "Não será possivel voltar depois de concluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, concluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/CadAssProd/Concluir", associacao).then(function (response) {
+                        $http.post("http://localhost:50837/api/CadAssProdLog/Incluir", $scope.objLog).then(function (response) {
+                            $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
+                                $scope.associacoes = response.data;
+                            });
+                        })
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                    SweetAlert.swal("Deletado!", "Registro excluido com sucesso", "success");
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão do registro", "error");
+                }
+            });
     }
 
 }
 
-function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance) {
+function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $localStorage, $timeout, associacaoSelected) {
     $scope.produtos;
     $scope.Eans;
+    $scope.grades = [{}];
+    $scope.nfe;
+    $scope.cnpj;
+
+    if (associacaoSelected != undefined) {
+        $http.get("http://localhost:50837/api/CadAssProd/GetByIdCadAss?idCadAss=" + associacaoSelected).then(function (response) {
+            $scope.nfe = response.data.ChaveNFE;
+            $scope.cnpj = response.data.CNPJ;
+        });
+
+        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacaoSelected).then(function (response) {
+            $scope.grades = response.data;
+        });
+    }
 
     $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
         $scope.IdCadAssProd = response.data + 1;
@@ -5617,23 +5771,23 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance) {
             $scope.IdCadAssProd = 1;
 
         if ($scope.associacaoForm.$valid) {
-            $http.post("http://localhost:50837/api/CadSolProd/Incluir", obj).then(function (response) {
+
+            $scope.obj = { IdCadAssProd: $scope.IdCadAssProd, ChaveNFE: $scope.nfe, CNPJ: $scope.cnpj, IdStatus: 1, IdUsuario: $localStorage.user.Id };
+
+            $http.post("http://localhost:50837/api/CadAssProd/Incluir", $scope.obj).then(function (response) {
             }, function (response) {
                 return alert("Erro: " + response.status);
             });
 
             $timeout(function () {
                 for (var i = 0; i < $scope.grades.length; i++) {
-                    $scope.objgrade = { 
-                        IdCadSolProd: $scope.IdCadSolProd,
-                        CodFornecedor: $scope.grades[i].codfornecedor,
-                        DescricaoSabor: $scope.grades[i].descricaosabor,
-                        EAN: $scope.grades[i].EAN,
-                        DUN: $scope.grades[i].DUN,
-                        ProdutoInativado: $scope.grades[i].produto
+                    $scope.objgrade = {
+                        IdCadAssProd: $scope.IdCadAssProd,
+                        Descricao: $scope.grades[i].produto,
+                        EAN: $scope.grades[i].EAN
                     }
 
-                    $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", obj).then(function (response) {
+                    $http.post("http://localhost:50837/api/CadAssProdGrade/Incluir", $scope.objgrade).then(function (response) {
                     }, function (response) {
                         return alert("Erro: " + response.status);
                     })
@@ -5648,8 +5802,6 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance) {
             $scope.associacaoForm.submitted = true;
         }
     }
-
-    $scope.grades = [{}];
 
     $scope.addNew = function (grade) {
         $scope.grades.push({});
@@ -5678,6 +5830,14 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance) {
     //        return alert("Erro: " + response.status);
     //    })
     //}
+}
+
+function assProdHistoricoModalCtrl($scope, $uibModalInstance, associacaoSelected, $http, $localStorage) {
+    $scope.historicos;
+
+    $http.get("http://localhost:50837/api/CadAssProdLog/GetAllByCadProd?IdCadAssProd=" + associacaoSelected).then(function (response) {
+        $scope.historicos = response.data;
+    });
 }
 
 /**
@@ -5832,4 +5992,5 @@ angular
     })
     .controller('classificacaoModalInstanceCtrl', classificacaoModalInstanceCtrl)
     .controller('associacaoProdutoCtrl', associacaoProdutoCtrl)
-    .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl);
+    .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl)
+    .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl);

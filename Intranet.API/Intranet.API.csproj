@@ -211,6 +211,7 @@
     <Compile Include="Controllers\CadSolAlterProdLogController.cs" />
     <Compile Include="Controllers\CadSolProdController.cs" />
     <Compile Include="Controllers\CadSolProdGradeController.cs" />
+    <Compile Include="Controllers\CadAssProdLogController.cs" />
     <Compile Include="Controllers\CadSolProdLogController.cs" />
     <Compile Include="Controllers\CadSupervisorController.cs" />
     <Compile Include="Controllers\CaixaController.cs" />
@@ -1719,6 +1720,7 @@
     <Content Include="Views\modal\produto\historicoAlteracao.html" />
     <Content Include="Views\modal\produto\solaltproduto.html" />
     <Content Include="Views\modal\produto\validate.html" />
+    <Content Include="Views\modal\produto\vis_associacao.html" />
     <Content Include="Views\modal\produto\vis_editar_produto.html" />
     <Content Include="Views\modal\usuariomodal.html" />
     <Content Include="Views\modal\visualizar_despesa.html" />

@@ -88,6 +88,7 @@ namespace Intranet.Alvorada.Data.Context
 
         public virtual DbSet<CadAssProd> CadAssProd { get; set; }
         public virtual DbSet<CadAssProdGrade> CadAssProdGrade { get; set; }
+        public virtual DbSet<CadAssProdLog> CadAssProdLogs { get; set; }
 
         #endregion
 
@@ -380,6 +381,34 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.CadSolAlterProdLog)
                 .WithRequired(e => e.SitCadProd)
                 .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            // Associação de Produto
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadAssProd)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadAssProd)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            // Log Associacao de Produto
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadAssProdLogs)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadAssProdLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
         }
     }

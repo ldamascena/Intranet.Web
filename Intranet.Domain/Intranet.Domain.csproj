@@ -86,6 +86,7 @@
     <Compile Include="Entities\CadSitDesp.cs" />
     <Compile Include="Entities\CadSolDesp.cs" />
     <Compile Include="Entities\CadAtendente.cs" />
+    <Compile Include="Entities\CadAssProdLog.cs" />
     <Compile Include="Entities\CadSupervisor.cs" />
     <Compile Include="Entities\CadCaixaControle.cs" />
     <Compile Include="Entities\CadEntradaControle.cs" />

@@ -13,6 +13,13 @@ namespace Intranet.API.Controllers
     public class CadAssProdGradeController : ApiController
     {
 
+        public IEnumerable<CadAssProdGrade> GetByIdCadAss(int idCadAss)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadAssProdGrade.Where(x => x.IdCadAssProd == idCadAss).ToList();
+        }
+
         public HttpResponseMessage Incluir(CadAssProdGrade model)
         {
             var context = new AlvoradaContext();
@@ -49,13 +56,17 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Excluir(CadAssProdGrade model)
+        public HttpResponseMessage Excluir(IEnumerable<CadAssProdGrade> models)
         {
             var context = new AlvoradaContext();
 
             try
             {
-                context.Entry(model).State = EntityState.Deleted;
+                foreach (var item in models)
+                {
+                    context.Entry(item).State = EntityState.Deleted;
+                }
+
                 context.SaveChanges();
             }
 

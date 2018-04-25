@@ -7,7 +7,7 @@
         <div class="modal-body">
             <div class="form-group">
                 <label>Chave NF-E</label>
-                <input type="number" placeholder="Chave NF-E" name="nfe" ng-model="nfe" class="form-control" ng-required="true" ng-minlength="42">
+                <input type="text" placeholder="Chave NF-E" name="nfe" ng-model="nfe" class="form-control" ng-required="true" ng-minlength="42">
                 <div class="m-t-xs" ng-show="associacaoForm.nfe.$invalid && associacaoForm.submitted">
                     <small class="text-danger" ng-show="associacaoForm.nfe.$error.required">Preencha a Chave NF-E!</small>
                 </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label>CNPJ</label>
-                <input type="number" placeholder="CNPJ" name="cnpj" ng-model="cnpj" class="form-control" ng-required="true" ng-minlength="14">
+                <input type="text" placeholder="CNPJ" name="cnpj" ng-model="cnpj" data-mask="99.999.999/9999-99" class="form-control" ng-required="true" ng-minlength="14">
                 <div class="m-t-xs" ng-show="associacaoForm.cnpj.$invalid && associacaoForm.submitted">
                     <small class="text-danger" ng-show="associacaoForm.cnpj.$error.required">Preencha o CNPJ!</small>
                 </div>
@@ -42,7 +42,7 @@
                     <tbody>
                         <tr ng-repeat="grade in grades">
                             <td class="col-lg-8">
-                                <input type="text" ng-model="grade.produto" name="produto" typeahead-on-select="onSelect($item, $model, $label)" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:5" class="form-control" ng-required="true">
+                                <input type="text" ng-model="grade.produto" name="produto" typeahead-on-select="onSelect($item, $model, $label)" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:10" class="form-control" ng-required="true">
                                 <div class="m-t-xs" ng-show="associacaoForm.produto.$invalid && associacaoForm.submitted">
                                     <small class="text-danger" ng-show="associacaoForm.produto.$error.required">Preencha o Produto!</small>
                                 </div>  

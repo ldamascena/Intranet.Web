@@ -8,42 +8,28 @@ using System.Runtime.Serialization;
 namespace Intranet.Domain.Entities
 {
     [DataContract]
-    [Table("Cad_Ass_Prod")]
-    public partial class CadAssProd
+    [Table("Cad_Ass_Prod_Log")]
+    public partial class CadAssProdLog
     {
         [DataMember]
-        [Key]
         public int Id { get; set; }
 
         [DataMember]
         public int IdCadAssProd { get; set; }
 
         [DataMember]
-        [Required]
-        [StringLength(100)]
-        public string ChaveNFE { get; set; }
-
-        [DataMember]
-        [Required]
-        [StringLength(100)]
-        public string CNPJ { get; set; }
+        public int IdUsuario { get; set; }
 
         [DataMember]
         public int IdStatus { get; set; }
 
         [DataMember]
-        public DateTime DataInclusao { get; set; }
-
-        [DataMember]
-        public DateTime? DataAlteracao { get; set; }
-
-        [DataMember]
-        public int IdUsuario { get; set; }
-
-        [DataMember]
-        public virtual Usuario Usuario { get; set; }
+        public DateTime DataLog { get; set; }
 
         [DataMember]
         public virtual SitCadProd SitCadProd { get; set; }
+
+        [DataMember]
+        public virtual Usuario Usuario { get; set; }
     }
 }

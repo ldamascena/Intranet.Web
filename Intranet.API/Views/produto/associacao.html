@@ -24,10 +24,40 @@
             <div ibox-tools></div>
         </div>
         <div class="ibox-content">
-            <!--<div class="table-responsive">
+            <div class="table-responsive">
                 <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Usuario</th>
+                            <th>Status</th>
+                            <th>Data Inclusao</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="associacao in associacoes">
+                            <td>{{associacao.Id}}</td>
+                            <td>{{associacao.Usuario.Nome}} {{associacao.Usuario.Sobrenome}}</td>
+                            <td>
+                                <button ng-class="associacao.SitCadProd.IdSitProd == 1 ?
+                                                'btn btn-xs btn-rounded btn-success' :
+                                                (associacao.SitCadProd.IdSitProd == 2 || associacao.SitCadProd.IdSitProd == 4 || associacao.SitCadProd.IdSitProd == 6 ?
+                                                'btn btn-xs btn-rounded btn-primary' :
+                                                'btn btn-xs btn-rounded btn-danger')" ng-click="historico(associacao.IdCadAssProd);">
+                                    <i class="fa fa-comments-o"></i>  {{associacao.SitCadProd.Situacao}}
+                                </button>
+                            </td>
+                            <td>{{associacao.DataInclusao | date:'dd/MM/yyyy - HH:mm:ss'}}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="visualizar(associacao.IdCadAssProd)"><i class="fa fa-eye"></i> Visualizar</button>
+                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="(grupo == 1 || grupo == 10 || grupo == 11) && (associacao.SitCadProd.IdSitProd == 1)" ng-click="concluir(associacao)"><i class="fa fa-check"></i> Concluir</button>
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="(associacao.IdUsuario == idUsuarioLogado) && (associacao.SitCadProd.IdSitProd == 1)" ng-click="excluir(associacao)"><i class="fa fa-ban"></i> Excluir</button>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-            </div>-->
+            </div>
         </div>
     </div>
 </div>
