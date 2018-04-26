@@ -41,6 +41,9 @@ namespace Intranet.Domain.Entities
         public int IdUsuario { get; set; }
 
         [DataMember]
+        public string Observacao { get; set; }
+
+        [DataMember]
         public virtual Usuario Usuario { get; set; }
 
         [DataMember]

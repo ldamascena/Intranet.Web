@@ -109,7 +109,6 @@ namespace Intranet.API.Controllers
             try
             {
                 context.Entry(model).State = EntityState.Modified;
-                model.IdStatus = 6;
                 context.SaveChanges();
             }
 
