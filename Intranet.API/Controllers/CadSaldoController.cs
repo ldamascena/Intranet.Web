@@ -43,12 +43,14 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            var result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao.Date == date.Date.AddDays(-1)).FirstOrDefault();
+            var dataAnterior = date.AddDays(-1);
+
+            var result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao == dataAnterior).FirstOrDefault();
 
             if (result == null)
-                result = context.CadSaldosControle.ToList().Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao.Date != date.Date).OrderByDescending(x => x.DataInclusao).FirstOrDefault();
+                result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao != date).OrderByDescending(x => x.DataInclusao).FirstOrDefault();
 
             return result;
         }

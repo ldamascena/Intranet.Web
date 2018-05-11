@@ -99,16 +99,16 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.CadOutrasDespsControle.ToList().Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao.Date == date.Date);
+            return context.CadOutrasDespsControle.Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao == date);
         }
 
         public decimal GetTotalByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
 
-            return context.CadOutrasDespsControle.ToList()
-                .Where(x => x.IdUsuario == idUsuario && x.DataInclusao.Date == date.Date)
+            return context.CadOutrasDespsControle
+                .Where(x => x.IdUsuario == idUsuario && x.DataInclusao == date)
                 .GroupBy(x => x.IdUsuario)
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
