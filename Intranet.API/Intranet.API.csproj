@@ -1658,6 +1658,7 @@
     <Content Include="Views\alertas\ultimocusto.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
     <Content Include="Views\cadprod\sol_produto.html" />
+    <Content Include="Views\cadusuario\cad_usuario.html" />
     <Content Include="Views\common\content.html" />
     <Content Include="Views\common\content_top_navigation.html" />
     <Content Include="Views\common\footer.html" />

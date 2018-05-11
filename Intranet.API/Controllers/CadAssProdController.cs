@@ -20,20 +20,12 @@ namespace Intranet.API.Controllers
             return context.CadAssProd.ToList();
         }
 
-        public int? GetLastId()
+        public int GetLastId()
         {
             var context = new AlvoradaContext();
+            var result = context.CadAssProd.ToList().LastOrDefault().IdCadAssProd;
 
-            var result = context.CadAssProd.ToList();
-
-            if (result.Count != 0)
-            {
-                return result.LastOrDefault().IdCadAssProd;
-            }
-            else
-            {
-                return null;
-            }
+            return result;
 
         }
 
@@ -54,7 +46,7 @@ namespace Intranet.API.Controllers
                 model.DataInclusao = DateTime.Now;
                 context.CadAssProd.Add(model);
                 context.SaveChanges();
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
+                emailService.SendEmail("indicador@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
             }
 
             catch (Exception ex)

@@ -386,18 +386,20 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
         return alert("Erro: " + response.status);
     });
 
-    $http.get("http://localhost:50837/api/ViewProduto/GetAll").then(function (response) {
-        $scope.produtos = response.data;
-    }, function (response) {
-        return alert("Erro: " + response.status);
-    });
+    //$http.get("http://localhost:50837/api/ViewProduto/GetAll").then(function (response) {
+    //    $scope.produtos = response.data;
+    //}, function (response) {
+    //    return alert("Erro: " + response.status);
+    //});
 
     $scope.addNew = function (grade) {
         $scope.grades.push({});
     };
 
     $scope.remove = function (grade) {
-        $scope.grades.pop({});
+        if ($scope.grades.length > 1) {
+            $scope.grades.pop({});
+        }
     };
 
     $scope.saveInfoProduto = function (obj) {
@@ -5615,6 +5617,12 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
     });
 
     $scope.incluir = function () {
+        $scope.teste;
+        $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
+            $scope.teste = response.data + 1;
+        });
+        
+
         var modalInstance = $uibModal.open({
             templateUrl: 'Views/modal/produto/associacao_incluir_editar.html',
             controller: 'associacaoProdutoModalInstanceCtrl',
@@ -5622,7 +5630,7 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
             size: "lg",
             resolve: {
                 associacaoSelected: function () {
-                    return undefined
+                    return $scope.teste
                 }
             }
         }).result.then(function () {
@@ -5754,7 +5762,6 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
         $scope.status = associacaoSelected.IdStatus;
     }
 
-
     if (associacaoSelected != undefined) {
         $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacaoSelected.IdCadAssProd).then(function (response) {
             $scope.grades = response.data;
@@ -5776,14 +5783,13 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
     };
 
     $scope.incluir = function () {
-        if ($scope.IdCadAssProd == undefined)
-            $scope.IdCadAssProd = 1;
-
         if ($scope.associacaoForm.$valid) {
 
             $scope.obj = { IdCadAssProd: $scope.IdCadAssProd, ChaveNFE: $scope.nfe, CNPJ: $scope.cnpj, IdStatus: 1, IdUsuario: $localStorage.user.Id };
 
-            $http.post("http://localhost:50837/api/CadAssProd/Incluir", $scope.obj).then(function (response) {
+            alert(angular.toJson($scope.obj));
+
+            /*$http.post("http://localhost:50837/api/CadAssProd/Incluir", $scope.obj).then(function (response) {
             }, function (response) {
                 return alert("Erro: " + response.status);
             });
@@ -5805,7 +5811,7 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
                 $scope = {};
                 $scope.grades = [{}];
                 $uibModalInstance.close();
-            }, 1000);
+            }, 1000);*/
 
             
         } else {
