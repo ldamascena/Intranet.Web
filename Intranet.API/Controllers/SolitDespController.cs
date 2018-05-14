@@ -18,7 +18,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return await context.CadSolicitacoesDesp.Take(250).OrderByDescending(x => x.DataInclusao).ToListAsync();
+            return await context.CadSolicitacoesDesp.ToListAsync();
         }
         public IEnumerable<CadSolDesp> GetAllByUser(int idUsuario)
         {

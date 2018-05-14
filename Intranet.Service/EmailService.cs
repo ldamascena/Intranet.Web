@@ -324,7 +324,7 @@ a {
                 <table class=main width=100% cellpadding=0 cellspacing=0>
                     <tr>
                         <td class=alert>
-                            Atenção: Você possui uma nova solicitação
+                            Atenção: Você possui uma nova solicitação de cadastro de produto
                         </td>
                     </tr>
                     <tr>

@@ -29,11 +29,22 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdUsuario == idUsuario).ToList();
         }
 
-        public int GetLastId()
+        public int? GetLastId()
         {
             var context = new AlvoradaContext();
 
-            return context.CadSolProdutos.ToList().LastOrDefault().IdCadSolProd;
+            var result = context.CadSolProdutos.ToList().LastOrDefault();
+
+            if (result != null)
+            {
+                return result.IdCadSolProd;
+            }
+            else
+            {
+                return null;
+            }
+
+            
         }
 
         public HttpResponseMessage Incluir([FromBody] CadSolProd obj)
@@ -47,7 +58,7 @@ namespace Intranet.API.Controllers
                 obj.DataCriacao = DateTime.Now;
                 context.CadSolProdutos.Add(obj);
                 context.SaveChanges();
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
                 //emailService.SendEmail("marcelgestorcomercial@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
                 //emailService.SendEmail("marcelgestorcomercial@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente");
             }
@@ -123,7 +134,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 2;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
             }
 
             catch (Exception ex)
@@ -164,7 +175,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 4;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Cadastro de Produto - Pendente");
-                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
             }
 
             catch (Exception ex)
