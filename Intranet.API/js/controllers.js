@@ -709,40 +709,6 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
 
     };
 
-    $scope.concluir = function (solicitacaoProd) {
-        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
-        SweetAlert.swal({
-            title: "Deseja confimar?",
-            text: "Não será possivel mudar depois de confimardo!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Sim, confirmar!",
-            cancelButtonText: "Não, cancelar!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/Concluir", solicitacaoProd).then(function (response) {
-                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                                   $scope.solicitacoesProd = response.data;
-                               });
-                           })
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
-                   }
-               });
-
-    };
-
     $scope.visualizar = function (solicitacaoProd) {
         var modalInstance = $uibModal.open({
             templateUrl: 'Views/modal/produto/vis_editar_produto.html',
@@ -755,12 +721,6 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                 }
             }
         });
-
-        //.result.then(function () {
-        //    $http.get("http://localhost:50837/api/SolitDesp/GetAllByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
-        //        $scope.solicitacoesdesp = response.data;
-        //    });
-        //});
     }
 
     $scope.excluir = function (solicitacaoProd) {
@@ -810,34 +770,47 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     }
 
     $scope.lock = function (solicitacaoProd) {
-        SweetAlert.swal({
-            title: "Deseja bloquear?",
-            text: "Você esta prestes a bloquear a solicitação!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Sim, confirmar!",
-            cancelButtonText: "Não, cancelar!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       solicitacaoProd.IdUserLock = $localStorage.user.Id;
-                       SweetAlert.swal("Confirmado!", "Bloqueado com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/Lock", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           }), function (response) {
-                               return alert("Erro: " + response.status);
+
+        $http.get("http://localhost:50837/api/CadSolProd/GetByID?ID=" + solicitacaoProd.Id).then(function (response) {
+            if (response.data.IdUserLock != null) {
+                SweetAlert.swal({
+                    title: "Bloqueado",
+                    text: "O cadastro esta com " + response.data.UsuarioLock.Nome
+                });
+            }
+
+            else {
+
+                SweetAlert.swal({
+                    title: "Deseja bloquear?",
+                    text: "Você esta prestes a bloquear a solicitação!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Sim, confirmar!",
+                    cancelButtonText: "Não, cancelar!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                       function (isConfirm) {
+                           if (isConfirm) {
+                               solicitacaoProd.IdUserLock = $localStorage.user.Id;
+                               SweetAlert.swal("Confirmado!", "Bloqueado com sucesso!", "success");
+                               $http.post("http://localhost:50837/api/CadSolProd/Lock", solicitacaoProd).then(function (response) {
+                                   $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                       $scope.solicitacoesProd = response.data;
+                                   }), function (response) {
+                                       return alert("Erro: " + response.status);
+                                   }
+                               }), function (response) {
+                                   return alert("Erro: " + response.status);
+                               }
+                           } else {
+                               SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
                            }
-                       }), function (response) {
-                           return alert("Erro: " + response.status);
-                       }
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
-                   }
-               });
+                       });
+            }
+        });
     }
 
     $scope.unlock = function (solicitacaoProd) {
@@ -869,7 +842,10 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                    }
                });
     }
-}
+};
+
+function solListaProdMobileCtrl($scope, $http, $localStorage)
+{ }
 
 function validadeModalInstanceCtrl($scope, $uibModalInstance, $http, errors) {
 
@@ -881,7 +857,7 @@ function validadeModalInstanceCtrl($scope, $uibModalInstance, $http, errors) {
 
 };
 
-function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaoProdSelected) {
+function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaoProdSelected, $localStorage) {
     $scope.grades;
 
     $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
@@ -910,6 +886,8 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.tipoCadastro = solicitacaoProdSelected.TipoCadastro;
     $scope.observacao = solicitacaoProdSelected.Observacao;
     $scope.status = solicitacaoProdSelected.IdStatus;
+    $scope.lock = solicitacaoProdSelected.IdUserLock;
+    $scope.idUser = $localStorage.user.Id;
 
 
     $scope.editar = function () {
@@ -937,13 +915,20 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
         $uibModalInstance.dismiss();
     }
 
+    $scope.concluir = function () {
 
+        $scope.objLog = { IdCadSolProd: solicitacaoProdSelected.IdCadSolProd, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
 
-    //$scope.IdCadSolProd;
-    //$scope.grades[i].codfornecedor;
-    //$scope.grades[i].descricaosabor;
-    //$scope.grades[i].EAN;
-    //$scope.grades[i].DUN;
+        $http.post("http://localhost:50837/api/CadSolProd/Concluir", solicitacaoProdSelected).then(function (response) {
+            $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+            })
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+        $uibModalInstance.dismiss();
+    };
 }
 
 function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSelected, $http, $localStorage) {
@@ -5536,19 +5521,19 @@ function classificacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
 
 function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classificacaoSelected) {
     $scope.compradores = [
-				{ CdUsuario: 215, NmUsuario: "Alexandre Martins" },
+                { CdUsuario: 215, NmUsuario: "Alexandre Martins" },
                 { CdUsuario: 14, NmUsuario: "Diego Gonçalves" },
                 { CdUsuario: 175, NmUsuario: "Geraldo Bonifácio" },
                 { CdUsuario: 12, NmUsuario: "Julio Ruiz" },
-				{ CdUsuario: 9, NmUsuario: "Leandro Moreira" },
+                { CdUsuario: 9, NmUsuario: "Leandro Moreira" },
                 { CdUsuario: 15, NmUsuario: "Marcel Louis" },
-				{ CdUsuario: 224, NmUsuario: "Nilo Sergio Coelho de Oliveira" },
+                { CdUsuario: 224, NmUsuario: "Nilo Sergio Coelho de Oliveira" },
                 { CdUsuario: 144, NmUsuario: "Renato Barros" },
-				{ CdUsuario: 197, NmUsuario: "Thiago Amaral" },
+                { CdUsuario: 197, NmUsuario: "Thiago Amaral" },
                 { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
                 { CdUsuario: 13, NmUsuario: "Wanderson Batista" },
-				{ CdUsuario: 5, NmUsuario: "Tiago Cunha" },
-				{ CdUsuario: 45, NmUsuario: "Rinaldo Rocha" }
+                { CdUsuario: 5, NmUsuario: "Tiago Cunha" },
+                { CdUsuario: 45, NmUsuario: "Rinaldo Rocha" }
     ];
 
     $scope.comprador;
@@ -5621,7 +5606,7 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
         $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
             $scope.teste = response.data + 1;
         });
-        
+
 
         var modalInstance = $uibModal.open({
             templateUrl: 'Views/modal/produto/associacao_incluir_editar.html',
@@ -5813,7 +5798,7 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
                 $uibModalInstance.close();
             }, 1000);*/
 
-            
+
         } else {
             $scope.associacaoForm.submitted = true;
         }
@@ -5891,6 +5876,30 @@ function assProdHistoricoModalCtrl($scope, $uibModalInstance, associacaoSelected
     });
 }
 
+function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        //.withOption('order', [0, 'asc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+}
+
 /**
  *
  * Pass all functions into module
@@ -5904,6 +5913,7 @@ angular
     .controller('navigationCtrl', navigationCtrl)
     .controller('wizardCtrl', wizardCtrl)
     .controller('solListaProdCtrl', solListaProdCtrl)
+    .controller('solListaProdMobileCtrl', solListaProdMobileCtrl)
     .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
     .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
     .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
@@ -6044,4 +6054,5 @@ angular
     .controller('classificacaoModalInstanceCtrl', classificacaoModalInstanceCtrl)
     .controller('associacaoProdutoCtrl', associacaoProdutoCtrl)
     .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl)
-    .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl);
+    .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl)
+    .controller('cadUsuarioCtrl', cadUsuarioCtrl);

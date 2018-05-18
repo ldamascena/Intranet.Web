@@ -245,6 +245,7 @@
                     <div class="form-group">
                         <input class="btn btn-white" ng-show="status == 1" type="button" value="Fechar" ng-click="cancel();" />
                         <input class="btn btn-primary" ng-show="status == 1" type="button" value="Salvar" ng-click="editar();" />
+                        <input class="btn btn-primary" ng-disabled="lock != idUser" ng-show="status == 4" type="button" value="Concluir" ng-click="editar();" />
                     </div>
                 </div>
             </div>

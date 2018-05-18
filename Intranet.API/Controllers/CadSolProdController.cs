@@ -29,6 +29,13 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdUsuario == idUsuario).ToList();
         }
 
+        public CadSolProd GetByID(int Id)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSolProdutos.Where(x => x.Id == Id).FirstOrDefault();
+        }
+
         public int? GetLastId()
         {
             var context = new AlvoradaContext();

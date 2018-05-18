@@ -55,11 +55,10 @@
                                     <td>{{solicitacaoProd.Usuario.Nome}} {{solicitacaoProd.Usuario.Sobrenome}}</td>
                                     <td>{{solicitacaoProd.DataCriacao | date:'dd/MM/yyyy - HH:mm:ss'}}</td>
                                     <td>
-                                        <button ng-class="solicitacaoProd.SitCadProd.IdSitProd == 1 ?
-                                                'btn btn-xs btn-rounded btn-success' :
-                                                (solicitacaoProd.SitCadProd.IdSitProd == 2 || solicitacaoProd.SitCadProd.IdSitProd == 4 || solicitacaoProd.SitCadProd.IdSitProd == 6 ?
-                                                'btn btn-xs btn-rounded btn-primary' :
-                                                'btn btn-xs btn-rounded btn-danger')" ng-click="historico(solicitacaoProd);">
+                                        <button ng-class="{'btn btn-xs btn-rounded btn-success' : solicitacaoProd.SitCadProd.IdSitProd == 1, 
+                                                           'btn btn-xs btn-rounded btn-warning' : solicitacaoProd.SitCadProd.IdSitProd == 2, 
+                                                           'btn btn-xs btn-rounded btn-primary' : solicitacaoProd.SitCadProd.IdSitProd == 4 || solicitacaoProd.SitCadProd.IdSitProd == 6, 
+                                                           'btn btn-xs btn-rounded btn-danger' : solicitacaoProd.SitCadProd.IdSitProd == 3 || solicitacaoProd.SitCadProd.IdSitProd == 5}" ng-click="historico(solicitacaoProd);">
                                             <i class="fa fa-comments-o"></i>  {{solicitacaoProd.SitCadProd.Situacao}}
                                         </button>
                                     </td>
