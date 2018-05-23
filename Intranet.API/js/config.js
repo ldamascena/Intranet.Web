@@ -1096,6 +1096,24 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
+        .state('produto.sollistaprodutosmobile', {
+            url: "/sollistaprodutosmobile",
+            templateUrl: "views/produto/sollistaprodutosmobile.html",
+            data: { pageTitle: 'Solicitacoes - Lista Produtos' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        }
+                    ]);
+                }
+            }
+        })
         .state('produto.solproduto', {
             url: "/solproduto",
             templateUrl: "views/produto/solproduto.html",

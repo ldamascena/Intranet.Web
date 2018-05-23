@@ -1738,6 +1738,7 @@
     <Content Include="Views\produto\associacao.html" />
     <Content Include="Views\produto\classificacaoproduto.html" />
     <Content Include="Views\produto\sollistaprodutos.html" />
+    <Content Include="Views\produto\sollistaprodutosmobile.html" />
     <Content Include="Views\produto\wizard\mix_prod.html" />
     <Content Include="Views\promocao\principal.html" />
     <Content Include="Views\register.html" />

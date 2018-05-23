@@ -39,16 +39,20 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public CadSaldoControle GetSaldoByUserAndDate(int idUsuario, DateTime date)
+        public CadSaldoControle GetSaldoByUserAndDate(int idUsuario, DateTime date) 
         {
             var context = new AlvoradaContext();
 
+            var dataOntem = date.AddDays(-1);
+
+            var dataAnteOntem = date.AddDays(-2);
+
             var result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao == date).FirstOrDefault();
+            && x.DataInclusao == dataOntem).FirstOrDefault();
 
             if (result == null)
                 result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao < date).ToList().LastOrDefault();
+            && x.DataInclusao == dataAnteOntem).FirstOrDefault();
 
             return result;
         }

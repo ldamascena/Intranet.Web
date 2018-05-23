@@ -844,8 +844,97 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     }
 };
 
-function solListaProdMobileCtrl($scope, $http, $localStorage)
-{ }
+function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAlert)
+{
+    $scope.solicitacoesProd;
+    $scope.grupo = $localStorage.user.Grupo[0].Id;
+
+    $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+        $scope.solicitacoesProd = response.data;
+    });
+
+    $scope.aprovarDiretoria = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $localStorage.user.Id, IdStatus: 4 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                       $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                   }
+               });
+
+    };
+    $scope.reprovarDiretoria = function (solicitacaoProd) {
+        $scope.objLog = { IdCadSolProd: solicitacaoProd.IdCadSolProd, IdUsuario: $localStorage.user.Id, IdStatus: 5 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
+                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                               $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
+                                   $scope.solicitacoesProd = response.data;
+                               });
+                           })
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       }, function (response) {
+                           return alert("Erro: " + response.status);
+                       });
+
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                   }
+               });
+
+    };
+
+    $scope.visualizar = function (solicitacaoProd) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/vis_editar_produto.html',
+            controller: 'solListaProdModalInstanceCtrl',
+            size: "lg",
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacaoProdSelected: function () {
+                    return solicitacaoProd;
+                }
+            }
+        });
+    }
+}
 
 function validadeModalInstanceCtrl($scope, $uibModalInstance, $http, errors) {
 
@@ -5877,9 +5966,35 @@ function assProdHistoricoModalCtrl($scope, $uibModalInstance, associacaoSelected
 }
 
 function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
+    //$scope.dtOptions = DTOptionsBuilder.newOptions()
+    //    .withDOM('<"html5buttons"B>lTfgitp')
+    //    .withButtons([
+    //        { extend: 'copy' },
+    //        { extend: 'csv' },
+    //        { extend: 'excel', title: 'ExampleFile' },
+    //        { extend: 'pdf', title: 'ExampleFile' },
+
+    //        {
+    //            extend: 'print',
+    //            customize: function (win) {
+    //                $(win.document.body).addClass('white-bg');
+    //                $(win.document.body).css('font-size', '10px');
+
+    //                $(win.document.body).find('table')
+    //                    .addClass('compact')
+    //                    .css('font-size', 'inherit');
+    //            }
+    //        }
+    //    ]);
+
+    $scope.usuarios;
+
+    $http.get("http://localhost:50837/api/Usuario/GetAll").then(function (response) {
+        $scope.usuarios = response.data;
+    });
+
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
-        //.withOption('order', [0, 'asc'])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },

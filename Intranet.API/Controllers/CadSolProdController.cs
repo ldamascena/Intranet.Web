@@ -29,6 +29,13 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdUsuario == idUsuario).ToList();
         }
 
+        public IEnumerable<CadSolProd> GetAllAproveByComercial()
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSolProdutos.Where(x => x.IdStatus == 2).ToList();
+        }
+
         public CadSolProd GetByID(int Id)
         {
             var context = new AlvoradaContext();
@@ -141,7 +148,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 2;
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
             }
 
             catch (Exception ex)
