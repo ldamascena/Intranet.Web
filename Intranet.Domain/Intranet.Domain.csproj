@@ -125,6 +125,7 @@
     <Compile Include="Entities\SolLog.cs" />
     <Compile Include="Entities\SolParametro.cs" />
     <Compile Include="Entities\AjustePrecoVenda.cs" />
+    <Compile Include="Entities\Carga.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />

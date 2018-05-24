@@ -70,6 +70,7 @@ namespace Intranet.Solidcon.Data.Context
         #region Classificacao produto
 
         public virtual DbSet<ClassificacaoProduto> ClassificacaoProdutos { get; set; }
+        public virtual DbSet<Carga> Cargas { get; set; }
 
         #endregion
 

@@ -215,6 +215,7 @@
     <Compile Include="Controllers\CadSolProdLogController.cs" />
     <Compile Include="Controllers\CadSupervisorController.cs" />
     <Compile Include="Controllers\CaixaController.cs" />
+    <Compile Include="Controllers\CargaController.cs" />
     <Compile Include="Controllers\ClassificacaoMetaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\EmpresaFilialController.cs" />

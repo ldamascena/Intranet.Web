@@ -844,8 +844,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     }
 };
 
-function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAlert)
-{
+function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAlert) {
     $scope.solicitacoesProd;
     $scope.grupo = $localStorage.user.Grupo[0].Id;
 
@@ -5609,6 +5608,12 @@ function classificacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
 }
 
 function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classificacaoSelected) {
+    $scope.cargas;
+
+    $http.get("http://localhost:50837/api/Carga/GetAll").then(function (response) {
+        $scope.cargas = response.data;
+    })
+
     $scope.compradores = [
                 { CdUsuario: 215, NmUsuario: "Alexandre Martins" },
                 { CdUsuario: 14, NmUsuario: "Diego Gonçalves" },
@@ -5630,6 +5635,7 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
     $scope.margemMinima;
     $scope.cobertura;
     $scope.coberturaMinima;
+    $scope.carga;
 
     $http.get("http://localhost:50837/api/ClassificacaoProduto/GetByCdClassificacao?cdClassificacao=" + classificacaoSelected).then(function (response) {
         $scope.comprador = response.data.Usuario.CdUsuario;
@@ -5637,6 +5643,7 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
         $scope.margemMinima = response.data.PrMargemMinima;
         $scope.cobertura = response.data.NrCobertura;
         $scope.coberturaMinima = response.data.NrCoberturaMinima;
+        $scope.carga = response.data.CdCarga;
     });
 
     $scope.editar = function () {

@@ -27,6 +27,12 @@
                 <label>Cobertura Minima</label>
                 <input type="text" placeholder="Cobertura Minima" name="coberturaMinima" ng-model="coberturaMinima" class="form-control" required>
             </div>
+            <div class="form-group">
+                <label>Carga</label>
+                <select class="form-control"
+                        ng-model="carga"
+                        ng-options="cargascomplete.cdCarga as cargascomplete.nmCarga for cargascomplete in cargas"></select>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>

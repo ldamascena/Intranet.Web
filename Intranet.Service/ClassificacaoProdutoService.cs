@@ -131,6 +131,7 @@ namespace Intranet.Service
                 raiz.NrCobertura = objView.NrCobertura == null ? raiz.NrCobertura : objView.NrCobertura;
                 raiz.PrMargemMinima = objView.PrMargemMinima == null ? raiz.PrMargemMinima : objView.PrMargemMinima;
                 raiz.NrCoberturaMinima = objView.NrCoberturaMinima == null ? raiz.NrCoberturaMinima : objView.NrCoberturaMinima;
+                raiz.CdCarga = objView.CdCarga == null ? raiz.CdCarga : objView.CdCarga;
 
                 _repository.Update(raiz);
 
@@ -144,6 +145,7 @@ namespace Intranet.Service
                         obj.NrCobertura = objView.NrCobertura == null ? obj.NrCobertura : objView.NrCobertura;
                         obj.PrMargemMinima = objView.PrMargemMinima == null ? obj.PrMargemMinima : objView.PrMargemMinima;
                         obj.NrCoberturaMinima = objView.NrCoberturaMinima == null ? obj.NrCoberturaMinima : objView.NrCoberturaMinima;
+                        obj.CdCarga = objView.CdCarga == null ? obj.CdCarga : objView.CdCarga;
 
                         _repository.Update(obj);
 
@@ -157,6 +159,7 @@ namespace Intranet.Service
                                 obj2.NrCobertura = objView.NrCobertura == null ? obj2.NrCobertura : objView.NrCobertura;
                                 obj2.PrMargemMinima = objView.PrMargemMinima == null ? obj2.PrMargemMinima : objView.PrMargemMinima;
                                 obj2.NrCoberturaMinima = objView.NrCoberturaMinima == null ? obj2.NrCoberturaMinima : objView.NrCoberturaMinima;
+                                obj2.CdCarga= objView.CdCarga == null ? obj2.CdCarga : objView.CdCarga;
 
                                 _repository.Update(obj2);
 
@@ -170,6 +173,7 @@ namespace Intranet.Service
                                         obj3.NrCobertura = objView.NrCobertura == null ? obj3.NrCobertura : objView.NrCobertura;
                                         obj3.PrMargemMinima = objView.PrMargemMinima == null ? obj3.PrMargemMinima : objView.PrMargemMinima;
                                         obj3.NrCoberturaMinima = objView.NrCoberturaMinima == null ? obj3.NrCoberturaMinima : objView.NrCoberturaMinima;
+                                        obj3.CdCarga = objView.CdCarga == null ? obj3.CdCarga : objView.CdCarga;
 
                                         _repository.Update(obj3);
                                     }

@@ -46,6 +46,7 @@ namespace Intranet.Domain.Entities
         [DataMember]
         public int? NrCobertura { get; set; }
 
+        [DataMember]
         public byte? CdCarga { get; set; }
 
         [DataMember]
