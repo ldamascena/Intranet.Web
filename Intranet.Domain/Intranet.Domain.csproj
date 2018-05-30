@@ -100,6 +100,7 @@
     <Compile Include="Entities\CadSolAlterProdLog.cs" />
     <Compile Include="Entities\CadAssProd.cs" />
     <Compile Include="Entities\CadAssProdGrade.cs" />
+    <Compile Include="Entities\CadUsuarioOperador.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />

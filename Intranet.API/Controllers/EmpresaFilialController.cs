@@ -31,5 +31,15 @@ namespace Intranet.API.Controllers
 
             return _app.GetAll();
         }
+
+        public IEnumerable<EmpresaFilial> GetAllOrdered()
+        {
+            // Inicialização das instancias
+            _repository = new EmpresaFilialRepository(new CentralContext());
+            _service = new EmpresaFilialService(_repository);
+            _app = new EmpresaFilialApp(_service);
+
+            return _app.GetAll().OrderBy(x => x.nmFilial);
+        }
     }
 }

@@ -417,6 +417,7 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
     }
 
     $scope.processForm = function () {
+        
         if ($scope.IdCadSolProd == undefined)
             $scope.IdCadSolProd = 1;
 
@@ -433,18 +434,6 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
         if ($scope.formData.concorrencia == "" || $scope.formData.concorrencia == undefined)
             $scope.validate.push("Preencha o campo concorrencia!");
 
-        //console.log($scope.grades[0].EAN);
-
-        if ($scope.grades != undefined) {
-            for (var i = 0; i < $scope.grades.length; i++) {
-                if ($scope.grades[i].descricaosabor == "" || $scope.grades[i].descricaosabor == undefined)
-                    $scope.validate.push("Preencha o campo descricao / sabor!");
-                if ($scope.grades[i].EAN == "" || $scope.grades[i].EAN == undefined)
-                    $scope.validate.push("Preencha o campo EAN!");
-                if ($scope.grades[i].DUN == "" || $scope.grades[i].DUN == undefined)
-                    $scope.validate.push("Preencha o campo DUN!");
-            }
-        }
 
         // Dimensoes do Produto
 
@@ -486,7 +475,8 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                 confirmButtonText: "Sim, incluir!",
                 cancelButtonText: "Não, cancelar!",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: false,
+                timer: 5000
             },
             function (isConfirm) {
                 if (isConfirm) {
@@ -511,27 +501,9 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
 
                     SweetAlert.swal("Incluído!", "O registro foi incluído com sucesso.", "success");
 
-                    $scope.saveInfoProduto($scope.objProduto);
-                    $timeout(function () {
-                        for (var i = 0; i < $scope.grades.length; i++) {
-                            $scope.objgrade = {
-                                IdCadSolProd: $scope.IdCadSolProd,
-                                CodFornecedor: $scope.grades[i].codfornecedor,
-                                DescricaoSabor: $scope.grades[i].descricaosabor,
-                                EAN: $scope.grades[i].EAN,
-                                DUN: $scope.grades[i].DUN,
-                                ProdutoInativado: $scope.grades[i].produto
-                            }
-                            $scope.saveGrade($scope.objgrade);
-                        }
-
-                        $scope = {};
-                        $scope.grades = [{}];
-                    }, 1000);
-
                     $interval(function () {
-                        location.reload();
-                    }, 3000);
+                        window.location = "#/produto/sollistaprodutos";
+                    }, 6000);
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou a inclusão do registro", "error");
                 }
@@ -583,7 +555,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, confirmar!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -617,7 +590,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, confirmar!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -652,7 +626,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, confirmar!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -685,7 +660,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, confirmar!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -733,7 +709,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, excluir!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -790,7 +767,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                     confirmButtonText: "Sim, confirmar!",
                     cancelButtonText: "Não, cancelar!",
                     closeOnConfirm: false,
-                    closeOnCancel: false
+                    closeOnCancel: false,
+                    timer: 5000
                 },
                        function (isConfirm) {
                            if (isConfirm) {
@@ -823,7 +801,8 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             confirmButtonText: "Sim, confirmar!",
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            timer: 5000
         },
                function (isConfirm) {
                    if (isConfirm) {
@@ -841,6 +820,20 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                        SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
                    }
                });
+    }
+
+    $scope.incluirEan = function (IdCadSolProd) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/incluir_editar_EAN.html',
+            controller: 'incluiEANModalCtrl',
+            size: "lg",
+            windowClass: "animated fadeIn",
+            resolve: {
+                IdCadSolProdSelected: function () {
+                    return IdCadSolProd;
+                }
+            }
+        });
     }
 };
 
@@ -1015,6 +1008,11 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
         }, function (response) {
             return alert("Erro: " + response.status);
         });
+        SweetAlert.swal({
+            title: "A solicitação foi concluida com sucesso!",
+            type: "success",
+            timer: 5000
+        });
         $uibModalInstance.dismiss();
     };
 }
@@ -1026,6 +1024,50 @@ function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSel
         $scope.historicos = response.data;
         console.log($scope.historicos)
     });
+}
+
+function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelected, SweetAlert) {
+    $scope.grades = [{}];
+
+    $scope.addNew = function (grade) {
+        $scope.grades.push({});
+    };
+
+    $scope.remove = function (grade) {
+        if ($scope.grades.length > 1) {
+            $scope.grades.pop({});
+        }
+    };
+
+    $scope.incluir = function ()
+    {
+        if ($scope.EANForm.$valid) {
+            for (var i = 0; i < $scope.grades.length; i++) {
+                $scope.objgrade = {
+                    IdCadSolProd: IdCadSolProdSelected,
+                    CodFornecedor: $scope.grades[i].codfornecedor,
+                    DescricaoSabor: $scope.grades[i].descricaosabor,
+                    EAN: $scope.grades[i].EAN,
+                    DUN: $scope.grades[i].DUN,
+                    ProdutoInativado: $scope.grades[i].produto
+                }
+                
+                $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", $scope.objgrade).then(function (response) {
+                    SweetAlert.swal({
+                        title: "Inclusão feita com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                })
+            }
+
+            $uibModalInstance.close();
+        } else {
+            $scope.EANForm.submitted = true;
+        }
+    }
 }
 
 function altProd($scope, $uibModal, $http, SweetAlert, $localStorage) {
@@ -5649,7 +5691,7 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
     $scope.editar = function () {
         $scope.obj = {
             CdClassificacaoProduto: classificacaoSelected, CdComprador: $scope.comprador, PrMargem: $scope.margem,
-            NrCobertura: $scope.cobertura, PrMargemMinima: $scope.margemMinima, NrCoberturaMinima: $scope.coberturaMinima
+            NrCobertura: $scope.cobertura, PrMargemMinima: $scope.margemMinima, NrCoberturaMinima: $scope.coberturaMinima, CdCarga: $scope.carga
         };
 
         $http.post("http://localhost:50837/api/ClassificacaoProduto/AlterarClassificacaoProduto", $scope.obj).then(function (response) {
@@ -5972,54 +6014,123 @@ function assProdHistoricoModalCtrl($scope, $uibModalInstance, associacaoSelected
     });
 }
 
-function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
-    //$scope.dtOptions = DTOptionsBuilder.newOptions()
-    //    .withDOM('<"html5buttons"B>lTfgitp')
-    //    .withButtons([
-    //        { extend: 'copy' },
-    //        { extend: 'csv' },
-    //        { extend: 'excel', title: 'ExampleFile' },
-    //        { extend: 'pdf', title: 'ExampleFile' },
-
-    //        {
-    //            extend: 'print',
-    //            customize: function (win) {
-    //                $(win.document.body).addClass('white-bg');
-    //                $(win.document.body).css('font-size', '10px');
-
-    //                $(win.document.body).find('table')
-    //                    .addClass('compact')
-    //                    .css('font-size', 'inherit');
-    //            }
-    //        }
-    //    ]);
-
+function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal) {
     $scope.usuarios;
 
-    $http.get("http://localhost:50837/api/Usuario/GetAll").then(function (response) {
+    $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
         $scope.usuarios = response.data;
     });
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
-
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
+    $scope.solicitar = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/solicitar_editar_usuario.html',
+            controller: 'cadUsuarioCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                cadUsuarioSelected: function () {
+                    return $scope.teste
                 }
             }
-        ]);
+        });
+    }
+
+    $scope.alteraracao = function (cadUsuario) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/solicitar_editar_usuario.html',
+            controller: 'cadUsuarioCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                cadUsuarioSelected: function () {
+                    return cadUsuario;
+                }
+            }
+        });
+    }
+
+    $scope.excluir = function () {
+
+    }
+
+}
+
+function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelected, $http, $localStorage) {
+    $scope.filiais;
+    $scope.tipo = false;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
+    $scope.userLogado = $localStorage.user.Id;
+
+
+    $http.get("http://localhost:50837/api/EmpresaFilial/GetAllOrdered").then(function (response) {
+        $scope.filiais = response.data;
+    })
+
+    $scope.tiposdecadastro = ["Novo", "Transferencia"];
+    $scope.setores = ["Gerente Loja", "Operador", "Supervisor/Seção", "Supervisor/Loja", "Compras", "Contabilidade", "Contas", "CPD", "Diretoria", "Financeiro", "Gerência", "Indicadores", "Prevenção", "Tesouraria", "TI"];
+
+    if (cadUsuarioSelected != undefined || cadUsuarioSelected != null) {
+        $scope.status = cadUsuarioSelected.IdStatus
+        $scope.tipocadastro = cadUsuarioSelected.TipoSolicitacao;
+        $scope.pessoa = cadUsuarioSelected.Pessoa;
+        $scope.setor = cadUsuarioSelected.Setor;
+        $scope.filial = cadUsuarioSelected.Filial;
+        $scope.comercial = cadUsuarioSelected.Comercial;
+        $scope.financeiro = cadUsuarioSelected.Financeiro;
+        $scope.loja2 = cadUsuarioSelected.Loja2;
+        $scope.concentrador = cadUsuarioSelected.Concentrador;
+        $scope.pdv = cadUsuarioSelected.Pdv;
+        $scope.wms = cadUsuarioSelected.Wms;
+        $scope.pidgin = cadUsuarioSelected.Pidgin;
+        $scope.email = cadUsuarioSelected.Email;
+        $scope.observacao = cadUsuarioSelected.Observacao;
+        $scope.tipo = true;
+        $scope.userCadastro = cadUsuarioSelected.IdUsuario;
+    }
+
+    $scope.incluir = function () {
+        $scope.obj = {
+            TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
+            Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
+            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id
+        }
+
+        $http.post("http://localhost:50837/api/CadUsuarioOperador/Incluir", $scope.obj).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+        $uibModalInstance.close();
+    }
+
+    $scope.alterar = function () {
+        $scope.obj = {
+            TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
+            Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
+            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, IdStatus: cadUsuarioSelected.IdStatus, DataInclusao: cadUsuarioSelected.DataInclusao,
+            Id: cadUsuarioSelected.Id
+        }
+
+        $http.post("http://localhost:50837/api/CadUsuarioOperador/Alterar", $scope.obj).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+        $uibModalInstance.close();
+    }
+
+    $scope.excluir = function () {
+
+        $http.post("http://localhost:50837/api/CadUsuarioOperador/Excluir", cadUsuarioSelected).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+        $uibModalInstance.close();
+    }
+
+    $scope.concluir = function () {
+        $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+        $uibModalInstance.close();
+    }
 }
 
 /**
@@ -6039,6 +6150,7 @@ angular
     .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
     .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
     .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
+    .controller('incluiEANModalCtrl', incluiEANModalCtrl)
     .controller('altProd', altProd)
     .controller('altProdModalInstanceCtrl', altProdModalInstanceCtrl)
     .controller('listaAltProd', listaAltProd)
@@ -6177,4 +6289,5 @@ angular
     .controller('associacaoProdutoCtrl', associacaoProdutoCtrl)
     .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl)
     .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl)
-    .controller('cadUsuarioCtrl', cadUsuarioCtrl);
+    .controller('cadUsuarioCtrl', cadUsuarioCtrl)
+    .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance);

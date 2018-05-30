@@ -149,6 +149,7 @@ namespace Intranet.API.Controllers
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
                 emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
+                emailService.SendEmail("fmedeiros@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
             }
 
             catch (Exception ex)

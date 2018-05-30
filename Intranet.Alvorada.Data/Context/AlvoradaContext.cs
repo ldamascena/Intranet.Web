@@ -12,7 +12,7 @@ namespace Intranet.Alvorada.Data.Context
         {
         }
 
-        
+
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Grupo> Grupos { get; set; }
 
@@ -89,6 +89,12 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<CadAssProd> CadAssProd { get; set; }
         public virtual DbSet<CadAssProdGrade> CadAssProdGrade { get; set; }
         public virtual DbSet<CadAssProdLog> CadAssProdLogs { get; set; }
+
+        #endregion
+
+        #region Cad Usuario e Operador
+
+        public virtual DbSet<CadUsuarioOperador> CadUsuariosOperadores { get; set; }
 
         #endregion
 
@@ -407,6 +413,14 @@ namespace Intranet.Alvorada.Data.Context
 
             modelBuilder.Entity<Usuario>()
                 .HasMany(e => e.CadAssProdLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Solicitação Cad Usuario
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadUsuariosOperadores)
                 .WithRequired(e => e.Usuario)
                 .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);

@@ -1,0 +1,53 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de EAN/DUN</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao/alteracao de EAN/DUN</small>
+    </div>
+    <form role="form" name="EANForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th> Cod no Fornecedor</th>
+                            <th>Descricao / Sabor *</th>
+                            <th>EAN *</th>
+                            <th>DUN *</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="grade in grades">
+                            <!--<td class="col-lg-4"><input type="text" ng-model="grade.produto" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:5" class="form-control"></td>-->
+                            <td class="col-lg-2">
+                                <input id="codfornecedor" ng-model="grade.codfornecedor" name="codfornecedor" type="text" class="form-control">
+                            </td>
+                            <td class="col-lg-4">
+                                <input id="descricaosabor" ng-model="grade.descricaosabor" ng-required="true" name="descricaosabor" type="text" class="form-control">
+                            </td>
+                            <td class="col-lg-3">
+                                <input id="EAN" ng-model="grade.EAN" ng-required="true" name="EAN" type="text" class="form-control">
+                            </td>
+                            <td class="col-lg-3">
+                                <input id="DUN" ng-model="grade.DUN" ng-required="true" name="DUN" type="text" class="form-control">
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-circle" type="button" ng-click="addNew();">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-circle" type="button" ng-click="remove(grade);">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

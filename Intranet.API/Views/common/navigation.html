@@ -103,7 +103,7 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('usuario')}" ng-show="grupo == 1">
+            <li ng-class="{active: $state.includes('usuario')}">
                 <a href="#"><i class="fa fa-user-o"></i> <span class="nav-label">{{ 'Usuarios' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('usuario.cadusuarios')}">
                     <li ui-sref-active="active"><a ui-sref="usuario.cadusuarios">Cadastro de Usuarios</a></li>
