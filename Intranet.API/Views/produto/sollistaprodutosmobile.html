@@ -24,23 +24,17 @@
                     <h5>Lista de produtos - <strong>Solicitacoes de Produto</strong></h5>
                     <div ibox-tools></div>
                 </div>
-
                 <table class="table-responsive table table-striped table-bordered table-hover">
                     <thead>
                         <tr class="info">
                             <th>Id</th>
                             <th>Produto</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="solicitacaoProd in solicitacoesProd">
                             <td>{{solicitacaoProd.IdCadSolProd}}</td>
                             <td><a href="" ng-click="visualizar(solicitacaoProd)">{{solicitacaoProd.Descricao}}</a></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2 && (grupo == 6 || grupo == 1)" ng-click="aprovarDiretoria(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>

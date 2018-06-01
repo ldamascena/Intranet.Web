@@ -1,5 +1,6 @@
 ﻿<div class="inmodal">
     <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel();">&times;</button>
         <h4 class="modal-title">Visualizacao e Edicao Produto</h4>
         <small class="font-bold">Tela exclusivamente para visualizacao e alteracao solicitacao de produto.</small>
     </div>
@@ -245,6 +246,8 @@
                     <div class="form-group">
                         <input class="btn btn-white" ng-show="status == 1" type="button" value="Fechar" ng-click="cancel();" />
                         <input class="btn btn-primary" ng-show="status == 1" type="button" value="Salvar" ng-click="editar();" />
+                        <input class="btn btn-success" ng-show="status == 2 && (grupo == 'Diretoria' || grupo == 'Admin')" type="button" value="Aprovar" ng-click="aprovarDiretoria()" />
+                        <input class="btn btn-danger" ng-show="status == 2 && (grupo == 'Diretoria' || grupo == 'Admin')" type="button" value="Reprovar" ng-click="reprovarDiretoria()" />
                         <input class="btn btn-primary" ng-disabled="lock != idUser" ng-show="status == 4" type="button" value="Concluir" ng-click="concluir();" />
                     </div>
                 </div>

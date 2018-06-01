@@ -417,7 +417,7 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
     }
 
     $scope.processForm = function () {
-        
+
         if ($scope.IdCadSolProd == undefined)
             $scope.IdCadSolProd = 1;
 
@@ -499,13 +499,24 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                         IdUsuario: $localStorage.user.Id, TipoCadastro: $scope.formData.tipoCadastro, Segmento: $scope.formData.segmento, IdCadSolProd: $scope.IdCadSolProd
                     }
 
-                    SweetAlert.swal("Incluído!", "O registro foi incluído com sucesso.", "success");
+                    $scope.saveInfoProduto($scope.objProduto);
+                    SweetAlert.swal({
+                        title: "Incluído!",
+                        text: "O registro foi incluído com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
 
                     $interval(function () {
                         window.location = "#/produto/sollistaprodutos";
                     }, 6000);
                 } else {
-                    SweetAlert.swal("Cancelado", "Você cancelou a inclusão do registro", "error");
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a inclusão do registro",
+                        type: "error",
+                        timer: 5000
+                    });
                 }
             });
         }
@@ -696,6 +707,10 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                     return solicitacaoProd;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
         });
     }
 
@@ -938,10 +953,10 @@ function validadeModalInstanceCtrl($scope, $uibModalInstance, $http, errors) {
 
 };
 
-function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaoProdSelected, $localStorage) {
+function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaoProdSelected, $localStorage, SweetAlert) {
     $scope.grades;
 
-    $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
+    $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.Id).then(function (response) {
         $scope.grades = response.data;
     });
 
@@ -969,6 +984,7 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.status = solicitacaoProdSelected.IdStatus;
     $scope.lock = solicitacaoProdSelected.IdUserLock;
     $scope.idUser = $localStorage.user.Id;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
 
 
     $scope.editar = function () {
@@ -1013,14 +1029,98 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             type: "success",
             timer: 5000
         });
-        $uibModalInstance.dismiss();
+        $uibModalInstance.close();
+    };
+
+    $scope.aprovarDiretoria = function () {
+        $scope.objLog = { IdCadSolProd: solicitacaoProdSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 4 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                SweetAlert.swal({
+                    title: "A solicitação foi aprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+                $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProdSelected).then(function (response) {
+                    $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                    })
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+            else {
+                SweetAlert.swal({
+                    title: "A solicitação foi cancelada com sucesso!",
+                    type: "error",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+            }
+        });
+    }
+
+    $scope.reprovarDiretoria = function () {
+        $scope.objLog = { IdCadSolProd: solicitacaoProdSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 5 };
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                SweetAlert.swal({
+                    title: "A solicitação foi reprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
+                $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
+                    $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                    })
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+                $uibModalInstance.close();
+            }
+            else {
+                SweetAlert.swal({
+                    title: "A solicitação foi cancelada com sucesso!",
+                    type: "error",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+            }
+        });
     };
 }
 
 function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSelected, $http, $localStorage) {
     $scope.historicos;
 
-    $http.get("http://localhost:50837/api/CadSolProdLog/GetAllByCadProd?IdCadSolProd=" + solicitacaoProdSelected.IdCadSolProd).then(function (response) {
+    $http.get("http://localhost:50837/api/CadSolProdLog/GetAllByCadProd?IdCadSolProd=" + solicitacaoProdSelected.Id).then(function (response) {
         $scope.historicos = response.data;
         console.log($scope.historicos)
     });
@@ -1039,8 +1139,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
         }
     };
 
-    $scope.incluir = function ()
-    {
+    $scope.incluir = function () {
         if ($scope.EANForm.$valid) {
             for (var i = 0; i < $scope.grades.length; i++) {
                 $scope.objgrade = {
@@ -1051,7 +1150,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
                     DUN: $scope.grades[i].DUN,
                     ProdutoInativado: $scope.grades[i].produto
                 }
-                
+
                 $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", $scope.objgrade).then(function (response) {
                     SweetAlert.swal({
                         title: "Inclusão feita com sucesso!",
