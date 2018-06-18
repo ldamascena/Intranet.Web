@@ -1,0 +1,67 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Chamados de Suporte</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li>
+                <a>Suporte</a>
+            </li>
+            <li class="active">
+                <strong>Chamado de Suporte</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="chamSuporteCtrl">
+    <div class="ibox float-e-margins">
+        <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="incluir()"><i class="fa fa-plus"></i> Incluir</button>
+        <div class="ibox-title">
+            <h5>Lista de chamados - <strong>Solicitacoes de Chamados de Suporte</strong></h5>
+            <div ibox-tools></div>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Assunto</th>
+                            <th>Setor</th>
+                            <th>Usuario</th>
+                            <th>Data de Inclusao</th>
+                            <th>TI.Vinculado</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="chamado in chamados">
+                            <td>{{chamado.Id}}</td>
+                            <td>{{chamado.ChamadoSuporteAssunto.Descricao}}</td>
+                            <td>{{chamado.Setor}}</td>
+                            <td>{{chamado.UsuarioCadastro.Nome}} {{chamado.UsuarioCadastro.Sobrenome}}</td>
+                            <td>{{chamado.DataInclusao | date:'dd/MM/yyyy'}}</td>
+                            <td>{{chamado.UsuarioVinculado.Nome}} {{chamado.UsuarioVinculado.Sobrenome}}</td>
+                            <td>
+                                <button ng-class="{'btn btn-xs btn-rounded btn-success' : chamado.Status.IdSitProd == 1,
+                                                           'btn btn-xs btn-rounded btn-primary' : chamado.Status.IdSitProd == 6}" ng-click="historico(chamado);">
+                                    <i class="fa fa-comments-o"></i>  {{chamado.Status.Situacao}}
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="visualizar(chamado)"><i class="fa fa-eye"></i> Visualizar</button>
+                                <button class="btn btn-sm btn-outline btn-warning btn-rounded" type="button" ng-show="chamado.IdStatus == 1" ng-click="vincular(chamado)"><i class="fa fa-magnet"></i> Vincular</button>
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="chamado.IdStatus == 1 && (chamado.UsuarioCadastro.Id == usuarioLogado)" ng-click="excluir(chamado)"><i class="fa fa-ban"></i> Excluir</button>
+                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="chamado.IdStatus == 1 && (chamado.UsuarioVinculado.Id == usuarioLogado)" ng-click="concluir(chamado)"><i class="fa fa-edit"></i> Concluir</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

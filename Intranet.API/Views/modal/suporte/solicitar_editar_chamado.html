@@ -1,0 +1,55 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel();">&times;</button>
+        <h4 class="modal-title">Inclusao/Alteracao de Chamados</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao/alteracao de chamados.</small>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form role="form">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Assunto</label>
+                        <select class="form-control" type="text" name="assunto" ng-disabled="status == 6 || (usuarioCadastro != usuarioLogado)" ng-model="assunto" ng-options="assuntocomplete.Id as assuntocomplete.Descricao for assuntocomplete in assuntos"></select>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Suporte para:</label>
+                        <select name="setor" id="setor" ng-model="setor" class="form-control" ng-disabled="status == 6 || (usuarioCadastro != usuarioLogado)">
+                            <option value="">Selecione um setor</option>
+                            <option value="CPD">CPD</option>
+                            <option value="Frente de Loja">Frente de Loja</option>
+                            <option value="Tesouraria">Tesouraria</option>
+                            <option value="DP">DP</option>
+                            <option value="Gerencia">Gerencia</option>
+                            <option value="Prevenção">Prevenção</option>
+                            <option value="Laticinio">Laticinio</option>
+                            <option value="Padaria">Padaria</option>
+                            <option value="Açougue">Açougue</option>
+                            <option value="Lanchonete">Lanchonete</option>
+                            <option value="Conferencia">Conferencia</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Diretoria">Diretoria</option>
+                            <option value="Compras">Compras</option>
+                            <option value="Indicadores">Indicadores</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Descricao</label>
+                        <textarea class="form-control" name="descricao" ng-model="descricao" ng-readonly="status == 6 || (usuarioCadastro != usuarioLogado)"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <input class="btn btn-white" type="button" value="Fechar" ng-click="cancel();" />
+            <input class="btn btn-primary" type="button" ng-show="status == undefined" value="Incluir" ng-click="incluir();" />
+            <input class="btn btn-primary" type="button" ng-show="status == 1 && (usuarioCadastro == usuarioLogado)" value="Alterar" ng-click="alterar();" />
+        </div>
+    </div>
+</div>

@@ -11,32 +11,15 @@ using System.Web.Http;
 
 namespace Intranet.API.Controllers
 {
-    public class CadAssProdController : ApiController
+    public class ChamSuporteController : ApiController
     {
-        public IEnumerable<CadAssProd> GetAll()
+        public IEnumerable<ChamSuporte> GetAll()
         {
             var context = new AlvoradaContext();
-
-            return context.CadAssProd.ToList();
+            return context.ChamadosSuporte;
         }
 
-        public int GetLastId()
-        {
-            var context = new AlvoradaContext();
-            var result = context.CadAssProd.ToList().LastOrDefault().IdCadAssProd;
-
-            return result;
-
-        }
-
-        public CadAssProd GetByIdCadAss(int idCadAss)
-        {
-            var context = new AlvoradaContext();
-
-            return context.CadAssProd.Where(x => x.IdCadAssProd == idCadAss).FirstOrDefault();
-        }
-
-        public HttpResponseMessage Incluir(CadAssProd model)
+        public HttpResponseMessage Incluir(ChamSuporte model)
         {
             var context = new AlvoradaContext();
             var emailService = new EmailService();
@@ -44,9 +27,9 @@ namespace Intranet.API.Controllers
             try
             {
                 model.DataInclusao = DateTime.Now;
-                context.CadAssProd.Add(model);
+                context.ChamadosSuporte.Add(model);
                 context.SaveChanges();
-                emailService.SendEmail("indicador@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
+                //emailService.SendEmail("indicador@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
             }
 
             catch (Exception ex)
@@ -57,13 +40,12 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Alterar(CadAssProd model)
+        public HttpResponseMessage Alterar(ChamSuporte model)
         {
             var context = new AlvoradaContext();
 
             try
             {
-                model.DataAlteracao = DateTime.Now;
                 context.Entry(model).State = EntityState.Modified;
                 context.SaveChanges();
             }
@@ -76,7 +58,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Excluir(CadAssProd model)
+        public HttpResponseMessage Excluir(ChamSuporte model)
         {
             var context = new AlvoradaContext();
 
@@ -94,13 +76,14 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage Concluir(CadAssProd model)
+        public HttpResponseMessage Concluir(ChamSuporte model)
         {
             var context = new AlvoradaContext();
 
             try
             {
                 context.Entry(model).State = EntityState.Modified;
+                model.IdStatus = 6;
                 context.SaveChanges();
             }
 
@@ -112,21 +95,11 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public IEnumerable<VwAssociacoesConcluidas> GetAllConcluidas()
+        public IEnumerable<ChamSuporteAssunto> GetAssuntos()
         {
             var context = new AlvoradaContext();
 
-            return context.VwAssociacoesConcluidas;
-        }
-
-        public IEnumerable<string> Usuarios()
-        {
-            //string meses, int anos
-            var context = new AlvoradaContext();
-
-            return context.VwAssociacoesConcluidas.Select(x => x.Usuario).ToList().Distinct();
-
-            //return context.VwAssociacoesConcluidas.Where(x => x.NOME_MES.Contains(meses) && x.ANO.ToString().Contains(anos.ToString())).Select(x => x.Usuario).ToList();
+            return context.ChamadosSuporteAssuntos;
         }
     }
 }

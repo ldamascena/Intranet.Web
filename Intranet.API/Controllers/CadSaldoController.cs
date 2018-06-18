@@ -44,8 +44,8 @@ namespace Intranet.API.Controllers
             var context = new AlvoradaContext();
 
             var dataOntem = date.AddDays(-1);
-
             var dataAnteOntem = date.AddDays(-2);
+            var dataTresontonte = date.AddDays(-3);
 
             var result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
             && x.DataInclusao == dataOntem).FirstOrDefault();
@@ -56,10 +56,10 @@ namespace Intranet.API.Controllers
             && x.DataInclusao == dataAnteOntem).FirstOrDefault();
 
             }
-            else if (result == null)
+            if (result == null)
             {
                 result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
-            && x.DataInclusao < dataAnteOntem).LastOrDefault();
+            && x.DataInclusao == dataTresontonte).FirstOrDefault();
             }
 
             return result;

@@ -44,7 +44,7 @@
                 </ul>
             </li>
             <li ng-class="{active: $state.includes('controledecaixa')}" ng-show="grupo == 1 || grupo == 5 || grupo == 12 || grupo == 13 || grupo == 14">
-                <a href="#"><i class="fa fa-laptop"></i> <span class="nav-label">{{ 'Controle de Cx' | translate }}</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-calculator"></i> <span class="nav-label">{{ 'Controle de Cx' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('controledecaixa')}">
                     <li ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.controlegeral')}" ui-sref="controledecaixa.controlegeral">Controle Geral</a></li>
                     <li ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('controledecaixa.relacompanhamento')}" ui-sref="controledecaixa.relacompanhamento">Relatorio Acompanhamento</a></li>
@@ -89,6 +89,14 @@
                 </ul>
             </li>
 
+            <li ng-class="{active: $state.includes('suporte')}" ng-show="grupo == 1">
+                <a href="#"><i class="fa fa-laptop"></i> <span class="nav-label">{{ 'Suporte' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('suporte')}">
+                    <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="suporte.chamsuporte">Cadastro de Chamados</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="suporte.chamsuporteassunto">Cadastro de Assuntos</a></li>
+                </ul>
+            </li>
+
             <li ng-class="{active: $state.includes('DRE')}" ng-show="grupo == 1">
                 <a href="#"><i class="fa fa-database"></i> <span class="nav-label">{{ 'BP - DRE' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('DRE.principal')}">
@@ -96,49 +104,19 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('promocao')}" ng-show="grupo == 1 && grupo == 8">
+            <li ng-class="{active: $state.includes('promocao')}" ng-show="grupo == 1 || grupo == 8">
                 <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Promocao' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('promocao.principal')}">
-                    <li ui-sref-active="active" ng-show="grupo == 1 && grupo == 8"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('usuario')}">
+            <li ng-class="{active: $state.includes('usuario')}" ng-show="grupo == 1 || grupo == 10 || grupo == 11 || grupo == 16">
                 <a href="#"><i class="fa fa-user-o"></i> <span class="nav-label">{{ 'Usuarios' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('usuario.cadusuarios')}">
-                    <li ui-sref-active="active"><a ui-sref="usuario.cadusuarios">Cadastro de Usuarios</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10 || grupo == 11 || grupo == 16"><a ui-sref="usuario.cadusuarios">Cadastro de Usuarios</a></li>
                 </ul>
             </li>
-
-            <!--<li>
-                <a href=""><i class="fa fa-sitemap"></i> <span class="nav-label">{{ 'MENULEVELS' | translate }}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="">Third Level <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="">Third Level <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="">Third Level <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                            <li><a href="">Third Level Item</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>-->
         </ul>
     </div>
 </nav>

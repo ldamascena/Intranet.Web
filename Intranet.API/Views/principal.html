@@ -1,26 +1,66 @@
 ﻿<div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Construção</h2>
+        <h2>Principal</h2>
         <ol class="breadcrumb">
             <li>
                 <a ui-sref="principal">Home</a>
             </li>
             <li class="active">
-                <strong>Breadcrumb</strong>
+                <strong>Principal</strong>
             </li>
         </ol>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="wrapper wrapper-content">
-            <div class="middle-box text-center animated fadeInRightBig">
-                <h3 class="font-bold">Pagina Em Construção</h3>
+<div class="row" ng-controller="MainCtrl">
+    <div class="wrapper wrapper-content  animated fadeInRight article">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="text-center article-title">
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> {{Dia | date:'dd - MMMM - yyyy'}}</span>
+                            <h1>
+                                Parabéns Aniversariantes do Dia
+                            </h1>
+                        </div>
+                        <p>
+                            Feliz aniversário! Que você faça desse dia, um momento muito especial, pois momentos como esses são para serem lembrados. Aproveite o seu dia com muitos sorrisos e alegrias! Você merece tudo de bom, pois é uma pessoa muito especial!
+                        </p>
+                        <p>
+                            <i>
+                                Parabéns!
+                            </i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <div class="error-desc">
-                    Essa página inicial ainda esta em construção!
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Aniversariantes do Mês</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th></th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="aniversariante in aniversariantes" ng-style="{'background-color' : aniversariante.Aniversario == Dia ? '#2c65ba' : '', 'color' : aniversariante.Aniversario == Dia ? 'white' : ''}">
+                                    <td class="table-info">{{aniversariante.Nome}} <b>({{aniversariante.Setor}})</b></td>
+                                    <td>{{aniversariante.Aniversario == dataAtual}}</td>
+                                    <td><b>{{aniversariante.Aniversario | date:'dd - MMMM (EEEE)'}} </b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

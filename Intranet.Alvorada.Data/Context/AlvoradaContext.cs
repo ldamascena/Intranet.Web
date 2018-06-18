@@ -95,12 +95,25 @@ namespace Intranet.Alvorada.Data.Context
         #region Cad Usuario e Operador
 
         public virtual DbSet<CadUsuarioOperador> CadUsuariosOperadores { get; set; }
+        public virtual DbSet<CadUsuarioOperadorLog> CadUsuarioOperadorLogs { get; set; }
+
+        #endregion
+
+        #region Chamado de Suporte
+
+        public virtual DbSet<ChamSuporte> ChamadosSuporte { get; set; }
+        public virtual DbSet<ChamSuporteAssunto> ChamadosSuporteAssuntos { get; set; }
+        public virtual DbSet<ChamSuporteLog> ChamSuporteLogs { get; set; }
 
         #endregion
 
 
+        public virtual DbSet<VwAssociacoesConcluidas> VwAssociacoesConcluidas { get; set; }
+
         public virtual DbSet<CadSolAlterProd> CadSolAlterProdutos { get; set; }
         public virtual DbSet<CadSolAlterProdLog> CadSolAlterProdLogs { get; set; }
+
+        public virtual DbSet<Aniversariantes> Aniversariantes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -422,6 +435,67 @@ namespace Intranet.Alvorada.Data.Context
             modelBuilder.Entity<Usuario>()
                 .HasMany(e => e.CadUsuariosOperadores)
                 .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadUsuariosOperadores)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+
+            // Log Cad Usuario
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.CadUsuariosOperadoresLog)
+                .WithRequired(e => e.SitCadProd)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadUsuariosOperadoresLog)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Chamado de Suporte
+
+            modelBuilder.Entity<ChamSuporteAssunto>()
+                .HasMany(e => e.ChamadosSuporte)
+                .WithRequired(e => e.ChamadoSuporteAssunto)
+                .HasForeignKey(e => e.IdAssunto)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.ChamadosSuporte)
+                .WithRequired(e => e.Status)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.ChamadosSuporteVinculo)
+                .WithRequired(e => e.UsuarioVinculado)
+                .HasForeignKey(e => e.IdVinculado)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.ChamadosSuporteUsuario)
+                .WithRequired(e => e.UsuarioCadastro)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Chamado de Suporte Logs
+
+            modelBuilder.Entity<SitCadProd>()
+                .HasMany(e => e.ChamadosSuporteLog)
+                .WithRequired(e => e.Status)
+                .HasForeignKey(e => e.IdStatus)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.ChamadosSuporteLogUsuario)
+                .WithRequired(e => e.UsuarioLog)
                 .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
         }

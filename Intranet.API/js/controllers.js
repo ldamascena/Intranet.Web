@@ -3,248 +3,22 @@
  * Contains several global data used in different view
  *
  */
-function MainCtrl($http) {
+function MainCtrl($http, $scope) {
+    $scope.aniversariantes;
+    $scope.dataAtual;
+    
+    $http.get("http://localhost:50837/api/Aniversariantes/GetAllByMonth").then(function (response) {
+        $scope.aniversariantes = response.data
+        console.log($scope.aniversariantes);
+    })
 
-    /**
-     * countries - Used as duallistbox in form advanced view
-     */
-
-    this.countries = [
-        { name: 'Amsterdam' },
-        { name: 'Washington' },
-        { name: 'Sydney' },
-        { name: 'Cairo' },
-        { name: 'Beijing' }];
-
-    this.getLocation = function (val) {
-        return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                address: val,
-                sensor: false
-            }
-        }).then(function (response) {
-            return response.data.results.map(function (item) {
-                return item.formatted_address;
-            });
-        });
-    };
-
-    /**
-     * daterange - Used as initial model for data range picker in Advanced form view
-     */
-    this.daterange = { startDate: null, endDate: null };
-
-    /**
-     * slideInterval - Interval for bootstrap Carousel, in milliseconds:
-     */
-    this.slideInterval = 5000;
-
-    /**
-     * tags - Used as advanced forms view in input tag control
-     */
-
-    this.tags = [
-        { text: 'Amsterdam' },
-        { text: 'Washington' },
-        { text: 'Sydney' },
-        { text: 'Cairo' },
-        { text: 'Beijing' }
-    ];
-
-    /**
-     * states - Data used in Advanced Form view for Chosen plugin
-     */
+    $http.get("http://localhost:50837/api/Aniversariantes/GetCurrentDate").then(function (response) {
+        $scope.dataAtual = response.data
+        $scope.dataAtual = $scope.dataAtual.substring(0, 19);
+        console.log($scope.dataAtual);
+    })
 
 
-    /**
-     * check's - Few variables for checkbox input used in iCheck plugin. Only for demo purpose
-     */
-    this.checkOne = true;
-    this.checkTwo = true;
-    this.checkThree = true;
-    this.checkFour = true;
-
-    /**
-     * knobs - Few variables for knob plugin used in Advanced Plugins view
-     */
-    this.knobOne = 75;
-    this.knobTwo = 25;
-    this.knobThree = 50;
-
-    /**
-     * Variables used for Ui Elements view
-     */
-    this.bigTotalItems = 175;
-    this.bigCurrentPage = 1;
-    this.maxSize = 5;
-    this.singleModel = false;
-    this.radioModel = 'Middle';
-    this.checkModel = {
-        left: false,
-        middle: true,
-        right: false
-    };
-
-    /**
-     * groups - used for Collapse panels in Tabs and Panels view
-     */
-    this.groups = [
-        {
-            title: 'Dynamic Group Header - 1',
-            content: 'Dynamic Group Body - 1'
-        },
-        {
-            title: 'Dynamic Group Header - 2',
-            content: 'Dynamic Group Body - 2'
-        }
-    ];
-
-    /**
-     * alerts - used for dynamic alerts in Notifications and Tooltips view
-     */
-    this.alerts = [
-        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-        { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
-        { type: 'info', msg: 'OK, You are done a great job man.' }
-    ];
-
-    /**
-     * addAlert, closeAlert  - used to manage alerts in Notifications and Tooltips view
-     */
-    this.addAlert = function () {
-        this.alerts.push({ msg: 'Another alert!' });
-    };
-
-    this.closeAlert = function (index) {
-        this.alerts.splice(index, 1);
-    };
-
-    /**
-     * randomStacked - used for progress bar (stacked type) in Badges adn Labels view
-     */
-    this.randomStacked = function () {
-        this.stacked = [];
-        var types = ['success', 'info', 'warning', 'danger'];
-
-        for (var i = 0, n = Math.floor((Math.random() * 4) + 1) ; i < n; i++) {
-            var index = Math.floor((Math.random() * 4));
-            this.stacked.push({
-                value: Math.floor((Math.random() * 30) + 1),
-                type: types[index]
-            });
-        }
-    };
-    /**
-     * initial run for random stacked value
-     */
-    this.randomStacked();
-
-    /**
-     * summernoteText - used for Summernote plugin
-     */
-    this.summernoteText = ['<h3>Hello Jonathan! </h3>',
-    '<p>dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the dustrys</strong> standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more',
-        'recently with</p>'].join('');
-
-    /**
-     * General variables for Peity Charts
-     * used in many view so this is in Main controller
-     */
-    this.BarChart = {
-        data: [5, 3, 9, 6, 5, 9, 7, 3, 5, 2, 4, 7, 3, 2, 7, 9, 6, 4, 5, 7, 3, 2, 1, 0, 9, 5, 6, 8, 3, 2, 1],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"],
-            width: 100
-        }
-    };
-
-    this.BarChart2 = {
-        data: [5, 3, 9, 6, 5, 9, 7, 3, 5, 2],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-
-    this.BarChart3 = {
-        data: [5, 3, 2, -1, -3, -2, 2, 3, 5, 2],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-
-    this.LineChart = {
-        data: [5, 9, 7, 3, 5, 2, 5, 3, 9, 6, 5, 9, 4, 7, 3, 2, 9, 8, 7, 4, 5, 1, 2, 9, 5, 4, 7],
-        options: {
-            fill: '#1ab394',
-            stroke: '#169c81',
-            width: 64
-        }
-    };
-
-    this.LineChart2 = {
-        data: [3, 2, 9, 8, 47, 4, 5, 1, 2, 9, 5, 4, 7],
-        options: {
-            fill: '#1ab394',
-            stroke: '#169c81',
-            width: 64
-        }
-    };
-
-    this.LineChart3 = {
-        data: [5, 3, 2, -1, -3, -2, 2, 3, 5, 2],
-        options: {
-            fill: '#1ab394',
-            stroke: '#169c81',
-            width: 64
-        }
-    };
-
-    this.LineChart4 = {
-        data: [5, 3, 9, 6, 5, 9, 7, 3, 5, 2],
-        options: {
-            fill: '#1ab394',
-            stroke: '#169c81',
-            width: 64
-        }
-    };
-
-    this.PieChart = {
-        data: [1, 5],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-
-    this.PieChart2 = {
-        data: [226, 360],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-    this.PieChart3 = {
-        data: [0.52, 1.561],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-    this.PieChart4 = {
-        data: [1, 4],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-    this.PieChart5 = {
-        data: [226, 134],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
-    this.PieChart6 = {
-        data: [0.52, 1.041],
-        options: {
-            fill: ["#1ab394", "#d7d7d7"]
-        }
-    };
 };
 
 function topNavCtrl($scope, $localStorage, $http, $uibModal, SweetAlert) {
@@ -3288,7 +3062,7 @@ function ordemModalAprovacaoInstanceCtrl($scope, $uibModalInstance, $http, solic
     };
 }
 
-function changePasswordInstanceCtrl($scope, $uibModalInstance, UserLogin, $http) {
+function changePasswordInstanceCtrl($scope, $uibModalInstance, UserLogin, $http, SweetAlert) {
 
     $scope.salvar = function () {
         if ($scope.signup_form.$valid) {
@@ -5521,204 +5295,20 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 }
 
 function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval) {
-    $scope.promocoesItem;
-    $scope.promocoes;
-    $scope.DataInicioClick;
-    $scope.DataFimClick;
-    $scope.CdPromocaoClick;
-    $scope.AtivoClick;
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
+    $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    $scope.series = ['Leonardo', 'Fabricio', 'Amanda', 'Cris', 'Oliveira'];
 
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
+    $scope.data = [
+      [65, 12, 80, 81, 25, 55, 58],
+      [28, 48, 40, 130, 14, 36, 58],
+      [22, 58, 74, 62, 14, 121, 58],
+      [22, 58, 14, 62, 37, 85, 58],
+      [22, 14, 62, 101, 96, 100, 58]
+    ];
 
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ]);
-
-    $scope.dtOptions2 = DTOptionsBuilder.newOptions()
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
-
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ]);
-
-    $scope.today = function () {
-        $scope.dtinicio = new Date();
-    };
-
-    $scope.clear = function () {
-        $scope.dtinicio = null;
-    };
-
-    $scope.inlineOptions = {
-        customClass: getDayClass,
-        minDate: new Date(),
-        showWeeks: true
-    };
-
-    $scope.dateOptions = {
-        dateDisabled: disabled,
-        formatYear: 'yy',
-        maxDate: new Date(2020, 5, 22),
-        minDate: new Date(),
-        startingDay: 1
-    };
-
-    // Disable weekend selection
-    function disabled(data) {
-        var date = data.date,
-          mode = data.mode;
-        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-    }
-
-    $scope.toggleMin = function () {
-        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-    };
-
-    $scope.toggleMin();
-
-    $scope.open1 = function () {
-        $scope.popup1.opened = true;
-    };
-
-    $scope.open2 = function () {
-        $scope.popup2.opened = true;
-    };
-
-    $scope.setDate = function (year, month, day) {
-        $scope.dtinicio = new Date(year, month, day);
-    };
-
-    $scope.popup1 = {
-        opened: false
-    };
-
-    $scope.popup2 = {
-        opened: false
-    };
-
-    function getDayClass(data) {
-        var date = data.date,
-          mode = data.mode;
-        if (mode === 'day') {
-            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-
-            for (var i = 0; i < $scope.events.length; i++) {
-                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
-
-                if (dayToCheck === currentDay) {
-                    return $scope.events[i].status;
-                }
-            }
-        }
-
-        return '';
-    }
-
-    $scope.pesquisar = function () {
-        $http.get("http://localhost:50837/api/promocao/GetPromocaoByTipoStatusData?tipoPromocao=" + $scope.promocaoTipo + "&dataInicio=" + $scope.dtinicio + "&dataFim=" + $scope.dtfim).then(function (response) {
-            $scope.promocoes = response.data;
-        });
-    }
-
-    $scope.visualizarPromocao = function (codigo, dtini, dtfim, ativo) {
-        $http.get("http://localhost:50837/api/promocao/GetAllPromocoesItemByCodigo?codigo=" + codigo).then(function (response) {
-            $scope.promocoesItem = response.data;
-            $scope.DataInicioClick = dtini;
-            $scope.DataFimClick = dtfim;
-            $scope.CdPromocaoClick = codigo;
-            $scope.AtivoClick = ativo;
-        });
-    }
-
-    $scope.ativarPromocao = function (promocaoItens) {
-        if ($scope.AtivoClick) {
-            SweetAlert.swal({
-                title: "Deseja Desativar?",
-                text: "Agendamento de alteração já ativada!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Sim, desativar!",
-                cancelButtonText: "Não, cancelar!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        $http.post("http://localhost:50837/api/Promocao/Remover", $scope.CdPromocaoClick).then(function (response) {
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
-                        });
-                        SweetAlert.swal("Desativado!", "Agendamento desativado com sucesso!", "success");
-                    } else {
-                        SweetAlert.swal("Cancelado", "Você cancelou a ativacao da promocao", "error");
-                    }
-                });
-        }
-
-        else {
-
-            SweetAlert.swal({
-                title: "Deseja Ativar?",
-                text: "Não será desativar depois de executado!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Sim, ativar!",
-                cancelButtonText: "Não, cancelar!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        for (var i = 0; i < promocaoItens.length; i++) {
-                            $scope.obj = {
-                                cdPromocao: $scope.CdPromocaoClick, cdSuperProduto: promocaoItens[i].cdSuperProduto, vlVenda: promocaoItens[i].vlPromocao,
-                                Data: $scope.DataInicioClick, vlVendaAnt: promocaoItens[i].vlVenda, DataRetorno: $scope.DataFimClick, Ativo: true, Concluido: false,
-                                Usuario: $localStorage.user.Nome + $localStorage.user.Sobrenome
-                            };
-
-                            $http.post("http://localhost:50837/api/Promocao/Incluir", $scope.obj).then(function (response) {
-                            }, function (response) {
-                                return alert("Erro: " + response.status);
-                            });
-                        }
-                        SweetAlert.swal("Ativado!", "Agendamento ativado com sucesso!", "success");
-                    } else {
-                        SweetAlert.swal("Cancelado", "Você cancelou a ativacao da promocao", "error");
-                    }
-                });
-        }
+    $scope.options = {
+        legend: { display: true }
     }
 }
 
@@ -5839,12 +5429,6 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
     });
 
     $scope.incluir = function () {
-        $scope.teste;
-        $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
-            $scope.teste = response.data + 1;
-        });
-
-
         var modalInstance = $uibModal.open({
             templateUrl: 'Views/modal/produto/associacao_incluir_editar.html',
             controller: 'associacaoProdutoModalInstanceCtrl',
@@ -5852,7 +5436,7 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
             size: "lg",
             resolve: {
                 associacaoSelected: function () {
-                    return $scope.teste
+                    return null;
                 }
             }
         }).result.then(function () {
@@ -5881,7 +5465,7 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
     }
 
     $scope.excluir = function (associacao) {
-        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacao.IdCadAssProd).then(function (response) {
+        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacao.Id).then(function (response) {
             $scope.assGrades = response.data;
         });
 
@@ -5927,6 +5511,20 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
             resolve: {
                 associacaoSelected: function () {
                     return idCadAss;
+                }
+            }
+        });
+    }
+
+    $scope.incluirEan = function (Id) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/produto/incluir_editar_EAN_Ass.html',
+            controller: 'incluiEANAssModalCtrl',
+            size: "lg",
+            windowClass: "animated fadeIn",
+            resolve: {
+                associacaoSelected: function () {
+                    return Id;
                 }
             }
         });
@@ -5979,77 +5577,32 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
 
     if (associacaoSelected != undefined) {
         $scope.nfe = associacaoSelected.ChaveNFE;
-        $scope.cnpj = associacaoSelected.CNPJ;
+        $scope.cnpj = associacaoSelected.CNPJ.replace('-', '').replace('.', '').replace('.', '').replace('/', '');
         $scope.observacao = associacaoSelected.Observacao;
         $scope.status = associacaoSelected.IdStatus;
     }
 
     if (associacaoSelected != undefined) {
-        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacaoSelected.IdCadAssProd).then(function (response) {
+        $http.get("http://localhost:50837/api/CadAssProdGrade/GetByIdCadAss?idCadAss=" + associacaoSelected.Id).then(function (response) {
             $scope.grades = response.data;
         });
     }
 
-    $http.get("http://localhost:50837/api/CadAssProd/GetLastId").then(function (response) {
-        $scope.IdCadAssProd = response.data + 1;
-    });
-
-    $http.get('http://localhost:50837/api/ViewProduto/GetAllAtivosEInativos').then(function (response) {
-        $scope.produtos = response.data;
-    });
-
-    $scope.onSelect = function ($item, $model, $label) {
-        $http.get('http://localhost:50837/api/ViewProduto/GetProdutoById?produto=' + $item).then(function (response) {
-            $scope.Eans = response.data;
-        });
-    };
-
     $scope.incluir = function () {
         if ($scope.associacaoForm.$valid) {
 
-            $scope.obj = { IdCadAssProd: $scope.IdCadAssProd, ChaveNFE: $scope.nfe, CNPJ: $scope.cnpj, IdStatus: 1, IdUsuario: $localStorage.user.Id };
+            $scope.obj = { ChaveNFE: $scope.nfe, CNPJ: associacaoSelected.CNPJ, IdStatus: 1, IdUsuario: $localStorage.user.Id };
 
-            alert(angular.toJson($scope.obj));
+            $http.post("http://localhost:50837/api/CadAssProd/Incluir", $scope.obj).then(function (response) {
 
-            /*$http.post("http://localhost:50837/api/CadAssProd/Incluir", $scope.obj).then(function (response) {
             }, function (response) {
                 return alert("Erro: " + response.status);
             });
-
-            $timeout(function () {
-                for (var i = 0; i < $scope.grades.length; i++) {
-                    $scope.objgrade = {
-                        IdCadAssProd: $scope.IdCadAssProd,
-                        Descricao: $scope.grades[i].produto,
-                        EAN: $scope.grades[i].EAN
-                    }
-
-                    $http.post("http://localhost:50837/api/CadAssProdGrade/Incluir", $scope.objgrade).then(function (response) {
-                    }, function (response) {
-                        return alert("Erro: " + response.status);
-                    })
-                }
-
-                $scope = {};
-                $scope.grades = [{}];
-                $uibModalInstance.close();
-            }, 1000);*/
-
-
+            $uibModalInstance.close();
         } else {
             $scope.associacaoForm.submitted = true;
         }
     }
-
-    $scope.addNew = function (grade) {
-        $scope.grades.push({});
-    };
-
-    $scope.remove = function (grade) {
-        if ($scope.grades.length > 1) {
-            $scope.grades.pop({});
-        }
-    };
 
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -6066,7 +5619,7 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
             }
 
             $scope.objLog = {
-                IdCadAssProd: associacaoSelected.IdCadAssProd, IdUsuario: $localStorage.user.Id, IdStatus: 7
+                IdCadAssProd: associacaoSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 7
             };
 
             $http.post("http://localhost:50837/api/CadAssProd/Concluir", $scope.obj).then(function (response) {
@@ -6113,8 +5666,75 @@ function assProdHistoricoModalCtrl($scope, $uibModalInstance, associacaoSelected
     });
 }
 
-function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal) {
+function incluiEANAssModalCtrl($scope, $uibModalInstance, $http, associacaoSelected, SweetAlert) {
+    $scope.grades = [{}];
+
+    $http.get('http://localhost:50837/api/ViewProduto/GetAllAtivosEInativos').then(function (response) {
+        $scope.produtos = response.data;
+    });
+
+    $scope.onSelect = function ($item, $model, $label) {
+        $http.get('http://localhost:50837/api/ViewProduto/GetProdutoById?produto=' + $item).then(function (response) {
+            $scope.Eans = response.data;
+        });
+    };
+
+    $scope.addNew = function (grade) {
+        $scope.grades.push({});
+    };
+
+    $scope.remove = function (grade) {
+        if ($scope.grades.length > 1) {
+            $scope.grades.pop({});
+        }
+    };
+
+    $scope.incluir = function () {
+        for (var i = 0; i < $scope.grades.length; i++) {
+            $scope.objgrade = {
+                IdCadAssProd: associacaoSelected,
+                Descricao: $scope.grades[i].produto,
+                EAN: $scope.grades[i].EAN
+            }
+
+            $http.post("http://localhost:50837/api/CadAssProdGrade/Incluir", $scope.objgrade).then(function (response) {
+                $scope = {};
+                $scope.grades = [{}];
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            })
+        }
+    }
+}
+
+function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal, SweetAlert) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
     $scope.usuarios;
+
+    $scope.usuarioLogado = $localStorage.user.Id;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
 
     $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
         $scope.usuarios = response.data;
@@ -6127,9 +5747,13 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
             windowClass: "animated fadeIn",
             resolve: {
                 cadUsuarioSelected: function () {
-                    return $scope.teste
+                    return null;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                $scope.usuarios = response.data;
+            });
         });
     }
 
@@ -6143,16 +5767,217 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                     return cadUsuario;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                $scope.usuarios = response.data;
+            });
         });
     }
 
-    $scope.excluir = function () {
+    $scope.excluir = function (cadUsuario) {
+        SweetAlert.swal({
+            title: "Deseja excluir o registro da pessoa: " + cadUsuario.Pessoa,
+            text: "Não será possivel recuperar o registro depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Excluido!",
+                        text: "O registro foi excluido com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
 
+                    $http.post("http://localhost:50837/api/CadUsuarioOperador/Excluir", cadUsuario).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                            $scope.usuarios = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a exclusão do registro",
+                        type: "error",
+                        timer: 5000
+                    });
+
+                }
+            });
     }
 
+    $scope.aprovar = function (cadUsuario) {
+        SweetAlert.swal({
+            title: "Deseja aprovar o registro da pessoa: " + cadUsuario.Pessoa,
+            text: "Não será possivel voltar o registro depois de aprovado!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, aprovar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 8 };
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Aprovado!",
+                        text: "O registro foi aprovado com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/CadUsuarioOperador/Aprovar", cadUsuario).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                            $scope.usuarios = response.data;
+                        });
+
+                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
+                        }, function (response) {
+                            return alert("Erro: " + response.status);
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a aprovação do registro",
+                        type: "error",
+                        timer: 5000
+                    });
+                }
+            });
+        //$http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
+        //}, function (response) {
+        //    return alert("Erro: " + response.status);
+        //});
+        //$uibModalInstance.close();
+    }
+
+    $scope.reprovar = function (cadUsuario) {
+        SweetAlert.swal({
+            title: "Deseja reprovar o registro da pessoa: " + cadUsuario.Pessoa,
+            text: "Não será possivel voltar o registro depois de aprovado!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, reprovar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 9 };
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Reprovado!",
+                        text: "O registro foi reprovar com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/CadUsuarioOperador/Reprovar", cadUsuario).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                            $scope.usuarios = response.data;
+                        });
+
+                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
+                        }, function (response) {
+                            return alert("Erro: " + response.status);
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a reprovação do registro",
+                        type: "error",
+                        timer: 5000
+                    });
+                }
+            });
+    }
+
+    $scope.concluir = function (cadUsuario) {
+        SweetAlert.swal({
+            title: "Deseja concluir o registro da pessoa: " + cadUsuario.Pessoa,
+            text: "Não será possivel voltar o registro depois de concluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, concluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Concluido!",
+                        text: "O registro foi concluido com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuario).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                            $scope.usuarios = response.data;
+                        });
+
+                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
+                        }, function (response) {
+                            return alert("Erro: " + response.status);
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a conclusão do registro",
+                        type: "error",
+                        timer: 5000
+                    });
+                }
+            });
+        //$http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
+        //}, function (response) {
+        //    return alert("Erro: " + response.status);
+        //});
+        //$uibModalInstance.close();
+    }
+
+    $scope.historico = function (cadUsuario) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/historico.html',
+            controller: 'cadUsuarioHistoricoModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                cadUsuarioSelected: function () {
+                    return cadUsuario;
+                }
+            }
+        });
+    }
 }
 
-function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelected, $http, $localStorage) {
+function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelected, $http, $localStorage, SweetAlert) {
     $scope.filiais;
     $scope.tipo = false;
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
@@ -6183,6 +6008,8 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         $scope.observacao = cadUsuarioSelected.Observacao;
         $scope.tipo = true;
         $scope.userCadastro = cadUsuarioSelected.IdUsuario;
+        $scope.usuarioCadastro = cadUsuarioSelected.IdUsuario;
+        $scope.idStatus = cadUsuarioSelected.IdStatus;
     }
 
     $scope.incluir = function () {
@@ -6195,6 +6022,11 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Incluir", $scope.obj).then(function (response) {
         }, function (response) {
             return alert("Erro: " + response.status);
+        });
+        SweetAlert.swal({
+            title: "A solicitação foi feita com sucesso!",
+            type: "success",
+            timer: 5000
         });
         $uibModalInstance.close();
     }
@@ -6224,13 +6056,317 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
     }
 
     $scope.concluir = function () {
+        $scope.objLog = { IdCadUsuOpe: cadUsuarioSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
+            $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
         }, function (response) {
             return alert("Erro: " + response.status);
+        });
+        SweetAlert.swal({
+            title: "Concluido!",
+            text: "O registro foi concluido com sucesso.",
+            type: "success",
+            timer: 5000
         });
         $uibModalInstance.close();
     }
 }
+
+function cadUsuarioHistoricoModalCtrl($scope, $uibModalInstance, cadUsuarioSelected, $http, $localStorage) {
+    $scope.historicos;
+
+    $http.get("http://localhost:50837/api/CadUsuarioOperadorLog/GetAllById?IdUsuLog=" + cadUsuarioSelected.Id).then(function (response) {
+        $scope.historicos = response.data;
+    });
+}
+
+function chamSuporteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.chamados;
+    $scope.assuntos;
+    $scope.usuarioLogado = $localStorage.user.Id;
+
+    $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+        $scope.chamados = response.data
+    })
+
+    $scope.incluir = function () {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/solicitar_editar_chamado.html',
+            controller: 'chamSuporteCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoSelected: function () {
+                    return null;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+                $scope.chamados = response.data;
+            });
+        });
+    }
+
+    $scope.visualizar = function (chamado) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/solicitar_editar_chamado.html',
+            controller: 'chamSuporteCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoSelected: function () {
+                    return chamado;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+                $scope.chamados = response.data;
+            });
+        });
+    }
+
+    $scope.excluir = function (chamado) {
+        SweetAlert.swal({
+            title: "Deseja excluir a solicitacao do: " + chamado.UsuarioCadastro.Nome + " " + chamado.UsuarioCadastro.Sobrenome,
+            text: "Não será possivel recuperar a solicitacao depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Excluido!",
+                        text: "A solicitacao foi excluida com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/ChamSuporte/Excluir", chamado).then(function (response) {
+                        $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+                            $scope.chamados = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a exclusão da solicitacao",
+                        type: "error",
+                        timer: 5000
+                    });
+
+                }
+            });
+    }
+
+    $scope.concluir = function (chamado) {
+        SweetAlert.swal({
+            title: "Deseja concluir a solicitacao do: " + chamado.UsuarioCadastro.Nome + " " + chamado.UsuarioCadastro.Sobrenome,
+            text: "Não será possivel recuperar a solicitacao depois de concluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, concluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $scope.objLog = {IdChamSuporte: chamado.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6};
+                    SweetAlert.swal({
+                        title: "Concluido!",
+                        text: "A solicitacao foi concluida com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/ChamSuporte/Concluir", chamado).then(function (response) {
+                        $http.post("http://localhost:50837/api/ChamSuporteLog/Incluir", $scope.objLog).then(function (response) {
+                            $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+                                $scope.chamados = response.data;
+                            });
+                        }, function (response) {
+                            return alert("Erro: " + response.status);
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a conclusão da solicitacao",
+                        type: "error",
+                        timer: 5000
+                    });
+
+                }
+            });
+    }
+
+    $scope.vincular = function (chamado) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/vincular_chamado.html',
+            controller: 'chamSuporteVinculoCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoSelected: function () {
+                    return chamado;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/ChamSuporte/GetAll").then(function (response) {
+                $scope.chamados = response.data;
+            });
+        });
+    }
+
+    $scope.historico = function (chamado) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/historico.html',
+            controller: 'historicoChamSuporteModalCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoSelected: function () {
+                    return chamado;
+                }
+            }
+        });
+    }
+
+}
+
+function chamSuporteCtrlModalInstance($scope, $uibModalInstance, chamadoSelected, SweetAlert, $http, $localStorage) {
+    $scope.assuntos;
+    $scope.status;
+    $scope.usuarioCadastro;
+    $scope.usuarioLogado = $localStorage.user.Id;
+    $http.get("http://localhost:50837/api/ChamSuporte/GetAssuntos").then(function (response) {
+        $scope.assuntos = response.data
+    })
+
+    if (chamadoSelected != undefined) {
+        $scope.usuarioCadastro = chamadoSelected.IdUsuario;
+        $scope.assunto = chamadoSelected.IdAssunto;
+        $scope.setor = chamadoSelected.Setor;
+        $scope.descricao = chamadoSelected.Descricao;
+        $scope.status = chamadoSelected.IdStatus;
+    }
+
+    $scope.incluir = function () {
+        $scope.obj = { IdAssunto: $scope.assunto, Setor: $scope.setor, Descricao: $scope.descricao, IdStatus: 1, IdUsuario: $localStorage.user.Id }
+        $http.post("http://localhost:50837/api/ChamSuporte/Incluir", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Inclusão feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.alterar = function () {
+        $scope.obj = {
+            IdAssunto: $scope.assunto, Setor: $scope.setor, Descricao: $scope.descricao,
+            IdStatus: chamadoSelected.IdStatus, IdUsuario: chamadoSelected.IdUsuario, IdVinculado: chamadoSelected.IdVinculado,
+            DataInclusao: chamadoSelected.DataInclusao, Id: chamadoSelected.Id
+        }
+        $http.post("http://localhost:50837/api/ChamSuporte/Alterar", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Alteração feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
+
+function chamSuporteVinculoCtrlModalInstance($scope, $uibModalInstance, SweetAlert, $http, chamadoSelected) {
+    $scope.usuariosSuporte;
+    $scope.usuarioSuporte = chamadoSelected.IdVinculado;
+
+    $http.get("http://localhost:50837/api/Usuario/GetAllTI").then(function (response) {
+        $scope.usuariosSuporte = response.data
+    });
+
+    $scope.salvar = function () {
+        $scope.obj = {
+            IdAssunto: chamadoSelected.IdAssunto, Setor: chamadoSelected.Setor, Descricao: chamadoSelected.Descricao,
+            IdStatus: chamadoSelected.IdStatus, IdUsuario: chamadoSelected.IdUsuario, IdVinculado: $scope.usuarioSuporte,
+            DataInclusao: chamadoSelected.DataInclusao, Id: chamadoSelected.Id
+        };
+
+        $http.post("http://localhost:50837/api/ChamSuporte/Alterar", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Vinculo feito com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
+
+function historicoChamSuporteModalCtrl($scope, $uibModalInstance, chamadoSelected, $http, $localStorage) {
+    $scope.historicos
+
+    $http.get("http://localhost:50837/api/ChamSuporteLog/GetAllByIdChamSuporte?IdChamSuporte=" + chamadoSelected.Id).then(function (response) {
+        $scope.historicos = response.data;
+        console.log(response.data);
+    });
+}
+
+function chamSuporteAssuntoCtrl($scope, $uibModalInstance, $http, $localStorage, SweetAlert)
+{ }
+
+function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $localStorage, SweetAlert)
+{ }
 
 /**
  *
@@ -6388,5 +6524,11 @@ angular
     .controller('associacaoProdutoCtrl', associacaoProdutoCtrl)
     .controller('associacaoProdutoModalInstanceCtrl', associacaoProdutoModalInstanceCtrl)
     .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl)
+    .controller('incluiEANAssModalCtrl', incluiEANAssModalCtrl)
     .controller('cadUsuarioCtrl', cadUsuarioCtrl)
-    .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance);
+    .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance)
+    .controller('cadUsuarioHistoricoModalCtrl', cadUsuarioHistoricoModalCtrl)
+    .controller('chamSuporteCtrl', chamSuporteCtrl)
+    .controller('chamSuporteCtrlModalInstance', chamSuporteCtrlModalInstance)
+    .controller('chamSuporteVinculoCtrlModalInstance', chamSuporteVinculoCtrlModalInstance)
+    .controller('historicoChamSuporteModalCtrl', historicoChamSuporteModalCtrl);

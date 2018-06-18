@@ -81,6 +81,7 @@
     <Compile Include="Entities\AlertaStatus.cs" />
     <Compile Include="Entities\AlertaTipo.cs" />
     <Compile Include="Entities\AlertaUltimoCustoHistorico.cs" />
+    <Compile Include="Entities\Aniversariantes.cs" />
     <Compile Include="Entities\CadFornecedorDesp.cs" />
     <Compile Include="Entities\CadMotivoDesp.cs" />
     <Compile Include="Entities\CadSitDesp.cs" />
@@ -101,7 +102,11 @@
     <Compile Include="Entities\CadAssProd.cs" />
     <Compile Include="Entities\CadAssProdGrade.cs" />
     <Compile Include="Entities\CadUsuarioOperador.cs" />
+    <Compile Include="Entities\CadUsuarioOperadorLog.cs" />
     <Compile Include="Entities\Caixa.cs" />
+    <Compile Include="Entities\ChamSuporte.cs" />
+    <Compile Include="Entities\ChamSuporteAssunto.cs" />
+    <Compile Include="Entities\ChamSuporteLog.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
     <Compile Include="Entities\DTOS\PlanoDeContasDTO.cs" />
@@ -146,6 +151,7 @@
     <Compile Include="Entities\VwProdutoEAN.cs" />
     <Compile Include="Entities\VwPromocao.cs" />
     <Compile Include="Entities\VwPromocaoItem.cs" />
+    <Compile Include="Entities\VwAssociacoesConcluidas.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />

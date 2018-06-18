@@ -30,9 +30,9 @@
                         <tr>
                             <th>Id</th>
                             <th>Usuario</th>
+                            <th></th>
                             <th>Status</th>
                             <th>Data Inclusao</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,20 +40,21 @@
                             <td>{{associacao.Id}}</td>
                             <td>{{associacao.Usuario.Nome}} {{associacao.Usuario.Sobrenome}}</td>
                             <td>
-                                <button ng-class="associacao.SitCadProd.IdSitProd == 1 ?
-                                                'btn btn-xs btn-rounded btn-success' :
-                                                (associacao.SitCadProd.IdSitProd == 7  ?
-                                                'btn btn-xs btn-rounded btn-warning' :
-                                                'btn btn-xs btn-rounded btn-primary')" ng-click="historico(associacao.IdCadAssProd);">
-                                    <i class="fa fa-comments-o"></i>  {{associacao.SitCadProd.Situacao}}
-                                </button>
-                            </td>
-                            <td>{{associacao.DataInclusao | date:'dd/MM/yyyy - HH:mm:ss'}}</td>
-                            <td>
+                                <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-show="(associacao.IdUsuario == idUsuarioLogado) && (associacao.SitCadProd.IdSitProd == 1)" ng-click="incluirEan(associacao.Id)"><i class="fa fa-plus"> DUN\EAN</i></button>
                                 <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="visualizar(associacao)"><i class="fa fa-eye"></i> Visualizar</button>
                                 <!--<button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="(grupo == 1 || grupo == 10 || grupo == 11) && (associacao.SitCadProd.IdSitProd == 1)" ng-click="concluir(associacao)"><i class="fa fa-check"></i> Concluir</button>-->
                                 <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="(associacao.IdUsuario == idUsuarioLogado) && (associacao.SitCadProd.IdSitProd == 1)" ng-click="excluir(associacao)"><i class="fa fa-ban"></i> Excluir</button>
                             </td>
+                            <td>
+                                <button ng-class="associacao.SitCadProd.IdSitProd == 1 ?
+                                                'btn btn-xs btn-rounded btn-success' :
+                                                (associacao.SitCadProd.IdSitProd == 7  ?
+                                                'btn btn-xs btn-rounded btn-warning' :
+                                                'btn btn-xs btn-rounded btn-primary')" ng-click="historico(associacao.Id);">
+                                    <i class="fa fa-comments-o"></i>  {{associacao.SitCadProd.Situacao}}
+                                </button>
+                            </td>
+                            <td>{{associacao.DataInclusao | date:'dd/MM/yyyy - HH:mm:ss'}}</td>
                         </tr>
                     </tbody>
                 </table>

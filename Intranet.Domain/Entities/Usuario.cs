@@ -35,6 +35,10 @@ namespace Intranet.Domain.Entities
             CadAssProd = new HashSet<CadAssProd>();
             CadAssProdLogs = new HashSet<CadAssProdLog>();
             CadUsuariosOperadores = new HashSet<CadUsuarioOperador>();
+            CadUsuariosOperadoresLog = new HashSet<CadUsuarioOperadorLog>();
+            ChamadosSuporteVinculo = new HashSet<ChamSuporte>();
+            ChamadosSuporteUsuario = new HashSet<ChamSuporte>();
+            ChamadosSuporteLogUsuario = new HashSet<ChamSuporteLog>();
         }
 
         [DataMember]
@@ -56,17 +60,17 @@ namespace Intranet.Domain.Entities
         [Required]
         public string Email { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public bool EmailConfirmed { get; set; }
 
         [DataMember]
         [Required]
         public string PasswordHash { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public bool Bloqueado { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public DateTime DataInclusao { get; set; }
 
         [DataMember]
@@ -121,5 +125,13 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<CadAssProdLog> CadAssProdLogs { get; set; }
 
         public virtual ICollection<CadUsuarioOperador> CadUsuariosOperadores { get; set; }
+
+        public virtual ICollection<CadUsuarioOperadorLog> CadUsuariosOperadoresLog { get; set; }
+
+        public virtual ICollection<ChamSuporte> ChamadosSuporteVinculo { get; set; }
+
+        public virtual ICollection<ChamSuporte> ChamadosSuporteUsuario { get; set; }
+
+        public virtual ICollection<ChamSuporteLog> ChamadosSuporteLogUsuario { get; set; }
     }
 }

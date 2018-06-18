@@ -1,5 +1,6 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -34,6 +35,7 @@ namespace Intranet.API.Controllers
         {
 
             var context = new AlvoradaContext();
+            var emailService = new EmailService();
 
             try
             {
@@ -41,6 +43,7 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 1;
                 context.CadUsuariosOperadores.Add(obj);
                 context.SaveChanges();
+                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
             }
             catch (Exception ex)
             {
@@ -97,6 +100,54 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage Aprovar([FromBody] CadUsuarioOperador obj)
+        {
+
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                obj.IdStatus = 8;
+                context.SaveChanges();
+                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+
+        }
+
+        public HttpResponseMessage Reprovar([FromBody] CadUsuarioOperador obj)
+        {
+
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                obj.IdStatus = 9;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+
+        }
+
         public HttpResponseMessage Concluir([FromBody] CadUsuarioOperador obj)
         {
 
@@ -104,9 +155,9 @@ namespace Intranet.API.Controllers
 
             try
             {
+                context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 6;
                 obj.DataConclusao = DateTime.Now;
-                context.Entry(obj).State = EntityState.Modified;
                 context.SaveChanges();
             }
             catch (Exception ex)

@@ -1,0 +1,25 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel();">&times;</button>
+        <h4 class="modal-title">Vinculo de Chamados</h4>
+        <small class="font-bold">Tela exclusivamente para vinculo de chamados.</small>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form role="form">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Assunto</label>
+                        <select class="form-control" type="text" name="assunto" ng-model="usuarioSuporte" ng-options="usuarioSuportecomplete.Id as usuarioSuportecomplete.Nome + ' ' + usuarioSuportecomplete.Sobrenome for usuarioSuportecomplete in usuariosSuporte"></select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <input class="btn btn-primary" type="button" value="Salvar" ng-click="salvar();" />
+            <input class="btn btn-white" type="button" value="Fechar" ng-click="cancel();" />
+        </div>
+    </div>
+</div>

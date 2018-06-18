@@ -17,9 +17,9 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" ng-controller="promocaoCtrl">
-    <div class="row">
+    <!--<div class="row">
         <div class="col-lg-3">
-            <!--<input type="text" class="form-control" ng-model="promocaoTipo" />-->
+            <input type="text" class="form-control" ng-model="promocaoTipo" />
             <select ng-model="promocaoTipo" class="form-control">
                 <option value="">Selecione Tipo de Promocao</option>
                 <option value="tabloide">Tabloide</option>
@@ -60,8 +60,8 @@
         <div class="col-lg-offset-1 col-lg-2">
             <input type="button" value="Buscar" class="btn btn-rounded btn-primary" ng-click="pesquisar();" />
         </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div ng-show="promocoesItem.length > 0">
             <div class="ibox float-e-margins">
                 <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="ativarPromocao(promocoesItem)"><i class="fa fa-check"></i> Ativar</button>
@@ -93,9 +93,8 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -130,5 +129,48 @@
                 </div>
             </div>
         </div>
+    </div>-->
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Ano *</label>
+            <select multiple chosen class="chosen-select" id="ano" name="ano" ng-model="ano">
+                <option value=2018>2018</option>
+                <option value=2019>2019</option>
+                <option value=2020>2020</option>
+                <option value=2021>2021</option>
+                <option value=2022>2022</option>
+                <option value="">Todos</option>
+            </select>
+        </div>
     </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Ano *</label>
+            <select multiple chosen class="chosen-select" id="mes" name="mes" ng-model="mes">
+                <option value=Janeiro>Janeiro</option>
+                <option value=Fevereiro>Fevereiro</option>
+                <option value=Março>Março</option>
+                <option value=Abril>Abril</option>
+                <option value=Junho>Junho</option>
+                <option value=Julho>Julho</option>
+                <option value=Agosto>Agosto</option>
+                <option value=Setembro>Setembro</option>
+                <option value=Outubro>Outubro</option>
+                <option value=Novembro>Novembro</option>
+                <option value=Dezembro>Dezembro</option>
+                <option value="">Todos</option>
+            </select>
+        </div>
+    </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Bar Chart Example</h5>
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"></canvas>
+            </div>
+        </div>
+    
 </div>

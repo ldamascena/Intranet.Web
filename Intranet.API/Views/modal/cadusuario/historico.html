@@ -1,0 +1,29 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Historico</h4>
+    </div>
+    <div class="modal-body">
+        <div id="vertical-timeline"  class="bg vertical-container light-timeline no-margins" ng-repeat="historico in historicos">
+            <div class="vertical-timeline-block">
+                <div ng-class="{'vertical-timeline-icon lazur-bg' : historico.SitCadProd.IdSitProd == 8,
+                                'vertical-timeline-icon navy-bg' : historico.SitCadProd.IdSitProd == 6,
+                                'vertical-timeline-icon red-bg' : historico.SitCadProd.IdSitProd == 9}">
+                    <i ng-class="((historico.SitCadProd.IdSitProd == 8 || historico.SitCadProd.IdSitProd == 6) ?
+                                           'fa fa-check' :
+                                           'fa fa-times')"></i>
+                </div>
+                <div class="vertical-timeline-content">
+                    <h2>{{historico.Usuario.Nome}} {{historico.Usuario.Sobrenome}}</h2>
+                    <p>
+                        Status alterado para: {{historico.SitCadProd.Situacao}}
+                    </p>
+                    <span class="vertical-date">
+                        <small>{{historico.DataLog | date:'dd/MM/yyyy - HH:mm:ss'}}</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

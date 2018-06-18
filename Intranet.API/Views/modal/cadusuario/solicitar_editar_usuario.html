@@ -7,54 +7,54 @@
         <div class="modal-body">
             <div class="form-group">
                 <label>Tipo de Cadastro</label>
-                <select id="tipocadastro" name="tipocadastro" class="form-control" ng-model="tipocadastro" ng-options="tipocadastrocomplete for tipocadastrocomplete in tiposdecadastro">
+                <select id="tipocadastro" name="tipocadastro" class="form-control" ng-model="tipocadastro" ng-options="tipocadastrocomplete for tipocadastrocomplete in tiposdecadastro" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                 </select>
             </div>
             <div class="form-group">
                 <label>Pessoa</label>
-                <input type="text" id="pessoa" name="pessoa" ng-model="pessoa" class="form-control" />
+                <input type="text" id="pessoa" name="pessoa" ng-model="pessoa" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
             </div>
             <div class="form-group">
                 <label>Setor</label>
-                <select id="setor" name="setor" class="form-control" ng-model="setor" ng-options="setorcomplete for setorcomplete in setores"></select>
+                <select id="setor" name="setor" class="form-control" ng-model="setor" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="setorcomplete for setorcomplete in setores"></select>
             </div>
             <div class="form-group">
                 <label>Filial</label>
-                <select id="filial" name="filial" class="form-control" ng-model="filial" ng-options="filialcomplete.nmFilial as filialcomplete.nmFilial for filialcomplete in filiais"></select>
+                <select id="filial" name="filial" class="form-control" ng-model="filial" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="filialcomplete.nmFilial as filialcomplete.nmFilial for filialcomplete in filiais"></select>
             </div>
             <div class="form-group">
                 <div class="checkbox checkbox-inline checkbox-danger">
-                    <input id="comercial" type="checkbox" ng-model="comercial">
+                    <input id="comercial" type="checkbox" ng-model="comercial" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="comercial">
                         Comercial
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-primary">
-                    <input id="financeiro" type="checkbox" ng-model="financeiro">
+                    <input id="financeiro" type="checkbox" ng-model="financeiro" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="financeiro">
                         Financeiro
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-warning">
-                    <input id="loja2" type="checkbox" ng-model="loja2">
+                    <input id="loja2" type="checkbox" ng-model="loja2" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="loja2">
                         Loja2
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-warning">
-                    <input id="financeiro" type="checkbox" ng-model="concentrador">
+                    <input id="concentrador" type="checkbox" ng-model="concentrador" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="concentrador">
                         Concentrador
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-warning">
-                    <input id="pdv" type="checkbox" ng-model="pdv">
+                    <input id="pdv" type="checkbox" ng-model="pdv" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="pdv">
                         Pdv
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-success">
-                    <input id="wms" type="checkbox" ng-model="wms">
+                    <input id="wms" type="checkbox" ng-model="wms" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="wms">
                         WMS
                     </label>
@@ -62,13 +62,13 @@
             </div>
             <div class="form-group">
                 <div class="checkbox checkbox-inline checkbox-info">
-                    <input id="pidgin" type="checkbox" ng-model="pidgin">
+                    <input id="pidgin" type="checkbox" ng-model="pidgin" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="pidgin">
                         Pidgin
                     </label>
                 </div>
                 <div class="checkbox checkbox-inline checkbox-info">
-                    <input id="email" type="checkbox" ng-model="email">
+                    <input id="email" type="checkbox" ng-model="email" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="email">
                         Email
                     </label>
@@ -76,14 +76,13 @@
             </div>
             <div class="form-group">
                 <label>Observacao</label>
-                <textarea id="observacao" name="observacao" ng-model="observacao" class="form-control"></textarea>
+                <textarea id="observacao" name="observacao" ng-model="observacao" class="form-control" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)"></textarea>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" ng-show="tipo != true" ng-click="incluir()">Incluir</button>
-            <button type="submit" class="btn btn-primary" ng-show="(userCadastro == userLogado) && status == 1" ng-click="alterar()">Alterar</button>
-            <button type="submit" class="btn btn-danger" ng-show="(userCadastro == userLogado) && status == 1" ng-click="excluir()">Excluir</button>
-            <button type="submit" class="btn btn-primary" ng-show="grupo == 'Indicadores' && status == 1" ng-click="concluir()">Concluir</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == false" ng-click="incluir()">Incluir</button>
+            <button type="submit" class="btn btn-primary" ng-show="(usuarioCadastro == userLogado) && status == 1" ng-click="alterar()">Alterar</button>
+            <button type="submit" class="btn btn-primary" ng-show="grupo == 'Indicadores' && status == 8" ng-click="concluir()">Concluir</button>
         </div>
     </form>
 </div>

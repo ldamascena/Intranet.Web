@@ -75,5 +75,8 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public virtual Usuario Usuario { get; set; }
+
+        [DataMember]
+        public virtual SitCadProd SitCadProd { get; set; }
     }
 }

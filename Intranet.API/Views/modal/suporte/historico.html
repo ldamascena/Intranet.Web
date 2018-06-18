@@ -1,0 +1,33 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Historico</h4>
+    </div>
+    <div class="modal-body">
+        <div id="vertical-timeline" class="vertical-container light-timeline no-margins" ng-repeat="historico in historicos">
+            <div class="vertical-timeline-block">
+                <div ng-class="(historico.Status.IdSitProd == 2 || historico.Status.IdSitProd == 4 || historico.Status.IdSitProd == 6) ?
+                                           'vertical-timeline-icon navy-bg' :
+                                            (historico.Status.IdSitProd == 7  ?
+                                            'vertical-timeline-icon yellow-bg' :
+                                           'vertical-timeline-icon red-bg')">
+                    <i ng-class="(historico.Status.IdSitProd == 2 || historico.Status.IdSitProd == 4 || historico.Status.IdSitProd == 6) ?
+                                           'fa fa-check' :
+                                            (historico.Status.IdSitProd == 7  ?
+                                            'fa fa-exclamation' :
+                                           'fa fa-times')"></i>
+                </div>
+                <div class="vertical-timeline-content">
+                    <h2>{{historico.UsuarioLog.Nome}} {{historico.UsuarioLog.Sobrenome}}</h2>
+                    <p>
+                        Status alterado para: {{historico.Status.Situacao}}
+                    </p>
+                    <span class="vertical-date">
+                        <small>{{historico.DataLog | date:'dd/MM/yyyy - HH:mm:ss'}}</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>
