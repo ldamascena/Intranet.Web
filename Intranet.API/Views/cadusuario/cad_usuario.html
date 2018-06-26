@@ -81,7 +81,7 @@
                                     <button class="btn btn-sm btn-outline btn-primary btn-rounded" ng-show="usuario.IdStatus == 1 && grupo == 'DP/RH'" type="button" ng-click="aprovar(usuario)"><i class="fa fa-edit"></i> Aprovar</button>
                                     <button class="btn btn-sm btn-outline btn-danger btn-rounded" ng-show="usuario.IdStatus == 1 && grupo == 'DP/RH'" type="button" ng-click="reprovar(usuario)"><i class="fa fa-ban"></i> Reprovar</button>
                                     <button class="btn btn-sm btn-outline btn-danger btn-rounded" ng-show="usuarioLogado == usuario.Usuario.Id && usuario.IdStatus == 1" type="button" ng-click="excluir(usuario)"><i class="fa fa-ban"></i> Excluir</button>
-                                    <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="grupo == 'Indicadores' && usuario.IdStatus == 8" ng-click="concluir(usuario)"><i class="fa fa-edit"></i> Concluir</button>
+                                    <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="(grupo == 'Indicadores' || grupo == 'Admin') && usuario.IdStatus == 8" ng-click="concluir(usuario)"><i class="fa fa-edit"></i> Concluir</button>
                                 </td>
                             </tr>
                         </tbody>

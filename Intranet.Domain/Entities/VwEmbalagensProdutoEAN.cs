@@ -13,7 +13,10 @@ namespace Intranet.Domain.Entities
     public partial class VwEmbalagensProdutoEAN
     {
         [DataMember]
-        public long? CdEAN { get; set; }
+        public int CdProduto { get; set; }
+
+        //[DataMember]
+        //public long? CdEAN { get; set; }
 
         [DataMember]
         [Key]

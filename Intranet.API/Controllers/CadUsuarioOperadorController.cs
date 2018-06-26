@@ -43,7 +43,8 @@ namespace Intranet.API.Controllers
                 obj.IdStatus = 1;
                 context.CadUsuariosOperadores.Add(obj);
                 context.SaveChanges();
-                emailService.SendEmail("ldamascena@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+                emailService.SendEmail("vaniadp@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+                emailService.SendEmail("arquivo@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
             }
             catch (Exception ex)
             {
@@ -111,7 +112,7 @@ namespace Intranet.API.Controllers
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 8;
                 context.SaveChanges();
-                emailService.SendEmail("ldamascena@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+                emailService.SendEmail("clima@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
             }
             catch (Exception ex)
             {

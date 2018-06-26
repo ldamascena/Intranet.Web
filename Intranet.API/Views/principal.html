@@ -13,49 +13,42 @@
 </div>
 <div class="row" ng-controller="MainCtrl">
     <div class="wrapper wrapper-content  animated fadeInRight article">
-        <div class="row">
+        <div class="row" ng-show="showMessage">
             <div class="col-lg-10 col-lg-offset-1">
                 <div class="ibox">
                     <div class="ibox-content">
                         <div class="text-center article-title">
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> {{Dia | date:'dd - MMMM - yyyy'}}</span>
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> {{hoje | date:'dd - MMMM - yyyy'}}</span>
                             <h1>
                                 Parabéns Aniversariantes do Dia
                             </h1>
                         </div>
                         <p>
-                            Feliz aniversário! Que você faça desse dia, um momento muito especial, pois momentos como esses são para serem lembrados. Aproveite o seu dia com muitos sorrisos e alegrias! Você merece tudo de bom, pois é uma pessoa muito especial!
-                        </p>
-                        <p>
-                            <i>
-                                Parabéns!
-                            </i>
+                            <img src="../img/gallery/ANIVERSARIOSM01.jpg" style="width:99%;" />
                         </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="wrapper wrapper-content">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Aniversariantes do Mês</h5>
                     </div>
-                    <div class="ibox-content">
-                        <table class="table table-hover no-margins">
+                    <div class="ibox-content" style="padding: 20px 10px 40px;">
+                        <table class="table table-hover table-bordered  no-margins">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
-                                    <th></th>
                                     <th>Data</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="aniversariante in aniversariantes" ng-style="{'background-color' : aniversariante.Aniversario == Dia ? '#2c65ba' : '', 'color' : aniversariante.Aniversario == Dia ? 'white' : ''}">
+                                <tr ng-repeat="aniversariante in aniversariantes" ng-style="{'background-color' : aniversariante.Dia == diaAtual && aniversariante.Mes == mesAtual ? '#2c65ba' : '', 'color' : aniversariante.Dia == diaAtual && aniversariante.Mes == mesAtual ? 'white' : ''}">
                                     <td class="table-info">{{aniversariante.Nome}} <b>({{aniversariante.Setor}})</b></td>
-                                    <td>{{aniversariante.Aniversario == dataAtual}}</td>
-                                    <td><b>{{aniversariante.Aniversario | date:'dd - MMMM (EEEE)'}} </b></td>
+                                    <td><b>{{aniversariante.Aniversario | date:'dd - MMMM'}} </b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -63,4 +56,23 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6">
+            <div class="wrapper wrapper-content">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Cardápio da Semana</h5>
+                    </div>
+                    <div class="ibox-content" style="padding: 20px 10px 40px;">
+                        <div class="middle-box text-center animated fadeInRightBig">
+                            <h3 class="font-bold">Em Construção</h3>
+                            <div class="error-desc">
+                                Em breve teremos o cardápio semanal disponivel!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>

@@ -18,13 +18,13 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return await context.CadSolicitacoesDesp.ToListAsync();
+            return await context.CadSolicitacoesDesp.Take(2000).OrderByDescending(x => x.DataInclusao).ToListAsync();
         }
         public IEnumerable<CadSolDesp> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
 
-            var result = context.CadSolicitacoesDesp.Where(x => x.IdUsuarioInclusao == idUsuario || x.IdAprovador == idUsuario).ToList();
+            var result = context.CadSolicitacoesDesp.Where(x => x.IdUsuarioInclusao == idUsuario || x.IdAprovador == idUsuario);
 
             return result;
         }

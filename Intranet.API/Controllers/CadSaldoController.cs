@@ -102,5 +102,37 @@ namespace Intranet.API.Controllers
             return false;
         }
 
+        public HttpResponseMessage IncluirLog(CadSaldoControleLog model)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                model.DataLog = DateTime.Now;
+                context.CadSaldosControleLogs.Add(model);
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public IEnumerable<CadSaldoControleLog> GetAllLogs()
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSaldosControleLogs;
+        }
+
+        public IEnumerable<CadSaldoControleLog> GetAllLogsByUser(int IdUsuario, DateTime dataInicial, DateTime dataFinal)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSaldosControleLogs.Where(x => x.IdUsuario == IdUsuario && x.DataLog >= dataInicial && x.DataLog <= dataFinal).OrderByDescending(x => x.DataLog);
+        }
     }
 }

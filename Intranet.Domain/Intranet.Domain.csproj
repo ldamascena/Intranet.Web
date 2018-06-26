@@ -103,6 +103,7 @@
     <Compile Include="Entities\CadAssProdGrade.cs" />
     <Compile Include="Entities\CadUsuarioOperador.cs" />
     <Compile Include="Entities\CadUsuarioOperadorLog.cs" />
+    <Compile Include="Entities\CadSaldoControleLog.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ChamSuporte.cs" />
     <Compile Include="Entities\ChamSuporteAssunto.cs" />

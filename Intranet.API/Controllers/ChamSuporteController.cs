@@ -101,5 +101,43 @@ namespace Intranet.API.Controllers
 
             return context.ChamadosSuporteAssuntos;
         }
+
+        public HttpResponseMessage IncluirAssunto(ChamSuporteAssunto model)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                context.ChamadosSuporteAssuntos.Add(model);
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage AlterarAssunto(ChamSuporteAssunto model)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }

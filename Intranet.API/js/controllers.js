@@ -5,20 +5,18 @@
  */
 function MainCtrl($http, $scope) {
     $scope.aniversariantes;
-    $scope.dataAtual;
-    
+    var dataAtual = new Date();
+    $scope.hoje = dataAtual;
+    $scope.mesAtual = dataAtual.getMonth() + 1;
+    $scope.diaAtual = dataAtual.getDate();
+
+    $http.get("http://localhost:50837/api/Aniversariantes/GetBirthdayToday").then(function (response) {
+        $scope.showMessage = response.data
+    });
+
     $http.get("http://localhost:50837/api/Aniversariantes/GetAllByMonth").then(function (response) {
         $scope.aniversariantes = response.data
-        console.log($scope.aniversariantes);
-    })
-
-    $http.get("http://localhost:50837/api/Aniversariantes/GetCurrentDate").then(function (response) {
-        $scope.dataAtual = response.data
-        $scope.dataAtual = $scope.dataAtual.substring(0, 19);
-        console.log($scope.dataAtual);
-    })
-
-
+    });
 };
 
 function topNavCtrl($scope, $localStorage, $http, $uibModal, SweetAlert) {
@@ -949,12 +947,12 @@ function altProd($scope, $uibModal, $http, SweetAlert, $localStorage) {
     $scope.embalagens;
 
     $scope.Buscar = function () {
-        $http.get("http://localhost:50837/api/ViewProduto/GetByEAN?Ean=" + $scope.Ean).then(function (response) {
+        $http.get("http://localhost:50837/api/ViewProduto/GetByCdProduto?IdProduto=" + $scope.Ean).then(function (response) {
             $scope.produto = response.data;
             console.log($scope.produto);
         })
 
-        $http.get("http://localhost:50837/api/ViewProduto/GetEmbalagensByEAN?Ean=" + $scope.Ean).then(function (response) {
+        $http.get("http://localhost:50837/api/ViewProduto/GetEmbalagensByCdProduto?IdProduto=" + $scope.Ean).then(function (response) {
             $scope.embalagens = response.data;
             console.log($scope.embalagens);
         })
@@ -4481,57 +4479,57 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
         }
 
 
-        $http.get("http://localhost:50837/api/CadSaldo/GetFechado?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadSaldo/GetFechado?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.foiFechado = response.data;
         });
 
         // Registros 
 
-        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadCaixa/GetAllByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.caixas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetAllByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.outrasdespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadEntrada/GetAllByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.entradas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadComposicao/GetAllByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.composicoes = response.data;
         });
 
-        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $scope.loja).then(function (response) {
+        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=1").then(function (response) {
             $scope.despesas = response.data;
         });
 
         // Totais
 
 
-        $http.get("http://localhost:50837/api/CadSaldo/GetSaldoByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadSaldo/GetSaldoByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalCaixaGeral = response.data.Saldo;
         });
 
-        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadCaixa/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalCaixas = response.data;
         });
 
 
-        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalDespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadOutrasDesp/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalOutrasDespesas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadEntrada/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalEntradas = response.data;
         });
 
-        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=" + $scope.loja + "&date=" + $scope.dateFormat).then(function (response) {
+        $http.get("http://localhost:50837/api/CadComposicao/GetTotalByUserAndDate?idUsuario=1&date=" + $scope.dateFormat).then(function (response) {
             $scope.totalComposicao = response.data;
         });
     }
@@ -4961,9 +4959,8 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
     $scope.fechar = function () {
 
-        $scope.obj = { IdUsuario: $scope.loja, DataInclusao: $scope.dateFormat };
+        $scope.obj = { IdUsuario: 1, DataInclusao: $scope.dateFormat, DataReabriu: $scope.dateFormat, IdUsuarioReabriu: $localStorage.user.Id };
 
-        alert($scope.foiFechado);
         if ($scope.foiFechado) {
             SweetAlert.swal({
                 title: "Deseja reabrir o dia?",
@@ -4978,10 +4975,11 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
                 function (isConfirm) {
                     if (isConfirm) {
                         $http.post("http://localhost:50837/api/CadSaldo/Excluir", $scope.obj).then(function (response) {
+                            $http.post("http://localhost:50837/api/CadSaldo/IncluirLog", $scope.obj).then(function (response) {
+                            });
                             $scope.foiFechado = response.data;
                             SweetAlert.swal("Reaberto!", "Dia reaberto com sucesso!", "success");
                         });
-
                     }
                     else {
                         SweetAlert.swal("Cancelado", "Você cancelou a reabertura do dia!", "error");
@@ -4991,6 +4989,19 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
         else {
             SweetAlert.swal("Cancelado", "Dia ainda não foi fechado!", "error");
         }
+    }
+
+    $scope.historico = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/controledecaixa/incluir_editar_cadoutrasdespesas.html',
+            controller: 'outrasdespesasModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                DiaSelected: function () {
+                    return true;
+                }
+            }
+        })
     }
 }
 
@@ -5026,6 +5037,101 @@ function supRelAcompanhamentoCtrl($scope, $http) {
             $scope.relDados = response.data;
         });
     }
+}
+
+function controleCaixaLogsCtrl($scope, $http) {
+    $scope.dtinicio;
+    $scope.dtfim;
+    $scope.logs;
+    $scope.lojas;
+
+    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
+        $scope.lojas = response.data;
+    });
+
+    $scope.buscar = function () {
+
+        $http.get("http://localhost:50837/api/CadSaldo/GetAllLogsByUser?IdUsuario=" + $scope.loja + "&dataInicial=" + $scope.dtinicio.toLocaleDateString('en-US') + "&dataFinal=" + $scope.dtfim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.logs = response.data;
+        });
+    }
+
+    $scope.today = function () {
+        $scope.dtinicio = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.dtinicio = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+        var date = data.date,
+          mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.dtinicio = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+          mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+
+
 }
 
 function parametroFilialCtrl($scope, DTOptionsBuilder, $http, $uibModal) {
@@ -6040,10 +6146,10 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         }
 
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Alterar", $scope.obj).then(function (response) {
+            $uibModalInstance.close();
         }, function (response) {
             return alert("Erro: " + response.status);
         });
-        $uibModalInstance.close();
     }
 
     $scope.excluir = function () {
@@ -6058,6 +6164,13 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
     $scope.concluir = function () {
         $scope.objLog = { IdCadUsuOpe: cadUsuarioSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
+            $uibModalInstance.close();
+            SweetAlert.swal({
+                title: "Concluido!",
+                text: "O registro foi concluido com sucesso.",
+                type: "success",
+                timer: 5000
+            });
             $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
             }, function (response) {
                 return alert("Erro: " + response.status);
@@ -6065,13 +6178,6 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         }, function (response) {
             return alert("Erro: " + response.status);
         });
-        SweetAlert.swal({
-            title: "Concluido!",
-            text: "O registro foi concluido com sucesso.",
-            type: "success",
-            timer: 5000
-        });
-        $uibModalInstance.close();
     }
 }
 
@@ -6084,6 +6190,7 @@ function cadUsuarioHistoricoModalCtrl($scope, $uibModalInstance, cadUsuarioSelec
 }
 
 function chamSuporteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
         .withOption('order', [0, 'desc'])
@@ -6203,7 +6310,7 @@ function chamSuporteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DT
         },
             function (isConfirm) {
                 if (isConfirm) {
-                    $scope.objLog = {IdChamSuporte: chamado.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6};
+                    $scope.objLog = { IdChamSuporte: chamado.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
                     SweetAlert.swal({
                         title: "Concluido!",
                         text: "A solicitacao foi concluida com sucesso.",
@@ -6362,11 +6469,110 @@ function historicoChamSuporteModalCtrl($scope, $uibModalInstance, chamadoSelecte
     });
 }
 
-function chamSuporteAssuntoCtrl($scope, $uibModalInstance, $http, $localStorage, SweetAlert)
-{ }
+function chamSuporteAssuntoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $localStorage, SweetAlert)
-{ }
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.assuntos;
+
+    $http.get("http://localhost:50837/api/ChamSuporte/GetAssuntos").then(function (response) {
+        $scope.assuntos = response.data;
+    });
+
+    $scope.incluir = function () {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/incluir_editar_chamado_assunto.html',
+            controller: 'chamSuporteAssuntoCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoAssuntoSelected: function () {
+                    return null;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/ChamSuporte/GetAssuntos").then(function (response) {
+                $scope.assuntos = response.data;
+            });
+        });
+    }
+
+    $scope.alterar = function (assunto) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/suporte/incluir_editar_chamado_assunto.html',
+            controller: 'chamSuporteAssuntoCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                chamadoAssuntoSelected: function () {
+                    return assunto;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/ChamSuporte/GetAssuntos").then(function (response) {
+                $scope.assuntos = response.data;
+            });
+        });
+    }
+}
+
+function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $localStorage, SweetAlert, chamadoAssuntoSelected) {
+    $scope.tipo = "inclusao"
+
+    if (chamadoAssuntoSelected != undefined) {
+        $scope.assunto = chamadoAssuntoSelected.Descricao;
+        $scope.tipo = "alteracao"
+    }
+
+    $scope.incluir = function () {
+        $scope.obj = { Descricao: $scope.assunto };
+
+        $http.post("http://localhost:50837/api/ChamSuporte/IncluirAssunto", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Inclusão feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        },
+        function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.alterar = function () {
+        $scope.obj = { Id: chamadoAssuntoSelected.Id, Descricao: $scope.assunto };
+
+        $http.post("http://localhost:50837/api/ChamSuporte/AlterarAssunto", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Alteração feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        },
+        function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+}
 
 /**
  *
@@ -6455,6 +6661,7 @@ angular
             return sum;
         }
     })
+    .controller('controleCaixaLogsCtrl', controleCaixaLogsCtrl)
     .controller('parametroFilialCtrl', parametroFilialCtrl)
     .controller('parametroFilialModalInstanceCtrl', parametroFilialModalInstanceCtrl)
     .controller('estoqueFisicoCtrl', estoqueFisicoCtrl)
@@ -6531,4 +6738,8 @@ angular
     .controller('chamSuporteCtrl', chamSuporteCtrl)
     .controller('chamSuporteCtrlModalInstance', chamSuporteCtrlModalInstance)
     .controller('chamSuporteVinculoCtrlModalInstance', chamSuporteVinculoCtrlModalInstance)
-    .controller('historicoChamSuporteModalCtrl', historicoChamSuporteModalCtrl);
+    .controller('historicoChamSuporteModalCtrl', historicoChamSuporteModalCtrl)
+    .controller('chamSuporteAssuntoCtrl', chamSuporteAssuntoCtrl)
+    .controller('chamSuporteAssuntoCtrlModalInstance', chamSuporteAssuntoCtrlModalInstance);
+
+

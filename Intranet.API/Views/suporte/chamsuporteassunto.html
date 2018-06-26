@@ -27,10 +27,18 @@
             <div class="table-responsive">
                 <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
                     <thead>
-                        <tr></tr>
+                        <tr>
+                            <th>Id</th>
+                            <th>Assunto</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat=" in "></tr>
+                        <tr ng-repeat="assunto in assuntos">
+                            <td>{{assunto.Id}}</td>
+                            <td>{{assunto.Descricao}}</td>
+                            <td><button class="btn btn-sm btn-outline btn-rounded btn-primary" ng-click="alterar(assunto);">Alterar</button></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

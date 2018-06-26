@@ -32,9 +32,16 @@ namespace Intranet.API.Controllers
             return context.Aniversariantes.Where(x => x.Aniversario.Month == DateTime.Now.Month && x.Aniversario.Day == DateTime.Now.Day);
         }
 
-        public DateTime GetCurrentDate()
+        public bool GetBirthdayToday()
         {
-            return DateTime.Now.AddDays(1).Date;
+            var context = new AlvoradaContext();
+
+            var result = false;
+
+            if (context.Aniversariantes.Where(x => x.Mes == DateTime.Now.Month && x.Dia == DateTime.Now.Day).FirstOrDefault() != null)
+                result = true;
+
+            return result;
         }
     }
 }

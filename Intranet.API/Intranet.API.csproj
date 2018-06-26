@@ -1184,6 +1184,7 @@
     <Content Include="img\gallery\8s.jpg" />
     <Content Include="img\gallery\9.jpg" />
     <Content Include="img\gallery\9s.jpg" />
+    <Content Include="img\gallery\ANIVERSARIOSM01.jpg" />
     <Content Include="img\landing\avatar1.jpg" />
     <Content Include="img\landing\avatar2.jpg" />
     <Content Include="img\landing\avatar3.jpg" />
@@ -2534,6 +2535,7 @@
     <Content Include="Views\controledecaixa\cadatendente.html" />
     <Content Include="Views\controledecaixa\cadsupervisor.html" />
     <Content Include="Views\controledecaixa\controlegeral.html" />
+    <Content Include="Views\controledecaixa\log_controle_geral.html" />
     <Content Include="Views\controledecaixa\relacompanhamento.html" />
     <Content Include="Views\controledecaixa\supcontrolegeral.html" />
     <Content Include="Views\controledecaixa\suprelacompanhamento.html" />
@@ -2587,6 +2589,7 @@
     <Content Include="Views\modal\produto\vis_associacao.html" />
     <Content Include="Views\modal\produto\vis_editar_produto.html" />
     <Content Include="Views\modal\suporte\historico.html" />
+    <Content Include="Views\modal\suporte\incluir_editar_chamado_assunto.html" />
     <Content Include="Views\modal\suporte\solicitar_editar_chamado.html" />
     <Content Include="Views\modal\suporte\vincular_chamado.html" />
     <Content Include="Views\modal\usuariomodal.html" />

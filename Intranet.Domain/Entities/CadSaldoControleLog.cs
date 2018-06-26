@@ -8,27 +8,29 @@ using System.Runtime.Serialization;
 namespace Intranet.Domain.Entities
 {
     [DataContract]
-    [Table("Aniversariantes")]
-    public partial class Aniversariantes
+    [Table("Cad_Saldo_Controle_Log")]
+    public partial class CadSaldoControleLog
     {
         [DataMember]
         public int Id { get; set; }
 
         [DataMember]
-        [Required]
-        public string Nome { get; set; }
+        public int IdUsuario { get; set; }
 
         [DataMember]
-        public string Setor { get; set; }
+        public int IdUsuarioReabriu { get; set; }
 
         [DataMember]
         [Column(TypeName = "date")]
-        public DateTime Aniversario { get; set; }
+        public DateTime DataReabriu { get; set; }
 
         [DataMember]
-        public int Dia { get; set; }
+        public DateTime DataLog { get; set; }
 
         [DataMember]
-        public int Mes { get; set; }
+        public virtual Usuario Usuario { get; set; }
+
+        [DataMember]
+        public virtual Usuario UsuarioReabriu { get; set; }
     }
 }

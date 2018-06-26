@@ -32,11 +32,18 @@ namespace Intranet.API.Controllers
             return context.VwProdutoEAN.Where(x => x.CdEAN == Ean).FirstOrDefault();
         }
 
-        public IEnumerable<VwEmbalagensProdutoEAN> GetEmbalagensByEAN(long Ean)
+        public VwProdutoEAN GetByCdProduto(int IdProduto)
         {
             var context = new CentralContext();
 
-            return context.VwEmbalagensProdutoEAN.Where(x => x.CdEAN == Ean).ToList();
+            return context.VwProdutoEAN.Where(x => x.Codigo == IdProduto).FirstOrDefault();
+        }
+
+        public IEnumerable<VwEmbalagensProdutoEAN> GetEmbalagensByCdProduto(int IdProduto)
+        {
+            var context = new CentralContext();
+
+            return context.VwEmbalagensProdutoEAN.Where(x => x.CdProduto == IdProduto).ToList();
         }
 
         public IEnumerable<string> GetAllAtivosEInativos()

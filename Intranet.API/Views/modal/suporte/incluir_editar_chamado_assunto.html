@@ -1,0 +1,26 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel();">&times;</button>
+        <h4 class="modal-title">Incluir\Editar Assuntos</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao\edicao de assuntos.</small>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form role="form">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Assunto</label>
+                        <input class="form-control" type="text" id="assunto" name="assunto" ng-model="assunto" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <input class="btn btn-primary" type="button" ng-show="tipo == 'inclusao'" value="Incluir" ng-click="incluir();" />
+            <input class="btn btn-primary" type="button" ng-show="tipo == 'alteracao'" value="Alterar" ng-click="alterar();" />
+            <input class="btn btn-white" type="button" value="Fechar" ng-click="cancel();" />
+        </div>
+    </div>
+</div>

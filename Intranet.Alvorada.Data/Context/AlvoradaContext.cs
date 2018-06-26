@@ -36,6 +36,7 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<CadComposicaoControle> CadComposicoesControle { get; set; }
         public virtual DbSet<CadOutrasDespControle> CadOutrasDespsControle { get; set; }
         public virtual DbSet<CadSaldoControle> CadSaldosControle { get; set; }
+        public virtual DbSet<CadSaldoControleLog> CadSaldosControleLogs { get; set; }
         public virtual DbSet<VwAcompanhamentoControleCaixa> VwAcompanhamentoControleCaixa { get; set; }
 
         #endregion
@@ -497,6 +498,20 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.ChamadosSuporteLogUsuario)
                 .WithRequired(e => e.UsuarioLog)
                 .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            // Saldos Logs
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.SaldoLogsUsuario)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.SaldoLogsUsuarioReabriu)
+                .WithRequired(e => e.UsuarioReabriu)
+                .HasForeignKey(e => e.IdUsuarioReabriu)
                 .WillCascadeOnDelete(false);
         }
     }

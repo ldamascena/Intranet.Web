@@ -1330,7 +1330,7 @@ a {
                 <table class=main width=100% cellpadding=0 cellspacing=0>
                     <tr>
                         <td class=alert>
-                            Atenção: Você possui uma nova solicitação
+                            Atenção: Você possui uma nova solicitação de cadastro de usuário
                         </td>
                     </tr>
                     <tr>
@@ -1348,7 +1348,7 @@ a {
                                 </tr>
                                 <tr>
                                     <td class=content-block>
-                                        <a href=http://192.168.1.116:8080/Intranet.API/#/produto/cadusuario class=btn-primary>Visualizar</a>
+                                        <a href=http://192.168.1.116:8080/Intranet.API/#/Usuario/cadusuario class=btn-primary>Visualizar</a>
                                     </td>
                                 </tr>
                             </table>
