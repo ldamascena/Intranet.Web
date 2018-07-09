@@ -133,6 +133,8 @@
     <Compile Include="Entities\SolParametro.cs" />
     <Compile Include="Entities\AjustePrecoVenda.cs" />
     <Compile Include="Entities\Carga.cs" />
+    <Compile Include="Entities\Operador.cs" />
+    <Compile Include="Entities\OperadorLog.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Entities\VwLancamentoContabilRaizOne.cs" />
     <Compile Include="Entities\VwLancamentoContabilRaizThree.cs" />
     <Compile Include="Entities\VwLancamentoContabilRaizTwo.cs" />
+    <Compile Include="Entities\VwOperadorLog.cs" />
     <Compile Include="Entities\VwProdutoEAN.cs" />
     <Compile Include="Entities\VwPromocao.cs" />
     <Compile Include="Entities\VwPromocaoItem.cs" />

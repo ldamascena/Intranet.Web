@@ -1,0 +1,56 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel();">&times;</button>
+        <h4 class="modal-title">Inclusao/Alteracao de Operadores</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao/alteracao de opedores.</small>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" ng-show="tipo == 'Inclusao'">
+            <label>Codigo</label>
+            <input class="form-control" type="text" name="cdOperador" id="cdOperador" ng-readonly="true" ng-model="cdOperador" />
+        </div>
+        <div class="form-group" ng-show="tipo == 'Inclusao'">
+            <label>Nome</label>
+            <input class="form-control" type="text" name="operador" id="operador" ng-model="operador" />
+        </div>
+        <div class="form-group" ng-show="tipo == 'Inclusao'">
+            <label>Nivel</label>
+            <select class="form-control" ng-model="nivel" name="nivel">
+                <option value="1">Operador</option>
+                <option value="2">Supervisor</option>
+                <option value="3">Gerente</option>
+                <option value="4">Tecnico</option>
+            </select>
+        </div>
+        <div class="form-group" ng-show="tipo == 'Inclusao'">
+            <label>Senha</label>
+            <input class="form-control" type="text" numbers-only name="senha" id="senha" ng-model="senha" />
+        </div>
+        <div class="form-group">
+            <label>Filiais</label>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#">Config option 1</a>
+                </li>
+                <li>
+                    <a href="#">Config option 2</a>
+                </li>
+            </ul>
+        </div>
+
+        <select ng-options="c.nmFilial for c in filiais"
+                multiple
+                ng-model="lojas"
+                bs-duallistbox></select>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="incluir()" ng-show="tipo == 'Inclusao'">Incluir</button>
+        <button type="submit" class="btn btn-primary" ng-click="alterar()" ng-show="tipo == 'Alteracao'">Alterar</button>
+        <button type="submit" class="btn btn-danger" ng-click="inativar()" ng-show="tipo == 'Inativacao'">Inativar</button>
+    </div>
+</div>
+
+
+
+
+

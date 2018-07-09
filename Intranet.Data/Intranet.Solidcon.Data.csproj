@@ -53,6 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\CentralContext.cs" />
+    <Compile Include="Context\DorsalAraruamaContext.cs" />
+    <Compile Include="Context\DorsalCaboFrioContext.cs" />
+    <Compile Include="Context\DorsalBacaxaContext.cs" />
+    <Compile Include="Context\DorsalMage2Context.cs" />
+    <Compile Include="Context\DorsalAguaMineralContext.cs" />
+    <Compile Include="Context\DorsalItaboraiContext.cs" />
+    <Compile Include="Context\DorsalRioBonitoContext.cs" />
+    <Compile Include="Context\DorsalMaricaContext.cs" />
+    <Compile Include="Context\DorsalCatarinaContext.cs" />
+    <Compile Include="Context\DorsalMageContext.cs" />
+    <Compile Include="Context\DorsalTanguaContext.cs" />
+    <Compile Include="Context\DorsalArsenalContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AlertaBalancoRepository.cs" />
     <Compile Include="Repositories\AlertaGeralRepository.cs" />

@@ -98,6 +98,11 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<CadUsuarioOperador> CadUsuariosOperadores { get; set; }
         public virtual DbSet<CadUsuarioOperadorLog> CadUsuarioOperadorLogs { get; set; }
 
+        public virtual DbSet<Operador> Operadores { get; set; }
+        public virtual DbSet<OperadorLog> OperadoresLogs { get; set; }
+
+        public virtual DbSet<VwOperadorLog> VwOperadoresLogs { get; set; }
+
         #endregion
 
         #region Chamado de Suporte

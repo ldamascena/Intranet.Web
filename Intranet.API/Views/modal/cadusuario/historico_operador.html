@@ -1,0 +1,24 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Historico</h4>
+    </div>
+    <div class="modal-body">
+        <div id="vertical-timeline" class="bg vertical-container light-timeline no-margins" ng-repeat="historico in historicos">
+            <div class="vertical-timeline-block">
+                <div ng-class="{'vertical-timeline-icon lazur-bg' : historico.Tipo == 'Inclusão',
+                     'vertical-timeline-icon red-bg' : historico.Tipo == 'Inativação'}">
+                    <i ng-class="{'fa fa-check' : historico.Tipo == 'Inclusão',
+                     'fa fa-times' : historico.Tipo == 'Inativação'}"></i>
+                </div>
+                <div class="vertical-timeline-content">
+                    <h5>{{historico.NmFilial}}</h5>
+                    <span class="vertical-date">
+                        <small>{{historico.Data | date:'dd/MM/yyyy - HH:mm:ss'}}</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

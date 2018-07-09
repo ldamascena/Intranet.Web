@@ -5458,13 +5458,14 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
                 { CdUsuario: 12, NmUsuario: "Julio Ruiz" },
                 { CdUsuario: 9, NmUsuario: "Leandro Moreira" },
                 { CdUsuario: 15, NmUsuario: "Marcel Louis" },
-                { CdUsuario: 224, NmUsuario: "Nilo Sergio Coelho de Oliveira" },
+                { CdUsuario: 224, NmUsuario: "Nilo Oliveira" },
                 { CdUsuario: 144, NmUsuario: "Renato Barros" },
                 { CdUsuario: 197, NmUsuario: "Thiago Amaral" },
                 { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
                 { CdUsuario: 13, NmUsuario: "Wanderson Batista" },
                 { CdUsuario: 5, NmUsuario: "Tiago Cunha" },
-                { CdUsuario: 45, NmUsuario: "Rinaldo Rocha" }
+                { CdUsuario: 45, NmUsuario: "Rinaldo Rocha" },
+                { CdUsuario: 1, NmUsuario: "Usuario Comprador" }
     ];
 
     $scope.comprador;
@@ -6189,6 +6190,207 @@ function cadUsuarioHistoricoModalCtrl($scope, $uibModalInstance, cadUsuarioSelec
     });
 }
 
+function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal, SweetAlert, $interval) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+         .withDOM('<"html5buttons"B>lTfgitp')
+         .withOption('order', [0, 'desc'])
+         .withButtons([
+             { extend: 'copy' },
+             { extend: 'csv' },
+             { extend: 'excel', title: 'ExampleFile' },
+             { extend: 'pdf', title: 'ExampleFile' },
+
+             {
+                 extend: 'print',
+                 customize: function (win) {
+                     $(win.document.body).addClass('white-bg');
+                     $(win.document.body).css('font-size', '10px');
+
+                     $(win.document.body).find('table')
+                         .addClass('compact')
+                         .css('font-size', 'inherit');
+                 }
+             }
+         ]);
+
+    $scope.operadores;
+
+    $http.get("http://localhost:50837/api/Operador/GetAll").then(function (response) {
+        $scope.operadores = response.data;
+    })
+
+    $scope.incluir = function () {
+
+        var ModalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/incluir_operador.html',
+            controller: 'operadorCtrlModal',
+            windowClass: "animated fadeIn",
+            resolve: {
+                operadorSelected: function () {
+                    return null;
+                },
+                TipoCadastro: function () {
+                    return "Inclusao";
+                }
+            }
+        })
+    }
+
+    $scope.alterar = function (operador)
+    {
+        $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/incluir_operador.html',
+            controller: 'operadorCtrlModal',
+            windowClass: "animated fadeIn",
+            resolve: {
+                operadorSelected: function () {
+                    return operador;
+                },
+                TipoCadastro: function () {
+                    return "Alteracao";
+                }
+            }
+        })
+    }
+
+    $scope.inativar = function (operador) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/incluir_operador.html',
+            controller: 'operadorCtrlModal',
+            windowClass: "animated fadeIn",
+            resolve: {
+                operadorSelected: function () {
+                    return operador;
+                }
+            },
+            TipoCadastro: function () {
+                return "Inativacao";
+            }
+        })
+    }
+
+    $scope.historico = function (codigo) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/cadusuario/historico_operador.html',
+            controller: 'operadorHistoricoCtrlModal',
+            windowClass: "animated fadeIn",
+            resolve: {
+                codigoSelected: function () {
+                    return codigo;
+                }
+            }
+        })
+    }
+}
+
+function operadorCtrlModal($scope, $localStorage, $http, DTOptionsBuilder, $uibModalInstance, SweetAlert, operadorSelected, TipoCadastro, notify) {
+    $scope.filiais;
+    $scope.filiaisNome = [];
+    $scope.inspiniaTemplate = 'views/common/notify.html';
+    $scope.obj;
+    $scope.tipo = TipoCadastro;
+    $scope.cdOperador;
+
+    $http.get("http://localhost:50837/api/Operador/GetLastIdOperador").then(function (response) {
+        $scope.cdOperador = response.data;
+    })
+
+    if (operadorSelected != null) {
+        $scope.inclusao = false;
+    }
+
+    $http.get("http://localhost:50837/api/EmpresaFilial/GetAllLojasOrdered").then(function (response) {
+        $scope.filiais = response.data;
+    });
+
+    $scope.$watch('senha', function (newVal, oldVal) {
+        if (newVal.length > 4) {
+            $scope.senha = oldVal;
+        }
+    });
+
+    $scope.incluir = function () {
+
+        for (i = 0; i < $scope.lojas.length; i++) {
+
+            notify({ message: 'Incluindo Operador na Filial: ' + $scope.lojas[i].nmFilial, classes: 'alert-warning', templateUrl: $scope.inspiniaTemplate });
+
+            $scope.obj = {
+                CdEmpresa: 10, CdFilial: $scope.lojas[i].cdPessoaFilial, CdOperador: $scope.cdOperador, NmOperador: $scope.operador,
+                CdNivel: $scope.nivel, Senha: $scope.senha
+            }
+
+            $http.post("http://localhost:50837/api/Operador/IncluirDorsais", $scope.obj).then(function (response) {
+                notify({ message: 'Concluido', classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+
+        $scope.objCentral = {
+            CdEmpresa: 10, CdFilial: 1, CdOperador: $scope.cdOperador, NmOperador: $scope.operador,
+            CdNivel: $scope.nivel, Senha: $scope.senha, Filiais: $scope.filiaisNome.toString()
+        }
+
+        $http.post("http://localhost:50837/api/Operador/IncluirIntranet", $scope.objCentral).then(function (response) {
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.inativar = function () {
+        for (i = 0; i < $scope.lojas.length; i++) {
+
+            notify({ message: 'Inativando Operador na Filial: ' + $scope.lojas[i].nmFilial, classes: 'alert-warning', templateUrl: $scope.inspiniaTemplate });
+
+            $scope.obj = {
+                CdEmpresa: 10, CdFilial: $scope.lojas[i].cdPessoaFilial, CdOperador: operadorSelected.CdOperador, NmOperador: operadorSelected.NmOperador,
+                CdNivel: operadorSelected.CdNivel, Senha: operadorSelected.Senha
+            }
+
+            $http.post("http://localhost:50837/api/Operador/InativarDorsais", $scope.obj).then(function (response) {
+                notify({ message: 'Inativado', classes: 'alert-danger', templateUrl: $scope.inspiniaTemplate });
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+        $uibModalInstance.close();
+    }
+
+    $scope.alterar = function () {
+        for (i = 0; i < $scope.lojas.length; i++) {
+
+            notify({ message: 'Incluido Operador na Filial: ' + $scope.lojas[i].nmFilial, classes: 'alert-warning', templateUrl: $scope.inspiniaTemplate });
+
+            $scope.obj = {
+                CdEmpresa: 10, CdFilial: $scope.lojas[i].cdPessoaFilial, CdOperador: operadorSelected.CdOperador, NmOperador: operadorSelected.NmOperador,
+                CdNivel: operadorSelected.CdNivel, Senha: operadorSelected.Senha
+            }
+
+            $http.post("http://localhost:50837/api/Operador/IncluirDorsais", $scope.obj).then(function (response) {
+                notify({ message: 'Concluido', classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+        $uibModalInstance.close();
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+
+}
+
+function operadorHistoricoCtrlModal($scope, $localStorage, $http, $uibModalInstance, codigoSelected) {
+    $scope.historicos;
+
+    $http.get("http://localhost:50837/api/Operador/GetLogByCodigo?codigo=" + codigoSelected).then(function (response) {
+        $scope.historicos = response.data;
+    });
+}
+
 function chamSuporteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
@@ -6735,6 +6937,28 @@ angular
     .controller('cadUsuarioCtrl', cadUsuarioCtrl)
     .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance)
     .controller('cadUsuarioHistoricoModalCtrl', cadUsuarioHistoricoModalCtrl)
+    .controller('operadorCtrl', operadorCtrl)
+    .controller('operadorCtrlModal', operadorCtrlModal).directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModelCtrl) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
+
+                        if (transformedInput !== text) {
+                            ngModelCtrl.$setViewValue(transformedInput);
+                            ngModelCtrl.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModelCtrl.$parsers.push(fromUser);
+            }
+        };
+    })
+    .controller('operadorHistoricoCtrlModal', operadorHistoricoCtrlModal)
     .controller('chamSuporteCtrl', chamSuporteCtrl)
     .controller('chamSuporteCtrlModalInstance', chamSuporteCtrlModalInstance)
     .controller('chamSuporteVinculoCtrlModalInstance', chamSuporteVinculoCtrlModalInstance)

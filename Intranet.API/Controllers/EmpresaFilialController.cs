@@ -41,5 +41,15 @@ namespace Intranet.API.Controllers
 
             return _app.GetAll().OrderBy(x => x.nmFilial);
         }
+
+        public IEnumerable<EmpresaFilial> GetAllLojasOrdered()
+        {
+            // Inicialização das instancias
+            _repository = new EmpresaFilialRepository(new CentralContext());
+            _service = new EmpresaFilialService(_repository);
+            _app = new EmpresaFilialApp(_service);
+
+            return _app.GetAll().Where(x => x.cdFilialTipo == "L").OrderBy(x => x.nmFilial);
+        }
     }
 }
