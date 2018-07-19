@@ -1,0 +1,191 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading ng-scope">
+    <div class="col-lg-10">
+        <h2>Estoque Nota</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a>Estoque Nota</a>
+            </li>
+            <li class="active">
+                <strong>Consulta</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="estoqueNotaCtrl">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="radio radio-info radio-inline">
+                            <input id="codigo" value="codigo" name="radioInline" checked ng-model="radio" type="radio">
+                            <label for="codigo"> Codigo </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input id="produto" value="produto" name="radioInline" ng-model="radio" type="radio">
+                            <label for="produto"> Produto </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 15px;" ng-show="radio == 'codigo'">
+                        <input type="text" class="form-control" id="cdEstoqueNota" name="cdEstoqueNota" placeholder="Codigo" ng-model="cdEstoqueNota" />
+                    </div>
+                    <div class="form-group" style="margin-left: 15px;" ng-show="radio == 'produto'">
+                        <input type="text" class="form-control" id="cdEstoqueNota" name="cdEstoqueNota" placeholder="Produto" ng-model="cdEstoqueNota" style="width:300px;" />
+                    </div>
+                    <div class="form-group" style="margin-left: 15px;" ng-show="radio == 'produto' || radio == 'codigo'">
+                        <input type="button" class="btn btn-rounded btn-primary" value="Buscar" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div ng-show="radio == 'codigo'">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Transferência Entre Estoques</b></div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Centro de Custo:</label> abc
+                                </div>
+                                <div class="col-lg-2">
+                                    <label>Tipo:</label> Saída
+                                </div>
+                                <div class="col-lg-2">
+                                    <label>Estoque:</label> Produto
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-2">
+                                    <label>Codigo:</label>123
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <label>Histórico:</label> abc
+                                </div>
+                                <div class="col-lg-2">
+                                    <label>Data:</label> 10/08/2018
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Entrada</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nº</th>
+                                        <th>Produto</th>
+                                        <th>Emb.</th>
+                                        <th>Qtd Emb.</th>
+                                        <th>Qtd.</th>
+                                        <th>Vl.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Saída</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nº</th>
+                                        <th>Produto</th>
+                                        <th>Emb.</th>
+                                        <th>Qtd Emb.</th>
+                                        <th>Qtd.</th>
+                                        <th>Vl.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Limonada</td>
+                                        <td>UN</td>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>R$ 19,20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

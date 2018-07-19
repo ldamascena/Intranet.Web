@@ -113,6 +113,19 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        #region Estoque Nota
+
+        public virtual DbSet<VwEstoqueNota> VWEstoqueNotas { get; set; }
+        public virtual DbSet<VwEstoqueNotaProduto> VWEstoqueNotasProduto { get; set; }
+
+        #endregion
+
+        #region Malote
+
+        public virtual DbSet<MaloteTipo> MaloteTipos { get; set; }
+        public virtual DbSet<Malote> Malotes { get; set; }
+
+        #endregion
 
         public virtual DbSet<VwAssociacoesConcluidas> VwAssociacoesConcluidas { get; set; }
 
@@ -517,6 +530,26 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.SaldoLogsUsuarioReabriu)
                 .WithRequired(e => e.UsuarioReabriu)
                 .HasForeignKey(e => e.IdUsuarioReabriu)
+                .WillCascadeOnDelete(false);
+
+            // Malotes
+
+            modelBuilder.Entity<MaloteTipo>()
+                .HasMany(e => e.Malotes)
+                .WithRequired(e => e.MaloteTipo)
+                .HasForeignKey(e => e.IdMalote)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuarioMalotes)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuarioInclusao)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuarioRecebimentoMalotes)
+                .WithRequired(e => e.UsuarioRecebimento)
+                .HasForeignKey(e => e.IdUsuarioRecebimento)
                 .WillCascadeOnDelete(false);
         }
     }

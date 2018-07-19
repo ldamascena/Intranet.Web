@@ -1,0 +1,30 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao/Alteracao de Tipos de Malote</h4>
+        <small class="font-bold">Tela exclusivamente para inclusao/alteracao de tipos de malote.</small>
+    </div>
+    <form role="form" name="tipomaloteForm">
+        <div class="modal-body">
+            <div class="form-group" ng-show="id == undefined">
+                <label>Numero</label>
+                <select id="numero" name="numero" ng-model="numero" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+            <div class="form-group" ng-show="id == undefined">
+                <label>Setor</label>
+                <input id="setor" name="setor" class="form-control" ng-model="setor" />
+            </div>
+            <div class="form-group">
+                <label>Cor</label>
+                <input colorpicker type="text" class="form-control" id="cor" name="cor" ng-model="cor" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-show="id == undefined" ng-click="incluir()">Incluir</button>
+            <button type="submit" class="btn btn-primary" ng-show="id != undefined" ng-click="editar()">Editar</button>
+        </div>
+    </form>
+</div>

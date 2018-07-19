@@ -226,8 +226,10 @@
     <Compile Include="Controllers\EmpresaFilialController.cs" />
     <Compile Include="Controllers\EstoqueContabilController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
+    <Compile Include="Controllers\EstoqueNotaController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\LancamentoCntController.cs" />
+    <Compile Include="Controllers\MaloteController.cs" />
     <Compile Include="Controllers\OperadorController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
@@ -2547,6 +2549,7 @@
     <Content Include="Views\despesas\cadsituacao.html" />
     <Content Include="Views\despesas\cadsoldespesa.html" />
     <Content Include="Views\dre\principal.html" />
+    <Content Include="Views\consulta\estoquenota.html" />
     <Content Include="Views\estoque\estoque.html" />
     <Content Include="Views\estoque\estoque_custo.html" />
     <Content Include="Views\grupos.html" />
@@ -2555,6 +2558,8 @@
     <Content Include="Views\mailbox.html" />
     <Content Include="Views\mail_compose.html" />
     <Content Include="Views\mail_detail.html" />
+    <Content Include="Views\malote\lista.html" />
+    <Content Include="Views\malote\tipos.html" />
     <Content Include="Views\markdown.html" />
     <Content Include="Views\masonry.html" />
     <Content Include="Views\metrics.html" />
@@ -2580,6 +2585,8 @@
     <Content Include="Views\modal\incluir_editar_cadsit.html" />
     <Content Include="Views\modal\incluir_editar_cadsoldespesa.html" />
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
+    <Content Include="Views\modal\malote\incluir_editar_malote.html" />
+    <Content Include="Views\modal\malote\incluir_editar_tipomalote.html" />
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />
     <Content Include="Views\modal\alertas\quarentena.html" />
     <Content Include="Views\modal\produto\associacao_incluir_editar.html" />

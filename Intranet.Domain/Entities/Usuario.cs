@@ -41,6 +41,8 @@ namespace Intranet.Domain.Entities
             ChamadosSuporteVinculo = new HashSet<ChamSuporte>();
             ChamadosSuporteUsuario = new HashSet<ChamSuporte>();
             ChamadosSuporteLogUsuario = new HashSet<ChamSuporteLog>();
+            UsuarioMalotes = new HashSet<Malote>();
+            UsuarioRecebimentoMalotes = new HashSet<Malote>();
         }
 
         [DataMember]
@@ -139,5 +141,10 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<ChamSuporte> ChamadosSuporteUsuario { get; set; }
 
         public virtual ICollection<ChamSuporteLog> ChamadosSuporteLogUsuario { get; set; }
+
+        public virtual ICollection<Malote> UsuarioMalotes { get; set; }
+
+        public virtual ICollection<Malote> UsuarioRecebimentoMalotes { get; set; }
+
     }
 }

@@ -6236,8 +6236,7 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
         })
     }
 
-    $scope.alterar = function (operador)
-    {
+    $scope.alterar = function (operador) {
         $uibModal.open({
             templateUrl: 'Views/modal/cadusuario/incluir_operador.html',
             controller: 'operadorCtrlModal',
@@ -6776,6 +6775,479 @@ function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $
     }
 }
 
+function estoqueNotaCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+
+}
+
+function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+         .withDOM('<"html5buttons"B>lTfgitp')
+         .withOption('order', [0, 'desc'])
+         .withButtons([
+             { extend: 'copy' },
+             { extend: 'csv' },
+             { extend: 'excel', title: 'ExampleFile' },
+             { extend: 'pdf', title: 'ExampleFile' },
+
+             {
+                 extend: 'print',
+                 customize: function (win) {
+                     $(win.document.body).addClass('white-bg');
+                     $(win.document.body).css('font-size', '10px');
+
+                     $(win.document.body).find('table')
+                         .addClass('compact')
+                         .css('font-size', 'inherit');
+                 }
+             }
+         ]);
+
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
+    $scope.malotes;
+    $scope.malotedisp;
+
+    switch ($scope.grupo) {
+        case "Contabilidade":
+            $http.get("http://localhost:50837/api/Malote/GetAllMalotesTesourariaAndCPD").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            $scope.malotedisp = true;
+            break;
+        case "DP/RH":
+            $http.get("http://localhost:50837/api/Malote/GetAllMalotesDP").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            $scope.malotedisp = true;
+            break;
+        case "CPD":
+        case "Tesouraria":
+        case "DP/RH Loja":
+            $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                $scope.malotes = response.data;
+            })
+            $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuarioDisp?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                $scope.malotedisp = response.data;
+            })
+            break;
+    }
+
+    $scope.incluir = function () {
+        if ($scope.malotedisp) {
+            var modalIstance = $uibModal.open({
+                templateUrl: 'Views/modal/malote/incluir_editar_malote.html',
+                controller: 'maloteCtrlModalInstance',
+                windowClass: "animated fadeIn",
+                resolve: {
+                    maloteSelected: function () {
+                        return null;
+                    }
+                }
+            }).result.then(function () {
+                switch ($scope.grupo) {
+                    case "Contabilidade":
+                        $http.get("http://localhost:50837/api/Malote/GetAllMalotesTesourariaAndCPD").then(function (response) {
+                            $scope.malotes = response.data;
+                        })
+                        $scope.malotedisp = true;
+                        break;
+                    case "DP/RH":
+                        $http.get("http://localhost:50837/api/Malote/GetAllMalotesDP").then(function (response) {
+                            $scope.malotes = response.data;
+                        })
+                        $scope.malotedisp = true;
+                        break;
+                    case "CPD":
+                    case "Tesouraria":
+                    case "DP/RH Loja":
+                        $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                            $scope.malotes = response.data;
+                        })
+                        $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuarioDisp?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                            $scope.malotedisp = response.data;
+                        })
+                        break;
+                }
+            });
+        }
+        else {
+            SweetAlert.swal({
+                title: "Aviso!",
+                text: "Você não possui malote liberado para envio!",
+                type: "warning",
+                timer: 5000
+            });
+        }
+    }
+
+    $scope.detalhe = function (malote) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/malote/incluir_editar_malote.html',
+            controller: 'maloteCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                maloteSelected: function () {
+                    return malote;
+                }
+            }
+        }).result.then(function () {
+            switch ($scope.grupo) {
+                case "Contabilidade":
+                    $http.get("http://localhost:50837/api/Malote/GetAllMalotesTesourariaAndCPD").then(function (response) {
+                        $scope.malotes = response.data;
+                    })
+                    $scope.malotedisp = true;
+                    break;
+                case "DP/RH":
+                    $http.get("http://localhost:50837/api/Malote/GetAllMalotesDP").then(function (response) {
+                        $scope.malotes = response.data;
+                    })
+                    $scope.malotedisp = true;
+                    break;
+                case "CPD":
+                case "Tesouraria":
+                case "DP/RH Loja":
+                    $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                        $scope.malotes = response.data;
+                    })
+                    $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuarioDisp?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                        $scope.malotedisp = response.data;
+                    })
+                    break;
+            }
+        });
+    }
+}
+
+function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelected, notify, $localStorage, SweetAlert) {
+    $scope.inspiniaTemplate = 'views/common/notify.html';
+    $scope.malotes;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
+    $scope.id;
+    $scope.usuarioLogado = $localStorage.user.Id;
+    $scope.usuarioCadastro;
+    $scope.idStatus;
+
+    if (maloteSelected != null) {
+        $scope.lacre = maloteSelected.Numero_Lacre;
+        $scope.maloteDisp = maloteSelected.IdMalote;
+        $scope.descricao = maloteSelected.Descricao;
+        $scope.loja = maloteSelected.IdUsuarioEnviado;
+        $scope.id = maloteSelected.Id;
+        $scope.usuarioCadastro = maloteSelected.IdUsuarioInclusao;
+        $scope.idStatus = maloteSelected.Status;
+        $scope.motivo = maloteSelected.Motivo;
+    }
+
+    switch ($scope.grupo) {
+        case "Contabilidade":
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteTesourariaAndCPD").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            break;
+        case "DP\RH":
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteDP").then(function (response) {
+                $scope.malotes = response.data;
+            })
+
+            break;
+        case "CPD":
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteCPD").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            break;
+        case "Tesouraria":
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteTesouraria").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            break;
+        case "DP/RH Loja":
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            break;
+    }
+
+    $scope.incluir = function () {
+        $scope.obj = {
+            Numero_Lacre: $scope.lacre, IdMalote: $scope.maloteDisp, Descricao: $scope.descricao,
+            IdUsuarioInclusao: $localStorage.user.Id, IdUsuarioEnviado: $scope.loja
+        }
+
+        $http.post("http://localhost:50837/api/Malote/IncluirMalote", $scope.obj).then(function (response) {
+            notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro" + response.status);
+        })
+    }
+
+    $scope.editar = function () {
+        $scope.obj = {
+            Id: maloteSelected.Id, DtEnvio: maloteSelected.DtEnvio, Numero_Lacre: $scope.lacre, Descricao: $scope.descricao,
+            Status: maloteSelected.Status, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: $scope.maloteDisp,
+            IdUsuarioEnviado: $scope.loja
+        }
+
+        $http.post("http://localhost:50837/api/Malote/AlterarMalote", $scope.obj).then(function (response) {
+            notify({ message: "Alterado com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro" + response.status);
+        })
+    }
+
+    $scope.excluir = function () {
+
+        SweetAlert.swal({
+            title: "Deseja Excluir?",
+            text: "Não será possivel recuperar o registro depois de excluir!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, Excluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+           function (isConfirm) {
+               if (isConfirm) {
+                   $http.post("http://localhost:50837/api/Malote/ExcluirMalote", maloteSelected).then(function (response) {
+                       SweetAlert.swal({
+                           title: "Excluido!",
+                           text: "O registro foi excluido com sucesso!",
+                           type: "success",
+                           timer: 5000
+                       });
+                       $uibModalInstance.close();
+                   }, function (response) {
+                       return alert("Erro" + response.status);
+                   })
+               } else {
+                   SweetAlert.swal({
+                       title: "Cancelado!",
+                       text: "Você cancelou a exclusão!",
+                       type: "error",
+                       timer: 5000
+                   });
+                   $uibModalInstance.dismiss();
+               }
+           });
+
+
+        //$http.post("http://localhost:50837/api/Malote/ExcluirMalote", maloteSelected).then(function (response) {
+        //    notify({ message: "Excluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
+        //    $uibModalInstance.close();
+        //}, function (response) {
+        //    return alert("Erro" + response.status);
+        //})
+
+    }
+
+    $scope.confirmar = function () {
+
+        $scope.obj = {
+            Id: maloteSelected.Id, DtEnvio: maloteSelected.DtEnvio, Numero_Lacre: maloteSelected.Numero_Lacre, Descricao: maloteSelected.Descricao,
+            Status: 2, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: maloteSelected.IdMalote,
+            IdUsuarioEnviado: maloteSelected.IdUsuarioEnviado, IdUsuarioRecebimento: $localStorage.user.Id
+        }
+
+        SweetAlert.swal({
+            title: "Deseja Confirmar?",
+            text: "Não será possivel voltar o registro depois de confirmado!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+           function (isConfirm) {
+               if (isConfirm) {
+                   $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
+                       SweetAlert.swal({
+                           title: "Confirmado!",
+                           text: "O registro foi confimado com sucesso!",
+                           type: "success",
+                           timer: 5000
+                       });
+                       $uibModalInstance.close();
+                   }, function (response) {
+                       return alert("Erro" + response.status);
+                   })
+               }
+               else {
+                   SweetAlert.swal({
+                       title: "Cancelado!",
+                       text: "Você cancelou a confirmacao!",
+                       type: "error",
+                       timer: 5000
+                   });
+                   $uibModalInstance.dismiss();
+               }
+           });
+    }
+
+    $scope.pendurar = function () {
+
+        $scope.obj = {
+            Id: maloteSelected.Id, DtEnvio: maloteSelected.DtEnvio, Numero_Lacre: maloteSelected.Numero_Lacre, Descricao: maloteSelected.Descricao,
+            Status: 3, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: maloteSelected.IdMalote,
+            IdUsuarioEnviado: maloteSelected.IdUsuarioEnviado, IdUsuarioRecebimento: $localStorage.user.Id, Motivo: $scope.motivo
+        }
+
+        SweetAlert.swal({
+            title: "Deseja colocar pendente?",
+            text: "Não será possivel voltar o registro depois de colocado em pendente!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+           function (isConfirm) {
+               if (isConfirm) {
+                   $http.post("http://localhost:50837/api/Malote/PendurarMalote", $scope.obj).then(function (response) {
+                       SweetAlert.swal({
+                           title: "Alterado!",
+                           text: "O registro alterado com sucesso!",
+                           type: "success",
+                           timer: 5000
+                       });
+                       $uibModalInstance.close();
+                   }, function (response) {
+                       return alert("Erro" + response.status);
+                   })
+               }
+               else {
+                   SweetAlert.swal({
+                       title: "Cancelado!",
+                       text: "Você cancelou a alteração!",
+                       type: "error",
+                       timer: 5000
+                   });
+                   $uibModalInstance.dismiss();
+               }
+           });
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
+
+function tiposMaloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+         .withDOM('<"html5buttons"B>lTfgitp')
+         .withOption('order', [0, 'asc'])
+         .withButtons([
+             { extend: 'copy' },
+             { extend: 'csv' },
+             { extend: 'excel', title: 'ExampleFile' },
+             { extend: 'pdf', title: 'ExampleFile' },
+
+             {
+                 extend: 'print',
+                 customize: function (win) {
+                     $(win.document.body).addClass('white-bg');
+                     $(win.document.body).css('font-size', '10px');
+
+                     $(win.document.body).find('table')
+                         .addClass('compact')
+                         .css('font-size', 'inherit');
+                 }
+             }
+         ]);
+
+    $scope.tiposmalote;
+
+    $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+        $scope.tiposmalote = response.data;
+    });
+
+    $scope.incluir = function () {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/malote/incluir_editar_tipomalote.html',
+            controller: 'tiposMaloteCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                tipoMaloteSelected: function () {
+                    return null;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+                $scope.tiposmalote = response.data;
+            });
+        });
+    }
+
+
+    $scope.editar = function (tipoMalote) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/malote/incluir_editar_tipomalote.html',
+            controller: 'tiposMaloteCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                tipoMaloteSelected: function () {
+                    return tipoMalote;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+                $scope.tiposmalote = response.data;
+            });
+        });
+    }
+
+}
+
+function tiposMaloteCtrlModalInstance($uibModalInstance, $http, $scope, tipoMaloteSelected, notify) {
+    $scope.inspiniaTemplate = 'views/common/notify.html';
+    $scope.numero;
+    $scope.setor;
+    $scope.cor;
+    $scope.id;
+
+    if (tipoMaloteSelected != null) {
+        $scope.numero = tipoMaloteSelected.Numero;
+        $scope.setor = tipoMaloteSelected.Setor;
+        $scope.cor = tipoMaloteSelected.Cor;
+        $scope.id = tipoMaloteSelected.Id;
+    }
+
+    $scope.incluir = function () {
+        $scope.obj = { Numero: $scope.numero, Setor: $scope.setor, Cor: $scope.cor };
+
+        $http.post("http://localhost:50837/api/Malote/IncluirTiposMalote", $scope.obj).then(function (response) {
+            notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        })
+    }
+
+    $scope.editar = function () {
+        $scope.obj = { Numero: $scope.numero, Setor: $scope.setor, Cor: $scope.cor, Id: tipoMaloteSelected.Id };
+
+        $http.post("http://localhost:50837/api/Malote/AlterarTiposMalote", $scope.obj).then(function (response) {
+            notify({ message: "Alterado com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
+            $uibModalInstance.close();
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        })
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
+
 /**
  *
  * Pass all functions into module
@@ -6964,6 +7436,28 @@ angular
     .controller('chamSuporteVinculoCtrlModalInstance', chamSuporteVinculoCtrlModalInstance)
     .controller('historicoChamSuporteModalCtrl', historicoChamSuporteModalCtrl)
     .controller('chamSuporteAssuntoCtrl', chamSuporteAssuntoCtrl)
-    .controller('chamSuporteAssuntoCtrlModalInstance', chamSuporteAssuntoCtrlModalInstance);
+    .controller('chamSuporteAssuntoCtrlModalInstance', chamSuporteAssuntoCtrlModalInstance)
+    .controller('estoqueNotaCtrl', estoqueNotaCtrl)
+    .controller('maloteCtrl', maloteCtrl)
+    .controller('maloteCtrlModalInstance', maloteCtrlModalInstance).directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModelCtrl) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
 
-
+                        if (transformedInput !== text) {
+                            ngModelCtrl.$setViewValue(transformedInput);
+                            ngModelCtrl.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModelCtrl.$parsers.push(fromUser);
+            }
+        };
+    })
+    .controller('tiposMaloteCtrl', tiposMaloteCtrl)
+    .controller('tiposMaloteCtrlModalInstance', tiposMaloteCtrlModalInstance);
