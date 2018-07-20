@@ -23,6 +23,10 @@
                 <select id="filial" name="filial" class="form-control" ng-model="filial" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="filialcomplete.nmFilial as filialcomplete.nmFilial for filialcomplete in filiais"></select>
             </div>
             <div class="form-group">
+                <label>Senha</label>
+                <input numbers-only type="text" id="senha" name="senha" ng-model="senha" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
+            </div>
+            <div class="form-group">
                 <div class="checkbox checkbox-inline checkbox-danger">
                     <input id="comercial" type="checkbox" ng-model="comercial" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                     <label for="comercial">

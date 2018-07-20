@@ -74,6 +74,12 @@ namespace Intranet.Domain.Entities
         public int IdStatus { get; set; }
 
         [DataMember]
+        public string Senha { get; set; }
+
+        [DataMember]
+        public int? IdAprovador { get; set; }
+
+        [DataMember]
         public virtual Usuario Usuario { get; set; }
 
         [DataMember]

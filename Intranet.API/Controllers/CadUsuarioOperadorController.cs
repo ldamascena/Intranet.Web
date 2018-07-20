@@ -31,6 +31,13 @@ namespace Intranet.API.Controllers
             return result;
         }
 
+        public IEnumerable<CadUsuarioOperador> GetAllByLoja(int idUsuario)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadUsuariosOperadores.Where(x => x.IdUsuario == idUsuario).ToList();
+        }
+
         public HttpResponseMessage Incluir([FromBody] CadUsuarioOperador obj)
         {
 
@@ -42,9 +49,19 @@ namespace Intranet.API.Controllers
                 obj.DataInclusao = DateTime.Now;
                 obj.IdStatus = 1;
                 context.CadUsuariosOperadores.Add(obj);
+                var Log = new CadUsuarioOperadorLog
+                {
+                    IdCadUsuOpe = obj.Id,
+                    IdStatus = 8,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
                 emailService.SendEmail("vaniadp@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
                 emailService.SendEmail("arquivo@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+
+
             }
             catch (Exception ex)
             {
@@ -111,6 +128,14 @@ namespace Intranet.API.Controllers
             {
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 8;
+                var Log = new CadUsuarioOperadorLog
+                {
+                    IdCadUsuOpe = obj.Id,
+                    IdStatus = 8,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdAprovador.Value
+                };
+                context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
                 emailService.SendEmail("clima@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
             }
@@ -135,6 +160,14 @@ namespace Intranet.API.Controllers
             {
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 9;
+                var Log = new CadUsuarioOperadorLog
+                {
+                    IdCadUsuOpe = obj.Id,
+                    IdStatus = 9,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdAprovador.Value
+                };
+                context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -159,6 +192,14 @@ namespace Intranet.API.Controllers
                 context.Entry(obj).State = EntityState.Modified;
                 obj.IdStatus = 6;
                 obj.DataConclusao = DateTime.Now;
+                var Log = new CadUsuarioOperadorLog
+                {
+                    IdCadUsuOpe = obj.Id,
+                    IdStatus = 6,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdAprovador.Value
+                };
+                context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
             }
             catch (Exception ex)

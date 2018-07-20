@@ -5843,9 +5843,16 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
     $scope.usuarioLogado = $localStorage.user.Id;
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
 
-    $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
-        $scope.usuarios = response.data;
-    });
+    if ($scope.grupo == "Admin" || $scope.grupo == "DP/RH" || $scope.grupo == "Indicadores" || $scope.grupo == "Coordenador Indicadores") {
+        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+            $scope.usuarios = response.data;
+        })
+    }
+    else {
+        $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAllByLoja?idUsuario=" + $localStorage.user.Id).then(function (response) {
+            $scope.usuarios = response.data;
+        })
+    }
 
     $scope.solicitar = function () {
         var modalInstance = $uibModal.open({
@@ -5858,9 +5865,16 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
-                $scope.usuarios = response.data;
-            });
+            if ($scope.grupo == "Admin" || $scope.grupo == "DP/RH" || $scope.grupo == "Indicadores" || $scope.grupo == "Coordenador Indicadores") {
+                $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                    $scope.operadores = response.data;
+                })
+            }
+            else {
+                $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAllByLoja?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                    $scope.operadores = response.data;
+                })
+            }
         });
     }
 
@@ -5875,9 +5889,16 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                 }
             }
         }).result.then(function () {
-            $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
-                $scope.usuarios = response.data;
-            });
+            if ($scope.grupo == "Admin" || $scope.grupo == "DP/RH" || $scope.grupo == "Indicadores" || $scope.grupo == "Coordenador Indicadores") {
+                $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
+                    $scope.operadores = response.data;
+                })
+            }
+            else {
+                $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAllByLoja?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                    $scope.operadores = response.data;
+                })
+            }
         });
     }
 
@@ -5923,6 +5944,7 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
     }
 
     $scope.aprovar = function (cadUsuario) {
+        cadUsuario.IdAprovador = $localStorage.user.Id;
         SweetAlert.swal({
             title: "Deseja aprovar o registro da pessoa: " + cadUsuario.Pessoa,
             text: "Não será possivel voltar o registro depois de aprovado!",
@@ -5935,7 +5957,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
             closeOnCancel: false
         },
             function (isConfirm) {
-                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 8 };
                 if (isConfirm) {
                     SweetAlert.swal({
                         title: "Aprovado!",
@@ -5947,11 +5968,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                     $http.post("http://localhost:50837/api/CadUsuarioOperador/Aprovar", cadUsuario).then(function (response) {
                         $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
                             $scope.usuarios = response.data;
-                        });
-
-                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
                         });
                     }, function (response) {
                         return alert("Erro: " + response.status);
@@ -5966,14 +5982,10 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                     });
                 }
             });
-        //$http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
-        //}, function (response) {
-        //    return alert("Erro: " + response.status);
-        //});
-        //$uibModalInstance.close();
     }
 
     $scope.reprovar = function (cadUsuario) {
+        cadUsuario.IdAprovador = $localStorage.user.Id;
         SweetAlert.swal({
             title: "Deseja reprovar o registro da pessoa: " + cadUsuario.Pessoa,
             text: "Não será possivel voltar o registro depois de aprovado!",
@@ -5986,7 +5998,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
             closeOnCancel: false
         },
             function (isConfirm) {
-                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 9 };
                 if (isConfirm) {
                     SweetAlert.swal({
                         title: "Reprovado!",
@@ -5998,11 +6009,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                     $http.post("http://localhost:50837/api/CadUsuarioOperador/Reprovar", cadUsuario).then(function (response) {
                         $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
                             $scope.usuarios = response.data;
-                        });
-
-                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
                         });
                     }, function (response) {
                         return alert("Erro: " + response.status);
@@ -6020,6 +6026,7 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
     }
 
     $scope.concluir = function (cadUsuario) {
+        cadUsuario.IdAprovador = $localStorage.user.Id;
         SweetAlert.swal({
             title: "Deseja concluir o registro da pessoa: " + cadUsuario.Pessoa,
             text: "Não será possivel voltar o registro depois de concluido!",
@@ -6032,7 +6039,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
             closeOnCancel: false
         },
             function (isConfirm) {
-                $scope.objLog = { IdCadUsuOpe: cadUsuario.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
                 if (isConfirm) {
                     SweetAlert.swal({
                         title: "Concluido!",
@@ -6044,11 +6050,6 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
                     $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuario).then(function (response) {
                         $http.get("http://localhost:50837/api/CadUsuarioOperador/GetAll").then(function (response) {
                             $scope.usuarios = response.data;
-                        });
-
-                        $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
-                        }, function (response) {
-                            return alert("Erro: " + response.status);
                         });
                     }, function (response) {
                         return alert("Erro: " + response.status);
@@ -6090,6 +6091,11 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
     $scope.userLogado = $localStorage.user.Id;
 
+    $scope.$watch('senha', function (newVal, oldVal) {
+        if (newVal.length > 4) {
+            $scope.senha = oldVal;
+        }
+    });
 
     $http.get("http://localhost:50837/api/EmpresaFilial/GetAllOrdered").then(function (response) {
         $scope.filiais = response.data;
@@ -6117,13 +6123,14 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         $scope.userCadastro = cadUsuarioSelected.IdUsuario;
         $scope.usuarioCadastro = cadUsuarioSelected.IdUsuario;
         $scope.idStatus = cadUsuarioSelected.IdStatus;
+        $scope.senha = cadUsuarioSelected.Senha;
     }
 
     $scope.incluir = function () {
         $scope.obj = {
             TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
             Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
-            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id
+            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, Senha: $scope.senha
         }
 
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Incluir", $scope.obj).then(function (response) {
@@ -6143,7 +6150,7 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
             TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
             Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
             Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, IdStatus: cadUsuarioSelected.IdStatus, DataInclusao: cadUsuarioSelected.DataInclusao,
-            Id: cadUsuarioSelected.Id
+            Id: cadUsuarioSelected.Id, Senha: $scope.senha
         }
 
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Alterar", $scope.obj).then(function (response) {
@@ -6163,7 +6170,6 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
     }
 
     $scope.concluir = function () {
-        $scope.objLog = { IdCadUsuOpe: cadUsuarioSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
         $http.post("http://localhost:50837/api/CadUsuarioOperador/Concluir", cadUsuarioSelected).then(function (response) {
             $uibModalInstance.close();
             SweetAlert.swal({
@@ -6171,10 +6177,6 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
                 text: "O registro foi concluido com sucesso.",
                 type: "success",
                 timer: 5000
-            });
-            $http.post("http://localhost:50837/api/CadUsuarioOperadorLog/Incluir", $scope.objLog).then(function (response) {
-            }, function (response) {
-                return alert("Erro: " + response.status);
             });
         }, function (response) {
             return alert("Erro: " + response.status);
@@ -6214,10 +6216,6 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
          ]);
 
     $scope.operadores;
-
-    $http.get("http://localhost:50837/api/Operador/GetAll").then(function (response) {
-        $scope.operadores = response.data;
-    })
 
     $scope.incluir = function () {
 
@@ -6926,6 +6924,7 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
     $scope.usuarioLogado = $localStorage.user.Id;
     $scope.usuarioCadastro;
     $scope.idStatus;
+    $scope.isdisable = false;
 
     if (maloteSelected != null) {
         $scope.lacre = maloteSelected.Numero_Lacre;
@@ -6973,6 +6972,8 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             IdUsuarioInclusao: $localStorage.user.Id, IdUsuarioEnviado: $scope.loja
         }
 
+        $scope.isdisable = true;
+
         $http.post("http://localhost:50837/api/Malote/IncluirMalote", $scope.obj).then(function (response) {
             notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
             $uibModalInstance.close();
@@ -6987,6 +6988,8 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             Status: maloteSelected.Status, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: $scope.maloteDisp,
             IdUsuarioEnviado: $scope.loja
         }
+
+        $scope.isdisable = true;
 
         $http.post("http://localhost:50837/api/Malote/AlterarMalote", $scope.obj).then(function (response) {
             notify({ message: "Alterado com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
@@ -7062,17 +7065,18 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             cancelButtonText: "Não, cancelar!",
             closeOnConfirm: false,
             closeOnCancel: false,
-            timer: 5000
+            timer: 5000,
+            showLoaderOnConfirm: true
         },
            function (isConfirm) {
                if (isConfirm) {
+                   SweetAlert.swal({
+                       title: "Confirmado!",
+                       text: "O registro foi confimado com sucesso!",
+                       type: "success",
+                       timer: 5000
+                   });
                    $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
-                       SweetAlert.swal({
-                           title: "Confirmado!",
-                           text: "O registro foi confimado com sucesso!",
-                           type: "success",
-                           timer: 5000
-                       });
                        $uibModalInstance.close();
                    }, function (response) {
                        return alert("Erro" + response.status);
@@ -7112,13 +7116,13 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
         },
            function (isConfirm) {
                if (isConfirm) {
+                   SweetAlert.swal({
+                       title: "Alterado!",
+                       text: "O registro alterado com sucesso!",
+                       type: "success",
+                       timer: 5000
+                   });
                    $http.post("http://localhost:50837/api/Malote/PendurarMalote", $scope.obj).then(function (response) {
-                       SweetAlert.swal({
-                           title: "Alterado!",
-                           text: "O registro alterado com sucesso!",
-                           type: "success",
-                           timer: 5000
-                       });
                        $uibModalInstance.close();
                    }, function (response) {
                        return alert("Erro" + response.status);
@@ -7407,7 +7411,26 @@ angular
     .controller('assProdHistoricoModalCtrl', assProdHistoricoModalCtrl)
     .controller('incluiEANAssModalCtrl', incluiEANAssModalCtrl)
     .controller('cadUsuarioCtrl', cadUsuarioCtrl)
-    .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance)
+    .controller('cadUsuarioCtrlModalInstance', cadUsuarioCtrlModalInstance).directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModelCtrl) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
+
+                        if (transformedInput !== text) {
+                            ngModelCtrl.$setViewValue(transformedInput);
+                            ngModelCtrl.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModelCtrl.$parsers.push(fromUser);
+            }
+        };
+    })
     .controller('cadUsuarioHistoricoModalCtrl', cadUsuarioHistoricoModalCtrl)
     .controller('operadorCtrl', operadorCtrl)
     .controller('operadorCtrlModal', operadorCtrlModal).directive('numbersOnly', function () {
