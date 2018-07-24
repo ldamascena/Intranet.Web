@@ -12,11 +12,13 @@
                 </select>-->
                 <select placeholder="Loja" name="loja" ng-model="loja" ng-options="loja.Id as loja.Sobrenome for loja in lojas" class="form-control"></select>
             </div>
-            <div class="form-group col-lg-2">
-                <div class="input-group date">
-                    <input type="datetime" class="form-control" ng-model="date" data-mask="99/99/9999" placeholder="dd/mm/aaaa">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                </div>
+            <div class="col-sm-2">
+                <p class="input-group">
+                    <input type="text" class="form-control" ng-click="open1()" placeholder="Data" uib-datepicker-popup="dd/MM/yyyy" ng-model="date" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
             </div>
             <div class="form-group col-lg-2">
                 <input type="button" class="btn btn-primary btn-rounded" value="Buscar" ng-click="Buscar();"/>

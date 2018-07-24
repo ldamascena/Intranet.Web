@@ -141,11 +141,20 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
             var emailService = new EmailService();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 2;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 2;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 2,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
                 emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
@@ -163,11 +172,20 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage ReprovarComercial(CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 3;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 3;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 3,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
             }
 
@@ -183,11 +201,20 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
             var emailService = new EmailService();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 4;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 4;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 4,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Cadastro de Produto - Pendente");
                 emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
@@ -204,11 +231,20 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage ReprovarDiretoria(CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 5;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 5;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 5,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
             }
 
@@ -223,11 +259,20 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage Concluir(CadSolProd obj)
         {
             var context = new AlvoradaContext();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 6;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 6;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 6,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
             }
 

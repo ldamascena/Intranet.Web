@@ -97,10 +97,20 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage Concluir(CadAssProd model)
         {
             var context = new AlvoradaContext();
+            var result = context.CadAssProd.Where(x => x.Id == model.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(model).State = EntityState.Modified;
+                result.IdStatus = model.IdStatus;
+                context.Entry(result).State = EntityState.Modified;
+                var log = new CadAssProdLog
+                {
+                    DataLog = DateTime.Now,
+                    IdStatus = model.IdStatus,
+                    IdCadAssProd = model.Id,
+                    IdUsuario = model.IdUsuario
+                };
+                context.CadAssProdLogs.Add(log);
                 context.SaveChanges();
             }
 

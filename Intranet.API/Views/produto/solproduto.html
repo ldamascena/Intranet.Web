@@ -17,44 +17,317 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            
-            <div class="ibox">
-                <div class="ibox-title">
-                    <div ibox-tools></div>
-                </div>
-                <div class="ibox-content wizard">
-                    <div style="padding-left: 10px;">
-                        <label><small style="color:#ed5565">O campos com "*" são campos obrigatórios para o cadastro!</small></label>
-                    </div>
-                    <br />
-                    <div class="steps clearfix">
-                        <ul>
-                            <li ui-sref-active="current">
-                                <a ui-sref=".info_prod" class="btn-default"><span>1</span> Informacoes do Produto</a>
-                            </li>
-                            <!--<li ui-sref-active="current">
-                                <a ng-dissabled="true" ui-sref=".grade_prod" class="btn-default"><span>2</span> Grade do Produto</a>
-                            </li>-->
-                            <li ui-sref-active="current">
-                                <a ui-sref=".dim_prod" class="btn-default"><span>2</span> Inf. Logistica do Produto</a>
-                            </li>
-                            <li ui-sref-active="current">
-                                <a ui-sref=".mix_prod" class="btn-default"><span>3 </span> Mix e Caracteristica do Produto</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="wizard">
-                        <div class="content">
-                            <form name="signupForm" ng-submit="processForm()" class="p-lg">
-                                <!-- our nested state views will be injected here -->
-                                <div id="form-views" ui-view></div>
-                            </form>
+    <form role="form" name="prodForm" id="prodForm">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title"><b>Informações do Produto</b></div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Descricao *</label>
+                                    <input id="descricao" ng-model="descricao" ng-required="true" name="descricao" type="text" class="form-control">
+                                    <div class="m-t-xs" ng-show="prodForm.descricao.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.descricao.$error.required">Preencha a descricao!</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Comprador *</label>
+                                    <select chosen class="chosen-select" id="comprador" name="comprador" ng-model="comprador" ng-required="true">
+                                        <option value="Alexandre Martins">Alexandre Martins</option>
+                                        <option value="Diego Goncalves">Diego Goncalves</option>
+                                        <option value="Geraldo Bonifacio">Geraldo Bonifacio</option>
+                                        <option value="Julio Ruiz">Julio Ruiz</option>
+                                        <option value="Leandro Moreira">Leandro Moreira</option>
+                                        <option value="Marcel Louis">Marcel Louis</option>
+                                        <option value="Nilo Sergio Coelho de Oliveira">Nilo Sergio Coelho de Oliveira</option>
+                                        <option value="Renato Barros">Renato Barros</option>
+                                        <option value="Thiago Amaral">Thiago Amaral</option>
+                                        <option value="Vinicius Bonifacio">Vinicius Bonifacio</option>
+                                        <option value="Wanderson Batista">Wanderson Batista</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.comprador.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.comprador.$error.required">Preencha o comprador!</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group ">
+                                    <label>Fornecedor *</label>
+                                    <input type="text" ng-model="fornecedor" id="fornecedor" name="fornecedor" ng-required="true" uib-typeahead="fonecedor.RazaoSocial for fonecedor in fonecedores | filter:$viewValue | limitTo:8" class="form-control">
+                                    <div class="m-t-xs" ng-show="prodForm.fornecedor.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.fornecedor.$error.required">Preencha o fornecedor!</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Segmento</label>
+                                    <select class="form-control" id="segmento" name="segmento" ng-model="segmento">
+                                        <option value="">Selecione o Segmento</option>
+                                        <option value="Premium">Premium</option>
+                                        <option value="Basico">Basico</option>
+                                        <option value="Popular">Popular</option>
+                                        <option value="Marca Propria">Marca Propria</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Abastecimento *</label>
+                                    <select class="form-control" id="abastecimento" name="abastecimento" tabindex="3" ng-model="abastecimento">
+                                        <option value="">Selecione o Abastecimento</option>
+                                        <option value="EDL">EDL</option>
+                                        <option value="CCEDL">CCEDL</option>
+                                        <option value="Centralizado">Centralizado</option>
+                                        <option value="Cross-Docking">Cross-Docking</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.abastecimento.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.abastecimento.$error.required">Preencha o tipo de abastecimento!</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Sensibilidade Concorrencia *</label>
+                                    <select class="form-control" id="concorrencia" ng-required="true" name="concorrencia" tabindex="3" ng-model="concorrencia">
+                                        <option value="">Selecione a Sensibilidade</option>
+                                        <option value="Ultra Notavel">Ultra Notavel</option>
+                                        <option value="Super Notavel">Super Notavel</option>
+                                        <option value="Notavel">Notavel</option>
+                                        <option value="Sazonal">Sazonal</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.concorrencia.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.concorrencia.$error.required">Preencha o tipo de concorrencia!</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Custo Aquisicao</label>
+                                    <input id="custo" ng-model="custo" name="custo" type="text" class="form-control" money-mask>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Preco de Venda</label>
+                                    <input id="venda" ng-model="venda" name="venda" type="text" class="form-control" money-mask>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title"><b>Inf. Logistica do Produto</b></div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Embalagem *</label>
+                                    <select chosen class="chosen-select" tabindex="3" ng-required="true" id="embalagem" ng-model="embalagem" name="embalagem">
+                                        <option value="Unidade">Unidade</option>
+                                        <option value="Caixa">Caixa</option>
+                                        <option value="Quilograma">Quilograma</option>
+                                        <option value="Duzia">Duzia</option>
+                                        <option value="Saco">Saco</option>
+                                        <option value="Bandeja">Bandeja</option>
+                                        <option value="Display">Display</option>
+                                        <option value="Fardo">Fardo</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.embalagem.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.embalagem.$error.required">Preencha a embalagem!</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Quantidade Embalagem *</label>
+                                    <input id="qtdEmbalagem" ng-model="qtdEmbalagem" name="qtdEmbalagem" type="text" class="form-control">
+                                    <div class="m-t-xs" ng-show="prodForm.qtdEmbalagem.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.qtdEmbalagem.$error.required">Preencha a quantidade da embalagem!</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Peso(grama)</label>
+                                    <input id="peso" ng-model="peso" name="peso" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Altura(cm)</label>
+                                    <input id="altura" ng-model="altura" name="altura" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Largura(cm)</label>
+                                    <input id="largura" ng-model="largura" name="largura" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Comprimento(cm)</label>
+                                    <input id="comprimento" ng-model="comprimento" name="comprimento" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Lastro</label>
+                                    <input id="lastro" ng-model="lastro" name="lastro" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Camadas</label>
+                                    <input id="camadas" ng-model="camadas" name="camadas" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title"><b>Grade do Produto</b></div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> Cod no Fornecedor</th>
+                                        <th>Descricao / Sabor *</th>
+                                        <th>EAN *</th>
+                                        <th>DUN *</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="grade in grades">
+                                        <td class="col-lg-4"><input type="text" ng-model="grade.produto" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:5" class="form-control"></td>
+                                        <td class="col-lg-2"><input id="codfornecedor" ng-required="true" ng-model="grade.codfornecedor" name="codfornecedor" type="text" class="form-control"></td>
+                                        <td class="col-lg-4"><input id="descricaosabor" ng-required="true" ng-model="grade.descricaosabor" name="descricaosabor" type="text" class="form-control"></td>
+                                        <td class="col-lg-3"><input id="EAN" ng-required="true" ng-model="grade.EAN" name="EAN" type="text" class="form-control"></td>
+                                        <td class="col-lg-3"><input id="DUN" ng-required="true" ng-model="grade.DUN" name="DUN" type="text" class="form-control"></td>
+                                        <td>
+                                            <button class="btn btn-success btn-circle" type="button" ng-click="addNew();">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-circle" type="button" ng-click="remove(grade);">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox sha">
+                    <div class="ibox-title"><b>Mix e Caracteristica do Produto</b></div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label>Mix *</label>
+                                    <select multiple chosen class="chosen-select" id="mix" name="mix" ng-model="mix" ng-required="true">
+                                        <option value="TODOS">TODOS</option>
+                                        <option value="ÁGUA MINERAL">ÁGUA MINERAL</option>
+                                        <option value="ARARUAMA">ARARUAMA</option>
+                                        <option value="ARSENAL">ARSENAL</option>
+                                        <option value="BACAXÁ">BACAXÁ</option>
+                                        <option value="CABO FRIO">CABO FRIO</option>
+                                        <option value="CD MANILHA">CD MANILHA</option>
+                                        <option value="CD MATRIZ">CD MATRIZ</option>
+                                        <option value="COLUBANDE">COLUBANDE</option>
+                                        <option value="ITABORAI">ITABORAI</option>
+                                        <option value="JARDIM CATARINA">JARDIM CATARINA</option>
+                                        <option value="MAGE">MAGE</option>
+                                        <option value="MAGÉ 2">MAGÉ 2</option>
+                                        <option value="MARICÁ">MARICÁ</option>
+                                        <option value="RIO BONITO">RIO BONITO</option>
+                                        <option value="TANGUÁ">TANGUÁ</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.mix.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.mix.$error.required">Preencha a quantidade da embalagem!</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Caracteristica</label>
+                                    <select multiple chosen class="chosen-select" ng-model="caracteristica">
+                                        <option value="Bonificação">Bonificação</option>
+                                        <option value="Fornece Promotor">Fornece Promotor</option>
+                                        <option value="Fornece Troca">Fornece Troca</option>
+                                        <option value="Verba">Verba</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Justificativa Resumida *</label>
+                                    <select class="form-control" id="justificativa" name="justificativa" ng-model="justificativa" ng-required="true">
+                                        <option value="">Selecione a Justificativa</option>
+                                        <option value="Produto Fechado na Rede">Produto Fechado na Rede</option>
+                                        <option value="Introducao do Mix de loja">Introducao do Mix de loja</option>
+                                        <option value="Oportunidade Comercial">Oportunidade Comercial</option>
+                                    </select>
+                                    <div class="m-t-xs" ng-show="prodForm.justificativa.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.justificativa.$error.required">Preencha a justificativa!</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Tipo de Cadastro </label>
+                                    <select class="form-control" ng-model="tipoCadastro">
+                                        <option value="">Selecione um Tipo de Cadastro</option>
+                                        <option value="Reativacao">Reativacao</option>
+                                        <option value="Substituicao">Substituicao</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Justificativa Detalhada *</label>
+                                    <textarea id="observacao" ng-model="observacao" name="observacao" class="form-control" ng-required="true" />
+                                    <div class="m-t-xs" ng-show="prodForm.observacao.$invalid && prodForm.submitted">
+                                        <small class="text-danger" ng-show="prodForm.observacao.$error.required">Preencha a justificativa detalhada!</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button class="col-xs-4 col-md-3 pull-left m-t-sm btn btn-default" type="button" ng-click="cancel();"><i class="fa fa-arrow-circle-left" style="font-size: 110%"></i> Voltar</button>
+                <button class="col-xs-4 col-md-3 pull-right m-t-sm btn btn-primary" type="submit" ng-click="save();"><i class="fa fa-check" style="font-size: 110%"></i> Salvar</button>
+            </div>
+        </div>
+    </form>
+    <br />
 </div>
