@@ -84,8 +84,18 @@ namespace Intranet.API.Controllers
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 6;
+                var result = context.CadSolAlterProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 6;
+                var log = new CadSolAlterProdLog
+                {
+                    DataLog = DateTime.Now,
+                    IdSolAlterProd = obj.Id,
+                    IdStatus = 6,
+                    IdUsuario = obj.IdUsuario
+
+                };
+                context.CadSolAlterProdLogs.Add(log);
                 context.SaveChanges();
             }
             catch (Exception ex)

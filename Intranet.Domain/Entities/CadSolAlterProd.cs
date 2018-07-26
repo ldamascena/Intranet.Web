@@ -39,6 +39,9 @@ namespace Intranet.Domain.Entities
         public DateTime DtInclusao { get; set; }
 
         [DataMember]
+        public string Observacao { get; set; }
+
+        [DataMember]
         public virtual SitCadProd SitCadProd { get; set; }
 
         [DataMember]

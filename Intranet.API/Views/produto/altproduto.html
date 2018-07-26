@@ -25,86 +25,201 @@
             <div class="form-group col-lg-2">
                 <input type="button" class="btn btn-primary btn-rounded" value="Buscar" ng-click="Buscar();" />
             </div>
-            <div class="ibox float-e-margins">
-                <button class="btn btn-sm btn-outline btn-success btn-rounded" ng-show="produto.Codigo != undefined" type="button" ng-click="solicitar()"><i class="fa fa-plus"></i> Solicitar alteracao</button>
-                <div class="ibox-title">
-                    <h5>Informacoes - <strong>Produto</strong></h5>
-                    <div ibox-tools></div>
-                </div>
-                <div class="ibox-content">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Produto</th>
-                                    <th>EAN</th>
-                                    <th>Quantidade</th>
-                                    <th>Abast</th>
-                                    <th>Morto</th>
-                                    <th>Sazonal</th>
-                                    <th>UsoConsumo</th>
-                                    <th>Fracionado</th>
-                                    <th>DtCadastro</th>
-                                    <th>DtAlteracao</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{produto.Codigo}}</td>
-                                    <td>{{produto.Produto}}</td>
-                                    <td>{{produto.CdEAN}}</td>
-                                    <td>{{produto.QtVenda}}</td>
-                                    <td>{{produto.NmCompraTipo}}</td>
-                                    <td><i ng-class="produto.Morto == true ? 'fa fa-check text-navy' : (produto.Morto == false ? 'fa fa-times text-danger' : '')"></i></td>
-                                    <td><i ng-class="produto.Sazonal == true ? 'fa fa-check text-navy' : (produto.Sazonal == false ? 'fa fa-times text-danger' : '')"></i></td>
-                                    <td><i ng-class="produto.UsoConsumo == true ? 'fa fa-check text-navy' : (produto.UsoConsumo == false ? 'fa fa-times text-danger' : '')"></i></td>
-                                    <td><i ng-class="produto.Fracionado == true ? 'fa fa-check text-navy' : (produto.Fracionado == false ? 'fa fa-times text-danger' : '')"></i></td>
-                                    <td>{{produto.DtCadastro | date:'dd/MM/yyyy'}}</td>
-                                    <td>{{produto.DtAlteracao | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="row" ng-show="produto != null">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Informacoes - <strong>Produto</strong></h5>
+                            <div ibox-tools></div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Produto</th>
+                                            <th>EAN</th>
+                                            <th>Quantidade</th>
+                                            <th>Abast</th>
+                                            <th>Morto</th>
+                                            <th>Sazonal</th>
+                                            <th>UsoConsumo</th>
+                                            <th>Fracionado</th>
+                                            <th>DtCadastro</th>
+                                            <th>DtAlteracao</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{produto.Codigo}}</td>
+                                            <td>{{produto.Produto}}</td>
+                                            <td>{{produto.CdEAN}}</td>
+                                            <td>{{produto.QtVenda}}</td>
+                                            <td>{{produto.NmCompraTipo}}</td>
+                                            <td><i ng-class="produto.Morto == true ? 'fa fa-check text-navy' : (produto.Morto == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                            <td><i ng-class="produto.Sazonal == true ? 'fa fa-check text-navy' : (produto.Sazonal == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                            <td><i ng-class="produto.UsoConsumo == true ? 'fa fa-check text-navy' : (produto.UsoConsumo == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                            <td><i ng-class="produto.Fracionado == true ? 'fa fa-check text-navy' : (produto.Fracionado == false ? 'fa fa-times text-danger' : '')"></i></td>
+                                            <td>{{produto.DtCadastro | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{produto.DtAlteracao | date:'dd/MM/yyyy'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Embalagens - <strong>Produto</strong></h5>
-                    <div ibox-tools></div>
+            <div class="row" ng-show="produto != null">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Embalagens - <strong>Produto</strong></h5>
+                            <div ibox-tools></div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Embalagem</th>
+                                            <th>QtEmbalagem</th>
+                                            <th>Pesog</th>
+                                            <th>Alturacm</th>
+                                            <th>Larguracm</th>
+                                            <th>Comprimentocm</th>
+                                            <th>QtLastro</th>
+                                            <th>QtCamadas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="tiposembalagem in embalagens">
+                                            <td>{{tiposembalagem.CdEmbalagem }}</td>
+                                            <td>{{tiposembalagem.QtEmbalagem }}</td>
+                                            <td>{{tiposembalagem.Pesog }}</td>
+                                            <td>{{tiposembalagem.Alturacm}}</td>
+                                            <td>{{tiposembalagem.Larguracm}}</td>
+                                            <td>{{tiposembalagem.Comprimentocm}}</td>
+                                            <td>{{tiposembalagem.QtLastro}}</td>
+                                            <td>{{tiposembalagem.QtCamadas}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ibox-content">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Embalagem</th>
-                                    <th>QtEmbalagem</th>
-                                    <th>Pesog</th>
-                                    <th>Alturacm</th>
-                                    <th>Larguracm</th>
-                                    <th>Comprimentocm</th>
-                                    <th>QtLastro</th>
-                                    <th>QtCamadas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="tiposembalagem in embalagens">
-                                    <td>{{tiposembalagem.CdEmbalagem }}</td>
-                                    <td>{{tiposembalagem.QtEmbalagem }}</td>
-                                    <td>{{tiposembalagem.Pesog }}</td>
-                                    <td>{{tiposembalagem.Alturacm}}</td>
-                                    <td>{{tiposembalagem.Larguracm}}</td>
-                                    <td>{{tiposembalagem.Comprimentocm}}</td>
-                                    <td>{{tiposembalagem.QtLastro}}</td>
-                                    <td>{{tiposembalagem.QtCamadas}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            </div>
+            <div class="row" ng-show="produto != null">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <form role="form" name="altForm">
+                            <div class="ibox-title">
+                                <h5>Solicitar - <strong>Produto</strong></h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
+                                    <label>Campo</label>
+                                    <select class="form-control" name="campo" ng-model="campo">
+                                        <option value="Reativar" selected>Reativar Produto</option>
+                                        <option value="Inativar" selected>Inativar Produto</option>
+                                        <option value="Descricao" selected>Mudança de Descricao</option>
+                                        <option value="Abastecimento">Mudança de Abastecimento</option>
+                                        <option value="Divisao">Cópia de Divisão</option>
+                                        <option value="Desmembramento">Desmembramento de Super Produto</option>
+                                        <option value="Mix">Alteração no Mix</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Reativar'">
+                                    <label>Alterar Para: </label>
+                                    <select class="form-control" id="reativacao" name="reativacao" ng-model="detalhe">
+                                        <option value="Alterar para: Ativo">Ativo</option>
+                                        <option value="Alterar para: Inativo">Inativo</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Inativar'">
+                                    <label>Alterar Para: </label>
+                                    <select class="form-control" id="reativacao" name="reativacao" ng-model="detalhe">
+                                        <option value="Alterar para: Inativo">Inativo</option>
+                                        <option value="Alterar para: Morto">Morto</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Descricao'">
+                                    <label>De: </label>
+                                    <input type="text" class="form-control" name="descricaoantes" id="descricaoantes" ng-model="descricaoantes" ng-disabled="true" />
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Descricao'">
+                                    <label>Para: </label>
+                                    <input type="text" ng-model="detalhe" name="descricao" class="form-control" />
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Abastecimento'">
+                                    <label>Atual: </label>
+                                    <input class="form-control" id="abastecimentoantes" name="abastecimentoantes" ng-disabled="true" ng-model="abastecimentoantes" />
+                                </div>
+                                <div class="form-group" ng-show="campo == 'Abastecimento'">
+                                    <label>Abastecimento: </label>
+                                    <select class="form-control" name="detalhe" ng-model="detalhe">
+                                        <option value="Alterar para: EDL">EDL</option>
+                                        <option value="Alterar para: CCEDL">CCEDL</option>
+                                        <option value="Alterar para: Centralizado">Centralizado</option>
+                                        <option value="Alterar para: Cross-Docking">Cross-Docking</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Divisao'">
+                                    <label>Para: </label>
+                                    <input type="text" ng-model="detalhe" name="divisaopara" class="form-control" />
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Desmembramento'">
+                                    <label>Codigo do Produto: </label>
+                                    <input type="text" ng-model="detalhe" name="cdsuperproduto" class="form-control col-lg-6" />
+                                </div>
+
+                                <div class="form-group" ng-show="campo == 'Mix'">
+                                    <label>Mix</label>
+                                    <select multiple chosen class="chosen-select" id="mix" name="mix" ng-model="detalhe">
+                                        <option value="TODOS">TODOS</option>
+                                        <option value="ÁGUA MINERAL">ÁGUA MINERAL</option>
+                                        <option value="ARARUAMA">ARARUAMA</option>
+                                        <option value="ARSENAL">ARSENAL</option>
+                                        <option value="BACAXÁ">BACAXÁ</option>
+                                        <option value="CABO FRIO">CABO FRIO</option>
+                                        <option value="CD MANILHA">CD MANILHA</option>
+                                        <option value="CD MATRIZ">CD MATRIZ</option>
+                                        <option value="COLUBANDE">COLUBANDE</option>
+                                        <option value="ITABORAI">ITABORAI</option>
+                                        <option value="JARDIM CATARINA">JARDIM CATARINA</option>
+                                        <option value="MAGE">MAGE</option>
+                                        <option value="MAGÉ 2">MAGÉ 2</option>
+                                        <option value="MARICÁ">MARICÁ</option>
+                                        <option value="RIO BONITO">RIO BONITO</option>
+                                        <option value="TANGUÁ">TANGUÁ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Observacao</label>
+                                    <textarea class="form-control" id="observacao" name="observacao" ng-model="observacao"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button class="col-xs-4 col-md-3 pull-left m-t-sm btn " type="button" ng-click="cancel();"><i class="fa fa-arrow-circle-left" style="font-size: 110%"></i> Voltar</button>
+                                        <button class="col-xs-4 col-md-3 pull-right m-t-sm btn btn-primary" type="submit" ng-click="solicitar();"><i class="fa fa-check" style="font-size: 110%"></i> Solicitar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

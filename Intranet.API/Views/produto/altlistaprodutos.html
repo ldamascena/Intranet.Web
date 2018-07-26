@@ -31,8 +31,9 @@
                                 <tr>
                                     <th>Codigo</th>
                                     <th>EAN</th>
-                                    <th>Campo.Alt</th>
+                                    <th>Campo Alterado</th>
                                     <th>Detalhe</th>
+                                    <th>Observacao</th>
                                     <th>Usuario</th>
                                     <th>Data Inclusao</th>
                                     <th>Status</th>
@@ -45,6 +46,7 @@
                                     <td>{{solicitacao.Ean}}</td>
                                     <td>{{solicitacao.Campo}}</td>
                                     <td>{{solicitacao.Detalhe}}</td>
+                                    <td>{{solicitacao.Observacao}}</td>
                                     <td>{{solicitacao.Usuario.Nome}} {{solicitacao.Usuario.Sobrenome}}</td>
                                     <td>{{solicitacao.DtInclusao | date:'dd/MM/yyyy'}}</td>
                                     <td><button ng-class="solicitacao.SitCadProd.IdSitProd == 1 ?'btn btn-xs btn-rounded btn-success': 'btn btn-xs btn-rounded btn-primary'" ng-click="historico(solicitacao);"><i class="fa fa-comments-o"></i>{{solicitacao.SitCadProd.Situacao}}</button></td>
