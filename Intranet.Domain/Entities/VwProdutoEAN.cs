@@ -29,6 +29,12 @@ namespace Intranet.Domain.Entities
         public int CdSuperProduto { get; set; }
 
         [DataMember]
+        public string CdUnidadeMedida { get; set; }
+
+        [DataMember]
+        public int PesoLiquido { get; set; }
+
+        [DataMember]
         public long? CdEAN { get; set; }
 
         [DataMember]

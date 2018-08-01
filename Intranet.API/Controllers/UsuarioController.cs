@@ -50,6 +50,13 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Grupo.FirstOrDefault().Nome == "TI").ToList();
         }
 
+        public IEnumerable<Usuario> GetAllDPLojas()
+        {
+            var context = new AlvoradaContext();
+
+            return context.Usuarios.Where(x => x.Grupo.FirstOrDefault().Nome == "DP/RH Loja").ToList();
+        }
+
         public int Autenticate(Usuario model)
         {
             var context = new AlvoradaContext();

@@ -123,11 +123,12 @@ namespace Intranet.API.Controllers
 
             var context = new AlvoradaContext();
             var emailService = new EmailService();
+            var result = context.CadUsuariosOperadores.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 8;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 8;
                 var Log = new CadUsuarioOperadorLog
                 {
                     IdCadUsuOpe = obj.Id,
@@ -155,11 +156,12 @@ namespace Intranet.API.Controllers
         {
 
             var context = new AlvoradaContext();
+            var result = context.CadUsuariosOperadores.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 9;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 9;
                 var Log = new CadUsuarioOperadorLog
                 {
                     IdCadUsuOpe = obj.Id,
@@ -186,12 +188,13 @@ namespace Intranet.API.Controllers
         {
 
             var context = new AlvoradaContext();
+            var result = context.CadUsuariosOperadores.Where(x => x.Id == obj.Id).FirstOrDefault();
 
             try
             {
-                context.Entry(obj).State = EntityState.Modified;
-                obj.IdStatus = 6;
-                obj.DataConclusao = DateTime.Now;
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 6;
+                result.DataConclusao = DateTime.Now;
                 var Log = new CadUsuarioOperadorLog
                 {
                     IdCadUsuOpe = obj.Id,

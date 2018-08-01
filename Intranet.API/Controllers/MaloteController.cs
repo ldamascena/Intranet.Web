@@ -113,6 +113,14 @@ namespace Intranet.API.Controllers
             {
                 obj.DtRecebimento = DateTime.Now;
                 context.Entry(obj).State = EntityState.Modified;
+                var log = new MaloteLog
+                {
+                    IdMalote = obj.Id,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuarioRecebimento.Value,
+                    Status = obj.Status
+                };
+                context.MalotesLog.Add(log);
                 context.SaveChanges();
             }
 
@@ -132,6 +140,14 @@ namespace Intranet.API.Controllers
             {
                 obj.DtRecebimento = DateTime.Now;
                 context.Entry(obj).State = EntityState.Modified;
+                var log = new MaloteLog
+                {
+                    IdMalote = obj.Id,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuarioRecebimento.Value,
+                    Status = obj.Status
+                };
+                context.MalotesLog.Add(log);
                 context.SaveChanges();
             }
 

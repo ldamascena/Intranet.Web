@@ -119,6 +119,7 @@
     <Compile Include="Entities\Grupo.cs" />
     <Compile Include="Entities\LogAlteracaoCusto.cs" />
     <Compile Include="Entities\Malote.cs" />
+    <Compile Include="Entities\MaloteLog.cs" />
     <Compile Include="Entities\MaloteTipo.cs" />
     <Compile Include="Entities\MetaMesCompras.cs" />
     <Compile Include="Entities\OrdemServicoDTO.cs" />

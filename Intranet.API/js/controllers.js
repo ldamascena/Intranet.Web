@@ -3001,9 +3001,11 @@ function changePasswordInstanceCtrl($scope, $uibModalInstance, UserLogin, $http,
         if ($scope.signup_form.$valid) {
             $scope.obj = {
                 Id: UserLogin.Id, Username: UserLogin.Username, Nome: UserLogin.Nome, Sobrenome: UserLogin.Sobrenome,
-                Email: UserLogin.Email, EmailConfirmed: UserLogin.EmailConfirmed, PasswordHash: $scope.senha, Bloqueado: UserLogin.Bloqueado
+                Email: UserLogin.Email, PasswordHash: $scope.senha, DataInclusao: UserLogin.DataInclusao
             }
-            ,
+            alert(angular.toJson(UserLogin));   
+            alert(angular.toJson($scope.obj));
+
             $http.post("http://localhost:50837/api/Usuario/ChangePassword", $scope.obj).then(function (response) {
                 $uibModalInstance.close();
             }, function (response) {
@@ -3017,7 +3019,6 @@ function changePasswordInstanceCtrl($scope, $uibModalInstance, UserLogin, $http,
     }
 
     $scope.cancel = function () {
-        alert(angular.toJson(UserLogin));
         $uibModalInstance.dismiss('cancel');
     };
 }
@@ -6841,6 +6842,7 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
     $scope.malotedisp;
 
     switch ($scope.grupo) {
+        case "Gestor Contabilidade/Financeiro":
         case "Contabilidade":
             $http.get("http://localhost:50837/api/Malote/GetAllMalotesTesourariaAndCPD").then(function (response) {
                 $scope.malotes = response.data;
@@ -6853,7 +6855,11 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
             })
             $scope.malotedisp = true;
             break;
-        case "CPD":
+        case "CPD Deposito":
+            $http.get("http://localhost:50837/api/Malote/GetAllMalotes").then(function (response) {
+                $scope.malotes = response.data;
+            })
+        case "CPD Loja":
         case "Tesouraria":
         case "DP/RH Loja":
             $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
@@ -6890,7 +6896,11 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
                         })
                         $scope.malotedisp = true;
                         break;
-                    case "CPD":
+                    case "CPD Deposito":
+                        $http.get("http://localhost:50837/api/Malote/GetAllMalotes").then(function (response) {
+                            $scope.malotes = response.data;
+                        })
+                    case "CPD Loja":
                     case "Tesouraria":
                     case "DP/RH Loja":
                         $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
@@ -6925,6 +6935,7 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
             }
         }).result.then(function () {
             switch ($scope.grupo) {
+                case "Gestor Contabilidade/Financeiro":
                 case "Contabilidade":
                     $http.get("http://localhost:50837/api/Malote/GetAllMalotesTesourariaAndCPD").then(function (response) {
                         $scope.malotes = response.data;
@@ -6937,7 +6948,12 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
                     })
                     $scope.malotedisp = true;
                     break;
-                case "CPD":
+                case "CPD Deposito":
+                    $http.get("http://localhost:50837/api/Malote/GetAllMalotes").then(function (response) {
+                        $scope.malotes = response.data;
+                    })
+                    break;
+                case "CPD Loja":
                 case "Tesouraria":
                 case "DP/RH Loja":
                     $http.get("http://localhost:50837/api/Malote/GetAllMalotesByUsuario?idUsuario=" + $localStorage.user.Id).then(function (response) {
@@ -6947,6 +6963,19 @@ function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptio
                         $scope.malotedisp = response.data;
                     })
                     break;
+            }
+        });
+    }
+
+    $scope.historico = function (malote) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/malote/historico.html',
+            controller: 'maloteHistoricoCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                maloteSelected: function () {
+                    return malote;
+                }
             }
         });
     }
@@ -6961,6 +6990,7 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
     $scope.usuarioCadastro;
     $scope.idStatus;
     $scope.isdisable = false;
+    $scope.lojas;
 
     if (maloteSelected != null) {
         $scope.lacre = maloteSelected.Numero_Lacre;
@@ -6974,18 +7004,29 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
     }
 
     switch ($scope.grupo) {
+        case "Gestor Contabilidade/Financeiro":
         case "Contabilidade":
             $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteTesourariaAndCPD").then(function (response) {
                 $scope.malotes = response.data;
             })
             break;
-        case "DP\RH":
+        case "DP/RH":
             $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteDP").then(function (response) {
                 $scope.malotes = response.data;
             })
-
+            $http.get("http://localhost:50837/api/Usuario/GetAllDPLojas").then(function (response) {
+                $scope.lojas = response.data;
+            })
             break;
-        case "CPD":
+        case "CPD Deposito":
+            $http.get("http://localhost:50837/api/Usuario/GetAllDPLojas").then(function (response) {
+                $scope.lojas = response.data;
+            })
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+                $scope.malotes = response.data;
+            })
+            break;
+        case "CPD Loja":
             $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteCPD").then(function (response) {
                 $scope.malotes = response.data;
             })
@@ -6996,7 +7037,7 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             })
             break;
         case "DP/RH Loja":
-            $http.get("http://localhost:50837/api/Malote/GetAllTiposMalote").then(function (response) {
+            $http.get("http://localhost:50837/api/Malote/GetAllTiposMaloteDP").then(function (response) {
                 $scope.malotes = response.data;
             })
             break;
@@ -7072,15 +7113,53 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
                    $uibModalInstance.dismiss();
                }
            });
+    }
 
+    $scope.confirmarDeposito = function () {
 
-        //$http.post("http://localhost:50837/api/Malote/ExcluirMalote", maloteSelected).then(function (response) {
-        //    notify({ message: "Excluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate });
-        //    $uibModalInstance.close();
-        //}, function (response) {
-        //    return alert("Erro" + response.status);
-        //})
+        $scope.obj = {
+            Id: maloteSelected.Id, DtEnvio: maloteSelected.DtEnvio, Numero_Lacre: maloteSelected.Numero_Lacre, Descricao: maloteSelected.Descricao,
+            Status: 4, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: maloteSelected.IdMalote,
+            IdUsuarioEnviado: maloteSelected.IdUsuarioEnviado, IdUsuarioRecebimento: $localStorage.user.Id
+        }
 
+        SweetAlert.swal({
+            title: "Deseja Confirmar?",
+            text: "Não será possivel voltar o registro depois de confirmado!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000,
+            showLoaderOnConfirm: true
+        },
+           function (isConfirm) {
+               if (isConfirm) {
+                   SweetAlert.swal({
+                       title: "Confirmado!",
+                       text: "O registro foi confimado com sucesso!",
+                       type: "success",
+                       timer: 5000
+                   });
+                   $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
+                       $uibModalInstance.close();
+                   }, function (response) {
+                       return alert("Erro" + response.status);
+                   })
+               }
+               else {
+                   SweetAlert.swal({
+                       title: "Cancelado!",
+                       text: "Você cancelou a confirmacao!",
+                       type: "error",
+                       timer: 5000
+                   });
+                   $uibModalInstance.dismiss();
+               }
+           });
     }
 
     $scope.confirmar = function () {
@@ -7179,6 +7258,15 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
     $scope.cancel = function () {
         $uibModalInstance.dismiss();
     }
+}
+
+function maloteHistoricoCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelected)
+{
+    $scope.historicos
+
+    $http.get("http://localhost:50837/api/MaloteLog/GetById?Id=" + maloteSelected.Id).then(function (response) {
+        $scope.historicos = response.data;
+    });
 }
 
 function tiposMaloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
@@ -7517,5 +7605,6 @@ angular
             }
         };
     })
+    .controller('maloteHistoricoCtrlModalInstance', maloteHistoricoCtrlModalInstance)
     .controller('tiposMaloteCtrl', tiposMaloteCtrl)
     .controller('tiposMaloteCtrlModalInstance', tiposMaloteCtrlModalInstance);

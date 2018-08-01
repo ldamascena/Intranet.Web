@@ -43,6 +43,7 @@ namespace Intranet.Domain.Entities
             ChamadosSuporteLogUsuario = new HashSet<ChamSuporteLog>();
             UsuarioMalotes = new HashSet<Malote>();
             UsuarioRecebimentoMalotes = new HashSet<Malote>();
+            UsuarioMaloteLogs = new HashSet<MaloteLog>();
         }
 
         [DataMember]
@@ -74,7 +75,7 @@ namespace Intranet.Domain.Entities
         //[DataMember]
         public bool Bloqueado { get; set; }
 
-        //[DataMember]
+        [DataMember]
         public DateTime DataInclusao { get; set; }
 
         [DataMember]
@@ -145,6 +146,8 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<Malote> UsuarioMalotes { get; set; }
 
         public virtual ICollection<Malote> UsuarioRecebimentoMalotes { get; set; }
+
+        public virtual ICollection<MaloteLog> UsuarioMaloteLogs { get; set; }
 
     }
 }

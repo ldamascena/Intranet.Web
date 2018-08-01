@@ -124,6 +124,7 @@ namespace Intranet.Alvorada.Data.Context
 
         public virtual DbSet<MaloteTipo> MaloteTipos { get; set; }
         public virtual DbSet<Malote> Malotes { get; set; }
+        public virtual DbSet<MaloteLog> MalotesLog { get; set; }
 
         #endregion
 
@@ -550,6 +551,12 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.UsuarioRecebimentoMalotes)
                 .WithRequired(e => e.UsuarioRecebimento)
                 .HasForeignKey(e => e.IdUsuarioRecebimento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuarioMaloteLogs)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
         }
     }

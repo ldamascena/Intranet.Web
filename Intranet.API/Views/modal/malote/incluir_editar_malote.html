@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label>Loja</label>
-                <input class="form-control" ng-disabled="(grupo != 'Contabilidade' && grupo != 'DP/RH') || (idStatus == 2) || ((usuarioCadastro != usuarioLogado) && (usuarioCadastro != null))" name="loja" id="loja" ng-model="loja" />
+                <select class="form-control" ng-disabled="(grupo != 'Contabilidade' && grupo != 'DP/RH') || (idStatus == 2) || ((usuarioCadastro != usuarioLogado) && (usuarioCadastro != null))" name="loja" id="loja" ng-model="loja" ng-options="loja.Id as loja.Nome + ' ' +loja.Sobrenome for loja in lojas"></select>
             </div>
             <div class="form-group">
                 <label>Descricao</label>
@@ -33,8 +33,9 @@
             <button type="submit" class="btn btn-primary" ng-show="id == undefined" ng-disabled="isdisable" ng-click="incluir()">Incluir</button>
             <button type="submit" class="btn btn-primary" ng-show="(idStatus == 1 || idStatus == 3) && ((usuarioCadastro == usuarioLogado) && (usuarioCadastro != null))" ng-disabled="isdisable" ng-click="editar()">Editar</button>
             <button type="submit" class="btn btn-danger" ng-show="(idStatus == 1) && ((usuarioCadastro == usuarioLogado) && (usuarioCadastro != null))" ng-click="excluir()">Excluir</button>
-            <button type="submit" class="btn btn-primary" ng-show="(grupo == 'Contabilidade' || grupo == 'DP/RH') && (idStatus == 1 || idStatus == 3)" ng-click="confirmar()">Confirmar</button>
-            <button type="submit" class="btn btn-warning" ng-show="(grupo == 'Contabilidade' || grupo == 'DP/RH') && (idStatus == 1)" ng-click="pendurar()">Pendente</button>
+            <button type="submit" class="btn btn-primary" ng-show="grupo == 'CPD Deposito' && idStatus == 1" ng-click="confirmarDeposito()">Confirmar</button>
+            <button type="submit" class="btn btn-primary" ng-show="((grupo == 'Contabilidade' && usuarioCadastro != usuarioLogado) || (grupo == 'DP/RH' && usuarioCadastro  != usuarioLogado) || (grupo == 'DP/RH Loja' && loja == usuarioLogado)) && (idStatus == 4 || idStatus == 3)" ng-click="confirmar()">Confirmar</button>
+            <button type="submit" class="btn btn-warning" ng-show="((grupo == 'Contabilidade' && usuarioCadastro != usuarioLogado) || (grupo == 'DP/RH' && usuarioCadastro  != usuarioLogado) || (grupo == 'DP/RH Loja' && loja == usuarioLogado)) && (idStatus == 1 || idStatus == 4)" ng-click="pendurar()">Pendente</button>
         </div>
     </form>
 </div>

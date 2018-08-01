@@ -230,6 +230,7 @@
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\LancamentoCntController.cs" />
     <Compile Include="Controllers\MaloteController.cs" />
+    <Compile Include="Controllers\MaloteLogController.cs" />
     <Compile Include="Controllers\OperadorController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
@@ -2585,6 +2586,7 @@
     <Content Include="Views\modal\incluir_editar_cadsit.html" />
     <Content Include="Views\modal\incluir_editar_cadsoldespesa.html" />
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
+    <Content Include="Views\modal\malote\historico.html" />
     <Content Include="Views\modal\malote\incluir_editar_malote.html" />
     <Content Include="Views\modal\malote\incluir_editar_tipomalote.html" />
     <Content Include="Views\modal\parametro\parametro_filial_editar.html" />

@@ -83,8 +83,8 @@
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="produto.solproduto.info_prod">Solicitacao de Cadastro</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 6 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.sollistaprodutos">Lista de Solicitacoes de Cadastro</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 6"><a ui-sref="produto.sollistaprodutosmobile">Lista de Solicitacoes de Cadastro (Mobile)</a></li>
-                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altproduto">Alteracao de Produto</a></li>
-                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 10 || grupo == 11"><a ui-sref="produto.altlistaprodutos">Lista de Solicitacoes de Alteracao</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.altproduto">Alteracao de Produto</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.altlistaprodutos">Lista de Solicitacoes de Alteracao</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10"><a ui-sref="produto.classificacaoproduto">Classificacao de Produtos</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10"><a ui-sref="produto.associacao">Associacao de Produtos</a></li>
                 </ul>
@@ -125,10 +125,10 @@
                     <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="consulta.estoquenota">Transferencia</a></li>
                 </ul>
             </li>
-            <li ng-class="{active: $state.includes('malote')}" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12 || grupo == 15">
+            <li ng-class="{active: $state.includes('malote')}" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12 || grupo == 15 || grupo == 16 || grupo == 21 || grupo == 22">
                 <a href="#"><i class="fa fa-briefcase"></i> <span class="nav-label">{{ 'Malotes' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('malote')}">
-                    <li ui-sref-active="active"><a ui-sref="malote.lista" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12 || grupo == 15">Lista de Malote</a></li>
+                    <li ui-sref-active="active"><a ui-sref="malote.lista" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12 || grupo == 15 || grupo == 16 || grupo == 21 || grupo == 22">Lista de Malote</a></li>
                     <li ui-sref-active="active"><a ui-sref="malote.tipos" ng-show="grupo == 1 || grupo == 4 || grupo == 12">Tipos De Malote</a></li>
                 </ul>
             </li>

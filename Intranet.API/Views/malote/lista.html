@@ -51,10 +51,12 @@
                                     <td>{{malote.Descricao}}</td>
                                     <td>{{malote.DtRecebimento | date: 'dd/MM/yyyy - HH-mm'}}</td>
                                     <td>{{malote.UsuarioRecebimento.Nome}} {{malote.UsuarioRecebimento.Sobrenome}}</td>
-                                    <td><button ng-class="{'btn btn-xs btn-rounded btn-success' : malote.Status == 1,
+                                    <td><button ng-click="historico(malote);" ng-class="{'btn btn-xs btn-rounded btn-success' : malote.Status == 1,
                                                         'btn btn-xs btn-rounded btn-primary' : malote.Status == 2,
-                                                        'btn btn-xs btn-rounded btn-warning' : malote.Status == 3}">
-                                        {{malote.Status == 1 ? 'Enviado' : (malote.Status == 2 ? 'Conferido' : 'Pendente')}}</button></td>
+                                                        'btn btn-xs btn-rounded btn-warning' : malote.Status == 3,
+                                                        'btn btn-xs btn-rounded btn-danger' : malote.Status == 4}">
+                                        {{malote.Status == 1 ? 'Enviado' : (malote.Status == 2 ? 'Conferido' : (malote.Status == 3 ? 'Pendente' : 'Deposito'))}}
+                                        </button></td>
                                 </tr>
                             </tbody>
                         </table>
