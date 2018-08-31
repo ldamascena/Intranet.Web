@@ -37,8 +37,8 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
-            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-click="editar()">Salvar</button>
-            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-click="incluir()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Alteracao'" ng-disabled="disabled" ng-click="editar()">Salvar</button>
+            <button type="submit" class="btn btn-primary" ng-show="tipo == 'Inclusao'" ng-disabled="disabled" ng-click="incluir()">Salvar</button>
         </div>
     </form>
 </div>

@@ -72,7 +72,7 @@ namespace Intranet.Domain.Entities
         [Required]
         public string PasswordHash { get; set; }
 
-        //[DataMember]
+        [DataMember]
         public bool Bloqueado { get; set; }
 
         [DataMember]

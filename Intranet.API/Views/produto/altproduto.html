@@ -130,6 +130,7 @@
                                         <option value="Divisao">Cópia de Divisão</option>
                                         <option value="Desmembramento">Desmembramento de Super Produto</option>
                                         <option value="Mix">Alteração no Mix</option>
+                                        <option value="Gramatura">Alteração de Gramatura</option>
                                     </select>
                                 </div>
 
@@ -203,6 +204,10 @@
                                         <option value="RIO BONITO">RIO BONITO</option>
                                         <option value="TANGUÁ">TANGUÁ</option>
                                     </select>
+                                </div>
+                                <div class="form-group" ng-show="campo == 'Gramatura'">
+                                    <label>Gramatura Antes</label>
+                                    <input class="form-control" name="gramaturaantes" id="gramaturaantes" ng-model="gramaturaantes"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Observacao</label>

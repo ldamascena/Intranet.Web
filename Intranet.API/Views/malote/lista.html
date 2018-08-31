@@ -44,18 +44,18 @@
                             <tbody>
                                 <tr ng-repeat="malote in malotes">
                                     <td>{{malote.Id}}</td>
-                                    <td>{{malote.DtEnvio | date: 'dd/MM/yyyy - HH-mm'}}</td>
+                                    <td>{{malote.DtEnvio | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     <td>{{malote.Usuario.Nome}} {{malote.Usuario.Sobrenome}}</td>
                                     <td><a href="" ng-click="detalhe(malote);">{{malote.Numero_Lacre}}</a></td>
                                     <td>{{malote.MaloteTipo.Numero}} - {{malote.MaloteTipo.Setor}}</td>
                                     <td>{{malote.Descricao}}</td>
-                                    <td>{{malote.DtRecebimento | date: 'dd/MM/yyyy - HH-mm'}}</td>
+                                    <td>{{malote.DtRecebimento | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     <td>{{malote.UsuarioRecebimento.Nome}} {{malote.UsuarioRecebimento.Sobrenome}}</td>
                                     <td><button ng-click="historico(malote);" ng-class="{'btn btn-xs btn-rounded btn-success' : malote.Status == 1,
                                                         'btn btn-xs btn-rounded btn-primary' : malote.Status == 2,
                                                         'btn btn-xs btn-rounded btn-warning' : malote.Status == 3,
                                                         'btn btn-xs btn-rounded btn-danger' : malote.Status == 4}">
-                                        {{malote.Status == 1 ? 'Enviado' : (malote.Status == 2 ? 'Conferido' : (malote.Status == 3 ? 'Pendente' : 'Deposito'))}}
+                                        {{malote.Status == 1 ? 'Enviado' : (malote.Status == 2 ? 'Conferido' : (malote.Status == 3 ? 'Pendente' : 'No Deposito'))}}
                                         </button></td>
                                 </tr>
                             </tbody>

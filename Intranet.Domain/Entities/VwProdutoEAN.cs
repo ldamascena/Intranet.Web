@@ -35,6 +35,9 @@ namespace Intranet.Domain.Entities
         public int PesoLiquido { get; set; }
 
         [DataMember]
+        public string Classificacao { get; set; }
+
+        [DataMember]
         public long? CdEAN { get; set; }
 
         [DataMember]

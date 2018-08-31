@@ -3,28 +3,43 @@
         <h4 class="modal-title">Inclusao/Alteracao de Usuario</h4>
         <small class="font-bold">Tela exclusivamente para inclusao/alteracao de usuario.</small>
     </div>
-    <form role="form" name="cadUsuario">
+    <form role="form" name="cadUsuarioForm">
         <div class="modal-body">
             <div class="form-group">
                 <label>Tipo de Cadastro</label>
-                <select id="tipocadastro" name="tipocadastro" class="form-control" ng-model="tipocadastro" ng-options="tipocadastrocomplete for tipocadastrocomplete in tiposdecadastro" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
+                <select id="tipocadastro" name="tipocadastro" class="form-control" ng-required="true" ng-model="tipocadastro" ng-options="tipocadastrocomplete for tipocadastrocomplete in tiposdecadastro" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)">
                 </select>
+                <div class="m-t-xs" ng-show="cadUsuarioForm.tipocadastro.$invalid && cadUsuarioForm.submitted">
+                    <small class="text-danger" ng-show="cadUsuarioForm.tipocadastro.$error.required">Preencha o campo tipo de cadastro!</small>
+                </div>
             </div>
             <div class="form-group">
                 <label>Pessoa</label>
-                <input type="text" id="pessoa" name="pessoa" ng-model="pessoa" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
+                <input type="text" id="pessoa" name="pessoa" ng-model="pessoa" ng-required="true" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
+                <div class="m-t-xs" ng-show="cadUsuarioForm.pessoa.$invalid && cadUsuarioForm.submitted">
+                    <small class="text-danger" ng-show="cadUsuarioForm.pessoa.$error.required">Preencha o campo pessoa!</small>
+                </div>
             </div>
             <div class="form-group">
                 <label>Setor</label>
-                <select id="setor" name="setor" class="form-control" ng-model="setor" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="setorcomplete for setorcomplete in setores"></select>
+                <select id="setor" name="setor" class="form-control" ng-model="setor" ng-required="true" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="setorcomplete for setorcomplete in setores"></select>
+                <div class="m-t-xs" ng-show="cadUsuarioForm.setor.$invalid && cadUsuarioForm.submitted">
+                    <small class="text-danger" ng-show="cadUsuarioForm.setor.$error.required">Preencha o campo setor!</small>
+                </div>
             </div>
             <div class="form-group">
                 <label>Filial</label>
-                <select id="filial" name="filial" class="form-control" ng-model="filial" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="filialcomplete.nmFilial as filialcomplete.nmFilial for filialcomplete in filiais"></select>
+                <select id="filial" name="filial" class="form-control" ng-model="filial" ng-required="true" ng-disabled="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" ng-options="filialcomplete.nmFilial as filialcomplete.nmFilial for filialcomplete in filiais"></select>
+                <div class="m-t-xs" ng-show="cadUsuarioForm.filial.$invalid && cadUsuarioForm.submitted">
+                    <small class="text-danger" ng-show="cadUsuarioForm.filial.$error.required">Preencha o campo filial!</small>
+                </div>
             </div>
             <div class="form-group">
                 <label>Senha</label>
-                <input numbers-only type="text" id="senha" name="senha" ng-model="senha" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
+                <input numbers-only type="text" id="senha" name="senha" ng-model="senha" ng-required="true" ng-readonly="(tipo == true) && ((userLogado != usuarioCadastro) || status != 1)" class="form-control" />
+                <div class="m-t-xs" ng-show="cadUsuarioForm.senha.$invalid && cadUsuarioForm.submitted">
+                    <small class="text-danger" ng-show="cadUsuarioForm.senha.$error.required">Preencha o campo senha!</small>
+                </div>
             </div>
             <div class="form-group">
                 <div class="checkbox checkbox-inline checkbox-danger">

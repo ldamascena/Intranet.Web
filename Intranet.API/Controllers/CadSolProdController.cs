@@ -36,6 +36,13 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdStatus == 2).ToList();
         }
 
+        public IEnumerable<CadSolProd> GetAllAproveByDiretoria()
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSolProdutos.Where(x => x.IdStatus == 4).ToList();
+        }
+
         public CadSolProd GetByID(int Id)
         {
             var context = new AlvoradaContext();

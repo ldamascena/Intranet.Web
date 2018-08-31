@@ -281,9 +281,17 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     $scope.grupo = $localStorage.user.Grupo[0].Id;
     $scope.usuarioLogado = $localStorage.user.Id
 
-    $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-        $scope.solicitacoesProd = response.data;
-    });
+    if ($scope.grupo == "Indicadores" || "Coordenador Indicadores") {
+        $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByDiretoria").then(function (response) {
+            $scope.solicitacoesProd = response.data;
+        });
+    }
+    else {
+        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+            $scope.solicitacoesProd = response.data;
+        });
+    }
+
 
     $scope.aprovarComercial = function (solicitacaoProd) {
         solicitacaoProd.IdUsuario = $localStorage.user.Id;
@@ -963,7 +971,7 @@ function listaAltProd($scope, $uibModal, $http, SweetAlert, $localStorage, DTOpt
     });
 
     $scope.concluir = function (solicitacao) {
-        $scope.objLog = { IdSolAlterProd: solicitacao.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
+        //$scope.objLog = { IdSolAlterProd: solicitacao.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
         SweetAlert.swal({
             title: "Deseja confimar?",
             text: "Não será possivel mudar depois de confimardo!",
@@ -1052,12 +1060,6 @@ function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
     });
 
-    $scope.usuarios;
-
-    $http.get("http://localhost:50837/api/Usuario/GetAll").then(function (response) {
-        $scope.usuarios = response.data;
-    });
-
     $scope.editarGrupo = function (grupo) {
 
         var modalInstance = $uibModal.open({
@@ -1069,6 +1071,10 @@ function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
                     return grupo;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Grupo/GetAll").then(function (response) {
+                $scope.grupos = response.data;
+            });
         });
     };
 
@@ -1083,6 +1089,10 @@ function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
                     return true;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Grupo/GetAll").then(function (response) {
+                $scope.grupos = response.data;
+            });
         });
     };
 
@@ -1101,7 +1111,15 @@ function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/Grupo/Excluir", grupo).then(function (response) {
-                        SweetAlert.swal("Deletado!", "O grupo foi excluido com sucesso.", "success");
+                        SweetAlert.swal({
+                            title: "Exclusao!",
+                            text: "Exclusao feita com sucesso!",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $http.get("http://localhost:50837/api/Grupo/GetAll").then(function (response) {
+                            $scope.grupos = response.data;
+                        });
                     }, function (response) {
                         return alert("Erro: " + response.status);
                     });
@@ -1114,7 +1132,7 @@ function rolesUserCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
 }
 
-function rolesUserModalInstanceCtrl($scope, $uibModalInstance, $http, grupoSelected) {
+function rolesUserModalInstanceCtrl($scope, $uibModalInstance, $http, grupoSelected, SweetAlert) {
 
     $scope.grupo = grupoSelected.Nome;
 
@@ -1124,9 +1142,13 @@ function rolesUserModalInstanceCtrl($scope, $uibModalInstance, $http, grupoSelec
 
         if ($scope.signup_form.$valid) {
             $http.post("http://localhost:50837/api/Grupo/Alterar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Alteracao!",
+                    text: "Alteracao feita com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
-
             }, function (response) {
                 return alert("Erro: " + response.status);
             });
@@ -1142,8 +1164,13 @@ function rolesUserModalInstanceCtrl($scope, $uibModalInstance, $http, grupoSelec
 
         if ($scope.signup_form.$valid) {
             $http.post("http://localhost:50837/api/Grupo/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Inclusão",
+                    text: "Inclusão feita com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
-
             }, function (response) {
                 return alert("Erro: " + response.status);
             });
@@ -1280,6 +1307,12 @@ function adminUsuarioModalInstanceCtrl($scope, $http, $uibModalInstance, usuario
 
         if ($scope.usuarioForm.$valid) {
             $http.post("http://localhost:50837/api/Usuario/Editar", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Alteracao!",
+                    text: "Alteracao feita com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
             }, function (response) {
                 return alert("Erro: " + response.status);
@@ -2010,6 +2043,11 @@ function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
                     return "Alteracao";
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSitDesp/GetAll").then(function (response) {
+                $scope.cadsituacoesdesp = response.data;
+
+            });
         });
     };
 
@@ -2027,7 +2065,11 @@ function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
                     return "Inclusao";
                 }
             }
-        });
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSitDesp/GetAll").then(function (response) {
+                $scope.cadsituacoesdesp = response.data;
+            });
+        });;
     };
 
     $scope.excluir = function (cadsituacaodesp) {
@@ -2045,7 +2087,15 @@ function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadSitDesp/Excluir", cadsituacaodesp).then(function (response) {
-                        SweetAlert.swal("Deletado!", "A situacao foi excluida com sucesso.", "success");
+                        SweetAlert.swal({
+                            title: "Deletado!",
+                            text: "A situação foi deletada com sucesso.",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $http.get("http://localhost:50837/api/CadSitDesp/GetAll").then(function (response) {
+                            $scope.cadsituacoesdesp = response.data;
+                        });
                     }, function (response) {
                         return alert("Erro: " + response.status);
                     });
@@ -2058,7 +2108,7 @@ function despSituacaoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
 
 }
 
-function despSituacaoModalInstanceCtrl($scope, $uibModalInstance, $http, cadsituacaodespSelected, tipo) {
+function despSituacaoModalInstanceCtrl($scope, $uibModalInstance, $http, cadsituacaodespSelected, tipo, SweetAlert) {
     $scope.tipo = tipo
     $scope.descricao = cadsituacaodespSelected.Descricao;
     if (cadsituacaodespSelected != true) {
@@ -2079,7 +2129,12 @@ function despSituacaoModalInstanceCtrl($scope, $uibModalInstance, $http, cadsitu
 
         if ($scope.cadSitForm.$valid) {
             $http.post("http://localhost:50837/api/CadSitDesp/Alterar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Alterado!",
+                    text: "A situação foi alterada com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2096,6 +2151,12 @@ function despSituacaoModalInstanceCtrl($scope, $uibModalInstance, $http, cadsitu
 
         if ($scope.cadSitForm.$valid) {
             $http.post("http://localhost:50837/api/CadSitDesp/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Incluido!",
+                    text: "A situação foi incluida com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2160,6 +2221,10 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
                     return "Alteracao";
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
+                $scope.cadmotivosdesp = response.data;
+            });
         });
     };
 
@@ -2177,6 +2242,10 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
                     return "Inclusao";
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
+                $scope.cadmotivosdesp = response.data;
+            });
         });
     };
 
@@ -2195,7 +2264,15 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
             function (isConfirm) {
                 if (isConfirm) {
                     $http.post("http://localhost:50837/api/CadMotivoDesp/Excluir", cadmotivodesp).then(function (response) {
-                        SweetAlert.swal("Deletado!", "O motivo foi excluido com sucesso.", "success");
+                        SweetAlert.swal({
+                            title: "Deletado!",
+                            text: "O motivo foi excluido com sucesso.",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
+                            $scope.cadmotivosdesp = response.data;
+                        });
                     }, function (response) {
                         return alert("Erro: " + response.status);
                     });
@@ -2208,7 +2285,7 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
 
 }
 
-function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivodespSelected, tipo) {
+function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivodespSelected, tipo, SweetAlert) {
     $scope.tipo = tipo
     $scope.motivo = cadmotivodespSelected.Motivo;
 
@@ -2219,7 +2296,12 @@ function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivo
 
         if ($scope.cadMotivoForm.$valid) {
             $http.post("http://localhost:50837/api/CadMotivoDesp/Alterar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Alterado!",
+                    text: "O motivo foi alterado com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2236,6 +2318,12 @@ function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivo
 
         if ($scope.cadMotivoForm.$valid) {
             $http.post("http://localhost:50837/api/CadMotivoDesp/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Incluido!",
+                    text: "O motivo foi incluido com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2300,6 +2388,10 @@ function despFornecedorCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAle
                     return "Alteracao";
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadFornecedorDesp/GetAll").then(function (response) {
+                $scope.cadfornecedoresdesp = response.data;
+            });
         });
     };
 
@@ -2317,11 +2409,15 @@ function despFornecedorCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAle
                     return "Inclusao";
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadFornecedorDesp/GetAll").then(function (response) {
+                $scope.cadfornecedoresdesp = response.data;
+            });
         });
     };
 }
 
-function despFornecedorModalInstanceCtrl($scope, $uibModalInstance, $http, cadfornecedordespSelected, tipo) {
+function despFornecedorModalInstanceCtrl($scope, $uibModalInstance, $http, cadfornecedordespSelected, tipo, SweetAlert) {
     $scope.tipo = tipo
     $scope.ativo = cadfornecedordespSelected.Ativo;
     $scope.nome = cadfornecedordespSelected.Nome;
@@ -2333,7 +2429,12 @@ function despFornecedorModalInstanceCtrl($scope, $uibModalInstance, $http, cadfo
 
         if ($scope.cadFornecedorForm.$valid) {
             $http.post("http://localhost:50837/api/CadFornecedorDesp/Alterar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Alterado!",
+                    text: "O fornecedor foi alterado com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2350,6 +2451,12 @@ function despFornecedorModalInstanceCtrl($scope, $uibModalInstance, $http, cadfo
 
         if ($scope.cadFornecedorForm.$valid) {
             $http.post("http://localhost:50837/api/CadFornecedorDesp/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Incluido!",
+                    text: "O fornecedor foi incluido com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2575,9 +2682,10 @@ function solDespesaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert, 
     };
 }
 
-function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaodespSelected, tipo, $localStorage) {
+function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaodespSelected, tipo, $localStorage, SweetAlert) {
     $scope.motivos;
     $scope.tipo = tipo
+    $scope.disabled = false;
 
     solicitacaodespSelected
 
@@ -2595,6 +2703,7 @@ function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitac
     $scope.observacao = solicitacaodespSelected.Observacao;
 
     $scope.editar = function () {
+        $scope.disabled = true;
 
         $scope.valor = $scope.valor.toString().replace(",", ".");
 
@@ -2607,7 +2716,12 @@ function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitac
 
         if ($scope.cadSolDespForm.$valid) {
             $http.post("http://localhost:50837/api/SolitDesp/Alterar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Alteração!",
+                    text: "Alteração feita com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2620,6 +2734,7 @@ function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitac
     };
 
     $scope.incluir = function () {
+        $scope.disabled = true;
 
         $scope.valor = $scope.valor.toString().replace(",", ".");
 
@@ -2629,6 +2744,12 @@ function solDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitac
         }
         if ($scope.cadSolDespForm.$valid) {
             $http.post("http://localhost:50837/api/SolitDesp/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Inclusão!",
+                    text: "Inclusão feita com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2813,7 +2934,7 @@ function aprovDespesaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
     };
 }
 
-function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaodespSelected, tipo, $localStorage) {
+function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicitacaodespSelected, tipo, $localStorage, SweetAlert) {
     $scope.tipo = tipo
 
     $scope.valor = solicitacaodespSelected.VlDespesa;
@@ -2837,8 +2958,13 @@ function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
                 ObservacaoAprovacao: $scope.observacaoaprovador
             }
 
-
             $http.post("http://localhost:50837/api/SolitDesp/AprovarReprovar", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Aprovado!",
+                    text: "Despesa aprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -2858,7 +2984,12 @@ function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             }
 
             $http.post("http://localhost:50837/api/SolitDesp/AprovarReprovar", $scope.obj).then(function (response) {
-
+                SweetAlert.swal({
+                    title: "Reprovado!",
+                    text: "Despesa reprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
                 $uibModalInstance.close();
 
             }, function (response) {
@@ -3003,7 +3134,7 @@ function changePasswordInstanceCtrl($scope, $uibModalInstance, UserLogin, $http,
                 Id: UserLogin.Id, Username: UserLogin.Username, Nome: UserLogin.Nome, Sobrenome: UserLogin.Sobrenome,
                 Email: UserLogin.Email, PasswordHash: $scope.senha, DataInclusao: UserLogin.DataInclusao
             }
-            alert(angular.toJson(UserLogin));   
+            alert(angular.toJson(UserLogin));
             alert(angular.toJson($scope.obj));
 
             $http.post("http://localhost:50837/api/Usuario/ChangePassword", $scope.obj).then(function (response) {
@@ -6164,37 +6295,47 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
     }
 
     $scope.incluir = function () {
-        $scope.obj = {
-            TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
-            Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
-            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, Senha: $scope.senha
-        }
 
-        $http.post("http://localhost:50837/api/CadUsuarioOperador/Incluir", $scope.obj).then(function (response) {
-        }, function (response) {
-            return alert("Erro: " + response.status);
-        });
-        SweetAlert.swal({
-            title: "A solicitação foi feita com sucesso!",
-            type: "success",
-            timer: 5000
-        });
-        $uibModalInstance.close();
+        if ($scope.cadUsuarioForm.$valid) {
+            $scope.obj = {
+                TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
+                Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
+                Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, Senha: $scope.senha
+            }
+
+            $http.post("http://localhost:50837/api/CadUsuarioOperador/Incluir", $scope.obj).then(function (response) {
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+            SweetAlert.swal({
+                title: "A solicitação foi feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        } else {
+            $scope.cadUsuarioForm.submitted = true;
+        }
     }
 
     $scope.alterar = function () {
-        $scope.obj = {
-            TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
-            Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
-            Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, IdStatus: cadUsuarioSelected.IdStatus, DataInclusao: cadUsuarioSelected.DataInclusao,
-            Id: cadUsuarioSelected.Id, Senha: $scope.senha
-        }
+        if ($scope.cadUsuarioForm.$valid) {
+            $scope.obj = {
+                TipoSolicitacao: $scope.tipocadastro, Pessoa: $scope.pessoa, Setor: $scope.setor, Filial: $scope.filial, Comercial: $scope.comercial,
+                Financeiro: $scope.financeiro, Loja2: $scope.loja2, Concentrador: $scope.concentrador, Pdv: $scope.pdv, WMS: $scope.wms, Pidgin: $scope.pidgin, Email: $scope.email,
+                Observacao: $scope.observacao, Idusuario: $localStorage.user.Id, IdStatus: cadUsuarioSelected.IdStatus, DataInclusao: cadUsuarioSelected.DataInclusao,
+                Id: cadUsuarioSelected.Id, Senha: $scope.senha
+            }
 
-        $http.post("http://localhost:50837/api/CadUsuarioOperador/Alterar", $scope.obj).then(function (response) {
-            $uibModalInstance.close();
-        }, function (response) {
-            return alert("Erro: " + response.status);
-        });
+            $http.post("http://localhost:50837/api/CadUsuarioOperador/Alterar", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        } else {
+            $scope.cadUsuarioForm.submitted = true;
+        }
     }
 
     $scope.excluir = function () {
@@ -7051,12 +7192,23 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
 
         $scope.isdisable = true;
 
-        $http.post("http://localhost:50837/api/Malote/IncluirMalote", $scope.obj).then(function (response) {
-            notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
-            $uibModalInstance.close();
-        }, function (response) {
-            return alert("Erro" + response.status);
-        })
+        if ($scope.grupo != "CPD Deposito") {
+            $http.post("http://localhost:50837/api/Malote/IncluirMalote", $scope.obj).then(function (response) {
+                notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro" + response.status);
+            })
+        }
+
+        else {
+            $http.post("http://localhost:50837/api/Malote/IncluirMaloteDeposito", $scope.obj).then(function (response) {
+                notify({ message: "Incluido com sucesso!", classes: 'alert-info', templateUrl: $scope.inspiniaTemplate, duration: 5000 });
+                $uibModalInstance.close();
+            }, function (response) {
+                return alert("Erro" + response.status);
+            })
+        }
     }
 
     $scope.editar = function () {
@@ -7260,8 +7412,7 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
     }
 }
 
-function maloteHistoricoCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelected)
-{
+function maloteHistoricoCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelected) {
     $scope.historicos
 
     $http.get("http://localhost:50837/api/MaloteLog/GetById?Id=" + maloteSelected.Id).then(function (response) {

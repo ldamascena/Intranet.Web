@@ -69,6 +69,26 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage IncluirMaloteDeposito(Malote obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                obj.DtEnvio = DateTime.Now;
+                obj.Status = 4;
+                context.Malotes.Add(obj);
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage AlterarMalote(Malote obj)
         {
             var context = new AlvoradaContext();
