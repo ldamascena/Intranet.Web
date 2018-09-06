@@ -246,9 +246,20 @@
                     <div class="form-group">
                         <input class="btn btn-white" ng-show="status == 1" type="button" value="Fechar" ng-click="cancel();" />
                         <input class="btn btn-primary" ng-show="status == 1" type="button" value="Salvar" ng-click="editar();" />
+                        <div class="btn-group" uib-dropdown ng-show="status == 1 && (grupo == 'Gestor Comercial' || grupo == 'Admin')">
+                            <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+                                Aprovar <span class="caret"></span>
+                            </button>
+                            <ul role="menu" uib-dropdown-menu="">
+                                <li ng-click="aprovarComercial();"><a href="">Comercial</a></li>
+                                <li class="divider"></li>
+                                <li ng-click="aprovarComercialDiretoria();"><a href="">C/ Apoio da Diretoria</a></li>
+                            </ul>
+                        </div>
+                        <input class="btn btn-danger" ng-show="status == 1 && (grupo == 'Gestor Comercial' || grupo == 'Admin')" type="button" value="Reprovar" ng-click="reprovarComercial()" />
                         <input class="btn btn-success" ng-show="status == 2 && (grupo == 'Diretoria' || grupo == 'Admin')" type="button" value="Aprovar" ng-click="aprovarDiretoria()" />
                         <input class="btn btn-danger" ng-show="status == 2 && (grupo == 'Diretoria' || grupo == 'Admin')" type="button" value="Reprovar" ng-click="reprovarDiretoria()" />
-                        <input class="btn btn-primary" ng-disabled="lock != idUser" ng-show="status == 4" type="button" value="Concluir" ng-click="concluir();" />
+                        <input class="btn btn-primary" ng-disabled="lock != idUser" ng-show="(status == 4 || status == 10) && (grupo == 'Indicadores' || grupo == 'Coordenador Indicadores' || grupo == 'Admin')" type="button" value="Concluir" ng-click="concluir();" />
                     </div>
                 </div>
             </div>

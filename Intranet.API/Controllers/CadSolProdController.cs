@@ -176,6 +176,38 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage AprovarComercialDiretoria(CadSolProd obj)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+            var result = context.CadSolProdutos.Where(x => x.Id == obj.Id).FirstOrDefault();
+
+            try
+            {
+                context.Entry(result).State = EntityState.Modified;
+                result.IdStatus = 10;
+                var log = new CadSolProdLog
+                {
+                    IdCadSolProd = obj.Id,
+                    IdStatus = 10,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadSolProdLogs.Add(log);
+                context.SaveChanges();
+                //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("fmedeiros@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage ReprovarComercial(CadSolProd obj)
         {
             var context = new AlvoradaContext();

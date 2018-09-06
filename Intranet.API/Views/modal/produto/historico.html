@@ -5,12 +5,12 @@
     <div class="modal-body">
         <div id="vertical-timeline" class="vertical-container light-timeline no-margins" ng-repeat="historico in historicos">
             <div class="vertical-timeline-block">
-                <div ng-class="(historico.SitCadProd.IdSitProd == 2 || historico.SitCadProd.IdSitProd == 4 || historico.SitCadProd.IdSitProd == 6) ?
+                <div ng-class="(historico.SitCadProd.IdSitProd == 2 || historico.SitCadProd.IdSitProd == 4 || historico.SitCadProd.IdSitProd == 6 || historico.SitCadProd.IdSitProd == 10) ?
                                            'vertical-timeline-icon navy-bg' :
                                             (historico.SitCadProd.IdSitProd == 7  ? 
                                             'vertical-timeline-icon yellow-bg' :
                                            'vertical-timeline-icon red-bg')">
-                    <i ng-class="(historico.SitCadProd.IdSitProd == 2 || historico.SitCadProd.IdSitProd == 4 || historico.SitCadProd.IdSitProd == 6) ?
+                    <i ng-class="(historico.SitCadProd.IdSitProd == 2 || historico.SitCadProd.IdSitProd == 4 || historico.SitCadProd.IdSitProd == 6 || historico.SitCadProd.IdSitProd == 10) ?
                                            'fa fa-check' :
                                             (historico.SitCadProd.IdSitProd == 7  ? 
                                             'fa fa-exclamation' :

@@ -281,7 +281,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     $scope.grupo = $localStorage.user.Grupo[0].Id;
     $scope.usuarioLogado = $localStorage.user.Id
 
-    if ($scope.grupo == "Indicadores" || "Coordenador Indicadores") {
+    if ($scope.grupo == "Indicadores" || $scope.grupo == "Coordenador Indicadores") {
         $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByDiretoria").then(function (response) {
             $scope.solicitacoesProd = response.data;
         });
@@ -710,7 +710,6 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.idUser = $localStorage.user.Id;
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
 
-
     $scope.editar = function () {
         $scope.obj = {
             Id: solicitacaoProdSelected.Id, IdCadSolProd: solicitacaoProdSelected.IdCadSolProd, Descricao: $scope.descricao,
@@ -753,8 +752,130 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
         $uibModalInstance.close();
     };
 
+    $scope.aprovarComercial = function () {
+        solicitacaoProdSelected.IdUsuario = $localStorage.user.Id;
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                SweetAlert.swal({
+                    title: "A solicitação foi aprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+                $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProdSelected).then(function (response) {
+
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+            else {
+                SweetAlert.swal({
+                    title: "A solicitação foi cancelada com sucesso!",
+                    type: "error",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+            }
+        });
+    }
+
+    $scope.reprovarComercial = function () {
+        solicitacaoProdSelected.IdUsuario = $localStorage.user.Id;
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                SweetAlert.swal({
+                    title: "A solicitação foi reprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
+                $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProdSelected).then(function (response) {
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+                $uibModalInstance.close();
+            }
+            else {
+                SweetAlert.swal({
+                    title: "A solicitação foi cancelada com sucesso!",
+                    type: "error",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+            }
+        });
+    };
+
+    $scope.aprovarComercialDiretoria = function () {
+        solicitacaoProdSelected.IdUsuario = $localStorage.user.Id;
+        SweetAlert.swal({
+            title: "Deseja confimar?",
+            text: "Não será possivel mudar depois de confimardo!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, confirmar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                SweetAlert.swal({
+                    title: "A solicitação foi aprovada com sucesso!",
+                    type: "success",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+                $http.post("http://localhost:50837/api/CadSolProd/AprovarComercialDiretoria", solicitacaoProdSelected).then(function (response) {
+
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+            }
+            else {
+                SweetAlert.swal({
+                    title: "A solicitação foi cancelada com sucesso!",
+                    type: "error",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+            }
+        });
+    }
+
     $scope.aprovarDiretoria = function () {
-        $scope.objLog = { IdCadSolProd: solicitacaoProdSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 4 };
+        solicitacaoProdSelected.IdUsuario = $localStorage.user.Id;
         SweetAlert.swal({
             title: "Deseja confimar?",
             text: "Não será possivel mudar depois de confimardo!",
@@ -776,8 +897,7 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
                 });
                 $uibModalInstance.close();
                 $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProdSelected).then(function (response) {
-                    $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                    })
+
                 }, function (response) {
                     return alert("Erro: " + response.status);
                 }, function (response) {
@@ -796,7 +916,7 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     }
 
     $scope.reprovarDiretoria = function () {
-        $scope.objLog = { IdCadSolProd: solicitacaoProdSelected.Id, IdUsuario: $localStorage.user.Id, IdStatus: 5 };
+        solicitacaoProdSelected.IdUsuario = $localStorage.user.Id;
         SweetAlert.swal({
             title: "Deseja confimar?",
             text: "Não será possivel mudar depois de confimardo!",
@@ -816,9 +936,7 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
                     type: "success",
                     timer: 5000
                 });
-                $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
-                    $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                    })
+                $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProdSelected).then(function (response) {
                 }, function (response) {
                     return alert("Erro: " + response.status);
                 }, function (response) {
@@ -5584,21 +5702,568 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 }
 
 function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval) {
-
-    $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-    $scope.series = ['Leonardo', 'Fabricio', 'Amanda', 'Cris', 'Oliveira'];
-
-    $scope.data = [
-      [65, 12, 80, 81, 25, 55, 58],
-      [28, 48, 40, 130, 14, 36, 58],
-      [22, 58, 74, 62, 14, 121, 58],
-      [22, 58, 14, 62, 37, 85, 58],
-      [22, 14, 62, 101, 96, 100, 58]
+    $scope.dados = [
+   {
+       "Id": 1,
+       "Secao": "11-SERVICO",
+       "Familia": "01-LOGISTICA",
+       "Comprador": null,
+       "Vendas": 9167.00000000,
+       "Custos": 7047.50000000,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },   
+   {
+       "Id": 2,
+       "Secao": "98-PATRIMONIAL",
+       "Familia": "01-IMOBILIZADO",
+       "Comprador": null,
+       "Vendas": 0.00000000,
+       "Custos": 0.00000000,
+       "Compras": 0.000000000,
+       "Pedidos": 142.84000000
+   },
+   {
+       "Id": 3,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "03-MATINAIS",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 20621.45450000,
+       "Custos": 14439.09360000,
+       "Compras": 47.611800000,
+       "Pedidos": 31370.94000000
+   },
+   {
+       "Id": 4,
+       "Secao": "05-ACOUGUE",
+       "Familia": "01-BOVINO",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 879314.34012430,
+       "Custos": 770223.95937900,
+       "Compras": 553902.688700100,
+       "Pedidos": 49629.16000000
+   },
+   {
+       "Id": 5,
+       "Secao": "05-ACOUGUE",
+       "Familia": "02-AVES",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 418967.87582820,
+       "Custos": 293960.44633310,
+       "Compras": 537897.423800000,
+       "Pedidos": 162501.20000000
+   },
+   {
+       "Id": 6,
+       "Secao": "05-ACOUGUE",
+       "Familia": "03-SUINO",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 119804.33982730,
+       "Custos": 83407.25041200,
+       "Compras": 310.323600000,
+       "Pedidos": 147514.93000000
+   },
+   {
+       "Id": 7,
+       "Secao": "05-ACOUGUE",
+       "Familia": "04-EXOTICOS",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 649.49957580,
+       "Custos": 422.14140600,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 8,
+       "Secao": "05-ACOUGUE",
+       "Familia": "05-EMBUTIDO",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 243051.67606650,
+       "Custos": 193965.42617740,
+       "Compras": 100601.150800000,
+       "Pedidos": 40794.29000000
+   },
+   {
+       "Id": 9,
+       "Secao": "05-ACOUGUE",
+       "Familia": "06-SALGADO",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 146960.88990500,
+       "Custos": 103750.41652640,
+       "Compras": 26010.287500000,
+       "Pedidos": 5779.10000000
+   },
+   {
+       "Id": 10,
+       "Secao": "06-PERECIVEIS",
+       "Familia": "01-PEIXARIA",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 12831.15004370,
+       "Custos": 8722.45903900,
+       "Compras": 553.984000000,
+       "Pedidos": 70600.00000000
+   },
+   {
+       "Id": 11,
+       "Secao": "06-PERECIVEIS",
+       "Familia": "02-CONGELADO",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 175290.04909660,
+       "Custos": 136565.20830200,
+       "Compras": 176919.168800000,
+       "Pedidos": 190470.61000000
+   },
+   {
+       "Id": 12,
+       "Secao": "07-LATICINIOS",
+       "Familia": "03-LEITE",
+       "Comprador": "Diego Gonçalves",
+       "Vendas": 256030.44760000,
+       "Custos": 236083.67140000,
+       "Compras": 289088.808000000,
+       "Pedidos": 720642.60000000
+   },
+   {
+       "Id": 13,
+       "Secao": "04-HPLU",
+       "Familia": "01-HIGIENE PESSOAL",
+       "Comprador": "Edilmario Almeira",
+       "Vendas": 252734.68750000,
+       "Custos": 208924.57050000,
+       "Compras": 244439.850400000,
+       "Pedidos": 255782.24000000
+   },
+   {
+       "Id": 14,
+       "Secao": "04-HPLU",
+       "Familia": "03-PERFUMARIA",
+       "Comprador": "Edilmario Almeira",
+       "Vendas": 319708.47340000,
+       "Custos": 304945.49800000,
+       "Compras": 413019.466200000,
+       "Pedidos": 1043177.60000000
+   },
+   {
+       "Id": 15,
+       "Secao": "04-HPLU",
+       "Familia": "04-LIMPEZA",
+       "Comprador": "Edilmario Almeira",
+       "Vendas": 400290.44483720,
+       "Custos": 328011.44545150,
+       "Compras": 205434.601200000,
+       "Pedidos": 733932.87000000
+   },
+   {
+       "Id": 16,
+       "Secao": "04-HPLU",
+       "Familia": "05-UTILIDADES",
+       "Comprador": "Edilmario Almeira",
+       "Vendas": 108771.70790000,
+       "Custos": 72494.47100000,
+       "Compras": 150599.298800000,
+       "Pedidos": 31980.26000000
+   },
+   {
+       "Id": 17,
+       "Secao": "04-HPLU",
+       "Familia": "06-PET SHOP",
+       "Comprador": "Edilmario Almeira",
+       "Vendas": 10417.09977800,
+       "Custos": 7394.19900250,
+       "Compras": 11276.913000000,
+       "Pedidos": 2520.30000000
+   },
+   {
+       "Id": 18,
+       "Secao": "06-PERECIVEIS",
+       "Familia": "04-SUPER CONGELADOS",
+       "Comprador": "Julio Ruiz",
+       "Vendas": 612.76000000,
+       "Custos": 301.10030000,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 19,
+       "Secao": "07-LATICINIOS",
+       "Familia": "01-BALCAO",
+       "Comprador": "Julio Ruiz",
+       "Vendas": 218353.14961840,
+       "Custos": 145385.14160050,
+       "Compras": 42664.057305900,
+       "Pedidos": 66810.79642000
+   },
+   {
+       "Id": 20,
+       "Secao": "07-LATICINIOS",
+       "Familia": "02-REFRIGERADOS",
+       "Comprador": "Julio Ruiz",
+       "Vendas": 329694.89620000,
+       "Custos": 252444.25750000,
+       "Compras": 194276.316600000,
+       "Pedidos": 285312.55431600
+   },
+   {
+       "Id": 21,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "03-CONSERVAS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 56633.06000000,
+       "Custos": 42964.04580000,
+       "Compras": 141410.004400000,
+       "Pedidos": 3563.82600000
+   },
+   {
+       "Id": 22,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "04-MASSAS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 684.76000000,
+       "Custos": 438.31330000,
+       "Compras": 331.440400000,
+       "Pedidos": 292.32000000
+   },
+   {
+       "Id": 23,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "01-BISCOITOS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 4841.66000000,
+       "Custos": 3243.66600000,
+       "Compras": 10459.740000000,
+       "Pedidos": 1560.00000000
+   },
+   {
+       "Id": 24,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "02-PANIFICACAO",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 3448.05000000,
+       "Custos": 2353.81670000,
+       "Compras": 2836.279000000,
+       "Pedidos": 1035.39200000
+   },
+   {
+       "Id": 25,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "03-MATINAIS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 3195.14000000,
+       "Custos": 2357.53590000,
+       "Compras": 0.000000000,
+       "Pedidos": 3556.35000000
+   },
+   {
+       "Id": 26,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "04-DOCES E COMPOTAS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 5169.24000000,
+       "Custos": 3302.55520000,
+       "Compras": 976.142400000,
+       "Pedidos": 1762.18000000
+   },
+   {
+       "Id": 27,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "05-BOMBONIERE",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 13706.73000000,
+       "Custos": 10801.09560000,
+       "Compras": 3934.232800000,
+       "Pedidos": 7220.78000000
+   },
+   {
+       "Id": 28,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "06-VIDA SAUDAVEL",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 13.38000000,
+       "Custos": 8.26000000,
+       "Compras": 0.000000000,
+       "Pedidos": 99.12000000
+   },
+   {
+       "Id": 29,
+       "Secao": "03-MERCEARIA LIQUIDA",
+       "Familia": "01-NAO ALCOOLICAS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 165.77000000,
+       "Custos": 102.69800000,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 30,
+       "Secao": "03-MERCEARIA LIQUIDA",
+       "Familia": "02-ALCOOLICAS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 414257.97100000,
+       "Custos": 340821.96610000,
+       "Compras": 209241.836200000,
+       "Pedidos": 267690.76000000
+   },
+   {
+       "Id": 31,
+       "Secao": "03-MERCEARIA LIQUIDA",
+       "Familia": "03-VINHOS",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 27047.67000000,
+       "Custos": 18517.18010000,
+       "Compras": 27511.570200000,
+       "Pedidos": 141278.70000000
+   },
+   {
+       "Id": 32,
+       "Secao": "07-LATICINIOS",
+       "Familia": "01-BALCAO",
+       "Comprador": "Leandro Goncalves",
+       "Vendas": 94.88000000,
+       "Custos": 51.76480000,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 33,
+       "Secao": "08-FLV",
+       "Familia": "01-FRUTAS",
+       "Comprador": "Leandro Moreira",
+       "Vendas": 98034.63428640,
+       "Custos": 68080.26948390,
+       "Compras": 71329.522900000,
+       "Pedidos": 4060.27857200
+   },
+   {
+       "Id": 34,
+       "Secao": "08-FLV",
+       "Familia": "02-LEGUMES",
+       "Comprador": "Leandro Moreira",
+       "Vendas": 97627.21271840,
+       "Custos": 69349.32561970,
+       "Compras": 68059.356210000,
+       "Pedidos": 2300.11817000
+   },
+   {
+       "Id": 35,
+       "Secao": "08-FLV",
+       "Familia": "03-VERDURAS",
+       "Comprador": "Leandro Moreira",
+       "Vendas": 25548.90791350,
+       "Custos": 13155.17832800,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 36,
+       "Secao": "08-FLV",
+       "Familia": "04-TEMPEROS",
+       "Comprador": "Leandro Moreira",
+       "Vendas": 35464.29271340,
+       "Custos": 33820.99400000,
+       "Compras": 14727.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 37,
+       "Secao": "08-FLV",
+       "Familia": "06-OVOS",
+       "Comprador": "Leandro Moreira",
+       "Vendas": 41229.39810000,
+       "Custos": 31954.58800000,
+       "Compras": 55628.800000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 38,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "02-PANIFICACAO",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 78093.37920000,
+       "Custos": 56223.14410000,
+       "Compras": 63262.505200000,
+       "Pedidos": 85984.65000000
+   },
+   {
+       "Id": 39,
+       "Secao": "09-FABRICO",
+       "Familia": "01-PADARIA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 55558.25803100,
+       "Custos": 20545.33950260,
+       "Compras": 0.000000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 40,
+       "Secao": "09-FABRICO",
+       "Familia": "02-CONFEITARIA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 20953.48033260,
+       "Custos": 10739.49259060,
+       "Compras": 0.000000000,
+       "Pedidos": 161.60000000
+   },
+   {
+       "Id": 41,
+       "Secao": "09-FABRICO",
+       "Familia": "03-LANCHERIA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 28451.88651620,
+       "Custos": 10992.93051580,
+       "Compras": 648.226000000,
+       "Pedidos": 0.00000000
+   },
+   {
+       "Id": 42,
+       "Secao": "12-USO CONSUMO",
+       "Familia": "01-LOJA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 0.00000000,
+       "Custos": 0.00000000,
+       "Compras": 0.000000000,
+       "Pedidos": 117376.62000000
+   },
+   {
+       "Id": 43,
+       "Secao": "13-EMBALAGENS",
+       "Familia": "01-LOJA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 0.00000000,
+       "Custos": 0.00000000,
+       "Compras": 0.000000000,
+       "Pedidos": 4764.53000000
+   },
+   {
+       "Id": 44,
+       "Secao": "13-EMBALAGENS",
+       "Familia": "02-CD",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 0.00000000,
+       "Custos": 0.00000000,
+       "Compras": 0.000000000,
+       "Pedidos": 1534.40000000
+   },
+   {
+       "Id": 45,
+       "Secao": "14-PRODUCAO",
+       "Familia": "01-MATERIA PRIMA",
+       "Comprador": "Nilo Oliveira",
+       "Vendas": 0.00000000,
+       "Custos": 0.00000000,
+       "Compras": 14511.843929600,
+       "Pedidos": 11267.25318000
+   },
+   {
+       "Id": 46,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "01-CEREAIS",
+       "Comprador": "Rinaldo Rocha",
+       "Vendas": 365113.69584070,
+       "Custos": 315219.40527660,
+       "Compras": 294590.141000000,
+       "Pedidos": 476896.68000000
+   },
+   {
+       "Id": 47,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "02-GORDUROSOS",
+       "Comprador": "Rinaldo Rocha",
+       "Vendas": 84468.53420000,
+       "Custos": 73885.25150000,
+       "Compras": 162692.390000000,
+       "Pedidos": 242200.60000000
+   },
+   {
+       "Id": 48,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "03-CONSERVAS",
+       "Comprador": "Rinaldo Rocha",
+       "Vendas": 259369.90275140,
+       "Custos": 193766.76536010,
+       "Compras": 228625.663700000,
+       "Pedidos": 205098.25000000
+   },
+   {
+       "Id": 49,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "04-DOCES E COMPOTAS",
+       "Comprador": "Rinaldo Rocha",
+       "Vendas": 99423.39840000,
+       "Custos": 91848.08650000,
+       "Compras": 1365.511200000,
+       "Pedidos": 169294.00000000
+   },
+   {
+       "Id": 50,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "05-BOMBONIERE",
+       "Comprador": "Tiago Cunha",
+       "Vendas": 141765.26980000,
+       "Custos": 109220.91760000,
+       "Compras": 72380.736800000,
+       "Pedidos": 48017.37535000
+   },
+   {
+       "Id": 51,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "06-VIDA SAUDAVEL",
+       "Comprador": "Tiago Cunha",
+       "Vendas": 9212.37620000,
+       "Custos": 5694.17350000,
+       "Compras": 16229.052600000,
+       "Pedidos": 7250.88000000
+   },
+   {
+       "Id": 52,
+       "Secao": "03-MERCEARIA LIQUIDA",
+       "Familia": "01-NAO ALCOOLICAS",
+       "Comprador": "Tiago Cunha",
+       "Vendas": 279046.60640000,
+       "Custos": 208825.19590000,
+       "Compras": 131498.487600000,
+       "Pedidos": 270402.16000000
+   },
+   {
+       "Id": 53,
+       "Secao": "01-MERCEARIA SALGADA",
+       "Familia": "04-MASSAS",
+       "Comprador": "Wanderson Batista",
+       "Vendas": 94653.26920000,
+       "Custos": 69466.30080000,
+       "Compras": 61385.819000000,
+       "Pedidos": 15991.32000000
+   },
+   {
+       "Id": 54,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "01-BISCOITOS",
+       "Comprador": "Wanderson Batista",
+       "Vendas": 249910.18380000,
+       "Custos": 193506.47810000,
+       "Compras": 205354.204600000,
+       "Pedidos": 212712.56020000
+   },
+   {
+       "Id": 55,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "03-MATINAIS",
+       "Comprador": "Wanderson Batista",
+       "Vendas": 542867.45480000,
+       "Custos": 470537.29160000,
+       "Compras": 73653.633200000,
+       "Pedidos": 376636.81182000
+   },
+   {
+       "Id": 56,
+       "Secao": "02-MERCEARIA DOCE",
+       "Familia": "04-DOCES E COMPOTAS",
+       "Comprador": "Wanderson Batista",
+       "Vendas": 212000.65060000,
+       "Custos": 174600.22600000,
+       "Compras": 31462.586900000,
+       "Pedidos": 460583.14000000
+   }
     ];
-
-    $scope.options = {
-        legend: { display: true }
-    }
 }
 
 function classificacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
