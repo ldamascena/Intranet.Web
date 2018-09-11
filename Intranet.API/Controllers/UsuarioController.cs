@@ -235,7 +235,7 @@ namespace Intranet.API.Controllers
 
             if (result != null)
             {
-                //emailService.SendEmail(result.Email, "Intranet - Alteração de senha", emailService.BodySolicitacaoUsuario(model.PasswordHash));
+                emailService.SendEmail(result.Email, "Intranet - Alteração de senha", emailService.BodyForgotPassword(HttpContext.Current.Server.UrlEncode(result.PasswordHash)));
                 return result;
             }
             return null;

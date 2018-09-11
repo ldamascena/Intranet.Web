@@ -131,10 +131,6 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
 }
 
 function registerCtrl($scope, $http, $state, $stateParams, toaster, $timeout) {
-    console.log($stateParams.Id);
-    console.log($stateParams);
-    console.log(encodeURIComponent("AO8c7BMEAMMS+DtZEoYZXN7VHGCdUor5UdflTl/ZgWZh0uwRWMGo8Q98yYRR+JQrhg=="))
-    
     $scope.cadastrar = function () {
         $scope.obj = { Username: $scope.username, Email: $scope.email, Nome: $scope.nome, Sobrenome: $scope.sobrenome, PasswordHash: $scope.password };
 
@@ -147,6 +143,28 @@ function registerCtrl($scope, $http, $state, $stateParams, toaster, $timeout) {
     $scope.forgotPassword = function () {
         $scope.obj = { Email: $scope.email };
         $http.post("http://localhost:50837/api/Usuario/ForgotPassword", $scope.obj).then(function (response) {
+            if (response.data != null) {
+                toaster.pop({
+                    type: 'success',
+                    title: 'Enviado',
+                    body: 'E-mail enviado com sucesso!',
+                    showCloseButton: true,
+                    timeout: 3000
+                });
+
+                $timeout(function () {
+                    $state.go('login');
+                }, 3000);
+            }
+            else {
+                toaster.pop({
+                    type: 'error',
+                    title: 'Falha!',
+                    body: 'E-mail não foi encontrado!',
+                    showCloseButton: true,
+                    timeout: 3000
+                });
+            }
         }, function (response) {
             return alert("Erro: " + response.status);
         });
