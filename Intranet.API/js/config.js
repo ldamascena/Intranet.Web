@@ -722,6 +722,38 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/register.html",
             data: { pageTitle: 'Register', specialClass: 'gray-bg' }
         })
+        .state('forgotpassword', {
+            url: "/forgotpassword",
+            templateUrl: "views/forgotpassword.html",
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            },
+            data: { pageTitle: 'ForgotPassword', specialClass: 'gray-bg' }
+        })
+        .state('changepassword', {
+            url: "/changepassword?Id",
+            templateUrl: "views/changepassword.html",
+            data: { pageTitle: 'Mudar Senha', specialClass: 'gray-bg' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
+        })
 
         .state('permissoes', {
             abstract: true,

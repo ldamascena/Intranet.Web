@@ -100,7 +100,6 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
                             $http.get("http://localhost:50837/api/Usuario/GetUser?username=" + $scope.username).then(function (response) {
                                 $localStorage.user = response.data;
                             });
-                            $localStorage.passwordNoHash = $scope.password;
                             $timeout(function () {
                                 window.location = "#/principal/instutucional";
                             }, 2000);
@@ -131,7 +130,11 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
     }
 }
 
-function registerCtrl($scope, $http) {
+function registerCtrl($scope, $http, $state, $stateParams, toaster, $timeout) {
+    console.log($stateParams.Id);
+    console.log($stateParams);
+    console.log(encodeURIComponent("AO8c7BMEAMMS+DtZEoYZXN7VHGCdUor5UdflTl/ZgWZh0uwRWMGo8Q98yYRR+JQrhg=="))
+    
     $scope.cadastrar = function () {
         $scope.obj = { Username: $scope.username, Email: $scope.email, Nome: $scope.nome, Sobrenome: $scope.sobrenome, PasswordHash: $scope.password };
 
@@ -139,6 +142,57 @@ function registerCtrl($scope, $http) {
         }, function (response) {
             return alert("Erro: " + response.status);
         });
+    }
+
+    $scope.forgotPassword = function () {
+        $scope.obj = { Email: $scope.email };
+        $http.post("http://localhost:50837/api/Usuario/ForgotPassword", $scope.obj).then(function (response) {
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.changepassword = function ()
+    {
+        if (($scope.senha == '' || $scope.senha == undefined) || ($scope.confirmarSenha == '' || $scope.confirmarSenha == undefined)) {
+            toaster.pop({
+                type: 'warning',
+                title: 'Atenção!',
+                body: 'Preencha os campos corretamente!',
+                showCloseButton: true,
+                timeout: 2000
+            });
+        }
+        else if ($scope.senha != $scope.confirmarSenha) {
+            toaster.pop({
+                type: 'error',
+                title: 'Falha!',
+                body: 'Senha não são identicas!',
+                showCloseButton: true,
+                timeout: 2000
+            });
+        }
+        else {
+
+            $scope.obj = { PasswordHash: $stateParams.Id, Nome: $scope.senha };
+
+            toaster.pop({
+                type: 'success',
+                title: 'Sucesso!',
+                body: 'Senha alterada com sucesso!',
+                showCloseButton: true,
+                timeout: 2000
+            });
+
+            $http.post('http://localhost:50837/api/Usuario/ChangePassword2', $scope.obj).then(function (response) {
+                $timeout(function () {
+                    $state.go('login');
+                }, 2000);
+            },
+            function () {
+                return alert("Erro: " + response.status);
+            });
+        }
     }
 }
 
@@ -5712,7 +5766,7 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
        "Custos": 7047.50000000,
        "Compras": 0.000000000,
        "Pedidos": 0.00000000
-   },   
+   },
    {
        "Id": 2,
        "Secao": "98-PATRIMONIAL",

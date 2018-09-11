@@ -8,6 +8,8 @@ using Intranet.Domain.Entities;
 using Intranet.Alvorada.Data.Context;
 using System.Web.Helpers;
 using System.Data.Entity;
+using Intranet.Service;
+using System.Web;
 
 namespace Intranet.API.Controllers
 {
@@ -139,6 +141,31 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage ChangePassword2(Usuario model)
+        {
+            var context = new AlvoradaContext();
+
+            var result = context.Usuarios.Where(x => x.PasswordHash == model.PasswordHash).FirstOrDefault();
+
+            if (result != null)
+            {
+                try
+                {
+
+                    result.PasswordHash = Crypto.HashPassword(model.Nome);
+                    context.Entry(result).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage Bloquear(Usuario model)
         {
             var context = new AlvoradaContext();
@@ -199,5 +226,24 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public Usuario ForgotPassword(Usuario model)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            var result = context.Usuarios.Where(x => x.Email == model.Email).FirstOrDefault();
+
+            if (result != null)
+            {
+                //emailService.SendEmail(result.Email, "Intranet - Alteração de senha", emailService.BodySolicitacaoUsuario(model.PasswordHash));
+                return result;
+            }
+            return null;
+        }
+
+        public string Getteste()
+        {
+            return HttpContext.Current.Server.UrlEncode("ADM076bttm3ELvpnMUl9Se/tk7B3RWflDxRLMSWEedeOpy+mpOHayrWaSKND8ABpew==");
+        }
     }
 }
