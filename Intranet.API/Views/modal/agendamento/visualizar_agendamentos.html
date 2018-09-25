@@ -1,0 +1,35 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Agendamento</h4>
+        <small class="font-bold">Detalhe agendamento estoque minimo</small>
+    </div>
+    <form role="form" name="estoqueCustoForm">
+        <div class="modal-body col-lg-12">
+            <div ng-repeat="(key, value) in dados | groupBy: 'Produto'" class="col-lg-12">
+                <div class="form-group col-lg-12">
+                    <label>Produto</label>
+                    <input type="text" name="produto" ng-model="key" class="form-control" ng-disabled="true">
+                </div>
+                <div class="form-group col-lg-12" style="margin-top: 30px;">
+                    <label>Estoque</label>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Filial</th>
+                                <th>Qtd Estoque Minimo</th>
+                                <th>Qtd Estoque Proposto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="filial in value">
+                                <td>{{filial.Filial}}</td>
+                                <td>{{filial.QtdEstoqueMinimo}}</td>
+                                <td>{{filial.QtdEstoqueMinimoProposto}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -170,8 +170,7 @@ function registerCtrl($scope, $http, $state, $stateParams, toaster, $timeout) {
         });
     }
 
-    $scope.changepassword = function ()
-    {
+    $scope.changepassword = function () {
         if (($scope.senha == '' || $scope.senha == undefined) || ($scope.confirmarSenha == '' || $scope.confirmarSenha == undefined)) {
             toaster.pop({
                 type: 'warning',
@@ -8264,6 +8263,289 @@ function tiposMaloteCtrlModalInstance($uibModalInstance, $http, $scope, tipoMalo
     }
 }
 
+function estoqueMinimoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, $timeout, toaster) {
+    $scope.dados = [];
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+          mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+          mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.buscar = function () {
+        $http.get("http://localhost:50837/api/CadAgendamento/GetProdutoByCodigo?codigo=" + $scope.codigo).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    $scope.edit = function (dado) {
+        dado.editMode = true;
+    }
+
+    $scope.cancel = function (dado) {
+        $http.get("http://localhost:50837/api/CadAgendamento/GetProdutoByCodigo?codigo=" + $scope.codigo).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    $scope.saveUser = function (dado, $index) {
+        dado.editMode = false;
+    }
+
+    $scope.salvarAgendamento = function () {
+        if (($scope.agendamento == undefined || $scope.agendamento == "") || $scope.dateinicio == undefined || $scope.datefim == undefined) {
+            toaster.pop({
+                type: 'error',
+                title: 'Falha!',
+                body: 'Preencha os campos adequadamente!',
+                showCloseButton: true,
+                timeout: 3000
+            });
+        }
+        else {
+            $scope.objAgendamento = { Nome: $scope.agendamento, DtInicio: $scope.dateinicio, DtFim: $scope.datefim, IdUsuario: $localStorage.user.Id };
+
+            SweetAlert.swal({
+                title: "Deseja incluir?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, incluir!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $http.post("http://localhost:50837/api/CadAgendamento/CadastraAgendamento", $scope.objAgendamento).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Incluido!",
+                                text: "Agendamento incluido com sucesso!",
+                                type: "success",
+                                timer: 5000
+                            });
+                            $scope.show = true;
+                        },
+                    function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                    } else {
+                        SweetAlert.swal("Cancelado", "Você cancelou a inclusão", "error");
+                    }
+                });
+        }
+    }
+
+    $scope.salvarItens = function () {
+
+        $http.get("http://localhost:50837/api/CadAgendamento/GetLastAgendamento").then(function (response) {
+            SweetAlert.swal({
+                title: "Deseja confimar a inclusão?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, confirmar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+             function (isConfirm) {
+                 if (isConfirm) {
+
+                     for (var i = 0; i < $scope.dados.length; i++) {
+                         $scope.objItens = {
+                             IdAgendamento: response.data, Codigo: $scope.dados[0].cdProduto, Produto: $scope.dados[0].Produto,
+                             Filial: $scope.dados[i].nmPessoa, CodigoFilial: $scope.dados[i].cdPessoa, QtdEstoqueMinimo: $scope.dados[i].qtEstoqueUnitarioMinimoAtual,
+                             QtdEstoqueMinimoProposto: $scope.dados[i].qtEstoqueUnitarioMinimoProposto
+                         };
+
+                         console.log($scope.objItens);
+
+                         $http.post("http://localhost:50837/api/CadAgendamento/IncluirItens", $scope.objItens).then(function (response) {
+
+                         },
+                         function (response) {
+                             alert("Erro " + response.status);
+                         })
+                     }
+
+                     SweetAlert.swal({
+                         title: "Incluido!",
+                         text: "incluidos com sucesso!",
+                         type: "success",
+                         timer: 5000
+                     });
+
+                 } else {
+                     SweetAlert.swal("Cancelado", "Você cancelou a inclusão", "error");
+                 }
+             });
+        },
+        function (response) {
+            return alert("Erro: " + response.status);
+        })
+    }
+}
+
+function listaEstoqueMinimoCtrl($scope, $http, DTOptionsBuilder, $uibModal, $localStorage, SweetAlert) {
+    $scope.dados = [];
+    $scope.usuarioLogado = $localStorage.user.Id;
+
+    $http.get("http://localhost:50837/api/CadAgendamento/GetAllAgendamentos").then(function (response) {
+        $scope.dados = response.data;
+    })
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+         .withDOM('<"html5buttons"B>lTfgitp')
+         .withOption('order', [0, 'desc'])
+         .withButtons([
+             { extend: 'copy' },
+             { extend: 'csv' },
+             { extend: 'excel', title: 'ExampleFile' },
+             { extend: 'pdf', title: 'ExampleFile' },
+
+             {
+                 extend: 'print',
+                 customize: function (win) {
+                     $(win.document.body).addClass('white-bg');
+                     $(win.document.body).css('font-size', '10px');
+
+                     $(win.document.body).find('table')
+                         .addClass('compact')
+                         .css('font-size', 'inherit');
+                 }
+             }
+         ]);
+
+    $scope.visualizar = function (dado) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/agendamento/visualizar_agendamentos.html',
+            controller: 'listaEstoqueMinimoCtrlModalInstance',
+            windowClass: "animated fadeIn",
+            size: 'lg',
+            resolve: {
+                estoqueMinimoSelected: function () {
+                    return dado;
+                }
+            }
+        });
+    }
+
+    $scope.excluir = function (dado) {
+        SweetAlert.swal({
+            title: "Deseja excluir?",
+            text: "Não será possivel mudar depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, excluir!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            timer: 5000
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       $http.post("http://localhost:50837/api/CadAgendamento/ExcluirAgendamento", dado).then(function () {
+                           SweetAlert.swal("Excluido!", "Agendamento excluido com sucesso", "success");
+                       },
+                       function (response) {
+                           alert("Erro " + response.status);
+                       });
+                   } else {
+                       SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
+                   }
+               });
+    }
+}
+
+function listaEstoqueMinimoCtrlModalInstance($uibModalInstance, $http, $scope, estoqueMinimoSelected)
+{
+    $scope.produto;
+    $scope.codigoProduto;
+
+
+    $http.get("http://localhost:50837/api/CadAgendamento/GetAllAgendamentosItensById?Id=" + estoqueMinimoSelected.Id).then(function (response)
+    {
+        console.log(response.data);
+        $scope.produto = response.data[0].Produto;
+        $scope.codigoProduto = response.data[0].Codigo;
+        $scope.dados = response.data;
+        
+    },
+    function (response) {
+        alert("Erro: " + response.status);
+    })
+}
+
 /**
  *
  * Pass all functions into module
@@ -8495,4 +8777,7 @@ angular
     })
     .controller('maloteHistoricoCtrlModalInstance', maloteHistoricoCtrlModalInstance)
     .controller('tiposMaloteCtrl', tiposMaloteCtrl)
-    .controller('tiposMaloteCtrlModalInstance', tiposMaloteCtrlModalInstance);
+    .controller('tiposMaloteCtrlModalInstance', tiposMaloteCtrlModalInstance)
+    .controller('estoqueMinimoCtrl', estoqueMinimoCtrl)
+    .controller('listaEstoqueMinimoCtrl', listaEstoqueMinimoCtrl)
+    .controller('listaEstoqueMinimoCtrlModalInstance', listaEstoqueMinimoCtrlModalInstance);

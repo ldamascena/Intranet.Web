@@ -63,6 +63,7 @@
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('estoque')}">
                     <li ui-sref-active="active"><a ui-sref="estoque.estoque">Alteracao Estoque</a></li>
                     <li ui-sref-active="active"><a ui-sref="estoque.estoquecusto">Alteracao Custo</a></li>
+                    <li ui-sref-active="active"><a ui-sref="estoque.estoqueminimo">Alteracao Estoque Minimo</a></li>
                 </ul>
             </li>
             <li ng-class="{active: $state.includes('parametro')}" ng-show="grupo == 7 || grupo == 1">
@@ -118,6 +119,13 @@
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('malote')}">
                     <li ui-sref-active="active"><a ui-sref="malote.lista" ng-show="grupo == 1 || grupo == 4 || grupo == 5 || grupo == 12 || grupo == 15 || grupo == 16 || grupo == 21 || grupo == 22">Lista de Malote</a></li>
                     <li ui-sref-active="active"><a ui-sref="malote.tipos" ng-show="grupo == 1 || grupo == 4 || grupo == 12">Tipos De Malote</a></li>
+                </ul>
+            </li>
+            <li ng-class="{active: $state.includes('agendamento')}">
+                <a href="#"><i class="fa fa-clock-o"></i> <span class="nav-label">{{ 'Agendamento' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('agendamento')}">
+                    <li ui-sref-active="active"><a ui-sref="agendamento.estoqueminimo">Estoque Minimo</a></li>
+                    <li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>
                 </ul>
             </li>
         </ul>

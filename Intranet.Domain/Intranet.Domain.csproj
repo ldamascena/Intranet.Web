@@ -104,6 +104,8 @@
     <Compile Include="Entities\CadUsuarioOperador.cs" />
     <Compile Include="Entities\CadUsuarioOperadorLog.cs" />
     <Compile Include="Entities\CadSaldoControleLog.cs" />
+    <Compile Include="Entities\CadAgendamentoEstoque.cs" />
+    <Compile Include="Entities\CadAgendamentoEstoqueItens.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ChamSuporte.cs" />
     <Compile Include="Entities\ChamSuporteAssunto.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Entities\VwClassificacaoMeta.cs" />
     <Compile Include="Entities\VwClassificacaoMetaMes.cs" />
     <Compile Include="Entities\VwEmbalagensProdutoEAN.cs" />
+    <Compile Include="Entities\VwEstoqueMinimoProduto.cs" />
     <Compile Include="Entities\VwLancamentoContabilRaizFive.cs" />
     <Compile Include="Entities\VwLancamentoContabilRaizFour.cs" />
     <Compile Include="Entities\VwLancamentoContabilRaizOne.cs" />

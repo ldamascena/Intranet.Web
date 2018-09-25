@@ -23,13 +23,14 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.Malotes.Where(x => x.IdMalote < 3);
+            return context.Malotes.Where(x => x.MaloteTipo.Setor == "Departamento Pessoal");
         }
 
         public IEnumerable<Malote> GetAllMalotesTesourariaAndCPD()
         {
             var context = new AlvoradaContext();
-            return context.Malotes.Where(x => x.IdMalote >= 3 && x.IdMalote <= 6);
+            return context.Malotes.Where(x => x.MaloteTipo.Setor == "Tesouraria" || x.MaloteTipo.Setor == "CPD");
+            //return context.MaloteTipos.Where(x => x.Setor == "Tesouraria" || x.Setor == "CPD");
         }
 
         public IEnumerable<Malote> GetAllMalotesByUsuario(int idUsuario)
@@ -43,7 +44,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            if (context.Malotes.Where(x => (x.IdUsuarioInclusao == idUsuario || x.IdUsuarioEnviado == idUsuario) && x.Status != 2).Count() < 2)
+            if (context.Malotes.Where(x => (x.IdUsuarioInclusao == idUsuario || x.IdUsuarioEnviado == idUsuario) && x.Status != 2).Count() < 3)
                 return true;
 
             return false;
@@ -226,25 +227,26 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.MaloteTipos.Where(x => x.Id < 3);
+            return context.MaloteTipos.Where(x => x.Setor == "Departamento Pessoal");
         }
 
         public IEnumerable<MaloteTipo> GetAllTiposMaloteTesourariaAndCPD()
         {
             var context = new AlvoradaContext();
-            return context.MaloteTipos.Where(x => x.Id >= 3 && x.Id <= 6);
+
+            return context.MaloteTipos.Where(x => x.Setor == "Tesouraria" || x.Setor == "CPD");
         }
 
         public IEnumerable<MaloteTipo> GetAllTiposMaloteTesouraria()
         {
             var context = new AlvoradaContext();
-            return context.MaloteTipos.Where(x => x.Id >= 3 && x.Id <= 4);
+            return context.MaloteTipos.Where(x => x.Setor == "Tesouraria");
         }
 
         public IEnumerable<MaloteTipo> GetAllTiposMaloteCPD()
         {
             var context = new AlvoradaContext();
-            return context.MaloteTipos.Where(x => x.Id >= 5 && x.Id <= 6);
+            return context.MaloteTipos.Where(x => x.Setor == "CPD");
         }
     }
 }

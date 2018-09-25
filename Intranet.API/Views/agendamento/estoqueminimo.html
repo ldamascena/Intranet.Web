@@ -1,0 +1,143 @@
+﻿<toaster-container></toaster-container>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Produtos</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li>
+                <a>Estoque</a>
+            </li>
+            <li class="active">
+                <strong>Agendamento Estoque Minimo</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="estoqueMinimoCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title" style="background-color: ghostwhite"><b>Informações de Agendamento</b></div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" placeholder="Nome do agendamento" ng-model="agendamento" />
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open1()" placeholder="Data de Inicio" uib-datepicker-popup="dd/MM/yyyy" ng-model="dateinicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open2()" placeholder="Data de Fim" uib-datepicker-popup="dd/MM/yyyy" ng-model="datefim" is-open="popup2.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-sm btn-info" value="Cadastrar" ng-click="salvarAgendamento()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row animated bounce" ng-show="show">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" ng-model="codigo" />
+                        </div>
+                        <div class="form-group" style="margin-left: 15px;">
+                            <input type="button" class="btn btn-rounded btn-primary" value="Buscar" ng-click="buscar()" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row animated bounce" ng-show="dados.length > 0">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title" style="background-color: ghostwhite"><b>Informações Cadastrais</b></div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label>Codigo: </label> {{dados[0].cdProduto}}
+                        </div>
+                        <div class="col-lg-9">
+                            <label>Produto: </label> {{dados[0].Produto}}
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label>Nome do Agendamento: </label> {{agendamento}}
+                        </div>
+                        <div class="col-lg-3">
+                            <label>Data de Inicio: </label> {{dateinicio | date:'dd/MM/yyyy'}}
+                        </div>
+                        <div class="col-lg-3">
+                            <label>Data de Fim: </label> {{datefim | date:'dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row animated bounce" ng-show="dados.length > 0">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title" style="background-color: ghostwhite"><b>Estoque</b></div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Filial</th>
+                                <th>Estoque Minimo Atual</th>
+                                <th>Estoque Minimo Proposto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dado in dados">
+                                <td>{{dado.nmPessoa}}</td>
+                                <td>{{dado.qtEstoqueUnitarioMinimoAtual}}</td>
+                                <td>
+                                    <span ng-hide="dado.editMode">{{dado.qtEstoqueUnitarioMinimoProposto}}</span>
+                                    <input type="text" name="qtEstoqueUnitarioMinimo" ng-show="dado.editMode" ng-focus="true" class="form-control" ng-model="dado.qtEstoqueUnitarioMinimoProposto" placeholder="First Name" required="" />
+                                </td>
+                                <!--<td><input name="qtdMinima{{$index}}" class="form-control" ng-model="qtdMinima" ng-disabled="!enabledEdit[{{$index}}]" /></td>-->
+                                <td>
+                                    <button type="button" ng-hide="dado.editMode" ng-click="edit(dado)" class="btn btn-sm btn-outline btn-primary btn-rounded">Editar</button>
+                                    <button type="button" ng-show="dado.editMode" ng-click="saveUser(dado, $index)" class="btn btn-sm btn-outline btn-success btn-rounded">Atualizar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="dados.length > 0">
+        <div class="col-lg-12">
+            <button class="col-xs-4 col-md-3 pull-left m-t-sm btn btn-default" type="button" ng-click="cancel();"><i class="fa fa-arrow-circle-left" style="font-size: 110%"></i> Cancelar</button>
+            <button class="col-xs-4 col-md-3 pull-right m-t-sm btn btn-primary" type="submit" ng-click="salvarItens();"><i class="fa fa-check" style="font-size: 110%"></i> Salvar</button>
+        </div>
+    </div>
+    <br />
+</div>

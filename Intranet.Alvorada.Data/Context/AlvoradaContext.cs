@@ -12,7 +12,6 @@ namespace Intranet.Alvorada.Data.Context
         {
         }
 
-
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Grupo> Grupos { get; set; }
 
@@ -125,6 +124,13 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<MaloteTipo> MaloteTipos { get; set; }
         public virtual DbSet<Malote> Malotes { get; set; }
         public virtual DbSet<MaloteLog> MalotesLog { get; set; }
+
+        #endregion
+
+        #region Estoque Agendamento
+
+        public virtual DbSet<CadAgendamentoEstoque> CadAgendamentosEstoque { get; set; }
+        public virtual DbSet<CadAgendamentoEstoqueItens> CadAgendamentosItens { get; set; }
 
         #endregion
 
@@ -556,6 +562,12 @@ namespace Intranet.Alvorada.Data.Context
             modelBuilder.Entity<Usuario>()
                 .HasMany(e => e.UsuarioMaloteLogs)
                 .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuarioAgendamento)
+                .WithRequired(e => e.UsuarioCadastro)
                 .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
         }

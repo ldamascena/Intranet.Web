@@ -197,6 +197,7 @@
     <Compile Include="Controllers\AlertaTipoController.cs" />
     <Compile Include="Controllers\AlertaUltimoCustoController.cs" />
     <Compile Include="Controllers\AniversariantesController.cs" />
+    <Compile Include="Controllers\CadAgendamentoController.cs" />
     <Compile Include="Controllers\CadAssProdController.cs" />
     <Compile Include="Controllers\CadAssProdGradeController.cs" />
     <Compile Include="Controllers\CadAtendenteController.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Controllers\SolParametroController.cs" />
     <Compile Include="Controllers\SolUsuarioController.cs" />
     <Compile Include="Controllers\SuperProdutoController.cs" />
+    <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VendedorController.cs" />
     <Compile Include="Controllers\ViewProdutoController.cs" />
@@ -2512,10 +2514,12 @@
     <Content Include="js\plugins\uiTree\angular-ui-tree.min.js" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\wow\wow.min.js" />
+    <Content Include="js\plugins\xeditable\xeditable.js" />
     <Content Include="js\services.js" />
     <Content Include="js\translations.js" />
     <Content Include="js\ui-router\angular-ui-router.js" />
     <Content Include="js\ui-router\angular-ui-router.min.js" />
+    <Content Include="Views\agendamento\listaestoqueminimo.html" />
     <Content Include="Views\alertas\balanco.html" />
     <Content Include="Views\alertas\geral.html" />
     <Content Include="Views\alertas\inversao.html" />
@@ -2553,6 +2557,7 @@
     <Content Include="Views\dre\principal.html" />
     <Content Include="Views\consulta\estoquenota.html" />
     <Content Include="Views\estoque\estoque.html" />
+    <Content Include="Views\agendamento\estoqueminimo.html" />
     <Content Include="Views\estoque\estoque_custo.html" />
     <Content Include="Views\forgotpassword.html" />
     <Content Include="Views\grupos.html" />
@@ -2566,6 +2571,7 @@
     <Content Include="Views\markdown.html" />
     <Content Include="Views\masonry.html" />
     <Content Include="Views\metrics.html" />
+    <Content Include="Views\modal\agendamento\visualizar_agendamentos.html" />
     <Content Include="Views\modal\alertas\historico.html" />
     <Content Include="Views\modal\alertas\inversao\inversao_modal.html" />
     <Content Include="Views\modal\aprovar_reprovar_desp.html" />

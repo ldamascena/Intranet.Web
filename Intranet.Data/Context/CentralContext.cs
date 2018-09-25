@@ -146,6 +146,8 @@ namespace Intranet.Solidcon.Data.Context
 
         #endregion
 
+        public virtual DbSet<VwEstoqueMinimoProduto> VwEstoqueMinimoProduto { get; set; }
+
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Grupo> Grupos { get; set; }
 
