@@ -141,6 +141,12 @@ namespace Intranet.Alvorada.Data.Context
 
         public virtual DbSet<Aniversariantes> Aniversariantes { get; set; }
 
+        #region Abastecimento
+
+        public virtual DbSet<ParametroAbastecimento> ParametrosAbastecimento { get; set; }
+
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();

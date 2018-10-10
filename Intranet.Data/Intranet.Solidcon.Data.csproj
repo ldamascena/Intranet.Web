@@ -56,6 +56,7 @@
     <Compile Include="Context\DorsalAraruamaContext.cs" />
     <Compile Include="Context\DorsalCaboFrioContext.cs" />
     <Compile Include="Context\DorsalBacaxaContext.cs" />
+    <Compile Include="Context\DorsalEsperancaContext.cs" />
     <Compile Include="Context\DorsalMage2Context.cs" />
     <Compile Include="Context\DorsalAguaMineralContext.cs" />
     <Compile Include="Context\DorsalItaboraiContext.cs" />

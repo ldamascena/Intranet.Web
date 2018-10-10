@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Domain.Interfaces.Applications;
+﻿using Intranet.Domain.Interfaces.Applications;
 using Intranet.Domain.Interfaces.Services;
 using Intranet.Domain.Services;
 using System;

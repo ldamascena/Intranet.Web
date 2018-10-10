@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -17,43 +16,43 @@ namespace Intranet.API.Controllers
 {
     public class AlertaManualController : ApiController
     {
-        private IAlertaManualService _service;
-        private IAlertaManualRepository _repository;
-        private IAlertaManualApp _app;
+        //private IAlertaManualService _service;
+        //private IAlertaManualRepository _repository;
+        //private IAlertaManualApp _app;
 
-        public IEnumerable<AlertaManual> GetByProduto(int cdProduto)
-        {
-            _repository = new AlertaManualRepository(new CentralContext());
-            _service = new AlertaManualService(_repository);
-            _app = new AlertaManualApp(_service);
+        //public IEnumerable<AlertaManual> GetByProduto(int cdProduto)
+        //{
+        //    _repository = new AlertaManualRepository(new CentralContext());
+        //    _service = new AlertaManualService(_repository);
+        //    _app = new AlertaManualApp(_service);
 
-            return _app.GetAll().Where(x => x.CdProduto == cdProduto).ToList();
-        }
+        //    return _app.GetAll().Where(x => x.CdProduto == cdProduto).ToList();
+        //}
 
-        [HttpPost]
-        public HttpResponseMessage IncluirAlerta([FromBody] AlertaManual obj)
-        {
+        //[HttpPost]
+        //public HttpResponseMessage IncluirAlerta([FromBody] AlertaManual obj)
+        //{
 
-            _repository = new AlertaManualRepository(new CentralContext());
-            _service = new AlertaManualService(_repository);
-            _app = new AlertaManualApp(_service);
+        //    _repository = new AlertaManualRepository(new CentralContext());
+        //    _service = new AlertaManualService(_repository);
+        //    _app = new AlertaManualApp(_service);
 
-            try
-            {
-                _app.IncluirAlerta(obj);
+        //    try
+        //    {
+        //        _app.IncluirAlerta(obj);
 
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+        //    }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
 
-        public HttpResponseMessage AlterarAlerta([FromBody] AlertaManual obj)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        //public HttpResponseMessage AlterarAlerta([FromBody] AlertaManual obj)
+        //{
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
     }
 }

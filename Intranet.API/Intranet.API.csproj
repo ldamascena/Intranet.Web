@@ -187,6 +187,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AbastecimentoController.cs" />
     <Compile Include="Controllers\AlertaBalancoController.cs" />
     <Compile Include="Controllers\AlertaGeralController.cs" />
     <Compile Include="Controllers\AlertaHistoricoController.cs" />
@@ -222,7 +223,6 @@
     <Compile Include="Controllers\CargaController.cs" />
     <Compile Include="Controllers\ChamSuporteController.cs" />
     <Compile Include="Controllers\ChamSuporteLogController.cs" />
-    <Compile Include="Controllers\ClassificacaoMetaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\EmpresaFilialController.cs" />
     <Compile Include="Controllers\EstoqueContabilController.cs" />
@@ -241,11 +241,9 @@
     <Compile Include="Controllers\SolitDespController.cs" />
     <Compile Include="Controllers\SolLogController.cs" />
     <Compile Include="Controllers\SolParametroController.cs" />
-    <Compile Include="Controllers\SolUsuarioController.cs" />
     <Compile Include="Controllers\SuperProdutoController.cs" />
     <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
-    <Compile Include="Controllers\VendedorController.cs" />
     <Compile Include="Controllers\ViewProdutoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2514,11 +2512,12 @@
     <Content Include="js\plugins\uiTree\angular-ui-tree.min.js" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\wow\wow.min.js" />
-    <Content Include="js\plugins\xeditable\xeditable.js" />
     <Content Include="js\services.js" />
     <Content Include="js\translations.js" />
     <Content Include="js\ui-router\angular-ui-router.js" />
     <Content Include="js\ui-router\angular-ui-router.min.js" />
+    <Content Include="Views\abastecimento\parametro_abastecimento.html" />
+    <Content Include="Views\abastecimento\principal.html" />
     <Content Include="Views\agendamento\listaestoqueminimo.html" />
     <Content Include="Views\alertas\balanco.html" />
     <Content Include="Views\alertas\geral.html" />
@@ -2571,6 +2570,8 @@
     <Content Include="Views\markdown.html" />
     <Content Include="Views\masonry.html" />
     <Content Include="Views\metrics.html" />
+    <Content Include="Views\modal\abastecimento\incluir_parametro.html" />
+    <Content Include="Views\modal\abastecimento\visualizar_detalhe.html" />
     <Content Include="Views\modal\agendamento\visualizar_agendamentos.html" />
     <Content Include="Views\modal\alertas\historico.html" />
     <Content Include="Views\modal\alertas\inversao\inversao_modal.html" />
@@ -2581,6 +2582,7 @@
     <Content Include="Views\modal\cadusuario\incluir_operador.html" />
     <Content Include="Views\modal\cadusuario\solicitar_editar_usuario.html" />
     <Content Include="Views\modal\change_password.html" />
+    <Content Include="Views\modal\controledecaixa\fechamento.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadcaixa.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadatendente.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadoutrasdespesas.html" />
@@ -2653,10 +2655,6 @@
     <ProjectReference Include="..\Intranet.Alvorada.Data\Intranet.Alvorada.Data.csproj">
       <Project>{1D54E51A-F774-41C3-ACBD-B5FC520C5B0A}</Project>
       <Name>Intranet.Alvorada.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Intranet.Application\Intranet.Application.csproj">
-      <Project>{36BB8621-236A-47FE-A0A7-F315BDB9368B}</Project>
-      <Name>Intranet.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\Intranet.Data\Intranet.Solidcon.Data.csproj">
       <Project>{4C4E1D0D-5082-42CC-825D-5BD676E8AC9A}</Project>

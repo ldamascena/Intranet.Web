@@ -2124,14 +2124,61 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             }
         })
 
-        .state('promocao', {
+        .state('abastecimento', {
             abstract: true,
-            url: "/promocao",
+            url: "/abastecimento",
             templateUrl: "views/common/content.html"
         })
-        .state('promocao.principal', {
+        .state('abastecimento.principal', {
             url: "/principal",
-            templateUrl: "views/promocao/principal.html",
+            templateUrl: "views/abastecimento/principal.html",
+            data: { pageTitle: 'Ajuste Preco Promocao' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        },
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'localytics.directives',
+                            files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('abastecimento.parametro', {
+            url: "/parametro",
+            templateUrl: "views/abastecimento/parametro_abastecimento.html",
             data: { pageTitle: 'Ajuste Preco Promocao' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {

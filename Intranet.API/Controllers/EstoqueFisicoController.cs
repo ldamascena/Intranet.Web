@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -31,9 +30,9 @@ namespace Intranet.API.Controllers
             _repositoryFisico = new EstoqueFisicoRepository(new CentralContext());
             _repositoryMovimento = new EstoqueMovimentoRepository(new CentralContext());
             _service = new EstoqueFisicoService(_repositoryFisico, _repositoryMovimento);
-            _app = new EstoqueFisicoApp(_service);
+            
 
-            return _app.GetAllTipoProduto();
+            return _service.GetAllTipoProduto();
         }
 
         public IEnumerable<EstoqueFisico> GetPorProduto(int cdProduto)
@@ -42,7 +41,7 @@ namespace Intranet.API.Controllers
             _repositoryFisico = new EstoqueFisicoRepository(new CentralContext());
             _repositoryMovimento = new EstoqueMovimentoRepository(new CentralContext());
             _service = new EstoqueFisicoService(_repositoryFisico, _repositoryMovimento);
-            _app = new EstoqueFisicoApp(_service);
+            
 
             return _app.GetAllTipoProdutoPorProduto(cdProduto);
         }
@@ -53,11 +52,11 @@ namespace Intranet.API.Controllers
             _repositoryFisico = new EstoqueFisicoRepository(new CentralContext());
             _repositoryMovimento = new EstoqueMovimentoRepository(new CentralContext());
             _service = new EstoqueFisicoService(_repositoryFisico, _repositoryMovimento);
-            _app = new EstoqueFisicoApp(_service);
+            
 
             try
             {
-                _app.AtualizarEstoque(objs);
+                _service.AtualizarEstoque(objs);
 
             }
             catch (Exception ex)
@@ -75,11 +74,11 @@ namespace Intranet.API.Controllers
             _repositoryFisico = new EstoqueFisicoRepository(new CentralContext());
             _repositoryMovimento = new EstoqueMovimentoRepository(new CentralContext());
             _service = new EstoqueFisicoService(_repositoryFisico, _repositoryMovimento);
-            _app = new EstoqueFisicoApp(_service);
+            
 
             try
             {
-                _app.AdicionarEstoque(obj);
+                _service.AdicionarEstoque(obj);
 
             }
             catch (Exception ex)

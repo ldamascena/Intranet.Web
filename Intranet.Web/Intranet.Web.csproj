@@ -2920,10 +2920,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intranet.Application\Intranet.Application.csproj">
-      <Project>{36BB8621-236A-47FE-A0A7-F315BDB9368B}</Project>
-      <Name>Intranet.Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Intranet.Domain\Intranet.Domain.csproj">
       <Project>{56386C9C-1648-4ACA-A329-BFDC60DEBE2E}</Project>
       <Name>Intranet.Domain</Name>

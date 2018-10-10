@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -25,31 +24,23 @@ namespace Intranet.API.Controllers
         public IEnumerable<EmpresaFilial> GetAll()
         {
             // Inicialização das instancias
-            _repository = new EmpresaFilialRepository(new CentralContext());
-            _service = new EmpresaFilialService(_repository);
-            _app = new EmpresaFilialApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetAll();
+            return context.EmpresaFiliais;
         }
 
         public IEnumerable<EmpresaFilial> GetAllOrdered()
         {
-            // Inicialização das instancias
-            _repository = new EmpresaFilialRepository(new CentralContext());
-            _service = new EmpresaFilialService(_repository);
-            _app = new EmpresaFilialApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetAll().OrderBy(x => x.nmFilial);
+            return context.EmpresaFiliais.OrderBy(x => x.nmFilial);
         }
 
         public IEnumerable<EmpresaFilial> GetAllLojasOrdered()
         {
-            // Inicialização das instancias
-            _repository = new EmpresaFilialRepository(new CentralContext());
-            _service = new EmpresaFilialService(_repository);
-            _app = new EmpresaFilialApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetAll().Where(x => x.cdFilialTipo == "L").OrderBy(x => x.nmFilial);
+            return context.EmpresaFiliais.Where(x => x.cdFilialTipo == "L") .OrderBy(x => x.nmFilial);
         }
     }
 }

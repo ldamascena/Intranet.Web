@@ -1,4 +1,4 @@
-﻿using Intranet.Application;
+﻿
 using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
@@ -17,44 +17,33 @@ namespace Intranet.API.Controllers
 {
     public class PessoaJuridicaController : ApiController
     {
-        private IPessoaJuridicaRepository _repository;
-        private IPessoaJuridicaService _service;
-        private IPessoaJuridicaApp _app;
-
         public IEnumerable<PessoaJuridica> GetAll()
         {
-            _repository = new PessoaJuridicaRepository(new CentralContext());
-            _service = new PessoaJuridicaService(_repository);
-            _app = new PessoaJuridicaApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetAll();
+            return context.PessoasJuridica;
         }
 
         public PessoaJuridica GetByCNPJ(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
         {
-            _repository = new PessoaJuridicaRepository(new CentralContext());
-            _service = new PessoaJuridicaService(_repository);
-            _app = new PessoaJuridicaApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetByCNPJ(CNPJEmpresa, CNPJFilial, CNPJDV);
+            return context.PessoasJuridica.Where(x => x.CNPJEmpresa == CNPJEmpresa && x.CNPJFilial == CNPJFilial && x.CNPJDV == CNPJDV).FirstOrDefault();
+
         }
 
         public int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
         {
-            _repository = new PessoaJuridicaRepository(new CentralContext());
-            _service = new PessoaJuridicaService(_repository);
-            _app = new PessoaJuridicaApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetCdPessoaJuridica(CNPJEmpresa, CNPJFilial, CNPJDV);
+            return context.PessoasJuridica.Where(x => x.CNPJEmpresa == CNPJEmpresa && x.CNPJFilial == CNPJFilial && x.CNPJDV == CNPJDV).FirstOrDefault().cdPessoaJuridica;
         }
 
         public PessoaJuridica GetByRazaoSocial(string razaoSocial)
         {
-            _repository = new PessoaJuridicaRepository(new CentralContext());
-            _service = new PessoaJuridicaService(_repository);
-            _app = new PessoaJuridicaApp(_service);
+            var context = new CentralContext();
 
-            return _app.GetByRazaoSocial(razaoSocial);
+            return context.PessoasJuridica.Where(x => x.RazaoSocial == razaoSocial).FirstOrDefault();
         }
     }
 }

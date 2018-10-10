@@ -1,0 +1,26 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Deseja fechar o dia?</h4>
+    </div>
+    <form role="form" name="cadEntradaForm">
+        <div class="modal-body">
+            <!--<div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <h4> Você tem uma divergência de: 0 deseja continuar o fechamento?</h4>
+                </div>
+            </div>-->
+            <div>
+                <h2> Você tem uma divergência de: <b ng-style="{'background-color': saldodivergencia < 0  ? 'crimson': 'forestgreen', 'color': 'white'}">{{saldodivergencia | currency}}</b> deseja continuar o fechamento?</h2>
+            </div>
+            <br />
+            <hr />
+            <div>
+                <h4>Lembrando que em caso de saldo positivo, uma <i style="color:forestgreen">sobra</i> será lançada e em caso de negativo, uma <i style="color:crimson">quebra</i> será lançada!</h4>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" ng-click="cancel()">Não, Cancelar</button>
+            <button type="submit" class="btn btn-primary" ng-click="salvar()" ng-disabled="disable">Sim, Salvar</button>
+        </div>
+    </form>
+</div>

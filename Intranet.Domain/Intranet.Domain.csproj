@@ -125,6 +125,7 @@
     <Compile Include="Entities\MaloteTipo.cs" />
     <Compile Include="Entities\MetaMesCompras.cs" />
     <Compile Include="Entities\OrdemServicoDTO.cs" />
+    <Compile Include="Entities\ParametroAbastecimento.cs" />
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\PessoaJuridica.cs" />
     <Compile Include="Entities\Produto.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Entities\Carga.cs" />
     <Compile Include="Entities\Operador.cs" />
     <Compile Include="Entities\OperadorLog.cs" />
+    <Compile Include="Entities\Promocao.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
     <Compile Include="Entities\ViewProduto.cs" />
@@ -159,11 +161,11 @@
     <Compile Include="Entities\VwLancamentoContabilRaizTwo.cs" />
     <Compile Include="Entities\VwOperadorLog.cs" />
     <Compile Include="Entities\VwProdutoEAN.cs" />
-    <Compile Include="Entities\VwPromocao.cs" />
-    <Compile Include="Entities\VwPromocaoItem.cs" />
     <Compile Include="Entities\VwAssociacoesConcluidas.cs" />
     <Compile Include="Entities\VwEstoqueNota.cs" />
     <Compile Include="Entities\VwEstoqueNotaProduto.cs" />
+    <Compile Include="Entities\VwMixAbastecimentoPromo.cs" />
+    <Compile Include="Entities\VwProdutosMovimento.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />

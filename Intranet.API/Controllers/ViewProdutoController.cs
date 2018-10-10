@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;

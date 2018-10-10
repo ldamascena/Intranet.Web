@@ -11,87 +11,13 @@ namespace Intranet.API.Controllers
 {
     public class PromocaoController : ApiController
     {
-        public IEnumerable<VwPromocao> GetAllPromocoes()
+        public IEnumerable<Promocao> GetAllAtivas()
         {
             var context = new CentralContext();
 
-            return context.vwPromocao;
-        }
+            DateTime currentDate = DateTime.Now.Date;
 
-        public IEnumerable<VwPromocao> GetPromocaoByTipoStatusData(string tipoPromocao, DateTime? dataInicio, DateTime? dataFim)
-        {
-            var context = new CentralContext();
-
-            if (dataFim != null && dataInicio != null)
-                return context.vwPromocao.Where(x => x.nmTipoPromocao == tipoPromocao && x.dtInicio >= dataInicio && x.dtFim <= dataFim);
-            else if (dataFim != null)
-                return context.vwPromocao.Where(x => x.nmTipoPromocao == tipoPromocao && x.dtFim <= dataFim);
-            else if (dataInicio != null)
-                return context.vwPromocao.Where(x => x.nmTipoPromocao == tipoPromocao && x.dtInicio >= dataInicio);
-            else
-                return context.vwPromocao.Where(x => x.nmTipoPromocao == tipoPromocao);
-        }
-
-        public IEnumerable<VwPromocaoItem> GetAllPromocoesItem()
-        {
-            var context = new CentralContext();
-
-            return context.vwPromocaoItem;
-        }
-
-        public IEnumerable<VwPromocaoItem> GetAllPromocoesItemByCodigo(int codigo)
-        {
-            var context = new CentralContext();
-
-            return context.vwPromocaoItem.Where(x => x.cdPromocao == codigo);
-        }
-
-        public HttpResponseMessage Incluir([FromBody] AjustePrecoVenda obj)
-        {
-
-            var context = new CentralContext();
-
-            obj.DataInclusao = DateTime.Now;
-
-            try
-            {
-                context.AjustePrecosVenda.Add(obj);
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
-                {
-                    Error = ex.Message
-                });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-
-        }
-
-        public HttpResponseMessage Remover([FromBody] int cdpromocao)
-        {
-
-            var context = new CentralContext();
-
-            var result = context.AjustePrecosVenda.Where(x => x.cdPromocao == cdpromocao);
-
-            try
-            {
-                context.AjustePrecosVenda.RemoveRange(result);
-                context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
-                {
-                    Error = ex.Message
-                });
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-
+            return context.Promocoes.Where(x => x.inAtiva == true && x.dtFim >= currentDate && (x.cdTipoPromocao.Value == 1 || x.cdTipoPromocao.Value == 5));
         }
     }
 }

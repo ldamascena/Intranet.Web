@@ -1,0 +1,149 @@
+﻿<style>
+    .app-modal-window .modal-dialog {
+  width: 90%;
+}
+</style>
+
+<div class="inmodal">
+    <div class="modal-header">
+        <h3 class="modal-title">{{Codigo}} - {{Produto}} - {{Filial}}</h3>
+        <!--<small class="font-bold">Detalhe agendamento estoque minimo</small>-->
+    </div>
+    <form role="form" name="estoqueCustoForm">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Informações de Estoque</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Est.Loja</th>
+                                        <th>Est.Cd</th>
+                                        <th>Est.Ajust</th>
+                                        <th>Est.Minimo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td ng-style="{'background-color': (EstoqueLoja / Emb) < 0 ? 'crimson': '', 'color': (EstoqueLoja / Emb) < 0 ? 'white': ''}">{{EstoqueLoja / Emb | number:2}}</td>
+                                        <td ng-style="{'background-color': (EstoqueCD / Emb) < 0 ? 'crimson': '', 'color': (EstoqueCD / Emb) < 0 ? 'white': ''}">{{EstoqueCD / Emb | number:2}}</td>
+                                        <td>{{EstoqueCD / Emb | number:2}}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Informações de Motivimentação</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Pendente</th>
+                                        <th>Atendido</th>
+                                        <th>Transito</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td ng-style="{'background-color': (pendente) > 0 ? 'forestgreen': '', 'color': (pendente) > 0 ? 'white': ''}">{{pendente}}</td>
+                                        <td ng-style="{'background-color': (atendido) > 0 ? 'forestgreen': '', 'color': (atendido) > 0 ? 'white': ''}">{{atendido}}</td>
+                                        <td ng-style="{'background-color': (transito) > 0 ? 'forestgreen': '', 'color': (transito) > 0 ? 'white': ''}">{{transito}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Informações de Rotação</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Vnd.Med</th>
+                                        <th>Vnd.Med Promo</th>
+                                        <th>Embalagem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{VMN / Emb | number:2}}</td>
+                                        <td>{{VMP / Emb | number:2}}</td>
+                                        <td>{{Emb | number:0}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Informações de Sugestão</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <!--(Venda Média Promocional Caixa * Cobertura)+(Estoque Minimo / QtdEmb)-(Estoque Loja + Pendente + Atendido + Transferencia)-->
+                                        <th>Sugestao Normal</th>
+                                        <th>Sugestao Promo</th>
+                                        <th>Sugestao Compr</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{sugestNormal < 0 ? 0 : sugestNormal | number:0}}</td>
+                                        <td>{{sugestPromocional < 0 ? 0 : sugestPromocional | number:0}}</td>
+                                        <td>
+                                            <span ng-hide="editMode">{{sugestComprador | number:0}}</span>
+                                            <input type="text" name="sugestComprador" ng-show="editMode" ng-focus="true" class="form-control" ng-model="sugestComprador" />
+                                        </td>
+                                        <td>
+                                            <button type="button" ng-hide="editMode" ng-click="edit(sugestComprador)" class="btn btn-xs btn-outline btn-primary btn-rounded">Editar</button>
+                                            <button type="button" ng-show="editMode" ng-click="save(sugestComprador)" class="btn btn-xs btn-outline btn-success btn-rounded">Atualizar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-title"><b>Informações de Dias de Estoque</b></div>
+                        <div class="ibox-content">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Dias De Estoque Normal</th>
+                                        <th>Dias De Estoque Promocional</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td ng-style="{'background-color': (diasDeEstoqueNormal) > 12 ? 'crimson': '', 'color': (diasDeEstoqueNormal) > 12 ? 'white': ''}">{{diasDeEstoqueNormal | number:0}}</td>
+                                        <td ng-style="{'background-color': (diasDeEstoquePromocional) > 25 ? 'crimson': '', 'color': (diasDeEstoquePromocional) > 25 ? 'white': ''}">{{diasDeEstoquePromocional | number:0}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div>
+                <input type="button" class="btn btn-primary" value="Gravar"/>
+            </div>
+        </div>
+    </form>
+</div>

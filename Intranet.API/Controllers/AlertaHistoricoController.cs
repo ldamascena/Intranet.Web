@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Data.Repositories;
+﻿using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces;
 using Intranet.Domain.Interfaces.Applications;

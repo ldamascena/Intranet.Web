@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -31,9 +30,9 @@ namespace Intranet.API.Controllers
             _repository = new EstoqueContabilRepository(context);
             _repositoryLog = new LogAlteracaoCustoRepository(context);
             _service = new EstoqueContabilService(_repository, _repositoryLog);
-            _app = new EstoqueContabilApp(_service);
+            
 
-            return _app.GetByIdSuperProduto(cdSuperProduto, cdPessoaFilial);
+            return _service.GetByIdSuperProduto(cdSuperProduto, cdPessoaFilial);
         }
 
         public EstoqueContabil GetBySuperProdutoNome(string nomeSuperProduto, int cdPessoaFilial)
@@ -42,9 +41,9 @@ namespace Intranet.API.Controllers
             _repository = new EstoqueContabilRepository(context);
             _repositoryLog = new LogAlteracaoCustoRepository(context);
             _service = new EstoqueContabilService(_repository, _repositoryLog);
-            _app = new EstoqueContabilApp(_service);
+            
 
-            return _app.GetByNomeSuperProduto(nomeSuperProduto, cdPessoaFilial);
+            return _service.GetByNomeSuperProduto(nomeSuperProduto, cdPessoaFilial);
         }
 
         [HttpPost]
@@ -54,11 +53,11 @@ namespace Intranet.API.Controllers
             _repository = new EstoqueContabilRepository(context);
             _repositoryLog = new LogAlteracaoCustoRepository(context);
             _service = new EstoqueContabilService(_repository, _repositoryLog);
-            _app = new EstoqueContabilApp(_service);
+            
 
             try
             {
-                _app.AlterarValorDeCusto(obj);
+                _service.AlterarValorDeCusto(obj);
 
             }
             catch (Exception ex)

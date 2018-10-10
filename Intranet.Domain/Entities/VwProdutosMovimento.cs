@@ -1,35 +1,35 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Spatial;
 using System.Runtime.Serialization;
 
-namespace Intranet.Domain.Entities
+namespace Intranet
 {
     [DataContract]
-    [Table("vwPromocaoItem")]
-    public partial class VwPromocaoItem
+    [Table("Vw_Produtos_Movimento")]
+    public partial class VwProdutosMovimento
     {
         [DataMember]
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int cdPromocao { get; set; }
+        public int cdProduto { get; set; }
 
         [DataMember]
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int cdSuperProduto { get; set; }
+        public int cdPessoaFilial { get; set; }
 
         [DataMember]
-        [StringLength(80)]
-        public string Produto { get; set; }
+        public decimal? Atendido { get; set; }
 
         [DataMember]
-        [Column(TypeName = "money")]
-        public decimal? vlPromocao { get; set; }
+        public decimal? Pendente { get; set; }
 
         [DataMember]
-        [Column(TypeName = "money")]
-        public decimal? vlVenda { get; set; }
+        public decimal? Transito { get; set; }
     }
 }

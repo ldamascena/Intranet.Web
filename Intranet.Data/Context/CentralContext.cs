@@ -102,12 +102,16 @@ namespace Intranet.Solidcon.Data.Context
 
         #region Promocao
 
-        public virtual DbSet<VwPromocao> vwPromocao { get; set; }
-        public virtual DbSet<VwPromocaoItem> vwPromocaoItem { get; set; }
-        public virtual DbSet<AjustePrecoVenda> AjustePrecosVenda { get; set; }
+        public virtual DbSet<Promocao> Promocoes { get; set; }
 
         #endregion
 
+        #region Abastecimento
+
+        public virtual DbSet<VwMixAbastecimentoPromo> VwMixAbastecimentoPromo { get; set; }
+        public virtual DbSet<VwProdutosMovimento> VwProdutosMovimento { get; set; }
+
+        #endregion
 
         public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
         public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }

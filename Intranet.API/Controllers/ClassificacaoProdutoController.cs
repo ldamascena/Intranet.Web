@@ -1,5 +1,4 @@
-﻿using Intranet.Application;
-using Intranet.Solidcon.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
 using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Interfaces.Applications;
@@ -29,9 +28,8 @@ namespace Intranet.API.Controllers
             // Inicialização das instancias
             _repository = new ClassificacaoProdutoRepository(new CentralContext());
             _service = new ClassificacaoProdutoService(_repository);
-            _app = new ClassificacaoProdutoApp(_service);
 
-            return _app.GetAll().Where(x => x.CdOrdem.Length == 3).OrderBy(x => x.label);
+            return _service.GetAll().Where(x => x.CdOrdem.Length == 3).OrderBy(x => x.label);
         }
 
         [HttpGet]
@@ -41,9 +39,8 @@ namespace Intranet.API.Controllers
             // Inicialização das instancias
             _repository = new ClassificacaoProdutoRepository(new CentralContext());
             _service = new ClassificacaoProdutoService(_repository);
-            _app = new ClassificacaoProdutoApp(_service);
 
-            return _app.GetAll().Where(x => x.label == nomeClassificacao);
+            return _service.GetAll().Where(x => x.label == nomeClassificacao);
         }
 
         [HttpGet]
@@ -53,9 +50,9 @@ namespace Intranet.API.Controllers
             // Inicialização das instancias
             _repository = new ClassificacaoProdutoRepository(new CentralContext());
             _service = new ClassificacaoProdutoService(_repository);
-            _app = new ClassificacaoProdutoApp(_service);
+            
 
-            return _app.GetAll().Where(x => x.CdClassificacaoProduto == cdClassificacao).FirstOrDefault();
+            return _service.GetAll().Where(x => x.CdClassificacaoProduto == cdClassificacao).FirstOrDefault();
         }
 
         [HttpGet]
@@ -64,9 +61,9 @@ namespace Intranet.API.Controllers
             // Inicialização das instancias
             _repository = new ClassificacaoProdutoRepository(new CentralContext());
             _service = new ClassificacaoProdutoService(_repository);
-            _app = new ClassificacaoProdutoApp(_service);
+            
 
-            return _app.GetAllVinculado(nomeClassificacao);
+            return _service.GetAllVinculado(nomeClassificacao);
         }
 
         [HttpPost]
@@ -75,11 +72,11 @@ namespace Intranet.API.Controllers
             // Inicialização das instancias
             _repository = new ClassificacaoProdutoRepository(new CentralContext());
             _service = new ClassificacaoProdutoService(_repository);
-            _app = new ClassificacaoProdutoApp(_service);
+            
 
             try
             {
-                _app.AlterarClassificacaoProduto(objView);
+                _service.AlterarClassificacaoProduto(objView);
 
             }
             catch (Exception ex)

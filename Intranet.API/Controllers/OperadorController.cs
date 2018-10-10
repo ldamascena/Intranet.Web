@@ -272,9 +272,26 @@ namespace Intranet.API.Controllers
                     }
 
                     break;
+
+                case 20:
+                    var esperancaContext = new DorsalEsperancaContext();
+                    if (esperancaContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        esperancaContext.Operadores.Add(obj);
+                        esperancaContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
             }
-
-
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

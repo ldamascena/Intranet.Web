@@ -65,7 +65,6 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
 
     else {
         $scope.autenticar = function () {
-
             if (($scope.username == "" || $scope.username == undefined) || ($scope.password == "" || $scope.password == undefined)) {
                 toaster.pop({
                     type: 'error',
@@ -87,7 +86,7 @@ function loginCtrl($scope, $http, toaster, $localStorage, $timeout) {
 
                 $scope.obj = { Username: $scope.username, PasswordHash: $scope.password }
 
-                $http.post("http://localhost:50837/api/Usuario/Autenticate2", $scope.obj).then(function (response) {
+                $http.post("http://localhost:50837/api/Usuario/Autenticate", $scope.obj).then(function (response) {
                     switch (response.data) {
                         case 1:
                             toaster.pop({
@@ -4446,6 +4445,40 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
             });
         }
     }
+
+    $scope.fechar2 = function () {
+
+        if ($scope.foiFechado == false) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'Views/modal/controledecaixa/fechamento.html',
+                controller: 'fechamentoModalInstanceCtrl',
+                windowClass: "animated fadeIn",
+                resolve: {
+                    SaldoDivergente: function () {
+                        return $scope.totalComposicao - (($scope.totalCaixaGeral + $scope.totalCaixas + $scope.totalEntradas) - ($scope.totalDespesas + $scope.totalOutrasDespesas));
+                    },
+
+                    Saldo: function () {
+                        return ($scope.totalCaixaGeral + $scope.totalCaixas + $scope.totalEntradas) - ($scope.totalDespesas + $scope.totalOutrasDespesas);
+                    },
+
+                    date: function () {
+                        return $scope.date.toLocaleDateString('en-US');
+                    }
+                }
+            });
+        }
+        else {
+            SweetAlert.swal({
+                title: "Fechado!",
+                text: "Você já efetuou o fechamento no dia de hoje!",
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            });
+        }
+    }
 }
 
 function relAcompanhamentoCtrl($scope, DTOptionsBuilder, $http, $localStorage) {
@@ -4732,6 +4765,83 @@ function outrasdespesasModalInstanceCtrl($scope, $uibModalInstance, $http, outra
             });
         } else {
             $scope.cadOutrasDespesasForm.submitted = true;
+        }
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+}
+
+function fechamentoModalInstanceCtrl($scope, $uibModalInstance, $http, SaldoDivergente, Saldo, date, $localStorage, SweetAlert, $timeout) {
+
+    $scope.disable = false;
+    $scope.saldodivergencia = SaldoDivergente;
+    $scope.saldo = Saldo;
+
+    $scope.salvar = function () {
+        $scope.disable = true;
+
+        if ($scope.saldodivergencia < 0) {
+            $scope.saldodivergencia = (Math.round($scope.saldodivergencia * 100) / 100) * -1;
+
+            $scope.objSaida = {
+                IdUsuario: $localStorage.user.Id, DataInclusao: date, Valor: $scope.saldodivergencia, Descricao: "Quebra"
+            };
+
+            $scope.obj = { IdUsuario: $localStorage.user.Id, DataInclusao: date, Saldo: Math.round(($scope.saldo - $scope.saldodivergencia) * 100) / 100 };
+
+            $http.post("http://localhost:50837/api/CadOutrasDesp/Incluir", $scope.objSaida).then(function (response) {
+                $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
+                    SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
+                    $uibModalInstance.close();
+                    $timeout(function () {
+                        location.reload();
+                    }, 3000);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+        }
+
+        else if ($scope.saldodivergencia > 0) {
+
+            $scope.obj = { IdUsuario: $localStorage.user.Id, DataInclusao: date, Saldo: Math.round(($scope.saldo + $scope.saldodivergencia) * 100) / 100 };
+
+            $scope.objEntrada = {
+                IdUsuario: $localStorage.user.Id, DataInclusao: date, Valor: Math.round($scope.saldodivergencia * 100) / 100, Descricao: "Sobra"
+            };
+            $http.post("http://localhost:50837/api/CadEntrada/Incluir", $scope.objEntrada).then(function (response) {
+                $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
+                    SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
+                    $uibModalInstance.close();
+                    $timeout(function () {
+                        location.reload();
+                    }, 3000);
+                }, function (response) {
+                    return alert("Erro: " + response.status);
+                });
+
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+        }
+        else {
+            $scope.obj = { IdUsuario: $localStorage.user.Id, DataInclusao: date, Saldo: Math.round(($scope.saldo + $scope.saldodivergencia) * 100) / 100 };
+
+            $http.post("http://localhost:50837/api/CadSaldo/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal("Fechado!", "Dia fechado com sucesso!", "success");
+                $uibModalInstance.close();
+                $timeout(function () {
+                    location.reload();
+                }, 3000);
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
         }
     }
 
@@ -5772,569 +5882,101 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
     };
 }
 
-function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval) {
-    $scope.dados = [
-   {
-       "Id": 1,
-       "Secao": "11-SERVICO",
-       "Familia": "01-LOGISTICA",
-       "Comprador": null,
-       "Vendas": 9167.00000000,
-       "Custos": 7047.50000000,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 2,
-       "Secao": "98-PATRIMONIAL",
-       "Familia": "01-IMOBILIZADO",
-       "Comprador": null,
-       "Vendas": 0.00000000,
-       "Custos": 0.00000000,
-       "Compras": 0.000000000,
-       "Pedidos": 142.84000000
-   },
-   {
-       "Id": 3,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "03-MATINAIS",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 20621.45450000,
-       "Custos": 14439.09360000,
-       "Compras": 47.611800000,
-       "Pedidos": 31370.94000000
-   },
-   {
-       "Id": 4,
-       "Secao": "05-ACOUGUE",
-       "Familia": "01-BOVINO",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 879314.34012430,
-       "Custos": 770223.95937900,
-       "Compras": 553902.688700100,
-       "Pedidos": 49629.16000000
-   },
-   {
-       "Id": 5,
-       "Secao": "05-ACOUGUE",
-       "Familia": "02-AVES",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 418967.87582820,
-       "Custos": 293960.44633310,
-       "Compras": 537897.423800000,
-       "Pedidos": 162501.20000000
-   },
-   {
-       "Id": 6,
-       "Secao": "05-ACOUGUE",
-       "Familia": "03-SUINO",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 119804.33982730,
-       "Custos": 83407.25041200,
-       "Compras": 310.323600000,
-       "Pedidos": 147514.93000000
-   },
-   {
-       "Id": 7,
-       "Secao": "05-ACOUGUE",
-       "Familia": "04-EXOTICOS",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 649.49957580,
-       "Custos": 422.14140600,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 8,
-       "Secao": "05-ACOUGUE",
-       "Familia": "05-EMBUTIDO",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 243051.67606650,
-       "Custos": 193965.42617740,
-       "Compras": 100601.150800000,
-       "Pedidos": 40794.29000000
-   },
-   {
-       "Id": 9,
-       "Secao": "05-ACOUGUE",
-       "Familia": "06-SALGADO",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 146960.88990500,
-       "Custos": 103750.41652640,
-       "Compras": 26010.287500000,
-       "Pedidos": 5779.10000000
-   },
-   {
-       "Id": 10,
-       "Secao": "06-PERECIVEIS",
-       "Familia": "01-PEIXARIA",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 12831.15004370,
-       "Custos": 8722.45903900,
-       "Compras": 553.984000000,
-       "Pedidos": 70600.00000000
-   },
-   {
-       "Id": 11,
-       "Secao": "06-PERECIVEIS",
-       "Familia": "02-CONGELADO",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 175290.04909660,
-       "Custos": 136565.20830200,
-       "Compras": 176919.168800000,
-       "Pedidos": 190470.61000000
-   },
-   {
-       "Id": 12,
-       "Secao": "07-LATICINIOS",
-       "Familia": "03-LEITE",
-       "Comprador": "Diego Gonçalves",
-       "Vendas": 256030.44760000,
-       "Custos": 236083.67140000,
-       "Compras": 289088.808000000,
-       "Pedidos": 720642.60000000
-   },
-   {
-       "Id": 13,
-       "Secao": "04-HPLU",
-       "Familia": "01-HIGIENE PESSOAL",
-       "Comprador": "Edilmario Almeira",
-       "Vendas": 252734.68750000,
-       "Custos": 208924.57050000,
-       "Compras": 244439.850400000,
-       "Pedidos": 255782.24000000
-   },
-   {
-       "Id": 14,
-       "Secao": "04-HPLU",
-       "Familia": "03-PERFUMARIA",
-       "Comprador": "Edilmario Almeira",
-       "Vendas": 319708.47340000,
-       "Custos": 304945.49800000,
-       "Compras": 413019.466200000,
-       "Pedidos": 1043177.60000000
-   },
-   {
-       "Id": 15,
-       "Secao": "04-HPLU",
-       "Familia": "04-LIMPEZA",
-       "Comprador": "Edilmario Almeira",
-       "Vendas": 400290.44483720,
-       "Custos": 328011.44545150,
-       "Compras": 205434.601200000,
-       "Pedidos": 733932.87000000
-   },
-   {
-       "Id": 16,
-       "Secao": "04-HPLU",
-       "Familia": "05-UTILIDADES",
-       "Comprador": "Edilmario Almeira",
-       "Vendas": 108771.70790000,
-       "Custos": 72494.47100000,
-       "Compras": 150599.298800000,
-       "Pedidos": 31980.26000000
-   },
-   {
-       "Id": 17,
-       "Secao": "04-HPLU",
-       "Familia": "06-PET SHOP",
-       "Comprador": "Edilmario Almeira",
-       "Vendas": 10417.09977800,
-       "Custos": 7394.19900250,
-       "Compras": 11276.913000000,
-       "Pedidos": 2520.30000000
-   },
-   {
-       "Id": 18,
-       "Secao": "06-PERECIVEIS",
-       "Familia": "04-SUPER CONGELADOS",
-       "Comprador": "Julio Ruiz",
-       "Vendas": 612.76000000,
-       "Custos": 301.10030000,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 19,
-       "Secao": "07-LATICINIOS",
-       "Familia": "01-BALCAO",
-       "Comprador": "Julio Ruiz",
-       "Vendas": 218353.14961840,
-       "Custos": 145385.14160050,
-       "Compras": 42664.057305900,
-       "Pedidos": 66810.79642000
-   },
-   {
-       "Id": 20,
-       "Secao": "07-LATICINIOS",
-       "Familia": "02-REFRIGERADOS",
-       "Comprador": "Julio Ruiz",
-       "Vendas": 329694.89620000,
-       "Custos": 252444.25750000,
-       "Compras": 194276.316600000,
-       "Pedidos": 285312.55431600
-   },
-   {
-       "Id": 21,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "03-CONSERVAS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 56633.06000000,
-       "Custos": 42964.04580000,
-       "Compras": 141410.004400000,
-       "Pedidos": 3563.82600000
-   },
-   {
-       "Id": 22,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "04-MASSAS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 684.76000000,
-       "Custos": 438.31330000,
-       "Compras": 331.440400000,
-       "Pedidos": 292.32000000
-   },
-   {
-       "Id": 23,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "01-BISCOITOS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 4841.66000000,
-       "Custos": 3243.66600000,
-       "Compras": 10459.740000000,
-       "Pedidos": 1560.00000000
-   },
-   {
-       "Id": 24,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "02-PANIFICACAO",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 3448.05000000,
-       "Custos": 2353.81670000,
-       "Compras": 2836.279000000,
-       "Pedidos": 1035.39200000
-   },
-   {
-       "Id": 25,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "03-MATINAIS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 3195.14000000,
-       "Custos": 2357.53590000,
-       "Compras": 0.000000000,
-       "Pedidos": 3556.35000000
-   },
-   {
-       "Id": 26,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "04-DOCES E COMPOTAS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 5169.24000000,
-       "Custos": 3302.55520000,
-       "Compras": 976.142400000,
-       "Pedidos": 1762.18000000
-   },
-   {
-       "Id": 27,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "05-BOMBONIERE",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 13706.73000000,
-       "Custos": 10801.09560000,
-       "Compras": 3934.232800000,
-       "Pedidos": 7220.78000000
-   },
-   {
-       "Id": 28,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "06-VIDA SAUDAVEL",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 13.38000000,
-       "Custos": 8.26000000,
-       "Compras": 0.000000000,
-       "Pedidos": 99.12000000
-   },
-   {
-       "Id": 29,
-       "Secao": "03-MERCEARIA LIQUIDA",
-       "Familia": "01-NAO ALCOOLICAS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 165.77000000,
-       "Custos": 102.69800000,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 30,
-       "Secao": "03-MERCEARIA LIQUIDA",
-       "Familia": "02-ALCOOLICAS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 414257.97100000,
-       "Custos": 340821.96610000,
-       "Compras": 209241.836200000,
-       "Pedidos": 267690.76000000
-   },
-   {
-       "Id": 31,
-       "Secao": "03-MERCEARIA LIQUIDA",
-       "Familia": "03-VINHOS",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 27047.67000000,
-       "Custos": 18517.18010000,
-       "Compras": 27511.570200000,
-       "Pedidos": 141278.70000000
-   },
-   {
-       "Id": 32,
-       "Secao": "07-LATICINIOS",
-       "Familia": "01-BALCAO",
-       "Comprador": "Leandro Goncalves",
-       "Vendas": 94.88000000,
-       "Custos": 51.76480000,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 33,
-       "Secao": "08-FLV",
-       "Familia": "01-FRUTAS",
-       "Comprador": "Leandro Moreira",
-       "Vendas": 98034.63428640,
-       "Custos": 68080.26948390,
-       "Compras": 71329.522900000,
-       "Pedidos": 4060.27857200
-   },
-   {
-       "Id": 34,
-       "Secao": "08-FLV",
-       "Familia": "02-LEGUMES",
-       "Comprador": "Leandro Moreira",
-       "Vendas": 97627.21271840,
-       "Custos": 69349.32561970,
-       "Compras": 68059.356210000,
-       "Pedidos": 2300.11817000
-   },
-   {
-       "Id": 35,
-       "Secao": "08-FLV",
-       "Familia": "03-VERDURAS",
-       "Comprador": "Leandro Moreira",
-       "Vendas": 25548.90791350,
-       "Custos": 13155.17832800,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 36,
-       "Secao": "08-FLV",
-       "Familia": "04-TEMPEROS",
-       "Comprador": "Leandro Moreira",
-       "Vendas": 35464.29271340,
-       "Custos": 33820.99400000,
-       "Compras": 14727.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 37,
-       "Secao": "08-FLV",
-       "Familia": "06-OVOS",
-       "Comprador": "Leandro Moreira",
-       "Vendas": 41229.39810000,
-       "Custos": 31954.58800000,
-       "Compras": 55628.800000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 38,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "02-PANIFICACAO",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 78093.37920000,
-       "Custos": 56223.14410000,
-       "Compras": 63262.505200000,
-       "Pedidos": 85984.65000000
-   },
-   {
-       "Id": 39,
-       "Secao": "09-FABRICO",
-       "Familia": "01-PADARIA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 55558.25803100,
-       "Custos": 20545.33950260,
-       "Compras": 0.000000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 40,
-       "Secao": "09-FABRICO",
-       "Familia": "02-CONFEITARIA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 20953.48033260,
-       "Custos": 10739.49259060,
-       "Compras": 0.000000000,
-       "Pedidos": 161.60000000
-   },
-   {
-       "Id": 41,
-       "Secao": "09-FABRICO",
-       "Familia": "03-LANCHERIA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 28451.88651620,
-       "Custos": 10992.93051580,
-       "Compras": 648.226000000,
-       "Pedidos": 0.00000000
-   },
-   {
-       "Id": 42,
-       "Secao": "12-USO CONSUMO",
-       "Familia": "01-LOJA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 0.00000000,
-       "Custos": 0.00000000,
-       "Compras": 0.000000000,
-       "Pedidos": 117376.62000000
-   },
-   {
-       "Id": 43,
-       "Secao": "13-EMBALAGENS",
-       "Familia": "01-LOJA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 0.00000000,
-       "Custos": 0.00000000,
-       "Compras": 0.000000000,
-       "Pedidos": 4764.53000000
-   },
-   {
-       "Id": 44,
-       "Secao": "13-EMBALAGENS",
-       "Familia": "02-CD",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 0.00000000,
-       "Custos": 0.00000000,
-       "Compras": 0.000000000,
-       "Pedidos": 1534.40000000
-   },
-   {
-       "Id": 45,
-       "Secao": "14-PRODUCAO",
-       "Familia": "01-MATERIA PRIMA",
-       "Comprador": "Nilo Oliveira",
-       "Vendas": 0.00000000,
-       "Custos": 0.00000000,
-       "Compras": 14511.843929600,
-       "Pedidos": 11267.25318000
-   },
-   {
-       "Id": 46,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "01-CEREAIS",
-       "Comprador": "Rinaldo Rocha",
-       "Vendas": 365113.69584070,
-       "Custos": 315219.40527660,
-       "Compras": 294590.141000000,
-       "Pedidos": 476896.68000000
-   },
-   {
-       "Id": 47,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "02-GORDUROSOS",
-       "Comprador": "Rinaldo Rocha",
-       "Vendas": 84468.53420000,
-       "Custos": 73885.25150000,
-       "Compras": 162692.390000000,
-       "Pedidos": 242200.60000000
-   },
-   {
-       "Id": 48,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "03-CONSERVAS",
-       "Comprador": "Rinaldo Rocha",
-       "Vendas": 259369.90275140,
-       "Custos": 193766.76536010,
-       "Compras": 228625.663700000,
-       "Pedidos": 205098.25000000
-   },
-   {
-       "Id": 49,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "04-DOCES E COMPOTAS",
-       "Comprador": "Rinaldo Rocha",
-       "Vendas": 99423.39840000,
-       "Custos": 91848.08650000,
-       "Compras": 1365.511200000,
-       "Pedidos": 169294.00000000
-   },
-   {
-       "Id": 50,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "05-BOMBONIERE",
-       "Comprador": "Tiago Cunha",
-       "Vendas": 141765.26980000,
-       "Custos": 109220.91760000,
-       "Compras": 72380.736800000,
-       "Pedidos": 48017.37535000
-   },
-   {
-       "Id": 51,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "06-VIDA SAUDAVEL",
-       "Comprador": "Tiago Cunha",
-       "Vendas": 9212.37620000,
-       "Custos": 5694.17350000,
-       "Compras": 16229.052600000,
-       "Pedidos": 7250.88000000
-   },
-   {
-       "Id": 52,
-       "Secao": "03-MERCEARIA LIQUIDA",
-       "Familia": "01-NAO ALCOOLICAS",
-       "Comprador": "Tiago Cunha",
-       "Vendas": 279046.60640000,
-       "Custos": 208825.19590000,
-       "Compras": 131498.487600000,
-       "Pedidos": 270402.16000000
-   },
-   {
-       "Id": 53,
-       "Secao": "01-MERCEARIA SALGADA",
-       "Familia": "04-MASSAS",
-       "Comprador": "Wanderson Batista",
-       "Vendas": 94653.26920000,
-       "Custos": 69466.30080000,
-       "Compras": 61385.819000000,
-       "Pedidos": 15991.32000000
-   },
-   {
-       "Id": 54,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "01-BISCOITOS",
-       "Comprador": "Wanderson Batista",
-       "Vendas": 249910.18380000,
-       "Custos": 193506.47810000,
-       "Compras": 205354.204600000,
-       "Pedidos": 212712.56020000
-   },
-   {
-       "Id": 55,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "03-MATINAIS",
-       "Comprador": "Wanderson Batista",
-       "Vendas": 542867.45480000,
-       "Custos": 470537.29160000,
-       "Compras": 73653.633200000,
-       "Pedidos": 376636.81182000
-   },
-   {
-       "Id": 56,
-       "Secao": "02-MERCEARIA DOCE",
-       "Familia": "04-DOCES E COMPOTAS",
-       "Comprador": "Wanderson Batista",
-       "Vendas": 212000.65060000,
-       "Custos": 174600.22600000,
-       "Compras": 31462.586900000,
-       "Pedidos": 460583.14000000
-   }
-    ];
+function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval, $uibModal) {
+    $scope.dados = [];
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+    .withDOM('<"html5buttons"B>lTfgitp')
+
+        .withOption('order', [0, 'asc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $http.get("http://localhost:50837/api/Promocao/GetAllAtivas").then(function (response) {
+        $scope.promocoes = response.data;
+    })
+
+    $scope.carregar = function () {
+        $http.get("http://localhost:50837/api/Abastecimento/GetAllByComprador?Comprador=" + $scope.comprador + "&cdPromo=" + $scope.promocao).then(function (response) {
+            if (response.data.length == 0) {
+                SweetAlert.swal({
+                    title: "Nenhum resultado encontrado",
+                    type: "warning"
+                });
+            }
+            else {
+                $scope.dados = response.data;
+            }
+
+        })
+    }
+
+    $scope.visualizar = function (index) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/abastecimento/visualizar_detalhe.html',
+            controller: 'promocaoModalInstanceCtrl',
+            windowClass: 'animated fadeIn app-modal-window',
+            resolve: {
+                abastecimentoSelected: function () {
+                    return index;
+                }
+            }
+        });
+    }
+}
+
+function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimentoSelected) {
+    $scope.Produto = abastecimentoSelected.Produto;
+    $scope.Codigo = abastecimentoSelected.cdProduto;
+    $scope.Filial = abastecimentoSelected.Filial;
+    $scope.EstoqueLoja = abastecimentoSelected.EstLJ;
+    $scope.EstoqueCD = abastecimentoSelected.EstCD_UND;
+    $scope.EstoqueMinimo = abastecimentoSelected.EstMin;
+    $scope.Emb = abastecimentoSelected.QtdEmb;
+    $scope.VMN = abastecimentoSelected.VMN;
+    $scope.VMP = abastecimentoSelected.VMP;
+    $scope.sugestComprador = 0;
+    $scope.cdPromocao = abastecimentoSelected.cdPromocao;
+    $scope.editMode = false;
+    $scope.edit = false;
+
+
+    $http.get("http://localhost:50837/api/Abastecimento/GetAllByCodigoAndFilial?codigo=" + abastecimentoSelected.cdProduto + "&codigoFilial=" + abastecimentoSelected.cdPessoaFilial).then(function (response) {
+
+        $scope.atendido = response.data == null ? 0 : response.data.Atendido / abastecimentoSelected.QtdEmb;
+        $scope.pendente = response.data == null ? 0 : response.data.Pendente / abastecimentoSelected.QtdEmb;
+        $scope.transito = response.data == null ? 0 : response.data.Transito;
+        $scope.sugestNormal = ((($scope.VMN / $scope.Emb) * 7) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
+        $scope.sugestPromocional = ((($scope.VMP / $scope.Emb) * 7) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
+        $scope.diasDeEstoqueNormal = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMN;
+        $scope.diasDeEstoquePromocional = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMP;
+    });
+
+    $scope.edit = function (dado) {
+        $scope.editMode = true;
+    }
+
+    $scope.save = function (dado) {
+        $scope.diasDeEstoqueNormal = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMN;
+        $scope.diasDeEstoquePromocional = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMP;
+        $scope.editMode = false;
+    }
 }
 
 function classificacaoProdutoCtrl($scope, $localStorage, $http, $uibModal) {
@@ -7130,6 +6772,10 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
          ]);
 
     $scope.operadores;
+
+    $http.get("http://192.168.1.116:8080/Intranet.API/api/Operador/GetAll").then(function (response) {
+        $scope.operadores = response.data;
+    })
 
     $scope.incluir = function () {
 
@@ -8527,23 +8173,117 @@ function listaEstoqueMinimoCtrl($scope, $http, DTOptionsBuilder, $uibModal, $loc
     }
 }
 
-function listaEstoqueMinimoCtrlModalInstance($uibModalInstance, $http, $scope, estoqueMinimoSelected)
-{
+function listaEstoqueMinimoCtrlModalInstance($uibModalInstance, $http, $scope, estoqueMinimoSelected) {
     $scope.produto;
     $scope.codigoProduto;
 
 
-    $http.get("http://localhost:50837/api/CadAgendamento/GetAllAgendamentosItensById?Id=" + estoqueMinimoSelected.Id).then(function (response)
-    {
+    $http.get("http://localhost:50837/api/CadAgendamento/GetAllAgendamentosItensById?Id=" + estoqueMinimoSelected.Id).then(function (response) {
         console.log(response.data);
         $scope.produto = response.data[0].Produto;
         $scope.codigoProduto = response.data[0].Codigo;
         $scope.dados = response.data;
-        
+
     },
     function (response) {
         alert("Erro: " + response.status);
     })
+}
+
+function abastecimentoParametro($scope, $http, DTOptionsBuilder, $uibModal, $localStorage, SweetAlert) {
+    $scope.dados = [];
+
+    $http.get("http://localhost:50837/api/Abastecimento/GetAllParametro").then(function (response) {
+        $scope.dados = response.data;
+    })
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+         .withDOM('<"html5buttons"B>lTfgitp')
+         .withOption('order', [0, 'desc'])
+         .withButtons([
+             { extend: 'copy' },
+             { extend: 'csv' },
+             { extend: 'excel', title: 'ExampleFile' },
+             { extend: 'pdf', title: 'ExampleFile' },
+
+             {
+                 extend: 'print',
+                 customize: function (win) {
+                     $(win.document.body).addClass('white-bg');
+                     $(win.document.body).css('font-size', '10px');
+
+                     $(win.document.body).find('table')
+                         .addClass('compact')
+                         .css('font-size', 'inherit');
+                 }
+             }
+         ]);
+
+    $scope.incluir = function () {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/abastecimento/incluir_parametro.html',
+            controller: 'abastecimentoParametroModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                parametroSelected: function () {
+                    return null
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Abastecimento/GetAllParametro").then(function (response) {
+                $scope.dados = response.data;
+            })
+        })
+    }
+
+    $scope.alterar = function (index) {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/abastecimento/incluir_parametro.html',
+            controller: 'abastecimentoParametroModalInstance',
+            windowClass: "animated fadeIn",
+            resolve: {
+                parametroSelected: function () {
+                    return index
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Abastecimento/GetAllParametro").then(function (response) {
+                $scope.dados = response.data;
+            })
+        })
+    }
+}
+
+function abastecimentoParametroModalInstance($scope, $uibModalInstance, $http, parametroSelected) {
+    $http.get("http://localhost:50837/api/Promocao/GetAllAtivas").then(function (response) {
+        $scope.promocoes = response.data;
+    })
+
+    console.log(parametroSelected);
+
+    if (parametroSelected != null) {
+        $scope.promocao = parametroSelected.Promocao;
+        $scope.cobertura = parametroSelected.Cobertura;
+        $scope.coberturaPromo = parametroSelected.CoberturaPromocional;
+    }
+
+
+
+
+    $scope.salvar = function () {
+        $scope.obj = { cdPromocao: $scope.promocao.cdPromocao, cobertura: $scope.cobertura, coberturaPromocional: $scope.coberturaPromo, Promocao: $scope.promocao.nmPromocao }
+
+        $http.post("http://localhost:50837/api/abastecimento/IncluirParametro", $scope.obj).then(function (response) {
+            $uibModalInstance.close();
+        },
+        function (response) {
+            alert("Erro: " + response.status);
+        });
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 }
 
 /**
@@ -8617,6 +8357,7 @@ angular
     .controller('entradaModalInstanceCtrl', entradaModalInstanceCtrl)
     .controller('composicaoModalInstanceCtrl', composicaoModalInstanceCtrl)
     .controller('outrasdespesasModalInstanceCtrl', outrasdespesasModalInstanceCtrl)
+    .controller('fechamentoModalInstanceCtrl', fechamentoModalInstanceCtrl)
     .controller('supcontroleCaixaCtrl', supcontroleCaixaCtrl)
     .controller('supRelAcompanhamentoCtrl', supRelAcompanhamentoCtrl).filter('sumByKey', function () {
         return function (data, key) {
@@ -8670,6 +8411,7 @@ angular
         }
     })
     .controller('promocaoCtrl', promocaoCtrl)
+    .controller('promocaoModalInstanceCtrl', promocaoModalInstanceCtrl)
     .controller('classificacaoProdutoCtrl', classificacaoProdutoCtrl).filter('filterTreeItem', function () {
         function recursive(obj, newObj, level, itemId, isExpend) {
             angular.forEach(obj, function (o) {
@@ -8780,4 +8522,6 @@ angular
     .controller('tiposMaloteCtrlModalInstance', tiposMaloteCtrlModalInstance)
     .controller('estoqueMinimoCtrl', estoqueMinimoCtrl)
     .controller('listaEstoqueMinimoCtrl', listaEstoqueMinimoCtrl)
-    .controller('listaEstoqueMinimoCtrlModalInstance', listaEstoqueMinimoCtrlModalInstance);
+    .controller('listaEstoqueMinimoCtrlModalInstance', listaEstoqueMinimoCtrlModalInstance)
+    .controller('abastecimentoParametro', abastecimentoParametro)
+    .controller('abastecimentoParametroModalInstance', abastecimentoParametroModalInstance);

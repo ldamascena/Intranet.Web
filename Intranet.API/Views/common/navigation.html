@@ -100,10 +100,11 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('promocao')}" ng-show="grupo == 1">
-                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Promocao' | translate }}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('promocao.principal')}">
-                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
+            <li ng-class="{active: $state.includes('abastecimento')}" ng-show="grupo == 1">
+                <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Abastecimento' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('abastecimento.principal')}">
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="abastecimento.principal">Ajuste Preco Promocao</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="abastecimento.parametro">Cadastro de Parametro</a></li>
                 </ul>
             </li>
 
