@@ -3,6 +3,7 @@ using Intranet.Domain.Entities;
 using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -48,6 +49,47 @@ namespace Intranet.API.Controllers
             {
                 obj.DataInclusao = DateTime.Now;
                 context.ParametrosAbastecimento.Add(obj);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage IncluirSugestao(SugestaoAbastecimento obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                obj.conferido = 1;
+                context.SugestoesAbastecimento.Add(obj);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage AlterarSugestao(SugestaoAbastecimento obj)
+        {
+            var context = new AlvoradaContext();
+            //var result = context.SugestoesAbastecimento.Where(x => x.cdPessoaFilial == obj.cdPessoaFilial && x.cdPromocao == obj.cdPromocao && x.cdProduto == obj.cdProduto).First();
+
+            try
+            {
+
+                //context.Entry(result).State = EntityState.Modified;
+                //result.sugestaoComprador = obj.sugestaoComprador;
+                context.SugestoesAbastecimento.Attach(obj);
+                var entry = context.Entry(obj);
+                entry.Property(e => e.sugestaoComprador).IsModified = true;
                 context.SaveChanges();
             }
             catch (Exception ex)

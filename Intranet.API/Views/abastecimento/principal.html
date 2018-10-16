@@ -91,11 +91,10 @@
                                 <th>EstLJ</th>
                                 <th>EstCD</th>
                                 <th>QtdEmb</th>
-
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="dado in dados">
+                            <tr ng-repeat="dado in dados" ng-style="{'background-color': (dado.conferido == 1) ? '#d3ffbc': ''}">
                                 <td>{{dado.cdProduto}}</td>
                                 <td><a href="" ng-click="visualizar(dado);">{{dado.Produto}}</a></td>
                                 <td>{{dado.Filial}}</td>

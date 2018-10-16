@@ -59,5 +59,11 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public decimal? QtdEmb { get; set; }
+
+        [DataMember]
+        public int? sugestaoComprador { get; set; }
+
+        [DataMember]
+        public int? conferido { get; set; }
     }
 }

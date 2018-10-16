@@ -134,6 +134,7 @@
     <Compile Include="Entities\SolUsuario.cs" />
     <Compile Include="Entities\AlertaInversao.cs" />
     <Compile Include="Entities\AlertaUltimoCusto.cs" />
+    <Compile Include="Entities\SugestaoAbastecimento.cs" />
     <Compile Include="Entities\SuperProduto.cs" />
     <Compile Include="Entities\SolLog.cs" />
     <Compile Include="Entities\SolParametro.cs" />

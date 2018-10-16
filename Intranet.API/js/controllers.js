@@ -5937,6 +5937,10 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
                     return index;
                 }
             }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Abastecimento/GetAllByComprador?Comprador=" + $scope.comprador + "&cdPromo=" + $scope.promocao).then(function (response) {
+                $scope.dados = response.data;
+            })
         });
     }
 }
@@ -5951,7 +5955,7 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
     $scope.Emb = abastecimentoSelected.QtdEmb;
     $scope.VMN = abastecimentoSelected.VMN;
     $scope.VMP = abastecimentoSelected.VMP;
-    $scope.sugestComprador = 0;
+    $scope.sugestComprador = abastecimentoSelected.sugestaoComprador == null ? 0 : abastecimentoSelected.sugestaoComprador;
     $scope.cdPromocao = abastecimentoSelected.cdPromocao;
     $scope.editMode = false;
     $scope.edit = false;
@@ -5972,10 +5976,34 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
         $scope.editMode = true;
     }
 
-    $scope.save = function (dado) {
+    $scope.save = function () {
         $scope.diasDeEstoqueNormal = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMN;
         $scope.diasDeEstoquePromocional = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMP;
         $scope.editMode = false;
+    }
+
+    $scope.gravar = function () {
+
+        if (abastecimentoSelected.sugestaoComprador != 0 && abastecimentoSelected.sugestaoComprador != null) {
+            $scope.obj = { cdPromocao: abastecimentoSelected.cdPromocao, cdProduto: abastecimentoSelected.cdProduto, cdPessoaFilial: abastecimentoSelected.cdPessoaFilial, sugestaoComprador: $scope.sugestComprador, conferido: abastecimentoSelected.conferido };
+            $http.post("http://localhost:50837/api/abastecimento/AlterarSugestao", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            },
+            function (response) {
+                alert("Error: " + response.status);
+            });
+        }
+        else {
+            $scope.obj = { cdPromocao: abastecimentoSelected.cdPromocao, cdProduto: abastecimentoSelected.cdProduto, cdPessoaFilial: abastecimentoSelected.cdPessoaFilial, sugestaoComprador: $scope.sugestComprador };
+            $http.post("http://localhost:50837/api/abastecimento/IncluirSugestao", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            },
+            function (response) {
+                alert("Error: " + response.status);
+            });
+        }
+
+
     }
 }
 
