@@ -57,9 +57,15 @@
     <Compile Include="Context\DorsalCaboFrioContext.cs" />
     <Compile Include="Context\DorsalBacaxaContext.cs" />
     <Compile Include="Context\DorsalEsperancaContext.cs" />
+    <Compile Include="Context\DorsalInoaContext.cs" />
+    <Compile Include="Context\DorsalItaborai2Context.cs" />
+    <Compile Include="Context\DorsalRioDoOuroContext.cs" />
+    <Compile Include="Context\DorsalNovaCidadeContext.cs" />
+    <Compile Include="Context\DorsalTrindadeContext.cs" />
     <Compile Include="Context\DorsalMage2Context.cs" />
     <Compile Include="Context\DorsalAguaMineralContext.cs" />
     <Compile Include="Context\DorsalItaboraiContext.cs" />
+    <Compile Include="Context\DorsalRioBonito2Context.cs" />
     <Compile Include="Context\DorsalRioBonitoContext.cs" />
     <Compile Include="Context\DorsalMaricaContext.cs" />
     <Compile Include="Context\DorsalCatarinaContext.cs" />

@@ -291,7 +291,124 @@ namespace Intranet.API.Controllers
                     }
 
                     break;
+
+                case 22:
+                    var rioDoOuroContext = new DorsalRioDoOuroContext();
+                    if (rioDoOuroContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        rioDoOuroContext.Operadores.Add(obj);
+                        rioDoOuroContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
+                case 23:
+                    var inoaContext = new DorsalInoaContext();
+                    if (inoaContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        inoaContext.Operadores.Add(obj);
+                        inoaContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
+                    
+
+                case 53:
+                    var rioBonito2Context = new DorsalRioBonito2Context();
+                    if (rioBonito2Context.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        rioBonito2Context.Operadores.Add(obj);
+                        rioBonito2Context.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
+                case 54:
+                    var itaborai2Context = new DorsalItaborai2Context();
+                    if (itaborai2Context.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        itaborai2Context.Operadores.Add(obj);
+                        itaborai2Context.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+                case 26:
+                    var trindadeContext = new DorsalTrindadeContext();
+                    if (trindadeContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        trindadeContext.Operadores.Add(obj);
+                        trindadeContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
+                case 27:
+                    var novaCidadeContext = new DorsalNovaCidadeContext();
+                    if (novaCidadeContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        novaCidadeContext.Operadores.Add(obj);
+                        novaCidadeContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
             }
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

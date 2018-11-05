@@ -59,6 +59,23 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage AlterarParametro(ParametroAbastecimento obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage IncluirSugestao(SugestaoAbastecimento obj)
         {
             var context = new AlvoradaContext();

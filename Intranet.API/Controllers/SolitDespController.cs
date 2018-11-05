@@ -202,6 +202,30 @@ namespace Intranet.API.Controllers
 
         }
 
+        public HttpResponseMessage Desbaixar([FromBody] CadSolDesp obj)
+        {
+
+            var context = new AlvoradaContext();
+
+            try
+            {
+                var result = context.CadSolicitacoesDesp.Where(x => x.IdCadSolDesp == obj.IdCadSolDesp).FirstOrDefault();
+                result.Baixa = false;
+                result.DataBaixa = null;
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+
+        }
+
         public decimal GetTotalByUser(int idUsuario)
         {
             var context = new AlvoradaContext();

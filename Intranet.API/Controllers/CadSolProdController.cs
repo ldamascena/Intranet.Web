@@ -64,8 +64,6 @@ namespace Intranet.API.Controllers
             {
                 return null;
             }
-
-            
         }
 
         public HttpResponseMessage Incluir([FromBody] CadSolProd obj)

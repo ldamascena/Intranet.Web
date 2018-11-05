@@ -1,8 +1,3 @@
-/**
- * MainCtrl - controller
- * Contains several global data used in different view
- *
- */
 function MainCtrl($http, $scope) {
     $scope.aniversariantes;
     var dataAtual = new Date();
@@ -205,15 +200,14 @@ function registerCtrl($scope, $http, $state, $stateParams, toaster, $timeout) {
                     $state.go('login');
                 }, 2000);
             },
-            function () {
-                return alert("Erro: " + response.status);
-            });
+                function () {
+                    return alert("Erro: " + response.status);
+                });
         }
     }
 }
 
 function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, $localStorage, $interval, $state) {
-    // All data will be store in this object
     $scope.formData = {};
     $scope.grades = [{}];
 
@@ -226,12 +220,6 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
     }, function (response) {
         return alert("Erro: " + response.status);
     });
-
-    //$http.get("http://localhost:50837/api/ViewProduto/GetAll").then(function (response) {
-    //    $scope.produtos = response.data;
-    //}, function (response) {
-    //    return alert("Erro: " + response.status);
-    //});
 
     $scope.addNew = function (grade) {
         $scope.grades.push({});
@@ -271,49 +259,49 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                 closeOnCancel: false,
                 timer: 5000
             },
-            function (isConfirm) {
-                if (isConfirm) {
-                    $scope.objProduto = {
-                        Descricao: $scope.descricao, Comprador: $scope.comprador, Fornecedor: $scope.fornecedor, Abastecimento: $scope.abastecimento,
-                        ConcSensibilidade: $scope.concorrencia,
-                        Custo: $scope.custo == undefined ? $scope.custo : $scope.custo.toString().replace(",", "."),
-                        Venda: $scope.venda == undefined ? $scope.venda : $scope.venda.toString().replace(",", "."),
-                        Embalagem: $scope.embalagem,
-                        QtdEmbalagem: $scope.qtdEmbalagem == undefined ? $scope.qtdEmbalagem : $scope.qtdEmbalagem.toString().replace(",", "."),
-                        Peso: $scope.peso == undefined ? $scope.peso : $scope.peso.toString().replace(",", "."),
-                        Altura: $scope.altura == undefined ? $scope.altura : $scope.altura.toString().replace(",", "."),
-                        Largura: $scope.largura == undefined ? $scope.largura : $scope.largura.toString().replace(",", "."),
-                        Comprimento: $scope.comprimento == undefined ? $scope.comprimento : $scope.comprimento.toString().replace(",", "."),
-                        Lastro: $scope.lastro == undefined ? $scope.lastro : $scope.lastro.toString().replace(",", "."),
-                        Camadas: $scope.camadas == undefined ? $scope.camadas : $scope.camadas.toString().replace(",", "."),
-                        Mix: $scope.mix.toString(),
-                        Caracteristica: $scope.caracteristica == undefined ? $scope.caracteristica : $scope.caracteristica.toString(),
-                        JustificativaResumida: $scope.justificativa, Observacao: $scope.observacao,
-                        IdUsuario: $localStorage.user.Id, TipoCadastro: $scope.tipoCadastro, Segmento: $scope.segmento, IdCadSolProd: $scope.IdCadSolProd
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.objProduto = {
+                            Descricao: $scope.descricao, Comprador: $scope.comprador, Fornecedor: $scope.fornecedor, Abastecimento: $scope.abastecimento,
+                            ConcSensibilidade: $scope.concorrencia,
+                            Custo: $scope.custo == undefined ? $scope.custo : $scope.custo.toString().replace(",", "."),
+                            Venda: $scope.venda == undefined ? $scope.venda : $scope.venda.toString().replace(",", "."),
+                            Embalagem: $scope.embalagem,
+                            QtdEmbalagem: $scope.qtdEmbalagem == undefined ? $scope.qtdEmbalagem : $scope.qtdEmbalagem.toString().replace(",", "."),
+                            Peso: $scope.peso == undefined ? $scope.peso : $scope.peso.toString().replace(",", "."),
+                            Altura: $scope.altura == undefined ? $scope.altura : $scope.altura.toString().replace(",", "."),
+                            Largura: $scope.largura == undefined ? $scope.largura : $scope.largura.toString().replace(",", "."),
+                            Comprimento: $scope.comprimento == undefined ? $scope.comprimento : $scope.comprimento.toString().replace(",", "."),
+                            Lastro: $scope.lastro == undefined ? $scope.lastro : $scope.lastro.toString().replace(",", "."),
+                            Camadas: $scope.camadas == undefined ? $scope.camadas : $scope.camadas.toString().replace(",", "."),
+                            Mix: $scope.mix.toString(),
+                            Caracteristica: $scope.caracteristica == undefined ? $scope.caracteristica : $scope.caracteristica.toString(),
+                            JustificativaResumida: $scope.justificativa, Observacao: $scope.observacao,
+                            IdUsuario: $localStorage.user.Id, TipoCadastro: $scope.tipoCadastro, Segmento: $scope.segmento, IdCadSolProd: $scope.IdCadSolProd
+                        }
+
+                        $http.post("http://localhost:50837/api/CadSolProd/Incluir", $scope.objProduto).then(function (response) {
+                            $state.go('produto.sollistaprodutos');
+                        }, function (response) {
+                            return alert("Erro: " + response.status);
+                        });
+                        SweetAlert.swal({
+                            title: "Incluído!",
+                            text: "O registro foi incluído com sucesso.",
+                            type: "success",
+                            timer: 5000
+                        });
+
+
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a inclusão do registro",
+                            type: "error",
+                            timer: 5000
+                        });
                     }
-
-                    $http.post("http://localhost:50837/api/CadSolProd/Incluir", $scope.objProduto).then(function (response) {
-                        $state.go('produto.sollistaprodutos');
-                    }, function (response) {
-                        return alert("Erro: " + response.status);
-                    });
-                    SweetAlert.swal({
-                        title: "Incluído!",
-                        text: "O registro foi incluído com sucesso.",
-                        type: "success",
-                        timer: 5000
-                    });
-
-
-                } else {
-                    SweetAlert.swal({
-                        title: "Cancelado!",
-                        text: "Você cancelou a inclusão do registro",
-                        type: "error",
-                        timer: 5000
-                    });
-                }
-            });
+                });
         } else {
             $scope.prodForm.submitted = true;
         }
@@ -378,21 +366,21 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           });
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                            $scope.solicitacoesProd = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
 
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
-                   }
-               });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                }
+            });
 
     };
     $scope.reprovarComercial = function (solicitacaoProd) {
@@ -409,21 +397,21 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           });
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                            $scope.solicitacoesProd = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
 
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
-                   }
-               });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                }
+            });
 
     };
 
@@ -441,20 +429,20 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           });
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                            $scope.solicitacoesProd = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                }
+            });
 
     };
     $scope.reprovarDiretoria = function (solicitacaoProd) {
@@ -471,22 +459,22 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                            $scope.solicitacoesProd = response.data;
+                        });
 
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
 
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
-                   }
-               });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                }
+            });
 
     };
 
@@ -521,24 +509,24 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Excluido!", "Exclusão feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/Excluir", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProdGrade/GetGetByIdProdutoExcluir?IdCadSolProd=" + solicitacaoProd.IdCadSolProd).then(function (response) {
-                               $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                                   $scope.solicitacoesProd = response.data;
-                               });
-                           })
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Excluido!", "Exclusão feita com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/Excluir", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProdGrade/GetGetByIdProdutoExcluir?IdCadSolProd=" + solicitacaoProd.IdCadSolProd).then(function (response) {
+                            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                $scope.solicitacoesProd = response.data;
+                            });
+                        })
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
+                }
+            });
 
     };
 
@@ -579,23 +567,23 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                     closeOnCancel: false,
                     timer: 5000
                 },
-                       function (isConfirm) {
-                           if (isConfirm) {
-                               solicitacaoProd.IdUserLock = $localStorage.user.Id;
-                               SweetAlert.swal("Confirmado!", "Bloqueado com sucesso!", "success");
-                               $http.post("http://localhost:50837/api/CadSolProd/Lock", solicitacaoProd).then(function (response) {
-                                   $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                                       $scope.solicitacoesProd = response.data;
-                                   }), function (response) {
-                                       return alert("Erro: " + response.status);
-                                   }
-                               }), function (response) {
-                                   return alert("Erro: " + response.status);
-                               }
-                           } else {
-                               SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
-                           }
-                       });
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            solicitacaoProd.IdUserLock = $localStorage.user.Id;
+                            SweetAlert.swal("Confirmado!", "Bloqueado com sucesso!", "success");
+                            $http.post("http://localhost:50837/api/CadSolProd/Lock", solicitacaoProd).then(function (response) {
+                                $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                                    $scope.solicitacoesProd = response.data;
+                                }), function (response) {
+                                    return alert("Erro: " + response.status);
+                                }
+                            }), function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        } else {
+                            SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
+                        }
+                    });
             }
         });
     }
@@ -613,22 +601,22 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Desbloqueado com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/Unlock", solicitacaoProd).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-                               $scope.solicitacoesProd = response.data;
-                           }), function (response) {
-                               return alert("Erro: " + response.status);
-                           }
-                       }), function (response) {
-                           return alert("Erro: " + response.status);
-                       }
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Desbloqueado com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/Unlock", solicitacaoProd).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                            $scope.solicitacoesProd = response.data;
+                        }), function (response) {
+                            return alert("Erro: " + response.status);
+                        }
+                    }), function (response) {
+                        return alert("Erro: " + response.status);
+                    }
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
+                }
+            });
     }
 
     $scope.incluirEan = function (IdCadSolProd) {
@@ -667,24 +655,24 @@ function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAl
             closeOnConfirm: false,
             closeOnCancel: false
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
-                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
-                                   $scope.solicitacoesProd = response.data;
-                               });
-                           })
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Aprovação feita com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProd).then(function (response) {
+                        $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                            $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
+                                $scope.solicitacoesProd = response.data;
+                            });
+                        })
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a aprovação status!", "error");
+                }
+            });
 
     };
     $scope.reprovarDiretoria = function (solicitacaoProd) {
@@ -700,25 +688,25 @@ function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAl
             closeOnConfirm: false,
             closeOnCancel: false
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
-                           $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
-                               $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
-                                   $scope.solicitacoesProd = response.data;
-                               });
-                           })
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Reprovado com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProd).then(function (response) {
+                        $http.post("http://localhost:50837/api/CadSolProdLog/Incluir", $scope.objLog).then(function (response) {
+                            $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByComercial").then(function (response) {
+                                $scope.solicitacoesProd = response.data;
+                            });
+                        })
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
 
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
-                   }
-               });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a alteração!", "error");
+                }
+            });
 
     };
 
@@ -836,31 +824,31 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             closeOnCancel: false,
             timer: 5000
         },
-        function (isConfirm) {
-            if (isConfirm) {
-                SweetAlert.swal({
-                    title: "A solicitação foi aprovada com sucesso!",
-                    type: "success",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-                $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProdSelected).then(function (response) {
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "A solicitação foi aprovada com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarComercial", solicitacaoProdSelected).then(function (response) {
 
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-            else {
-                SweetAlert.swal({
-                    title: "A solicitação foi cancelada com sucesso!",
-                    type: "error",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-            }
-        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "A solicitação foi cancelada com sucesso!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                }
+            });
     }
 
     $scope.reprovarComercial = function () {
@@ -877,30 +865,30 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             closeOnCancel: false,
             timer: 5000
         },
-        function (isConfirm) {
-            if (isConfirm) {
-                SweetAlert.swal({
-                    title: "A solicitação foi reprovada com sucesso!",
-                    type: "success",
-                    timer: 5000
-                });
-                $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProdSelected).then(function (response) {
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-                $uibModalInstance.close();
-            }
-            else {
-                SweetAlert.swal({
-                    title: "A solicitação foi cancelada com sucesso!",
-                    type: "error",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-            }
-        });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "A solicitação foi reprovada com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $http.post("http://localhost:50837/api/CadSolProd/ReprovarComercial", solicitacaoProdSelected).then(function (response) {
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                    $uibModalInstance.close();
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "A solicitação foi cancelada com sucesso!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                }
+            });
     };
 
     $scope.aprovarComercialDiretoria = function () {
@@ -917,31 +905,31 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             closeOnCancel: false,
             timer: 5000
         },
-        function (isConfirm) {
-            if (isConfirm) {
-                SweetAlert.swal({
-                    title: "A solicitação foi aprovada com sucesso!",
-                    type: "success",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-                $http.post("http://localhost:50837/api/CadSolProd/AprovarComercialDiretoria", solicitacaoProdSelected).then(function (response) {
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "A solicitação foi aprovada com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarComercialDiretoria", solicitacaoProdSelected).then(function (response) {
 
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-            else {
-                SweetAlert.swal({
-                    title: "A solicitação foi cancelada com sucesso!",
-                    type: "error",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-            }
-        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "A solicitação foi cancelada com sucesso!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                }
+            });
     }
 
     $scope.aprovarDiretoria = function () {
@@ -958,31 +946,31 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             closeOnCancel: false,
             timer: 5000
         },
-        function (isConfirm) {
-            if (isConfirm) {
-                SweetAlert.swal({
-                    title: "A solicitação foi aprovada com sucesso!",
-                    type: "success",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-                $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProdSelected).then(function (response) {
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "A solicitação foi aprovada com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                    $http.post("http://localhost:50837/api/CadSolProd/AprovarDiretoria", solicitacaoProdSelected).then(function (response) {
 
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-            }
-            else {
-                SweetAlert.swal({
-                    title: "A solicitação foi cancelada com sucesso!",
-                    type: "error",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-            }
-        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "A solicitação foi cancelada com sucesso!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                }
+            });
     }
 
     $scope.reprovarDiretoria = function () {
@@ -999,30 +987,30 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             closeOnCancel: false,
             timer: 5000
         },
-        function (isConfirm) {
-            if (isConfirm) {
-                SweetAlert.swal({
-                    title: "A solicitação foi reprovada com sucesso!",
-                    type: "success",
-                    timer: 5000
-                });
-                $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProdSelected).then(function (response) {
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                }, function (response) {
-                    return alert("Erro: " + response.status);
-                });
-                $uibModalInstance.close();
-            }
-            else {
-                SweetAlert.swal({
-                    title: "A solicitação foi cancelada com sucesso!",
-                    type: "error",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-            }
-        });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "A solicitação foi reprovada com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $http.post("http://localhost:50837/api/CadSolProd/ReprovarDiretoria", solicitacaoProdSelected).then(function (response) {
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                    $uibModalInstance.close();
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "A solicitação foi cancelada com sucesso!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.close();
+                }
+            });
     };
 }
 
@@ -1109,21 +1097,21 @@ function altProd($scope, $http, SweetAlert, $localStorage, $state) {
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       $scope.obj = { Ean: $scope.Ean, Campo: $scope.campo, Detalhe: $scope.detalhe, Observacao: $scope.observacao, IdUsuario: $localStorage.user.Id }
-                       $http.post("http://localhost:50837/api/CadSolAlterProd/Incluir", $scope.obj).then(function (response) {
-                           $state.go('produto.altlistaprodutos')
-                       });
-                       SweetAlert.swal({
-                           title: "Inclusão feita com sucesso!",
-                           type: "success",
-                           timer: 5000
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a solicitacao!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    $scope.obj = { Ean: $scope.Ean, Campo: $scope.campo, Detalhe: $scope.detalhe, Observacao: $scope.observacao, IdUsuario: $localStorage.user.Id }
+                    $http.post("http://localhost:50837/api/CadSolAlterProd/Incluir", $scope.obj).then(function (response) {
+                        $state.go('produto.altlistaprodutos')
+                    });
+                    SweetAlert.swal({
+                        title: "Inclusão feita com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a solicitacao!", "error");
+                }
+            });
     }
 }
 
@@ -1171,20 +1159,20 @@ function listaAltProd($scope, $uibModal, $http, SweetAlert, $localStorage, DTOpt
             closeOnConfirm: false,
             closeOnCancel: false
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
-                       $http.post("http://localhost:50837/api/CadSolAlterProd/Concluir", solicitacao).then(function (response) {
-                           $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
-                               $scope.solicitacoes = response.data;
-                           });
-                       }, function (response) {
-                           return alert("Erro: " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal("Confirmado!", "Conclusão feita com sucesso!", "success");
+                    $http.post("http://localhost:50837/api/CadSolAlterProd/Concluir", solicitacao).then(function (response) {
+                        $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
+                            $scope.solicitacoes = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a conclusão!", "error");
+                }
+            });
     }
 
     $scope.excluir = function (solicitacao) {
@@ -1442,9 +1430,9 @@ function adminUsuarioCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
                             $scope.usuarios = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o bloqueio do usuario", "error");
                 }
@@ -1470,9 +1458,9 @@ function adminUsuarioCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert
                             $scope.usuarios = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o desbloqueio do usuario", "error");
                 }
@@ -3428,9 +3416,9 @@ function supervisorCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
                             $scope.supervisores = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o bloqueio do supervisor", "error");
                 }
@@ -3456,9 +3444,9 @@ function supervisorCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
                             $scope.supervisores = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o desbloqueio do supervisor", "error");
                 }
@@ -3600,9 +3588,9 @@ function atendenteCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
                             $scope.atendentes = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o bloqueio do atendente", "error");
                 }
@@ -3628,9 +3616,9 @@ function atendenteCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
                             $scope.atendentes = response.data;
                         });
                     },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                        function (response) {
+                            return alert("Erro: " + response.status);
+                        });
                 } else {
                     SweetAlert.swal("Cancelado", "Você cancelou o desbloqueio do atendente", "error");
                 }
@@ -3770,7 +3758,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
     // Disable weekend selection
     function disabled(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
     }
 
@@ -3795,7 +3783,7 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
 
     function getDayClass(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         if (mode === 'day') {
             var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
 
@@ -4261,6 +4249,38 @@ function controleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAler
                             $scope.totalDespesas = response.data;
                         });
                         SweetAlert.swal("Baixado!", "Registro baixado com sucesso", "success");
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a alteracao do registro", "error");
+                }
+            });
+    }
+
+    $scope.desbaixar = function (solicitacaodesp) {
+        SweetAlert.swal({
+            title: "Deseja cancelar a baixa?",
+            text: "Não será possivel recuperar depois de dado baixa!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, cancelar!",
+            cancelButtonText: "Não, manter!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/SolitDesp/Desbaixar", solicitacaodesp).then(function (response) {
+                        $http.get("http://localhost:50837/api/SolitDesp/GetAllByUserAprovado?idUsuario=" + $localStorage.user.Id).then(function (response) {
+                            $scope.despesas = response.data;
+                        });
+                        $http.get("http://localhost:50837/api/SolitDesp/GetTotalByUserAndDate?idUsuario=" + $localStorage.user.Id + "&date=" + $scope.date.toLocaleDateString('en-US')).then(function (response) {
+                            $scope.totalDespesas = response.data;
+                        });
+                        SweetAlert.swal("Desbaixado!", "Registro desbaixado com sucesso", "success");
                     }, function (response) {
                         return alert("Erro: " + response.status);
                     });
@@ -4913,7 +4933,7 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
     // Disable weekend selection
     function disabled(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
     }
 
@@ -4938,7 +4958,7 @@ function supcontroleCaixaCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
 
     function getDayClass(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         if (mode === 'day') {
             var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
 
@@ -5563,7 +5583,7 @@ function controleCaixaLogsCtrl($scope, $http) {
     // Disable weekend selection
     function disabled(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
     }
 
@@ -5596,7 +5616,7 @@ function controleCaixaLogsCtrl($scope, $http) {
 
     function getDayClass(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         if (mode === 'day') {
             var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
 
@@ -5884,9 +5904,10 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 
 function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval, $uibModal) {
     $scope.dados = [];
+    $scope.parametroCoberturas;
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withDOM('<"html5buttons"B>lTfgitp')
+        .withDOM('<"html5buttons"B>lTfgitp')
 
         .withOption('order', [0, 'asc'])
         .withButtons([
@@ -5923,7 +5944,10 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
             else {
                 $scope.dados = response.data;
             }
+        })
 
+        $http.get("http://localhost:50837/api/Abastecimento/GetParametroByPromocao?codigo=10575").then(function (response) {
+            $scope.parametroCoberturas = response.data
         })
     }
 
@@ -5935,6 +5959,9 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
             resolve: {
                 abastecimentoSelected: function () {
                     return index;
+                },
+                parametroCoberturas: function () {
+                    return $scope.parametroCoberturas
                 }
             }
         }).result.then(function () {
@@ -5945,7 +5972,7 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
     }
 }
 
-function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimentoSelected) {
+function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimentoSelected, parametroCoberturas) {
     $scope.Produto = abastecimentoSelected.Produto;
     $scope.Codigo = abastecimentoSelected.cdProduto;
     $scope.Filial = abastecimentoSelected.Filial;
@@ -5959,15 +5986,15 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
     $scope.cdPromocao = abastecimentoSelected.cdPromocao;
     $scope.editMode = false;
     $scope.edit = false;
-
+    console.log(parametroCoberturas);
 
     $http.get("http://localhost:50837/api/Abastecimento/GetAllByCodigoAndFilial?codigo=" + abastecimentoSelected.cdProduto + "&codigoFilial=" + abastecimentoSelected.cdPessoaFilial).then(function (response) {
 
         $scope.atendido = response.data == null ? 0 : response.data.Atendido / abastecimentoSelected.QtdEmb;
         $scope.pendente = response.data == null ? 0 : response.data.Pendente / abastecimentoSelected.QtdEmb;
         $scope.transito = response.data == null ? 0 : response.data.Transito;
-        $scope.sugestNormal = ((($scope.VMN / $scope.Emb) * 7) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
-        $scope.sugestPromocional = ((($scope.VMP / $scope.Emb) * 7) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
+        $scope.sugestNormal = ((($scope.VMN / $scope.Emb) * parametroCoberturas.Cobertura) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
+        $scope.sugestPromocional = ((($scope.VMP / $scope.Emb) * parametroCoberturas.CoberturaPromocional) + ($scope.EstoqueMinimo / $scope.Emb)) - (($scope.EstoqueLoja / $scope.Emb) + $scope.atendido + $scope.pendente + $scope.transito)
         $scope.diasDeEstoqueNormal = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMN;
         $scope.diasDeEstoquePromocional = (($scope.sugestComprador * $scope.Emb) + ($scope.EstoqueLoja + $scope.atendido + $scope.pendente + $scope.transito)) / $scope.VMP;
     });
@@ -5989,18 +6016,18 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
             $http.post("http://localhost:50837/api/abastecimento/AlterarSugestao", $scope.obj).then(function (response) {
                 $uibModalInstance.close();
             },
-            function (response) {
-                alert("Error: " + response.status);
-            });
+                function (response) {
+                    alert("Error: " + response.status);
+                });
         }
         else {
             $scope.obj = { cdPromocao: abastecimentoSelected.cdPromocao, cdProduto: abastecimentoSelected.cdProduto, cdPessoaFilial: abastecimentoSelected.cdPessoaFilial, sugestaoComprador: $scope.sugestComprador };
             $http.post("http://localhost:50837/api/abastecimento/IncluirSugestao", $scope.obj).then(function (response) {
                 $uibModalInstance.close();
             },
-            function (response) {
-                alert("Error: " + response.status);
-            });
+                function (response) {
+                    alert("Error: " + response.status);
+                });
         }
 
 
@@ -6041,20 +6068,20 @@ function classificacaoModalInstanceCtrl($scope, $http, $uibModalInstance, classi
     })
 
     $scope.compradores = [
-                { CdUsuario: 215, NmUsuario: "Alexandre Martins" },
-                { CdUsuario: 14, NmUsuario: "Diego Gonçalves" },
-                { CdUsuario: 175, NmUsuario: "Geraldo Bonifácio" },
-                { CdUsuario: 12, NmUsuario: "Julio Ruiz" },
-                { CdUsuario: 9, NmUsuario: "Leandro Moreira" },
-                { CdUsuario: 15, NmUsuario: "Marcel Louis" },
-                { CdUsuario: 224, NmUsuario: "Nilo Oliveira" },
-                { CdUsuario: 144, NmUsuario: "Renato Barros" },
-                { CdUsuario: 197, NmUsuario: "Thiago Amaral" },
-                { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
-                { CdUsuario: 13, NmUsuario: "Wanderson Batista" },
-                { CdUsuario: 5, NmUsuario: "Tiago Cunha" },
-                { CdUsuario: 45, NmUsuario: "Rinaldo Rocha" },
-                { CdUsuario: 1, NmUsuario: "Usuario Comprador" }
+        { CdUsuario: 215, NmUsuario: "Alexandre Martins" },
+        { CdUsuario: 14, NmUsuario: "Diego Gonçalves" },
+        { CdUsuario: 175, NmUsuario: "Geraldo Bonifácio" },
+        { CdUsuario: 12, NmUsuario: "Julio Ruiz" },
+        { CdUsuario: 9, NmUsuario: "Leandro Moreira" },
+        { CdUsuario: 15, NmUsuario: "Marcel Louis" },
+        { CdUsuario: 224, NmUsuario: "Nilo Oliveira" },
+        { CdUsuario: 144, NmUsuario: "Renato Barros" },
+        { CdUsuario: 197, NmUsuario: "Thiago Amaral" },
+        { CdUsuario: 27, NmUsuario: "Vinicius Bonifácio" },
+        { CdUsuario: 13, NmUsuario: "Wanderson Batista" },
+        { CdUsuario: 5, NmUsuario: "Tiago Cunha" },
+        { CdUsuario: 45, NmUsuario: "Rinaldo Rocha" },
+        { CdUsuario: 1, NmUsuario: "Usuario Comprador" }
     ];
 
     $scope.comprador;
@@ -6182,7 +6209,7 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
 
                         $http.post("http://localhost:50837/api/CadAssProdGrade/Excluir", $scope.assGrades).then(function (response) {
                         },
-                        function (response) { return alert("Erro: " + response.status); });
+                            function (response) { return alert("Erro: " + response.status); });
 
 
                         $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
@@ -6321,7 +6348,7 @@ function associacaoProdutoModalInstanceCtrl($scope, $http, $uibModalInstance, $l
             });
         }
 
-            /* Condição para colocar status concluido */
+        /* Condição para colocar status concluido */
         else {
             $scope.obj = {
                 Id: associacaoSelected.Id, IdCadAssProd: associacaoSelected.IdCadAssProd, ChaveNFE: associacaoSelected.ChaveNFE,
@@ -6778,26 +6805,26 @@ function cadUsuarioHistoricoModalCtrl($scope, $uibModalInstance, cadUsuarioSelec
 
 function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal, SweetAlert, $interval) {
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-         .withDOM('<"html5buttons"B>lTfgitp')
-         .withOption('order', [0, 'desc'])
-         .withButtons([
-             { extend: 'copy' },
-             { extend: 'csv' },
-             { extend: 'excel', title: 'ExampleFile' },
-             { extend: 'pdf', title: 'ExampleFile' },
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-             {
-                 extend: 'print',
-                 customize: function (win) {
-                     $(win.document.body).addClass('white-bg');
-                     $(win.document.body).css('font-size', '10px');
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-                     $(win.document.body).find('table')
-                         .addClass('compact')
-                         .css('font-size', 'inherit');
-                 }
-             }
-         ]);
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 
     $scope.operadores;
 
@@ -7339,9 +7366,9 @@ function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $
             });
             $uibModalInstance.close();
         },
-        function (response) {
-            return alert("Erro: " + response.status);
-        });
+            function (response) {
+                return alert("Erro: " + response.status);
+            });
     }
 
     $scope.alterar = function () {
@@ -7355,9 +7382,9 @@ function chamSuporteAssuntoCtrlModalInstance($scope, $uibModalInstance, $http, $
             });
             $uibModalInstance.close();
         },
-        function (response) {
-            return alert("Erro: " + response.status);
-        });
+            function (response) {
+                return alert("Erro: " + response.status);
+            });
     }
 }
 
@@ -7367,26 +7394,26 @@ function estoqueNotaCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DT
 
 function maloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-         .withDOM('<"html5buttons"B>lTfgitp')
-         .withOption('order', [0, 'desc'])
-         .withButtons([
-             { extend: 'copy' },
-             { extend: 'csv' },
-             { extend: 'excel', title: 'ExampleFile' },
-             { extend: 'pdf', title: 'ExampleFile' },
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-             {
-                 extend: 'print',
-                 customize: function (win) {
-                     $(win.document.body).addClass('white-bg');
-                     $(win.document.body).css('font-size', '10px');
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-                     $(win.document.body).find('table')
-                         .addClass('compact')
-                         .css('font-size', 'inherit');
-                 }
-             }
-         ]);
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
     $scope.malotes;
@@ -7652,29 +7679,29 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             closeOnCancel: false,
             timer: 5000
         },
-           function (isConfirm) {
-               if (isConfirm) {
-                   $http.post("http://localhost:50837/api/Malote/ExcluirMalote", maloteSelected).then(function (response) {
-                       SweetAlert.swal({
-                           title: "Excluido!",
-                           text: "O registro foi excluido com sucesso!",
-                           type: "success",
-                           timer: 5000
-                       });
-                       $uibModalInstance.close();
-                   }, function (response) {
-                       return alert("Erro" + response.status);
-                   })
-               } else {
-                   SweetAlert.swal({
-                       title: "Cancelado!",
-                       text: "Você cancelou a exclusão!",
-                       type: "error",
-                       timer: 5000
-                   });
-                   $uibModalInstance.dismiss();
-               }
-           });
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/Malote/ExcluirMalote", maloteSelected).then(function (response) {
+                        SweetAlert.swal({
+                            title: "Excluido!",
+                            text: "O registro foi excluido com sucesso!",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $uibModalInstance.close();
+                    }, function (response) {
+                        return alert("Erro" + response.status);
+                    })
+                } else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a exclusão!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.dismiss();
+                }
+            });
     }
 
     $scope.confirmarDeposito = function () {
@@ -7698,30 +7725,30 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             timer: 5000,
             showLoaderOnConfirm: true
         },
-           function (isConfirm) {
-               if (isConfirm) {
-                   SweetAlert.swal({
-                       title: "Confirmado!",
-                       text: "O registro foi confimado com sucesso!",
-                       type: "success",
-                       timer: 5000
-                   });
-                   $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
-                       $uibModalInstance.close();
-                   }, function (response) {
-                       return alert("Erro" + response.status);
-                   })
-               }
-               else {
-                   SweetAlert.swal({
-                       title: "Cancelado!",
-                       text: "Você cancelou a confirmacao!",
-                       type: "error",
-                       timer: 5000
-                   });
-                   $uibModalInstance.dismiss();
-               }
-           });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Confirmado!",
+                        text: "O registro foi confimado com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
+                        $uibModalInstance.close();
+                    }, function (response) {
+                        return alert("Erro" + response.status);
+                    })
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a confirmacao!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.dismiss();
+                }
+            });
     }
 
     $scope.confirmar = function () {
@@ -7729,7 +7756,7 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
         $scope.obj = {
             Id: maloteSelected.Id, DtEnvio: maloteSelected.DtEnvio, Numero_Lacre: maloteSelected.Numero_Lacre, Descricao: maloteSelected.Descricao,
             Status: 2, IdUsuarioInclusao: maloteSelected.IdUsuarioInclusao, IdMalote: maloteSelected.IdMalote,
-            IdUsuarioEnviado: maloteSelected.IdUsuarioEnviado, IdUsuarioRecebimento: $localStorage.user.Id
+            IdUsuarioEnviado: maloteSelected.IdUsuarioEnviado, IdUsuarioRecebimento: $localStorage.user.Id, Motivo: maloteSelected.Motivo
         }
 
         SweetAlert.swal({
@@ -7745,30 +7772,30 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             timer: 5000,
             showLoaderOnConfirm: true
         },
-           function (isConfirm) {
-               if (isConfirm) {
-                   SweetAlert.swal({
-                       title: "Confirmado!",
-                       text: "O registro foi confimado com sucesso!",
-                       type: "success",
-                       timer: 5000
-                   });
-                   $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
-                       $uibModalInstance.close();
-                   }, function (response) {
-                       return alert("Erro" + response.status);
-                   })
-               }
-               else {
-                   SweetAlert.swal({
-                       title: "Cancelado!",
-                       text: "Você cancelou a confirmacao!",
-                       type: "error",
-                       timer: 5000
-                   });
-                   $uibModalInstance.dismiss();
-               }
-           });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Confirmado!",
+                        text: "O registro foi confimado com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $http.post("http://localhost:50837/api/Malote/ConfirmarMalote", $scope.obj).then(function (response) {
+                        $uibModalInstance.close();
+                    }, function (response) {
+                        return alert("Erro" + response.status);
+                    })
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a confirmacao!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.dismiss();
+                }
+            });
     }
 
     $scope.pendurar = function () {
@@ -7791,30 +7818,30 @@ function maloteCtrlModalInstance($uibModalInstance, $http, $scope, maloteSelecte
             closeOnCancel: false,
             timer: 5000
         },
-           function (isConfirm) {
-               if (isConfirm) {
-                   SweetAlert.swal({
-                       title: "Alterado!",
-                       text: "O registro alterado com sucesso!",
-                       type: "success",
-                       timer: 5000
-                   });
-                   $http.post("http://localhost:50837/api/Malote/PendurarMalote", $scope.obj).then(function (response) {
-                       $uibModalInstance.close();
-                   }, function (response) {
-                       return alert("Erro" + response.status);
-                   })
-               }
-               else {
-                   SweetAlert.swal({
-                       title: "Cancelado!",
-                       text: "Você cancelou a alteração!",
-                       type: "error",
-                       timer: 5000
-                   });
-                   $uibModalInstance.dismiss();
-               }
-           });
+            function (isConfirm) {
+                if (isConfirm) {
+                    SweetAlert.swal({
+                        title: "Alterado!",
+                        text: "O registro alterado com sucesso!",
+                        type: "success",
+                        timer: 5000
+                    });
+                    $http.post("http://localhost:50837/api/Malote/PendurarMalote", $scope.obj).then(function (response) {
+                        $uibModalInstance.close();
+                    }, function (response) {
+                        return alert("Erro" + response.status);
+                    })
+                }
+                else {
+                    SweetAlert.swal({
+                        title: "Cancelado!",
+                        text: "Você cancelou a alteração!",
+                        type: "error",
+                        timer: 5000
+                    });
+                    $uibModalInstance.dismiss();
+                }
+            });
     }
 
     $scope.cancel = function () {
@@ -7832,26 +7859,26 @@ function maloteHistoricoCtrlModalInstance($uibModalInstance, $http, $scope, malo
 
 function tiposMaloteCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, DTOptionsBuilder) {
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-         .withDOM('<"html5buttons"B>lTfgitp')
-         .withOption('order', [0, 'asc'])
-         .withButtons([
-             { extend: 'copy' },
-             { extend: 'csv' },
-             { extend: 'excel', title: 'ExampleFile' },
-             { extend: 'pdf', title: 'ExampleFile' },
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'asc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-             {
-                 extend: 'print',
-                 customize: function (win) {
-                     $(win.document.body).addClass('white-bg');
-                     $(win.document.body).css('font-size', '10px');
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-                     $(win.document.body).find('table')
-                         .addClass('compact')
-                         .css('font-size', 'inherit');
-                 }
-             }
-         ]);
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 
     $scope.tiposmalote;
 
@@ -7964,7 +7991,7 @@ function estoqueMinimoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, 
 
     function disabled(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
     }
 
@@ -7997,7 +8024,7 @@ function estoqueMinimoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, 
 
     function getDayClass(data) {
         var date = data.date,
-          mode = data.mode;
+            mode = data.mode;
         if (mode === 'day') {
             var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
 
@@ -8067,9 +8094,9 @@ function estoqueMinimoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, 
                             });
                             $scope.show = true;
                         },
-                    function (response) {
-                        return alert("Erro: " + response.status);
-                    });
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            });
 
                     } else {
                         SweetAlert.swal("Cancelado", "Você cancelou a inclusão", "error");
@@ -8091,41 +8118,41 @@ function estoqueMinimoCtrl($scope, $uibModal, $http, $localStorage, SweetAlert, 
                 closeOnConfirm: false,
                 closeOnCancel: false
             },
-             function (isConfirm) {
-                 if (isConfirm) {
+                function (isConfirm) {
+                    if (isConfirm) {
 
-                     for (var i = 0; i < $scope.dados.length; i++) {
-                         $scope.objItens = {
-                             IdAgendamento: response.data, Codigo: $scope.dados[0].cdProduto, Produto: $scope.dados[0].Produto,
-                             Filial: $scope.dados[i].nmPessoa, CodigoFilial: $scope.dados[i].cdPessoa, QtdEstoqueMinimo: $scope.dados[i].qtEstoqueUnitarioMinimoAtual,
-                             QtdEstoqueMinimoProposto: $scope.dados[i].qtEstoqueUnitarioMinimoProposto
-                         };
+                        for (var i = 0; i < $scope.dados.length; i++) {
+                            $scope.objItens = {
+                                IdAgendamento: response.data, Codigo: $scope.dados[0].cdProduto, Produto: $scope.dados[0].Produto,
+                                Filial: $scope.dados[i].nmPessoa, CodigoFilial: $scope.dados[i].cdPessoa, QtdEstoqueMinimo: $scope.dados[i].qtEstoqueUnitarioMinimoAtual,
+                                QtdEstoqueMinimoProposto: $scope.dados[i].qtEstoqueUnitarioMinimoProposto
+                            };
 
-                         console.log($scope.objItens);
+                            console.log($scope.objItens);
 
-                         $http.post("http://localhost:50837/api/CadAgendamento/IncluirItens", $scope.objItens).then(function (response) {
+                            $http.post("http://localhost:50837/api/CadAgendamento/IncluirItens", $scope.objItens).then(function (response) {
 
-                         },
-                         function (response) {
-                             alert("Erro " + response.status);
-                         })
-                     }
+                            },
+                                function (response) {
+                                    alert("Erro " + response.status);
+                                })
+                        }
 
-                     SweetAlert.swal({
-                         title: "Incluido!",
-                         text: "incluidos com sucesso!",
-                         type: "success",
-                         timer: 5000
-                     });
+                        SweetAlert.swal({
+                            title: "Incluido!",
+                            text: "incluidos com sucesso!",
+                            type: "success",
+                            timer: 5000
+                        });
 
-                 } else {
-                     SweetAlert.swal("Cancelado", "Você cancelou a inclusão", "error");
-                 }
-             });
+                    } else {
+                        SweetAlert.swal("Cancelado", "Você cancelou a inclusão", "error");
+                    }
+                });
         },
-        function (response) {
-            return alert("Erro: " + response.status);
-        })
+            function (response) {
+                return alert("Erro: " + response.status);
+            })
     }
 }
 
@@ -8138,26 +8165,26 @@ function listaEstoqueMinimoCtrl($scope, $http, DTOptionsBuilder, $uibModal, $loc
     })
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-         .withDOM('<"html5buttons"B>lTfgitp')
-         .withOption('order', [0, 'desc'])
-         .withButtons([
-             { extend: 'copy' },
-             { extend: 'csv' },
-             { extend: 'excel', title: 'ExampleFile' },
-             { extend: 'pdf', title: 'ExampleFile' },
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-             {
-                 extend: 'print',
-                 customize: function (win) {
-                     $(win.document.body).addClass('white-bg');
-                     $(win.document.body).css('font-size', '10px');
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-                     $(win.document.body).find('table')
-                         .addClass('compact')
-                         .css('font-size', 'inherit');
-                 }
-             }
-         ]);
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 
     $scope.visualizar = function (dado) {
         var modalIstance = $uibModal.open({
@@ -8186,18 +8213,18 @@ function listaEstoqueMinimoCtrl($scope, $http, DTOptionsBuilder, $uibModal, $loc
             closeOnCancel: false,
             timer: 5000
         },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       $http.post("http://localhost:50837/api/CadAgendamento/ExcluirAgendamento", dado).then(function () {
-                           SweetAlert.swal("Excluido!", "Agendamento excluido com sucesso", "success");
-                       },
-                       function (response) {
-                           alert("Erro " + response.status);
-                       });
-                   } else {
-                       SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
-                   }
-               });
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/CadAgendamento/ExcluirAgendamento", dado).then(function () {
+                        SweetAlert.swal("Excluido!", "Agendamento excluido com sucesso", "success");
+                    },
+                        function (response) {
+                            alert("Erro " + response.status);
+                        });
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão!", "error");
+                }
+            });
     }
 }
 
@@ -8213,9 +8240,9 @@ function listaEstoqueMinimoCtrlModalInstance($uibModalInstance, $http, $scope, e
         $scope.dados = response.data;
 
     },
-    function (response) {
-        alert("Erro: " + response.status);
-    })
+        function (response) {
+            alert("Erro: " + response.status);
+        })
 }
 
 function abastecimentoParametro($scope, $http, DTOptionsBuilder, $uibModal, $localStorage, SweetAlert) {
@@ -8226,26 +8253,26 @@ function abastecimentoParametro($scope, $http, DTOptionsBuilder, $uibModal, $loc
     })
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-         .withDOM('<"html5buttons"B>lTfgitp')
-         .withOption('order', [0, 'desc'])
-         .withButtons([
-             { extend: 'copy' },
-             { extend: 'csv' },
-             { extend: 'excel', title: 'ExampleFile' },
-             { extend: 'pdf', title: 'ExampleFile' },
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-             {
-                 extend: 'print',
-                 customize: function (win) {
-                     $(win.document.body).addClass('white-bg');
-                     $(win.document.body).css('font-size', '10px');
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-                     $(win.document.body).find('table')
-                         .addClass('compact')
-                         .css('font-size', 'inherit');
-                 }
-             }
-         ]);
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 
     $scope.incluir = function () {
         var modalIstance = $uibModal.open({
@@ -8295,18 +8322,30 @@ function abastecimentoParametroModalInstance($scope, $uibModalInstance, $http, p
         $scope.coberturaPromo = parametroSelected.CoberturaPromocional;
     }
 
-
-
-
     $scope.salvar = function () {
         $scope.obj = { cdPromocao: $scope.promocao.cdPromocao, cobertura: $scope.cobertura, coberturaPromocional: $scope.coberturaPromo, Promocao: $scope.promocao.nmPromocao }
 
-        $http.post("http://localhost:50837/api/abastecimento/IncluirParametro", $scope.obj).then(function (response) {
-            $uibModalInstance.close();
-        },
-        function (response) {
-            alert("Erro: " + response.status);
-        });
+        if (parametroSelected == null) {
+
+            $http.post("http://localhost:50837/api/abastecimento/IncluirParametro", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            },
+                function (response) {
+                    alert("Erro: " + response.status);
+                });
+        }
+        else {
+            $http.post("http://localhost:50837/api/abastecimento/AlterarParametro", $scope.obj).then(function (response) {
+                $uibModalInstance.close();
+            },
+            function (response) {
+                alert("Erro: " + response.status);
+            });
+        }
+    }
+
+    $scope.alterar = function () {
+        $scope.obj = { cdPromocao: parametroSelected.Promocao, cobertura: $scope.cobertura, coberturaPromocional: $scope.coberturaPromo, Promocao: $scope.promocao.nmPromocao }
     }
 
     $scope.cancel = function () {

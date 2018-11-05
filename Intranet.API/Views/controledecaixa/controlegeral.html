@@ -153,6 +153,7 @@
                                                                 <th>Status</th>
                                                                 <th></th>
                                                                 <th></th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -172,6 +173,9 @@
                                                                 </td>
                                                                 <td>
                                                                     <button class="btn btn-sm btn-outline btn-warning btn-rounded" ng-show="despesa.Baixa != 1" type="button" ng-click="baixar(despesa)" ng-disabled="foiFechado"> <i class="fa fa-level-down"></i> Baixar</button>
+                                                                    <button class="btn btn-sm btn-outline btn-warning btn-rounded" ng-show="despesa.Baixa != 0" type="button" ng-click="desbaixar(despesa)" ng-disabled="foiFechado"> <i class="fa fa-level-down"></i> Desbaixar</button>
+                                                                </td>
+                                                                <td>
                                                                     <label class="badge badge-warning" ng-show="despesa.Baixa == 1"> Baixado</label>
                                                                 </td>
 
