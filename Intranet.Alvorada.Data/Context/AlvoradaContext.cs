@@ -145,6 +145,7 @@ namespace Intranet.Alvorada.Data.Context
 
         public virtual DbSet<ParametroAbastecimento> ParametrosAbastecimento { get; set; }
         public virtual DbSet<SugestaoAbastecimento> SugestoesAbastecimento { get; set; }
+        public virtual DbSet<LogAlteracaoAbastecimento> LogAlteracaoAbastecimento { get; set; }
 
         #endregion
 

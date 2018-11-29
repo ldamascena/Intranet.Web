@@ -5908,7 +5908,6 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
-
         .withOption('order', [0, 'asc'])
         .withButtons([
             { extend: 'copy' },
@@ -5946,7 +5945,7 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
             }
         })
 
-        $http.get("http://localhost:50837/api/Abastecimento/GetParametroByPromocao?codigo=10575").then(function (response) {
+        $http.get("http://localhost:50837/api/Abastecimento/GetParametroByPromocao?codigo=" + $scope.promocao).then(function (response) {
             $scope.parametroCoberturas = response.data
         })
     }
@@ -5986,7 +5985,8 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
     $scope.cdPromocao = abastecimentoSelected.cdPromocao;
     $scope.editMode = false;
     $scope.edit = false;
-    console.log(parametroCoberturas);
+    console.log(parametroCoberturas.Cobertura);
+    console.log(parametroCoberturas.CoberturaPromocional);
 
     $http.get("http://localhost:50837/api/Abastecimento/GetAllByCodigoAndFilial?codigo=" + abastecimentoSelected.cdProduto + "&codigoFilial=" + abastecimentoSelected.cdPessoaFilial).then(function (response) {
 
@@ -6144,12 +6144,22 @@ function associacaoProdutoCtrl($scope, $localStorage, $http, $uibModal, DTOption
 
     $scope.idUsuarioLogado = $localStorage.user.Id;
     $scope.grupo = $localStorage.user.Grupo[0].Id;
-
     $scope.associacoes;
 
-    $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
-        $scope.associacoes = response.data;
-    });
+    if ($scope.grupo == 'CPD Loja' || $scope.grupo == 'CPD Deposito') {
+        $http.get("http://localhost:50837/api/CadAssProd/GetAllByUser?idUsuario=" + $scope.idUsuarioLogado).then(function (response) {
+            $scope.associacoes = response.data;
+        });
+    }
+    else {
+        $http.get("http://localhost:50837/api/CadAssProd/GetAll").then(function (response) {
+            $scope.associacoes = response.data;
+        });
+    }
+
+
+
+
 
     $scope.incluir = function () {
         var modalInstance = $uibModal.open({
@@ -6846,7 +6856,11 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
                     return "Inclusao";
                 }
             }
-        })
+        }).result.then(function () {
+            $http.get("http://192.168.1.116:8080/Intranet.API/api/Operador/GetAll").then(function (response) {
+                $scope.operadores = response.data;
+            });
+        });
     }
 
     $scope.alterar = function (operador) {
@@ -8338,9 +8352,9 @@ function abastecimentoParametroModalInstance($scope, $uibModalInstance, $http, p
             $http.post("http://localhost:50837/api/abastecimento/AlterarParametro", $scope.obj).then(function (response) {
                 $uibModalInstance.close();
             },
-            function (response) {
-                alert("Erro: " + response.status);
-            });
+                function (response) {
+                    alert("Erro: " + response.status);
+                });
         }
     }
 
@@ -8351,6 +8365,163 @@ function abastecimentoParametroModalInstance($scope, $uibModalInstance, $http, p
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+}
+
+function abastecimentoAprovacaoCtrl() {
+    $scope.carregar = function () {
+        $http.get("http://localhost:50837/api/Abastecimento/GetAllByComprador?Comprador=" + $scope.comprador + "&cdPromo=" + $scope.promocao).then(function (response) {
+            if (response.data.length == 0) {
+                SweetAlert.swal({
+                    title: "Nenhum resultado encontrado",
+                    type: "warning"
+                });
+            }
+            else {
+                $scope.dados = response.data;
+            }
+        })
+
+        $http.get("http://localhost:50837/api/Abastecimento/GetParametroByPromocao?codigo=" + $scope.promocao).then(function (response) {
+            $scope.parametroCoberturas = response.data
+        })
+    }
+}
+
+function abastecimentoMassaCtrl($scope, $uibModal, SweetAlert) {
+
+    $scope.executar = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/abastecimento/loading_massa.html',
+            controller: 'abastecimentoMassaModalCtrl',
+            windowClass: 'animated fadeIn app-modal-window'
+        }).result.then(function () {
+            SweetAlert.swal({
+                title: "Alteração",
+                text: "Alteração feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+        });
+    }
+}
+
+function abastecimentoMassaModalCtrl($scope, $http, $uibModalInstance, $localStorage) {
+    $scope.obj = { Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome }
+
+    //console.log($localStorage.user.Nome);
+    //console.log($localStorage.user.Sobrenome);
+    //console.log($scope.obj);
+
+    $http.post("http://localhost:50837/api/abastecimento/AlterarAbastecimentoEmMassa", $scope.obj).then(function (response) {
+        $uibModalInstance.close();
+    }, function (response) {
+        alert("Erro: " + response.status);
+    });
+}
+
+function abastecimentoMassaLog($scope, $http, DTOptionsBuilder) {
+    $scope.dados = [];
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.buscar = function () {
+        $http.get("http://localhost:50837/api/Abastecimento/GetBetweenDates?dtinicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dtfim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [2, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
 }
 
 /**
@@ -8591,4 +8762,7 @@ angular
     .controller('listaEstoqueMinimoCtrl', listaEstoqueMinimoCtrl)
     .controller('listaEstoqueMinimoCtrlModalInstance', listaEstoqueMinimoCtrlModalInstance)
     .controller('abastecimentoParametro', abastecimentoParametro)
-    .controller('abastecimentoParametroModalInstance', abastecimentoParametroModalInstance);
+    .controller('abastecimentoParametroModalInstance', abastecimentoParametroModalInstance)
+    .controller('abastecimentoMassaCtrl', abastecimentoMassaCtrl)
+    .controller('abastecimentoMassaModalCtrl', abastecimentoMassaModalCtrl)
+    .controller('abastecimentoMassaLog', abastecimentoMassaLog);

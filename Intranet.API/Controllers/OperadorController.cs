@@ -292,6 +292,25 @@ namespace Intranet.API.Controllers
 
                     break;
 
+                case 21:
+                    var macaeContext = new DorsalMacaeContext();
+                    if (macaeContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        macaeContext.Operadores.Add(obj);
+                        macaeContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
                 case 22:
                     var rioDoOuroContext = new DorsalRioDoOuroContext();
                     if (rioDoOuroContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
@@ -332,7 +351,7 @@ namespace Intranet.API.Controllers
 
                     
 
-                case 53:
+                case 24:
                     var rioBonito2Context = new DorsalRioBonito2Context();
                     if (rioBonito2Context.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
                     {
@@ -351,7 +370,7 @@ namespace Intranet.API.Controllers
 
                     break;
 
-                case 54:
+                case 25:
                     var itaborai2Context = new DorsalItaborai2Context();
                     if (itaborai2Context.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
                     {

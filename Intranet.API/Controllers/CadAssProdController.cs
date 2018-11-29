@@ -20,6 +20,13 @@ namespace Intranet.API.Controllers
             return context.CadAssProd.ToList();
         }
 
+        public IEnumerable<CadAssProd> GetAllByUser(int idUsuario)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadAssProd.Where(x => x.IdUsuario == idUsuario).ToList();
+        }
+
         public int GetLastId()
         {
             var context = new AlvoradaContext();
@@ -102,6 +109,7 @@ namespace Intranet.API.Controllers
             try
             {
                 result.IdStatus = model.IdStatus;
+                result.Observacao = model.Observacao;
                 context.Entry(result).State = EntityState.Modified;
                 var log = new CadAssProdLog
                 {

@@ -1,0 +1,41 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Abastecimento</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li class="active">
+                <strong>Alteração em Massa</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="abastecimentoMassaCtrl">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <h1>
+                            <span class="text-muted"><i style="color:orangered" class="fa fa-warning"></i> Aviso!</span>
+                        </h1>
+                    </div>
+                    <div style="padding-top: 25px;">
+                        <h4>
+                            Esse procedimento foi criado para realizar alteração de abastecimento em massa. <strong style="color:red"> Lembrando que só vai alterar o abastecimento, dos produtos que se encontram em Manilha, tenham estoque e estão com o abastecimento diferente de centralizado!</strong>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="text-center">
+                <button class="btn btn-success" ng-click="executar()">Executar</button>
+            </div>
+        </div>
+    </div>

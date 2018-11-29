@@ -1,0 +1,114 @@
+﻿<!--<div class="col-lg-3">
+    <div class="ibox">
+        <div class="ibox-content">
+            <h5>All new alerts</h5>
+            <table class="table table-stripped small m-t-md">
+                <tbody>
+                    <tr>
+                        <td class="no-borders">
+                            <i class="fa fa-circle text-danger"></i>
+                        </td>
+                        <td class="no-borders">
+                            Pendente:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-circle text-warning"></i>
+                        </td>
+                        <td>
+                            Atendido:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-circle text-navy"></i>
+                        </td>
+                        <td>
+                            Transf:
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>-->
+
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="abastecimentoAprovacaoCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title"><b>Filtros</b></div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <select class="form-control" ng-model="comprador">
+                                    <option></option>
+                                    <option value="Diego Gonçalves">Diego Gonçalves</option>
+                                    <option value="Edilmario Almeira">Edilmario Almeira</option>
+                                    <option value="Julio Ruiz">Julio Ruiz</option>
+                                    <option value="Leandro Goncalves">Leandro Goncalves</option>
+                                    <option value="Leandro Moreira">Leandro Moreira</option>
+                                    <option value="Nilo Oliveira">Nilo Oliveira</option>
+                                    <option value="Rinaldo Rocha">Rinaldo Rocha</option>
+                                    <option value="Tiago Cunha">Tiago Cunha</option>
+                                    <option value="Wanderson Batista">Wanderson Batista</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <select id="promocao" name="promocao" class="form-control" ng-model="promocao" ng-options="promocao.cdPromocao as promocao.cdPromocao+' - '+promocao.nmPromocao for promocao in promocoes"></select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <input type="button" class="btn- btn btn-primary btn-rounded" name="name" value="Carregar" ng-click="carregar()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title"><b>Informações do Produto</b></div>
+                <div class="ibox-content">
+                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Cod</th>
+                                <th>Produto</th>
+                                <th>Filial</th>
+                                <th>Comprador</th>
+                                <th>VMN_CX</th>
+                                <th>VMP_CX</th>
+                                <th>EstMin</th>
+                                <th>EstLJ</th>
+                                <th>EstCD</th>
+                                <th>QtdEmb</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dado in dados" ng-style="{'background-color': (dado.conferido == 1) ? '#d3ffbc': ''}">
+                                <td>{{dado.cdProduto}}</td>
+                                <td><a href="" ng-click="visualizar(dado);">{{dado.Produto}}</a></td>
+                                <td>{{dado.Filial}}</td>
+                                <td>{{dado.Comprador}}</td>
+                                <td>{{dado.VMN / dado.QtdEmb | number:2}}</td>
+                                <td>{{dado.VMP / dado.QtdEmb | number:2}}</td>
+                                <td>{{dado.EstMin}}</td>
+                                <td ng-style="{'background-color': (dado.EstLJ / dado.QtdEmb) < 0 ? 'crimson': '', 'color': (dado.EstLJ / dado.QtdEmb) < 0 ? 'white': ''}">{{dado.EstLJ / dado.QtdEmb | number:0}}</td>
+                                <td ng-style="{'background-color': (dado.EstCD_UND / dado.QtdEmb) < 0 ? 'crimson': '', 'color': (dado.EstCD_UND / dado.QtdEmb) < 0 ? 'white': ''}">{{dado.EstCD_UND / dado.QtdEmb | number:0}}</td>
+                                <td>{{dado.QtdEmb}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

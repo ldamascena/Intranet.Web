@@ -2213,11 +2213,133 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                         },
                         {
                             files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('abastecimento.massa', {
+            url: "/massa",
+            templateUrl: "views/abastecimento/abastecimento_massa.html",
+            data: { pageTitle: 'Alteracao Abastecimento em Massa' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
                         },
                         {
-                            insertBefore: '#loadBefore',
-                            name: 'localytics.directives',
-                            files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        }
+                    ]);
+                }
+            }
+        })
+        .state('abastecimento.massalog', {
+            url: "/massaLog",
+            templateUrl: "views/abastecimento/abastecimento_massa_log.html",
+            data: { pageTitle: 'Log Abastecimento em Massa' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        }
+                    ]);
+                }
+            }
+        })
+
+        .state('abastecimento.aprovacao', {
+            url: "/aprovacao",
+            templateUrl: "views/abastecimento/parametro_abastecimento.html",
+            data: { pageTitle: 'Aprovacao Abastecimento' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
                         }
                     ]);
                 }

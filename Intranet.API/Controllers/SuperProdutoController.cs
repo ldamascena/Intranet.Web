@@ -20,5 +20,23 @@ namespace Intranet.API.Controllers
 
             return context.SuperProdutos.ToList();
         }
+
+        public IEnumerable<SuperProduto> Getteste()
+        {
+            var context = new CentralContext();
+
+            var produtos = context.SuperProdutos.SqlQuery(@"Select tbSuperProduto.* from tbProduto
+                                                            INNER JOIN tbSuperProduto
+                                                                ON tbProduto.cdSuperProduto = tbSuperProduto.cdSuperProduto
+                                                            INNER JOIN tbEstoqueFisico
+                                                                ON tbEstoqueFisico.cdProduto = tbProduto.cdProduto
+                                                            WHERE tbEstoqueFisico.cdEstoqueTipo = 1
+                                                            AND tbEstoqueFisico.cdPessoaFilial = 13
+                                                            AND tbSuperProduto.cdCompraTipo != 3
+                                                            and tbEstoqueFisico.qtEstoqueFisico > 0");
+
+            return produtos;
+
+        }
     }
 }

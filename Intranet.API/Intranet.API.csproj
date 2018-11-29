@@ -2517,7 +2517,10 @@
     <Content Include="js\translations.js" />
     <Content Include="js\ui-router\angular-ui-router.js" />
     <Content Include="js\ui-router\angular-ui-router.min.js" />
+    <Content Include="Views\abastecimento\abastecimento_massa.html" />
+    <Content Include="Views\abastecimento\abastecimento_massa_log.html" />
     <Content Include="Views\abastecimento\parametro_abastecimento.html" />
+    <Content Include="Views\abastecimento\aprovacao.html" />
     <Content Include="Views\abastecimento\principal.html" />
     <Content Include="Views\agendamento\listaestoqueminimo.html" />
     <Content Include="Views\alertas\balanco.html" />
@@ -2572,6 +2575,7 @@
     <Content Include="Views\masonry.html" />
     <Content Include="Views\metrics.html" />
     <Content Include="Views\modal\abastecimento\incluir_parametro.html" />
+    <Content Include="Views\modal\abastecimento\loading_massa.html" />
     <Content Include="Views\modal\abastecimento\visualizar_detalhe.html" />
     <Content Include="Views\modal\agendamento\visualizar_agendamentos.html" />
     <Content Include="Views\modal\alertas\historico.html" />

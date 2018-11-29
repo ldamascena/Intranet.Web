@@ -112,6 +112,7 @@
     <Compile Include="Entities\ChamSuporteLog.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
+    <Compile Include="Entities\DTOS\AbastecimentoDTO.cs" />
     <Compile Include="Entities\DTOS\PlanoDeContasDTO.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />
     <Compile Include="Entities\EstoqueContabil.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Entities\EstoqueMovimento.cs" />
     <Compile Include="Entities\EstoqueTipo.cs" />
     <Compile Include="Entities\Grupo.cs" />
+    <Compile Include="Entities\LogAlteracaoAbastecimento.cs" />
     <Compile Include="Entities\LogAlteracaoCusto.cs" />
     <Compile Include="Entities\Malote.cs" />
     <Compile Include="Entities\MaloteLog.cs" />

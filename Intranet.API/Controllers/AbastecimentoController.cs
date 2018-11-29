@@ -1,9 +1,12 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
+using Intranet.Domain.Entities.DTOS;
 using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -115,6 +118,31 @@ namespace Intranet.API.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage AlterarAbastecimentoEmMassa(AbastecimentoDTO obj)
+        {
+            var context = new CentralContext();
+            //var result = context.SugestoesAbastecimento.Where(x => x.cdPessoaFilial == obj.cdPessoaFilial && x.cdPromocao == obj.cdPromocao && x.cdProduto == obj.cdProduto).First();
+
+            try
+            {
+                var myParam1Parameter = new SqlParameter("@Responsavel", obj.Responsavel);
+                context.Database.ExecuteSqlCommand("spAlteracaoAbastecimento @Responsavel", myParam1Parameter);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public IEnumerable<LogAlteracaoAbastecimento> GetBetweenDates(DateTime dtinicio, DateTime dtfim)
+        {
+            var context = new AlvoradaContext();
+
+            return context.LogAlteracaoAbastecimento.Where(x => x.Data >= dtinicio && x.Data <= dtfim);
         }
     }
 }
