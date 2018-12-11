@@ -43,9 +43,6 @@ namespace Intranet.Domain.Entities
         public int? Turno { get; set; }
 
         [DataMember]
-        public TimeSpan? Hora { get; set; }
-
-        [DataMember]
         public string Observacao { get; set; }
 
         [DataMember]

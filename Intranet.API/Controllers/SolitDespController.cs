@@ -251,5 +251,20 @@ namespace Intranet.API.Controllers
 
             return total;
         }
+
+        public decimal GetTotalByMotivoDate(int idMotivo, int idUsuario)
+        {
+            var context = new AlvoradaContext();
+
+            DateTime now = DateTime.Now;
+            var startDate = new DateTime(now.Year, now.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+            
+            var result = context.CadSolicitacoesDesp.Where(x => x.IdMotivo == idMotivo && x.IdUsuarioInclusao == idUsuario && x.DataInclusao >= startDate && x.DataInclusao <= endDate)
+                .GroupBy(x => new { x.IdUsuarioInclusao, x.IdMotivo })
+                .Select(y => y.Sum(x => x.VlDespesa)).FirstOrDefault();
+
+            return result;
+        }
     }
 }

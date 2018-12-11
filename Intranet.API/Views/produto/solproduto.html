@@ -58,7 +58,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group ">
                                     <label>Fornecedor *</label>
-                                    <input type="text" ng-model="fornecedor" id="fornecedor" name="fornecedor" ng-required="true" uib-typeahead="fonecedor.RazaoSocial for fonecedor in fonecedores | filter:$viewValue | limitTo:8" class="form-control">
+                                    <input type="text" ng-model="fornecedor" id="fornecedor" name="fornecedor" ng-required="true" uib-typeahead="fonecedor.NomePessoa for fonecedor in fonecedores | filter:$viewValue | limitTo:8" class="form-control">
                                     <div class="m-t-xs" ng-show="prodForm.fornecedor.$invalid && prodForm.submitted">
                                         <small class="text-danger" ng-show="prodForm.fornecedor.$error.required">Preencha o fornecedor!</small>
                                     </div>

@@ -12,12 +12,11 @@ namespace Intranet.API.Controllers
 {
     public class PessoaController : ApiController
     {
-        private readonly PessoaRepository _repository = new PessoaRepository(new CentralContext());
-
         // GET: api/Pessoa
-        public IEnumerable<Pessoa> Get()
+        public IEnumerable<Pessoa> GetAll()
         {
-            return _repository.GetAll();
+            var context = new CentralContext();
+            return context.Pessoas.Where(x => x.Morto == false);
         }
     }
 }

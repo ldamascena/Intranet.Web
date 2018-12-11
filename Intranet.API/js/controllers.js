@@ -215,7 +215,7 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
         $scope.IdCadSolProd = response.data + 1;
     });
 
-    $http.get("http://localhost:50837/api/PessoaJuridica/GetAll").then(function (response) {
+    $http.get("http://localhost:50837/api/Pessoa/GetAll").then(function (response) {
         $scope.fonecedores = response.data;
     }, function (response) {
         return alert("Erro: " + response.status);
@@ -336,11 +336,11 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
         ]);
 
     $scope.solicitacoesProd;
-    $scope.grupo = $localStorage.user.Grupo[0].Id;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
     $scope.usuarioLogado = $localStorage.user.Id
 
-    if ($scope.grupo == "Indicadores" || $scope.grupo == "Coordenador Indicadores") {
-        $http.get("http://localhost:50837/api/CadSolProd/GetAllAproveByDiretoria").then(function (response) {
+    if ($scope.grupo != "Indicadores" || $scope.grupo != "Coordenador Indicadores" || $scope.grupo != "Admin") {
+        $http.get("http://localhost:50837/api/CadSolProd/GetAllByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
             $scope.solicitacoesProd = response.data;
         });
     }
@@ -1141,10 +1141,20 @@ function listaAltProd($scope, $uibModal, $http, SweetAlert, $localStorage, DTOpt
         ]);
 
     $scope.solicitacoes;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
+    $scope.usuarioLogado = $localStorage.user.Id
 
-    $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
-        $scope.solicitacoes = response.data;
-    });
+    if ($scope.grupo != "Indicadores" || $scope.grupo != "Coordenador Indicadores" || $scope.grupo != "Admin") {
+        $http.get("http://localhost:50837/api/CadSolAlterProd/GetAllByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
+            $scope.solicitacoes = response.data;
+        });
+    }
+    else {
+        $http.get("http://localhost:50837/api/CadSolAlterProd/GetAll").then(function (response) {
+            $scope.solicitacoes = response.data;
+        });
+    }
+    
 
     $scope.concluir = function (solicitacao) {
         //$scope.objLog = { IdSolAlterProd: solicitacao.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };

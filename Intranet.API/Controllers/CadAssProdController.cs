@@ -17,7 +17,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.CadAssProd.ToList();
+            return context.CadAssProd.Take(500).OrderByDescending(x => x.Id).ToList();
         }
 
         public IEnumerable<CadAssProd> GetAllByUser(int idUsuario)

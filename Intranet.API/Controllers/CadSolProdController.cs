@@ -19,7 +19,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.CadSolProdutos.ToList();
+            return context.CadSolProdutos.Take(500).OrderByDescending(x => x.Id).ToList();
         }
 
         public IEnumerable<CadSolProd> GetAllByUser(int idUsuario)

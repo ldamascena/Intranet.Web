@@ -40,6 +40,7 @@ namespace Intranet.Domain.Entities
         [Column("inPessoaJuridica")]
         public bool? PessoaJuridica { get; set; }
 
+        [DataMember]
         [Column("inMorto")]
         public bool? Morto { get; set; }
 
