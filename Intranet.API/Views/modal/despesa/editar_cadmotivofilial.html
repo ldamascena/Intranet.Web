@@ -1,0 +1,37 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Alteracao de Motivo por Filial</h4>
+        <small class="font-bold">Tela exclusivamente para alteracao e inclusão de motivo.</small>
+    </div>
+    <form role="form" name="cadMotivoForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Motivo</label>
+                <input type="text" placeholder="Motivo" name="motivo" ng-model="motivo" uib-typeahead="motivocomplete as motivocomplete.Motivo for motivocomplete in motivos | filter:$viewValue | limitTo:8" class="form-control" required>
+                {{motivo}}
+                <!--<div class="m-t-xs" ng-show="cadMotivoForm.motivo.$invalid && signup_form.submitted">
+                    <small class="text-danger" ng-show="cadMotivoForm.motivo.$error.required">Preencha o nome da descricao!</small>
+                </div>-->
+            </div>
+            <div class="form-group">
+                <label>Loja/Deposito</label>
+                <select type="text" placeholder="Loja/Deposito" name="loja" class="form-control" ng-required="true" ng-model="loja" ng-options="filial.Id as filial.Sobrenome for filial in lojas"></select>
+                {{loja}}
+                <!--<div class="m-t-xs" ng-show="cadMotivoForm.motivo.$invalid && signup_form.submitted">
+                    <small class="text-danger" ng-show="cadMotivoForm.motivo.$error.required">Preencha o nome da descricao!</small>
+                </div>-->
+            </div>
+            <div class="form-group">
+                <label>Valor</label>
+                <input type="text" placeholder="Valor" name="valor" class="form-control" ng-required="true">
+                <!--<div class="m-t-xs" ng-show="cadMotivoForm.motivo.$invalid && signup_form.submitted">
+                    <small class="text-danger" ng-show="cadMotivoForm.motivo.$error.required">Preencha o nome da descricao!</small>
+                </div>-->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="editar()">Salvar</button>
+        </div>
+    </form>
+</div>

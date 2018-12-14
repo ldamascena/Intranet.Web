@@ -208,6 +208,7 @@
     <Compile Include="Controllers\CadEntradaController.cs" />
     <Compile Include="Controllers\CadFornecedorDespController.cs" />
     <Compile Include="Controllers\CadMotivoDespController.cs" />
+    <Compile Include="Controllers\CadMotivoDespFilialController.cs" />
     <Compile Include="Controllers\CadOutrasDespController.cs" />
     <Compile Include="Controllers\CadSaldoController.cs" />
     <Compile Include="Controllers\CadSitDespController.cs" />
@@ -2555,6 +2556,7 @@
     <Content Include="Views\despesas\aprovdespesa.html" />
     <Content Include="Views\despesas\cadfornecedor.html" />
     <Content Include="Views\despesas\cadmotivo.html" />
+    <Content Include="Views\despesas\cadmotivofilial.html" />
     <Content Include="Views\despesas\cadsituacao.html" />
     <Content Include="Views\despesas\cadsoldespesa.html" />
     <Content Include="Views\dre\principal.html" />
@@ -2594,6 +2596,8 @@
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadcomposicao.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadentrada.html" />
     <Content Include="Views\modal\controledecaixa\incluir_editar_cadsupervisor.html" />
+    <Content Include="Views\modal\despesa\editar_cadmotivofilial.html" />
+    <Content Include="Views\modal\despesa\incluir_cadmotivofilial.html" />
     <Content Include="Views\modal\estoque\estoque_custo_editar.html" />
     <Content Include="Views\modal\estoque\estoque_editar.html" />
     <Content Include="Views\modal\incluir_editar_cadfornecedor.html" />

@@ -18,6 +18,7 @@ namespace Intranet.Alvorada.Data.Context
         #region Despesas
 
         public virtual DbSet<CadMotivoDesp> CadMotivosDesp { get; set; }
+        public virtual DbSet<CadMotivoDespFilial> CadMotivoDespFiliais { get; set; }
         public virtual DbSet<CadSitDesp> CadSituacoesDesp { get; set; }
         public virtual DbSet<CadFornecedorDesp> CadFornecedoresDesp { get; set; }
         public virtual DbSet<CadSolDesp> CadSolicitacoesDesp { get; set; }
@@ -166,6 +167,17 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.CadSolicitacoesDesp)
                 .WithRequired(e => e.CadMotivoDesp)
                 .HasForeignKey(e => e.IdMotivo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CadMotivoDesp>()
+                .HasMany(e => e.CadMotivoDespFiliais)
+                .WithRequired(e => e.CadMotivoDesp)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.CadMotivoDespFiliais)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuario)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CadSitDesp>()

@@ -106,6 +106,7 @@
     <Compile Include="Entities\CadSaldoControleLog.cs" />
     <Compile Include="Entities\CadAgendamentoEstoque.cs" />
     <Compile Include="Entities\CadAgendamentoEstoqueItens.cs" />
+    <Compile Include="Entities\CadMotivoDespFilial.cs" />
     <Compile Include="Entities\Caixa.cs" />
     <Compile Include="Entities\ChamSuporte.cs" />
     <Compile Include="Entities\ChamSuporteAssunto.cs" />

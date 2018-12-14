@@ -45,6 +45,7 @@ namespace Intranet.Domain.Entities
             UsuarioRecebimentoMalotes = new HashSet<Malote>();
             UsuarioMaloteLogs = new HashSet<MaloteLog>();
             UsuarioAgendamento = new HashSet<CadAgendamentoEstoque>();
+            CadMotivoDespFiliais = new HashSet<CadMotivoDespFilial>();
         }
 
         [DataMember]
@@ -151,6 +152,8 @@ namespace Intranet.Domain.Entities
         public virtual ICollection<MaloteLog> UsuarioMaloteLogs { get; set; }
 
         public virtual ICollection<CadAgendamentoEstoque> UsuarioAgendamento { get; set; }
+
+        public virtual ICollection<CadMotivoDespFilial> CadMotivoDespFiliais { get; set; }
 
     }
 }

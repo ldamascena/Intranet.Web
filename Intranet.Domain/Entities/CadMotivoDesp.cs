@@ -13,6 +13,7 @@ namespace Intranet.Domain.Entities
         public CadMotivoDesp()
         {
             CadSolicitacoesDesp = new HashSet<CadSolDesp>();
+            CadMotivoDespFiliais = new HashSet<CadMotivoDespFilial>();
         }
 
         [DataMember]
@@ -23,5 +24,6 @@ namespace Intranet.Domain.Entities
         public string Motivo { get; set; }
 
         public virtual ICollection<CadSolDesp> CadSolicitacoesDesp { get; set; }
+        public virtual ICollection<CadMotivoDespFilial> CadMotivoDespFiliais { get; set; }
     }
 }

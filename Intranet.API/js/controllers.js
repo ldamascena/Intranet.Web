@@ -2390,7 +2390,6 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
 
     $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
         $scope.cadmotivosdesp = response.data;
-
     });
 
     $scope.editar = function (cadmotivodesp) {
@@ -2526,6 +2525,162 @@ function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivo
     };
 
 };
+
+function despMotivoFilialCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    /**
+     * persons - Data used in Tables view for Data Tables plugin
+     */
+    $scope.cadmotivosfilialdesp;
+
+    $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetAll").then(function (response) {
+        $scope.cadmotivosfilialdesp = response.data;
+        console.log(response.data);
+
+    });
+
+    $scope.editar = function (cadmotivofilialdesp) {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/despesa/editar_cadmotivofilial.html',
+            controller: 'despMotivoFilialModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                cadmotivodefilialSelected: function () {
+                    return cadmotivofilialdesp;
+                },
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetAll").then(function (response) {
+                $scope.cadmotivosfilialdesp = response.data;
+            });
+        });
+    };
+
+    $scope.incluir = function () {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/despesa/incluir_cadmotivofilial.html',
+            controller: 'despMotivoFilialModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                cadmotivodefilialSelected: function () {
+                    return null;
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetAll").then(function (response) {
+                $scope.cadmotivosfilialdesp = response.data;
+            });
+        });
+    };
+
+    $scope.excluir = function (cadmotivofilialdesp) {
+        SweetAlert.swal({
+            title: "Deseja excluir?",
+            text: "Não será possivel recuperar depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, deletar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/CadMotivoDespFilial/Excluir", cadmotivofilialdesp).then(function (response) {
+                        SweetAlert.swal({
+                            title: "Deletado!",
+                            text: "O motivo foi excluido com sucesso.",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetAll").then(function (response) {
+                            $scope.cadmotivosfilialdesp = response.data;
+                        });
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão do motivo", "error");
+                }
+            });
+    }
+
+}
+
+function despMotivoFilialModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivodefilialSelected, SweetAlert) {
+
+    $scope.cadmotivosdesp;
+    $scope.lojas;
+
+    $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
+        $scope.motivos = response.data;
+    });
+
+    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
+        $scope.lojas = response.data;
+    });
+
+    if (cadmotivodefilialSelected != null) {
+        $scope.motivo = cadmotivodefilialSelected.CadMotivoDesp;
+        $scope.loja = cadmotivodefilialSelected.Usuario.Id;
+        $scope.valor = cadmotivodefilialSelected.Limite;
+    }
+
+    $scope.incluir = function () {
+        console.log("Incluir");
+    }
+
+    if ($scope.cadMotivoForm.$valid) {
+        $http.post("http://localhost:50837/api/CadMotivoDesp/Incluir", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Incluido!",
+                text: "O motivo foi incluido com sucesso.",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        }, function (response) {
+            return alert("Erro: " + response.status);
+        });
+
+    } else {
+        $scope.cadMotivoForm.submitted = true;
+    }
+
+    $scope.alterar = function () {
+        console.log("Alterar");
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+    }
+}
 
 function despFornecedorCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) {
 
@@ -8573,6 +8728,8 @@ angular
     .controller('despSituacaoModalInstanceCtrl', despSituacaoModalInstanceCtrl)
     .controller('despMotivoCtrl', despMotivoCtrl)
     .controller('despMotivoModalInstanceCtrl', despMotivoModalInstanceCtrl)
+    .controller('despMotivoFilialCtrl', despMotivoFilialCtrl)
+    .controller('despMotivoFilialModalInstanceCtrl', despMotivoFilialModalInstanceCtrl)
     .controller('despFornecedorCtrl', despFornecedorCtrl)
     .controller('despFornecedorModalInstanceCtrl', despFornecedorModalInstanceCtrl)
     .controller('solDespesaCtrl', solDespesaCtrl)
