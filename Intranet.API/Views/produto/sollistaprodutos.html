@@ -19,6 +19,13 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" ng-controller="solListaProdCtrl">
         <div class="col-lg-12">
+            <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="grupo == 'Gestor Comercial' || grupo == 'Admin'" ng-click="aprovarTodosComercial(solicitacoesProd)"><i class="fa fa-edit"></i> Aprovar Todos</button>
+            <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-show="grupo == 'Gestor Comercial' || grupo == 'Admin'" ng-click="aprovarTodosComercialDiretoria(solicitacoesProd)"><i class="fa fa-edit"></i> Aprovar Todos C/ Apoio da Diretoria</button>
+            <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="grupo == 'Gestor Comercial' || grupo == 'Admin'" ng-click="reprovarTodosComercial(solicitacoesProd)"><i class="fa fa-ban"></i> Reprovar Todos</button>
+            <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="grupo == 'Diretoria' || grupo == 'Admin'" ng-click="aprovarTodosDiretoria(solicitacoesProd)"><i class="fa fa-edit"></i> Aprovar Todos</button>
+            <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="grupo == 'Diretoria' || grupo == 'Admin'" ng-click="reprovarTodosDiretoria(solicitacoesProd)"><i class="fa fa-ban"></i> Reprovar Todos</button>
+            <!--<button class="btn btn-circle btn-danger" type='button' ng-click="save()">Save</button><br>-->
+
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de produtos - <strong>Solicitacoes de Produto</strong></h5>
@@ -30,6 +37,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th></th>
                                     <th>Id</th>
                                     <th></th>
                                     <th>Produto</th>
@@ -39,7 +47,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="solicitacaoProd in solicitacoesProd">
+                                <tr ng-repeat="solicitacaoProd in solicitacoesProd" ng-style="{'background-color': solicitacaoProd.selected ? '#dbe9ff': ''}">
+                                    <td>
+                                        <input id="solicitacaoProd.selected" name="solicitacaoProd.selected" ng-checked="selectAll" type="checkbox" ng-model="solicitacaoProd.selected">
+                                    </td>
                                     <td>
                                         <button ng-click="unlock(solicitacaoProd)" tooltip-placement="bottom" uib-tooltip="{{solicitacaoProd.UsuarioLock.Nome}} {{solicitacaoProd.UsuarioLock.Sobrenome}}" class="btn btn-success btn-circle btn-outline" type="button" ng-show="(solicitacaoProd.SitCadProd.IdSitProd == 2 || solicitacaoProd.SitCadProd.IdSitProd == 4 || solicitacaoProd.SitCadProd.IdSitProd == 10) && solicitacaoProd.IdUserLock != null" ng-disabled="(solicitacaoProd.IdUserLock != usuarioLogado)">
                                             <i class="fa fa-unlock"></i>
@@ -55,33 +66,32 @@
                                         <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 8 || grupo == 1) && (solicitacaoProd.Usuario.Id == usuarioLogado)" ng-click="excluir(solicitacaoProd)"><i class="fa fa-ban"></i> Excluir</button>
 
                                         <!--<button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1 || usuarioLogado == 94)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1 || usuarioLogado == 94)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>-->
-
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1 || usuarioLogado == 94)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>-->
                                         <!--<button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2 && (grupo == 6 || grupo == 1)" ng-click="aprovarDiretoria(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>-->
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>-->
                                     </td>
                                     <td><a href="" ng-click="visualizar(solicitacaoProd)">{{solicitacaoProd.Descricao}}</a></td>
                                     <td>{{solicitacaoProd.Usuario.Nome}} {{solicitacaoProd.Usuario.Sobrenome}}</td>
                                     <td>{{solicitacaoProd.DataCriacao | date:'dd/MM/yyyy - HH:mm:ss'}}</td>
                                     <td>
-                                        <button ng-class="{'btn btn-xs btn-rounded btn-success' : solicitacaoProd.SitCadProd.IdSitProd == 1, 
-                                                           'btn btn-xs btn-rounded btn-warning' : solicitacaoProd.SitCadProd.IdSitProd == 2 || solicitacaoProd.SitCadProd.IdSitProd == 10, 
-                                                           'btn btn-xs btn-rounded btn-primary' : solicitacaoProd.SitCadProd.IdSitProd == 4 || solicitacaoProd.SitCadProd.IdSitProd == 6, 
+                                        <button ng-class="{'btn btn-xs btn-rounded btn-success' : solicitacaoProd.SitCadProd.IdSitProd == 1,
+                                                           'btn btn-xs btn-rounded btn-warning' : solicitacaoProd.SitCadProd.IdSitProd == 2 || solicitacaoProd.SitCadProd.IdSitProd == 10,
+                                                           'btn btn-xs btn-rounded btn-primary' : solicitacaoProd.SitCadProd.IdSitProd == 4 || solicitacaoProd.SitCadProd.IdSitProd == 6,
                                                            'btn btn-xs btn-rounded btn-danger' : solicitacaoProd.SitCadProd.IdSitProd == 3 || solicitacaoProd.SitCadProd.IdSitProd == 5}" ng-click="historico(solicitacaoProd);">
                                             <i class="fa fa-comments-o"></i>  {{solicitacaoProd.SitCadProd.Situacao}}
                                         </button>
                                     </td>
                                     <!--<td>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 8 || grupo == 1) && (solicitacaoProd.Usuario.Id == usuarioLogado)" ng-click="excluir(solicitacaoProd)"><i class="fa fa-ban"></i> Excluir</button>
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 8 || grupo == 1) && (solicitacaoProd.Usuario.Id == usuarioLogado)" ng-click="excluir(solicitacaoProd)"><i class="fa fa-ban"></i> Excluir</button>
 
-                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
+                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="aprovarComercial(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 1 && (grupo == 9 || grupo == 6 || grupo == 1)" ng-click="reprovarComercial(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
 
-                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2 && (grupo == 6 || grupo == 1)" ng-click="aprovarDiretoria(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
-                                        <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
-                                        
-                                        <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 4 && (grupo == 10 || grupo == 11 || grupo == 1) && (solicitacaoProd.IdUserLock == usuarioLogado)" ng-click="concluir(solicitacaoProd)"><i class="fa fa-edit"></i> Concluir</button>
-                                    </td>-->
+                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2 && (grupo == 6 || grupo == 1)" ng-click="aprovarDiretoria(solicitacaoProd)"><i class="fa fa-edit"></i> Aprovar</button>
+                                <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 2  && (grupo == 6 || grupo == 1)" ng-click="reprovarDiretoria(solicitacaoProd)"><i class="fa fa-ban"></i> Reprovar</button>
+
+                                <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-show="solicitacaoProd.IdStatus == 4 && (grupo == 10 || grupo == 11 || grupo == 1) && (solicitacaoProd.IdUserLock == usuarioLogado)" ng-click="concluir(solicitacaoProd)"><i class="fa fa-edit"></i> Concluir</button>
+                            </td>-->
                                 </tr>
                             </tbody>
                         </table>

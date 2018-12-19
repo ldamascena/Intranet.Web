@@ -2616,6 +2616,7 @@
     <Content Include="Views\modal\produto\historicoAlteracao.html" />
     <Content Include="Views\modal\produto\incluir_editar_EAN.html" />
     <Content Include="Views\modal\produto\Incluir_Editar_EAN_Ass.html" />
+    <Content Include="Views\modal\produto\loading_massa.html" />
     <Content Include="Views\modal\produto\solaltproduto.html" />
     <Content Include="Views\modal\produto\validate.html" />
     <Content Include="Views\modal\produto\vis_associacao.html" />

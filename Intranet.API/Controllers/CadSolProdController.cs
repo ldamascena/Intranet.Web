@@ -174,6 +174,45 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage AprovarTodosComercial(List<CadSolProd> objs)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                foreach (var item in objs)
+                {
+                    var result = context.CadSolProdutos.Where(x => x.Id == item.Id).FirstOrDefault();
+
+                    if (result.IdStatus == 1)
+                    {
+                        context.Entry(result).State = EntityState.Modified;
+                        result.IdStatus = 2;
+                        var log = new CadSolProdLog
+                        {
+                            IdCadSolProd = item.Id,
+                            IdStatus = 2,
+                            DataLog = DateTime.Now,
+                            IdUsuario = item.IdUsuario
+                        };
+                        context.CadSolProdLogs.Add(log);
+                        context.SaveChanges();
+                        //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                        //emailService.SendEmail("viniciusbonifacio@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
+                        //emailService.SendEmail("fmedeiros@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage AprovarComercialDiretoria(CadSolProd obj)
         {
             var context = new AlvoradaContext();
@@ -206,6 +245,45 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage AprovarTodosComercialDiretoria(List<CadSolProd> objs)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                foreach (var item in objs)
+                {
+                    var result = context.CadSolProdutos.Where(x => x.Id == item.Id).FirstOrDefault();
+
+                    if (result.IdStatus == 1)
+                    {
+                        result.IdStatus = 10;
+                        context.Entry(result).State = EntityState.Modified;
+                        var log = new CadSolProdLog
+                        {
+                            IdCadSolProd = item.Id,
+                            IdStatus = 10,
+                            DataLog = DateTime.Now,
+                            IdUsuario = item.IdUsuario
+                        };
+                        context.CadSolProdLogs.Add(log);
+                        context.SaveChanges();
+                        //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                        //emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                        //emailService.SendEmail("fmedeiros@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage ReprovarComercial(CadSolProd obj)
         {
             var context = new AlvoradaContext();
@@ -224,6 +302,42 @@ namespace Intranet.API.Controllers
                 };
                 context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage ReprovarTodosComercial(List<CadSolProd> objs)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                foreach (var item in objs)
+                {
+                    var result = context.CadSolProdutos.Where(x => x.Id == item.Id).FirstOrDefault();
+
+                    if (result.IdStatus == 1)
+                    {
+                        context.Entry(result).State = EntityState.Modified;
+                        result.IdStatus = 3;
+                        var log = new CadSolProdLog
+                        {
+                            IdCadSolProd = item.Id,
+                            IdStatus = 3,
+                            DataLog = DateTime.Now,
+                            IdUsuario = item.IdUsuario
+                        };
+                        context.CadSolProdLogs.Add(log);
+                        context.SaveChanges();
+                        //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                    }
+                }
             }
 
             catch (Exception ex)
@@ -265,6 +379,46 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public HttpResponseMessage AprovarTodosDiretoria(List<CadSolProd> objs)
+        {
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                foreach (var item in objs)
+                {
+                    var result = context.CadSolProdutos.Where(x => x.Id == item.Id).FirstOrDefault();
+
+                    if (result.IdStatus == 2)
+                    {
+                        context.Entry(result).State = EntityState.Modified;
+                        result.IdStatus = 4;
+                        var log = new CadSolProdLog
+                        {
+                            IdCadSolProd = item.Id,
+                            IdStatus = 4,
+                            DataLog = DateTime.Now,
+                            IdUsuario = item.IdUsuario
+                        };
+                        context.CadSolProdLogs.Add(log);
+                        context.SaveChanges();
+                        //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                        emailService.SendEmail("indicador@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         public HttpResponseMessage ReprovarDiretoria(CadSolProd obj)
         {
             var context = new AlvoradaContext();
@@ -283,6 +437,41 @@ namespace Intranet.API.Controllers
                 };
                 context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage ReprovarTodosDiretoria(List<CadSolProd> objs)
+        {
+            var context = new AlvoradaContext();
+            try
+            {
+                foreach (var item in objs)
+                {
+                    var result = context.CadSolProdutos.Where(x => x.Id == item.Id).FirstOrDefault();
+
+                    if (result.IdStatus == 2)
+                    {
+                        context.Entry(result).State = EntityState.Modified;
+                        result.IdStatus = 5;
+                        var log = new CadSolProdLog
+                        {
+                            IdCadSolProd = item.Id,
+                            IdStatus = 5,
+                            DataLog = DateTime.Now,
+                            IdUsuario = item.IdUsuario
+                        };
+                        context.CadSolProdLogs.Add(log);
+                        context.SaveChanges();
+                        //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
+                    }
+                }
             }
 
             catch (Exception ex)

@@ -339,7 +339,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
     $scope.usuarioLogado = $localStorage.user.Id
 
-    if ($scope.grupo != "Indicadores" || $scope.grupo != "Coordenador Indicadores" || $scope.grupo != "Admin") {
+    if ($scope.grupo != "Indicadores" && $scope.grupo != "Coordenador Indicadores" && $scope.grupo != "Admin" && $scope.grupo != "Gestor Comercial" && $scope.grupo != "Diretoria" && $scope.usuarioLogado != 42) {
         $http.get("http://localhost:50837/api/CadSolProd/GetAllByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
             $scope.solicitacoesProd = response.data;
         });
@@ -350,6 +350,12 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
         });
     }
 
+    $scope.save = function () {
+        $scope.solicitacoesProdArray = [];
+        angular.forEach($scope.solicitacoesProd, function (solicitacoesProd) {
+            if (solicitacoesProd.selected) $scope.solicitacoesProdArray.push(solicitacoesProd);
+        });
+    }
 
     $scope.aprovarComercial = function (solicitacaoProd) {
         solicitacaoProd.IdUsuario = $localStorage.user.Id;
@@ -477,6 +483,108 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             });
 
     };
+
+    $scope.aprovarTodosComercial = function (solicitacoesProd) {
+
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'solListaProdModalLoadingCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacoesProdSelected: function () {
+                    return solicitacoesProd;
+                },
+                tipo: function () {
+                    return "aprovacaoComercial"
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        });
+    }
+
+    $scope.aprovarTodosComercialDiretoria = function (solicitacoesProd) {
+
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'solListaProdModalLoadingCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacoesProdSelected: function () {
+                    return solicitacoesProd;
+                },
+                tipo: function () {
+                    return "aprovacaoComercialDiretoria"
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        });
+    }
+    
+    $scope.reprovarTodosComercial = function (solicitacoesProd) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'solListaProdModalLoadingCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacoesProdSelected: function () {
+                    return solicitacoesProd;
+                },
+                tipo: function () {
+                    return "reprovacaoComercial"
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        });
+    }
+
+    $scope.aprovarTodosDiretoria = function (solicitacoesProd) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'solListaProdModalLoadingCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacoesProdSelected: function () {
+                    return solicitacoesProd;
+                },
+                tipo: function () {
+                    return "aprovacaoDiretoria"
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        });
+    }
+    $scope.reprovarTodosDiretoria = function (solicitacoesProd) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'solListaProdModalLoadingCtrl',
+            windowClass: "animated fadeIn",
+            resolve: {
+                solicitacoesProdSelected: function () {
+                    return solicitacoesProd;
+                },
+                tipo: function () {
+                    return "reprovacaoDiretoria"
+                }
+            }
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        });
+    }
+
 
     $scope.visualizar = function (solicitacaoProd) {
         var modalInstance = $uibModal.open({
@@ -633,6 +741,73 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
         });
     }
 };
+
+function solListaProdModalLoadingCtrl($scope, $http, $uibModalInstance, solicitacoesProdSelected, $localStorage, tipo, SweetAlert) {
+    $scope.solicitacoesProdArray = [];
+    angular.forEach(solicitacoesProdSelected, function (solicitacoesProd) {
+        if (solicitacoesProd.selected) {
+            solicitacoesProd.IdUsuario = $localStorage.user.Id;
+            $scope.solicitacoesProdArray.push(solicitacoesProd);
+        }
+    });
+
+    if (tipo == "aprovacaoComercial") {
+        $http.post("http://localhost:50837/api/CadSolProd/AprovarTodosComercial", $scope.solicitacoesProdArray).then(function (response) {
+            SweetAlert.swal({
+                title: "Registros alterados com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        });
+    }
+    else if (tipo == "aprovacaoComercialDiretoria") {
+        console.log($scope.solicitacoesProdArray);
+        $http.post("http://localhost:50837/api/CadSolProd/AprovarTodosComercialDiretoria", $scope.solicitacoesProdArray).then(function (response) {
+            SweetAlert.swal({
+                title: "Registros alterados com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        });
+    }
+    else if (tipo == "reprovacaoComercial") {
+        $http.post("http://localhost:50837/api/CadSolProd/ReprovarTodosComercial", $scope.solicitacoesProdArray).then(function (response) {
+            SweetAlert.swal({
+                title: "Registros alterados com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        });
+    }
+    else if (tipo == "aprovacaoDiretoria") {
+        $http.post("http://localhost:50837/api/CadSolProd/AprovarTodosDiretoria", $scope.solicitacoesProdArray).then(function (response) {
+            SweetAlert.swal({
+                title: "Registros alterados com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        });
+    }
+    else if (tipo == "reprovacaoDiretoria") {
+        $http.post("http://localhost:50837/api/CadSolProd/ReprovarTodosDiretoria", $scope.solicitacoesProdArray).then(function (response) {
+            SweetAlert.swal({
+                title: "Registros alterados com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+
+        });
+    }
+}
 
 function solListaProdMobileCtrl($scope, $http, $localStorage, $uibModal, SweetAlert) {
     $scope.solicitacoesProd;
@@ -1154,7 +1329,7 @@ function listaAltProd($scope, $uibModal, $http, SweetAlert, $localStorage, DTOpt
             $scope.solicitacoes = response.data;
         });
     }
-    
+
 
     $scope.concluir = function (solicitacao) {
         //$scope.objLog = { IdSolAlterProd: solicitacao.Id, IdUsuario: $localStorage.user.Id, IdStatus: 6 };
@@ -8703,6 +8878,7 @@ angular
     .controller('wizardCtrl', wizardCtrl)
     .controller('solListaProdCtrl', solListaProdCtrl)
     .controller('solListaProdMobileCtrl', solListaProdMobileCtrl)
+    .controller('solListaProdModalLoadingCtrl', solListaProdModalLoadingCtrl)
     .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
     .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
     .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
