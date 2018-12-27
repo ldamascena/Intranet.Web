@@ -19,7 +19,7 @@ namespace Intranet.API.Controllers
             return context.CadMotivoDespFiliais;
         }
 
-        public HttpResponseMessage Inclui(CadMotivoDespFilial obj)
+        public HttpResponseMessage Incluir(CadMotivoDespFilial obj)
         {
             var context = new AlvoradaContext();
 
@@ -78,6 +78,13 @@ namespace Intranet.API.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public CadMotivoDespFilial GetMotivoDespFilialByUser(int idMotivo, int idUsuario)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadMotivoDespFiliais.Where(x => x.IdMotivo == idMotivo && x.IdUsuario == idUsuario).FirstOrDefault();
         }
     }
 }

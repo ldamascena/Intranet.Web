@@ -338,16 +338,24 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
     $scope.solicitacoesProd;
     $scope.grupo = $localStorage.user.Grupo[0].Nome;
     $scope.usuarioLogado = $localStorage.user.Id
+    $scope.dateinicio = new Date(2017, 1, 1);
+    $scope.datefim = new Date(2020, 1, 1);
 
-    if ($scope.grupo != "Indicadores" && $scope.grupo != "Coordenador Indicadores" && $scope.grupo != "Admin" && $scope.grupo != "Gestor Comercial" && $scope.grupo != "Diretoria" && $scope.usuarioLogado != 42) {
-        $http.get("http://localhost:50837/api/CadSolProd/GetAllByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
-            $scope.solicitacoesProd = response.data;
-        });
-    }
-    else {
-        $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
-            $scope.solicitacoesProd = response.data;
-        });
+    $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+        $scope.solicitacoesProd = response.data;
+    });
+
+    $scope.Buscar = function () {
+        if ($scope.status != 0) {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAllByStatus?idStatus=" + $scope.status + "&dtInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dtFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        }
+        else {
+            $http.get("http://localhost:50837/api/CadSolProd/GetAll").then(function (response) {
+                $scope.solicitacoesProd = response.data;
+            });
+        }
     }
 
     $scope.save = function () {
@@ -739,6 +747,101 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                 }
             }
         });
+    }
+
+    var getAllSelected = function () {
+        var selectedItems = $scope.solicitacoesProd.filter(function (item) {
+            return item.selected;
+        });
+
+        return selectedItems.length === $scope.solicitacoesProd.length;
+    }
+
+    var setAllSelected = function (value) {
+        angular.forEach($scope.solicitacoesProd, function (item) {
+            item.selected = value;
+        });
+    }
+
+    $scope.allSelected = function (value) {
+        if (value !== undefined) {
+            return setAllSelected(value);
+        } else {
+            return getAllSelected();
+        }
+    }
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
     }
 };
 
@@ -2827,29 +2930,53 @@ function despMotivoFilialModalInstanceCtrl($scope, $uibModalInstance, $http, cad
     }
 
     $scope.incluir = function () {
-        console.log("Incluir");
-    }
+        $scope.obj = {
+            IdMotivo: $scope.motivo.IdMotivo, IdUsuario: $scope.loja, Limite: $scope.valor.replace(",", ".")
+        };
+        console.log($scope.obj);
+        if ($scope.cadMotivoForm.$valid) {
 
-    if ($scope.cadMotivoForm.$valid) {
-        $http.post("http://localhost:50837/api/CadMotivoDesp/Incluir", $scope.obj).then(function (response) {
-            SweetAlert.swal({
-                title: "Incluido!",
-                text: "O motivo foi incluido com sucesso.",
-                type: "success",
-                timer: 5000
+            $http.post("http://localhost:50837/api/CadMotivoDespFilial/Incluir", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Incluido!",
+                    text: "O motivo foi incluido com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+
+            }, function (response) {
+                return alert("Erro: " + response.status);
             });
-            $uibModalInstance.close();
 
-        }, function (response) {
-            return alert("Erro: " + response.status);
-        });
-
-    } else {
-        $scope.cadMotivoForm.submitted = true;
+        } else {
+            $scope.cadMotivoForm.submitted = true;
+        }
     }
 
     $scope.alterar = function () {
-        console.log("Alterar");
+        $scope.obj = {
+            IdMotivo: $scope.motivo.IdMotivo, IdUsuario: $scope.loja, Limite: $scope.valor.replace(",", ".")
+        };
+        console.log($scope.obj);
+        if ($scope.cadMotivoForm.$valid) {
+
+            $http.post("http://localhost:50837/api/CadMotivoDespFilial/Alterar", $scope.obj).then(function (response) {
+                SweetAlert.swal({
+                    title: "Alterado!",
+                    text: "O motivo foi alterado com sucesso.",
+                    type: "success",
+                    timer: 5000
+                });
+                $uibModalInstance.close();
+
+            }, function (response) {
+                return alert("Erro: " + response.status);
+            });
+
+        } else {
+            $scope.cadMotivoForm.submitted = true;
+        }
     }
 
     $scope.cancel = function () {
@@ -3461,6 +3588,15 @@ function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.solicitante = solicitacaodespSelected.UsuarioInclusao.Nome + " " + solicitacaodespSelected.UsuarioInclusao.Sobrenome
     $scope.observacao = solicitacaodespSelected.Observacao;
     $scope.observacaoaprovador = solicitacaodespSelected.ObservacaoAprovacao;
+
+    $http.get("http://localhost:50837/api/SolitDesp/GetTotalByMotivoDate?idMotivo=" + solicitacaodespSelected.CadMotivoDesp.IdMotivo + "&idUsuario=" + solicitacaodespSelected.UsuarioInclusao.Id).then(function (response) {
+        $scope.totalMes = response.data;
+    });
+
+    $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetMotivoDespFilialByUser?idMotivo=" + solicitacaodespSelected.CadMotivoDesp.IdMotivo + "&idUsuario=" + solicitacaodespSelected.UsuarioInclusao.Id).then(function (response) {
+        $scope.totalDefinido = response.data.Limite;
+    });
+    
 
     $scope.editar = function () {
 
@@ -6244,7 +6380,7 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 
 function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval, $uibModal) {
     $scope.dados = [];
-    $scope.parametroCoberturas;
+    $scope.parametroCoberturas = 0;
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
@@ -6325,8 +6461,9 @@ function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimen
     $scope.cdPromocao = abastecimentoSelected.cdPromocao;
     $scope.editMode = false;
     $scope.edit = false;
-    console.log(parametroCoberturas.Cobertura);
-    console.log(parametroCoberturas.CoberturaPromocional);
+
+    console.log($scope.EstoqueLoja);
+    console.log(abastecimentoSelected.EstLJ)
 
     $http.get("http://localhost:50837/api/Abastecimento/GetAllByCodigoAndFilial?codigo=" + abastecimentoSelected.cdProduto + "&codigoFilial=" + abastecimentoSelected.cdPessoaFilial).then(function (response) {
 
@@ -8905,7 +9042,26 @@ angular
     .controller('despMotivoCtrl', despMotivoCtrl)
     .controller('despMotivoModalInstanceCtrl', despMotivoModalInstanceCtrl)
     .controller('despMotivoFilialCtrl', despMotivoFilialCtrl)
-    .controller('despMotivoFilialModalInstanceCtrl', despMotivoFilialModalInstanceCtrl)
+    .controller('despMotivoFilialModalInstanceCtrl', despMotivoFilialModalInstanceCtrl).directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModelCtrl) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
+
+                        if (transformedInput !== text) {
+                            ngModelCtrl.$setViewValue(transformedInput);
+                            ngModelCtrl.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModelCtrl.$parsers.push(fromUser);
+            }
+        };
+    })
     .controller('despFornecedorCtrl', despFornecedorCtrl)
     .controller('despFornecedorModalInstanceCtrl', despFornecedorModalInstanceCtrl)
     .controller('solDespesaCtrl', solDespesaCtrl)

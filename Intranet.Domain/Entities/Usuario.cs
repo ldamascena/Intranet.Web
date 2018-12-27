@@ -74,16 +74,13 @@ namespace Intranet.Domain.Entities
         [Required]
         public string PasswordHash { get; set; }
 
-        [DataMember]
         public bool Bloqueado { get; set; }
 
         [DataMember]
         public DateTime DataInclusao { get; set; }
 
-        [DataMember]
         public DateTime? DataAlteracao { get; set; }
 
-        [DataMember]
         public DateTime? DataBloqueio { get; set; }
 
         [DataMember]

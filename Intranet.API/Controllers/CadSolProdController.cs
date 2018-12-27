@@ -22,6 +22,13 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Take(500).OrderByDescending(x => x.Id).ToList();
         }
 
+        public IEnumerable<CadSolProd> GetAllByStatus(int idStatus, DateTime dtInicio, DateTime dtFim)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadSolProdutos.Where(x => x.IdStatus == idStatus && x.DataCriacao >= dtInicio && x.DataCriacao <= dtFim).Take(500).OrderByDescending(x => x.Id);
+        }
+
         public IEnumerable<CadSolProd> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();

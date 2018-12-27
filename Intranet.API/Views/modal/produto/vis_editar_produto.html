@@ -13,13 +13,13 @@
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Descricao *</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="descricao" ng-model="descricao" value="{{descricao}}" />
+                        <input class="form-control" ng-readonly="status != 1  && idUser != 120" type="text" name="descricao" ng-model="descricao" value="{{descricao}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Comprador *</label>
-                        <select class="form-control" id="comprador" name="comprador" ng-model="comprador" ng-disabled="status != 1">
+                        <select class="form-control" id="comprador" name="comprador" ng-model="comprador" ng-disabled="status != 1 && idUser != 120">
                             <option value="Alexandre Martins">Alexandre Martins</option>
                             <option value="Diego Goncalves">Diego Goncalves</option>
                             <option value="Geraldo Bonifacio">Geraldo Bonifacio</option>
@@ -37,13 +37,13 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Fornecedor *</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="fornecedor" ng-model="fornecedor" value="{{fornecedor}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="fornecedor" ng-model="fornecedor" value="{{fornecedor}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Segmento </label>
-                        <select class="form-control" id="segmento" name="segmento" ng-model="segmento" ng-disabled="status != 1">
+                        <select class="form-control" id="segmento" name="segmento" ng-model="segmento" ng-disabled="status != 1 && idUser != 120">
                             <option value="">Selecione o Segmento</option>
                             <option value="Premium">Premium</option>
                             <option value="Basico">Basico</option>
@@ -55,7 +55,7 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Abastecimento *</label>
-                        <select class="form-control" id="abastecimento" name="abastecimento" tabindex="3" ng-model="abastecimento" ng-disabled="status != 1">
+                        <select class="form-control" id="abastecimento" name="abastecimento" tabindex="3" ng-model="abastecimento" ng-disabled="status != 1 && idUser != 120">
                             <option value="">Selecione o Abastecimento</option>
                             <option value="EDL">EDL</option>
                             <option value="CCEDL">CCEDL</option>
@@ -67,7 +67,7 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Concorrencia Sensibilidade *</label>
-                        <select class="form-control" id="concorrencia" name="concorrencia" tabindex="3" ng-model="concorrencia" ng-disabled="status != 1">
+                        <select class="form-control" id="concorrencia" name="concorrencia" tabindex="3" ng-model="concorrencia" ng-disabled="status != 1 && idUser != 120">
                             <option value="">Selecione a Sensibilidade</option>
                             <option value="Ultra Notavel">Ultra Notavel</option>
                             <option value="Super Notavel">Super Notavel</option>
@@ -80,13 +80,13 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Custo Aquisicao</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="custo" ng-model="custo" value="{{custo}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="custo" ng-model="custo" value="{{custo}}" />
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Preco de Venda</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="venda" ng-model="venda" value="{{venda}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="venda" ng-model="venda" value="{{venda}}" />
                     </div>
                 </div>
             </div>
@@ -100,20 +100,20 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Mix *</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="mix" ng-model="mix" value="{{mix}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="mix" ng-model="mix" value="{{mix}}" />
                     </div>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Caracteristica</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="caracteristica" ng-model="caracteristica" value="{{caracteristica}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="caracteristica" ng-model="caracteristica" value="{{caracteristica}}" />
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Justificativa Resumida *</label>
-                        <select class="form-control" ng-model="justificativa" ng-disabled="status != 1">
+                        <select class="form-control" ng-model="justificativa" ng-disabled="status != 1 && idUser != 120">
                             <option value="">Selecione a Justificativa</option>
                             <option value="Produto Fechado na Rede">Produto Fechado na Rede</option>
                             <option value="Introducao do Mix de loja">Introducao do Mix de loja</option>
@@ -124,7 +124,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Tipo de Cadastro </label>
-                        <select class="form-control" ng-model="tipoCadastro" ng-disabled="status != 1">
+                        <select class="form-control" ng-model="tipoCadastro" ng-disabled="status != 1 && idUser != 120">
                             <option value="">Selecione um Tipo de Cadastro</option>
                             <option value="Reativacao">Reativacao</option>
                             <option value="Substituicao">Substituicao</option>
@@ -134,7 +134,7 @@
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Observacao</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="observacao" ng-model="observacao" value="{{observacao}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="observacao" ng-model="observacao" value="{{observacao}}" />
                     </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Embalagem *</label>
-                        <select class="form-control" tabindex="3" id="embalagem" ng-model="embalagem" name="embalagem" ng-disabled="status != 1">
+                        <select class="form-control" tabindex="3" id="embalagem" ng-model="embalagem" name="embalagem" ng-disabled="status != 1 && idUser != 120">
                             <option value="Unidade">Unidade</option>
                             <option value="Caixa">Caixa</option>
                             <option value="Quilograma">Quilograma</option>
@@ -203,49 +203,49 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Quantidade Embalagem *</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="qtdEmbalagem" ng-model="qtdEmbalagem" value="{{qtdEmbalagem}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="qtdEmbalagem" ng-model="qtdEmbalagem" value="{{qtdEmbalagem}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Peso(grama)</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="peso" ng-model="peso" value="{{peso}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="peso" ng-model="peso" value="{{peso}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Altura(cm)</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="altura" ng-model="altura" value="{{altura}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="altura" ng-model="altura" value="{{altura}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Largura(cm)</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="largura" ng-model="largura" value="{{largura}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="largura" ng-model="largura" value="{{largura}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Comprimento(cm)</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="comprimento" ng-model="comprimento" value="{{comprimento}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="comprimento" ng-model="comprimento" value="{{comprimento}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Lastro</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="lastro" ng-model="lastro" value="{{lastro}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="lastro" ng-model="lastro" value="{{lastro}}" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Camadas</label>
-                        <input class="form-control" ng-readonly="status != 1" type="text" name="camadas" ng-model="camadas" value="{{camadas}}" />
+                        <input class="form-control" ng-readonly="status != 1 && idUser != 120" type="text" name="camadas" ng-model="camadas" value="{{camadas}}" />
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
                         <input class="btn btn-white" ng-show="status == 1" type="button" value="Fechar" ng-click="cancel();" />
-                        <input class="btn btn-primary" ng-show="status == 1" type="button" value="Salvar" ng-click="editar();" />
+                        <input class="btn btn-primary" ng-show="status == 1 || idUser == 120" type="button" value="Salvar" ng-click="editar();" />
                         <div class="btn-group" uib-dropdown ng-show="status == 1 && (grupo == 'Gestor Comercial' || grupo == 'Admin')">
                             <button type="button" class="btn btn-primary" uib-dropdown-toggle>
                                 Aprovar <span class="caret"></span>
