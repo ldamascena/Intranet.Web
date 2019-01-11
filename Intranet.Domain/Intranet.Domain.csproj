@@ -70,7 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AccountViewModels.cs" />
-    <Compile Include="Entities\Alerta.cs" />
+    <Compile Include="Entities\ClusterLojas.cs" />
+    <Compile Include="Entities\TESTE.cs" />
     <Compile Include="Entities\AlertaAnalitico.cs" />
     <Compile Include="Entities\AlertaBalanco.cs" />
     <Compile Include="Entities\AlertaGeral.cs" />
@@ -170,6 +171,9 @@
     <Compile Include="Entities\VwEstoqueNotaProduto.cs" />
     <Compile Include="Entities\VwMixAbastecimentoPromo.cs" />
     <Compile Include="Entities\VwProdutosMovimento.cs" />
+    <Compile Include="Entities\VwClassificacaoComprador.cs" />
+    <Compile Include="Entities\VwProdutosClassificacaoComprador.cs" />
+    <Compile Include="Entities\VwEstatisticaProduto.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />
@@ -227,7 +231,6 @@
     <Compile Include="Interfaces\Repositories\IAlertaGeralRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaHistoricoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IAlertaInversaoRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IAlertaRepository.cs" />
     <Compile Include="Interfaces\Services\IAlertaGeralService.cs" />
     <Compile Include="Interfaces\Services\IAlertaHistoricoService.cs" />
     <Compile Include="Interfaces\Services\IAlertaInversaoService.cs" />

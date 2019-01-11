@@ -47,6 +47,7 @@ namespace Intranet.API.Controllers
             var dataAnteOntem = date.AddDays(-2);
             var dataTresontonte = date.AddDays(-3);
             var dataQuatroontonte = date.AddDays(-4);
+            var dataCincoontonte = date.AddDays(-5);
 
             var result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
             && x.DataInclusao == dataOntem).FirstOrDefault();
@@ -66,6 +67,11 @@ namespace Intranet.API.Controllers
             {
                 result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
             && x.DataInclusao == dataQuatroontonte).FirstOrDefault();
+            }
+            if (result == null)
+            {
+                result = context.CadSaldosControle.Where(x => x.IdUsuario == idUsuario
+            && x.DataInclusao == dataCincoontonte).FirstOrDefault();
             }
 
             return result;

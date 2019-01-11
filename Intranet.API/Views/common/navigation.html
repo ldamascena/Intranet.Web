@@ -23,8 +23,8 @@
             </li>
 
             <!--<li ui-sref-active="active">
-                <a ui-sref="departamentos"><i class="fa fa-building"></i> <span class="nav-label">{{ 'Departamentos' | translate }}</span> </a>
-            </li>-->
+        <a ui-sref="departamentos"><i class="fa fa-building"></i> <span class="nav-label">{{ 'Departamentos' | translate }}</span> </a>
+    </li>-->
 
             <li ng-class="{active: $state.includes('alertas')}" ng-show="grupo == 1">
                 <a href="#"><i class="fa fa-free-code-camp"></i> <span class="nav-label">{{ 'Alertas' | translate }}</span><span class="fa arrow"></span></a>
@@ -53,7 +53,7 @@
                     <li ui-sref-active="active" ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref="controledecaixa.controlegeral">Controle Geral</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 5 || grupo == 1"><a href="#" ui-sref="controledecaixa.relacompanhamento">Relatorio Acompanhamento</a></li>
                     <!--<li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadsupervisor')}" ng-show="grupo == 1" ui-sref="aplicacoes.cadsupervisor">Cadastro de Supervisor</a></li>
-                    <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadatendente')}" ng-show="grupo == 1" ui-sref="aplicacoes.cadatendente">Cadastro de Atendente</a></li>-->
+            <li><a href="#" ui-sref-active="active" ng-class="{in: $state.includes('aplicacoes.cadatendente')}" ng-show="grupo == 1" ui-sref="aplicacoes.cadatendente">Cadastro de Atendente</a></li>-->
                     <li ui-sref-active="active" ng-show="grupo != 5"><a href="#" ui-sref="controledecaixa.supcontrolegeral">Supervisao Controle Geral</a></li>
                     <li ui-sref-active="active" ng-show="grupo != 5"><a href="#" ui-sref="controledecaixa.suprelacompanhamento">Relatorio Acompanhamento</a></li>
                     <li ui-sref-active="active" ng-show="grupo != 5"><a href="#" ui-sref="controledecaixa.logs">Logs</a></li>
@@ -131,6 +131,13 @@
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('agendamento')}">
                     <li ui-sref-active="active"><a ui-sref="agendamento.estoqueminimo">Estoque Minimo</a></li>
                     <li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>
+                </ul>
+            </li>
+            <li ng-class="{active: $state.includes('cluster')}" ng-show="grupo == 1">
+                <a href="#"><i class="fa fa-clock-o"></i> <span class="nav-label">{{ 'Cluster' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('cluster')}">
+                    <li ui-sref-active="active"><a ui-sref="cluster.busca" ng-show="grupo == 1">Busca\Alteracao</a></li>
+                    <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
                 </ul>
             </li>
         </ul>

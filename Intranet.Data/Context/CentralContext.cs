@@ -113,6 +113,15 @@ namespace Intranet.Solidcon.Data.Context
 
         #endregion
 
+        #region Cluster
+
+        public virtual DbSet<VwClassificacaoComprador> VwClassificacaoComprador { get; set; }
+        public virtual DbSet<VwProdutosClassificacaoComprador> VwProdutosClassificacaoComprador { get; set; }
+
+        public virtual DbSet<VwEstatisticaProduto> VwEstatisticaProduto { get; set; }
+
+        #endregion
+
         public virtual DbSet<CadSolProd> CadSolProdutos { get; set; }
         public virtual DbSet<CadSolProdGrade> CadSolProdGrades { get; set; }
         public virtual DbSet<SitCadProd> SitCadProd { get; set; }

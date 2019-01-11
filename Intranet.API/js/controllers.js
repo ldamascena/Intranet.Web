@@ -533,7 +533,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             });
         });
     }
-    
+
     $scope.reprovarTodosComercial = function (solicitacoesProd) {
         $uibModal.open({
             templateUrl: 'Views/modal/produto/loading_massa.html',
@@ -3596,7 +3596,7 @@ function aprovDespesaModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetMotivoDespFilialByUser?idMotivo=" + solicitacaodespSelected.CadMotivoDesp.IdMotivo + "&idUsuario=" + solicitacaodespSelected.UsuarioInclusao.Id).then(function (response) {
         $scope.totalDefinido = response.data.Limite;
     });
-    
+
 
     $scope.editar = function () {
 
@@ -8882,7 +8882,7 @@ function abastecimentoMassaCtrl($scope, $uibModal, SweetAlert) {
     }
 }
 
-function abastecimentoMassaModalCtrl($scope, $http, $uibModalInstance, $localStorage) {
+function abastecimentoMassaModalCtrl($scope, $http, $uibModalInstance, $localStorage, SweetAlert) {
     $scope.obj = { Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome }
 
     //console.log($localStorage.user.Nome);
@@ -8999,6 +8999,250 @@ function abastecimentoMassaLog($scope, $http, DTOptionsBuilder) {
                 }
             }
         ]);
+}
+
+function clusterCtrl($scope, $http, DTOptionsBuilder, SweetAlert, $uibModal) {
+    $scope.compradores;
+    $scope.classificacoes;
+    $scope.dados;
+    var vm = this;
+    vm.checkoxesState = true;
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [2, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $http.get("http://localhost:50837/api/cluster/GetAllCompradores").then(function (response) {
+        $scope.compradores = response.data;
+    });
+
+    $scope.GetClassificacao = function (comprador) {
+        $http.get("http://localhost:50837/api/cluster/GetAllClassificacoesByComprador?comprador=" + comprador).then(function (response) {
+            $scope.classificacoes = response.data;
+        });
+    }
+
+    $scope.Buscar = function () {
+        $http.get("http://localhost:50837/api/cluster/GetAllProdutosClassificacao?classificacao=" + $scope.classificacao).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    var getAllSelected = function () {
+        var selectedItems = $scope.dados.filter(function (item) {
+            return item.selected;
+        });
+        return selectedItems.length === $scope.dados.length;
+    }
+
+    var setAllSelected = function (value) {
+        angular.forEach($scope.dados, function (item) {
+            item.selected = value;
+        });
+    }
+
+    $scope.allSelected = function (value) {
+        console.log(value);
+        if (value !== undefined) {
+            return setAllSelected(value);
+        } else {
+            return getAllSelected();
+        }
+    }
+
+    $scope.lojasPequenas = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.MGE = true;
+                item.TNG = true;
+                item.AGM = true;
+                item.NCE = true;
+                item.JDE = true;
+                item.pequenas = true;
+            }
+        });
+    }
+
+    $scope.lojasMedias = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.ITA = true;
+                item.ITA2 = true;
+                item.RBO2 = true;
+                item.ASN = true;
+                item.JDC = true;
+                item.RDO = true;
+                item.TND = true;
+                item.BCX = true;
+                item.medias = true;
+            }
+        });
+
+    }
+
+    $scope.lojasPremium = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.RBO = true;
+                item.INO = true;
+                item.MRC = true;
+                item.ARM = true;
+                item.CBF = true;
+                item.MCE = true;
+                item.SPD = true;
+                item.premium = true;
+            }
+        });
+    }
+
+    $scope.lojasGrandes = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.MGE2 = true;
+                item.INO = true;
+                item.ARM = true;
+                item.MCE = true;
+                item.grandes = true;
+            }
+        });
+    }
+
+    $scope.todas = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.ITA = true;
+                item.ITA2 = true;
+                item.MGE = true;
+                item.MGE2 = true;
+                item.RBO = true;
+                item.RBO2 = true;
+                item.TNG = true;
+                item.ASN = true;
+                item.AGM = true;
+                item.INO = true;
+                item.JDC = true;
+                item.MRC = true;
+                item.NCE = true;
+                item.RDO = true;
+                item.TND = true;
+                item.ARM = true;
+                item.BCX = true;
+                item.CBF = true;
+                item.JDE = true;
+                item.MCE = true;
+                item.SPD = true;
+                item.pequenas = true;
+                item.medias = true;
+                item.premium = true;
+                item.grandes = true;
+            }
+        });
+    }
+
+    $scope.cdItaborai = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.CDI = true;
+            }
+        });
+    }
+
+    $scope.cdManilha = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.CDM = true;
+            }
+        });
+    }
+
+    $scope.limpar = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.ITA = false;
+                item.ITA2 = false;
+                item.MGE = false;
+                item.MGE2 = false;
+                item.RBO = false;
+                item.RBO2 = false;
+                item.TNG = false;
+                item.ASN = false;
+                item.AGM = false;
+                item.INO = false;
+                item.JDC = false;
+                item.MRC = false;
+                item.NCE = false;
+                item.RDO = false;
+                item.TND = false;
+                item.ARM = false;
+                item.BCX = false;
+                item.CBF = false;
+                item.JDE = false;
+                item.MCE = false;
+                item.SPD = false;
+                item.CDI = false;
+                item.CDM = false;
+                item.pequenas = false;
+                item.medias = false;
+                item.premium = false;
+                item.grandes = false;
+            }
+        });
+    }
+
+    $scope.salvar = function () {
+        SweetAlert.swal({
+            title: "Alteração",
+            text: "Alteração feita com sucesso!",
+            type: "success",
+            timer: 5000
+        });
+        $http.post("http://localhost:50837/api/Cluster/Incluir", $scope.dados).then(function (response) {
+        },
+            function (response) {
+                alert("Erro: " + response.status);
+            });
+    }
+
+    $scope.estatistica = function (item) {
+        $uibModal.open({
+            templateUrl: 'Views/modal/cluster/vis_estatistica.html',
+            controller: 'clusterModalCtrl',
+            windowClass: 'animated fadeIn app-modal-window',
+            size: 'lg',
+            resolve: {
+                produtoSelected: function () {
+                    return item;
+                }
+            }
+        });
+    }
+}
+
+function clusterModalCtrl($scope, $http, $uibModalInstance, produtoSelected) {
+    $scope.produto = produtoSelected.Produto;
+    $scope.codigo = produtoSelected.cdProduto;
+
+    $http.get("http://localhost:50837/api/cluster/GetEstatisticaByProduto?codigo=" + produtoSelected.cdProduto).then(function (response) {
+        $scope.detalhes = response.data;
+    });
 }
 
 /**
@@ -9264,4 +9508,6 @@ angular
     .controller('abastecimentoParametroModalInstance', abastecimentoParametroModalInstance)
     .controller('abastecimentoMassaCtrl', abastecimentoMassaCtrl)
     .controller('abastecimentoMassaModalCtrl', abastecimentoMassaModalCtrl)
-    .controller('abastecimentoMassaLog', abastecimentoMassaLog);
+    .controller('abastecimentoMassaLog', abastecimentoMassaLog)
+    .controller('clusterCtrl', clusterCtrl)
+    .controller('clusterModalCtrl', clusterModalCtrl);

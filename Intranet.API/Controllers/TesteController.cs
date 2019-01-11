@@ -1,63 +1,317 @@
-﻿using Intranet.Alvorada.Data.Context;
-using Intranet.Data.Context;
+﻿using Intranet.Solidcon.Data.Context;
+using Intranet.Data.Repositories;
 using Intranet.Domain.Entities;
-using Intranet.Solidcon.Data.Context;
+using Intranet.Domain.Interfaces.Applications;
+using Intranet.Domain.Interfaces.Repositories;
+using Intranet.Domain.Interfaces.Services;
+using Intranet.Service;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
+using Intranet.Data.Context;
+using Intranet.Alvorada.Data.Context;
 
 namespace Intranet.API.Controllers
 {
     public class TesteController : ApiController
     {
-        public IEnumerable<decimal> GetAll() {
-            List<decimal> dados = new List<decimal>();
-            var query = @"SELECT
-                          SUM(ROUND(tbCupomItem.vlItem * tbCupomItem.qtItem, 2, 1) - ISNULL(tbCupomItem.vlDesconto, 0)) + SUM((ROUND(tbCupomItem.vlItem * tbCupomItem.qtItem, 2, 1) - ISNULL(tbCupomItem.vlDesconto, 0)) * tbCupom.Acrescimo / tbCupom.vlCupom) - SUM((ROUND(tbCupomItem.vlItem * tbCupomItem.qtItem, 2, 1) - ISNULL(tbCupomItem.vlDesconto, 0)) * tbCupom.Desconto / tbCupom.vlCupom) AS vlCupom 
-                        FROM tbSuperProduto
-                        INNER JOIN tbProduto
-                          ON tbSuperProduto.cdEmpresa = tbProduto.cdEmpresa
-                          AND tbSuperProduto.cdFilial = tbProduto.cdFilial
-                          AND tbSuperProduto.cdSuperProduto = tbProduto.cdSuperProduto
-                        RIGHT OUTER JOIN tbCupom
-                        INNER JOIN tbCupomItem
-                          ON tbCupom.gdCupom = tbCupomItem.gdCupom
-                          ON tbProduto.cdEmpresa = tbCupom.cdEmpresa
-                          AND tbProduto.cdFilial = tbCupom.cdFilial
-                          AND tbProduto.cdProduto = tbCupomItem.cdProduto
-                        WHERE (tbCupom.dtCupom = '2018-12-02')
-                        AND (tbCupom.cdEmpresa = 10)
-                        AND (tbCupom.vlCupom > 0)";
-            foreach (ConnectionStringSettings c in System.Configuration.ConfigurationManager.ConnectionStrings)
+        public string GetPostCST000()
+        {
+            List<int> cdFiliais = new List<int> { 1, 3, 5, 6, 9, 10, 11, 12, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 };
+            List<string> retorno = new List<string>();
+            var query = "Update dbo.tbTributacao set TributacaoPDV = '7', prTributacao =  7.00, inISS = 0, CST = '000' where cdTributacao =  10 and cdEmpresa =  10 ";
+            try
             {
+                var context = new DorsalHomologacaoContext();
 
-                switch (c.Name)
+                //context.Database.ExecuteSqlCommand("Update dbo.tbTributacao set TributacaoPDV = '7', prTributacao =  7.00, inISS = 0, CST = '000' where cdTributacao =  10 and cdEmpresa =  10 ");
+
+                foreach (var item in cdFiliais)
                 {
-                    case "DorsalTanguaContext":
-                        var tanguaContext = new DorsalTanguaContext();
-                        tanguaContext.Database.CommandTimeout = 999999999;
-                        dados.Add(tanguaContext.Database.SqlQuery<decimal>(query).FirstOrDefault());
-                        break;
-                    case "DorsalMageContext":
-                        var mageContext = new DorsalMageContext();
-                        mageContext.Database.CommandTimeout = 999999999;
-                        dados.Add(mageContext.Database.SqlQuery<decimal>(query).FirstOrDefault());
-                        break;
-                    case "DorsalCatarinaContext":
-                        var catarinaContext = new DorsalCatarinaContext();
-                        catarinaContext.Database.CommandTimeout = 999999999;
-                        dados.Add(catarinaContext.Database.SqlQuery<decimal>(query).FirstOrDefault());
-                        break;
+                    switch (item)
+                    {
+                        case 1:
+                            var tanguaContext = new DorsalTanguaContext();
+                            tanguaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 3:
+                            var mageContext = new DorsalMageContext();
+                            mageContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 5:
+                            var catarinaContext = new DorsalCatarinaContext();
+                            catarinaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 6:
+                            var maricaContext = new DorsalMaricaContext();
+                            maricaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 9:
+                            var arsenalContext = new DorsalArsenalContext();
+                            arsenalContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 10:
+                            var aguamineralContext = new DorsalAguaMineralContext();
+                            aguamineralContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 11:
+                            var riobonitoContext = new DorsalRioBonitoContext();
+                            riobonitoContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 12:
+                            var itaboraiContext = new DorsalItaboraiContext();
+                            itaboraiContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 14:
+                            var mage2Context = new DorsalMage2Context();
+                            mage2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 15:
+                            var bacaxaContext = new DorsalBacaxaContext();
+                            bacaxaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 17:
+                            var araruamaContext = new DorsalAraruamaContext();
+                            araruamaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 18:
+                            var cabofrioContext = new DorsalCaboFrioContext();
+                            cabofrioContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 20:
+                            var esperancaContext = new DorsalEsperancaContext();
+                            esperancaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 21:
+                            var macaeContext = new DorsalMacaeContext();
+                            macaeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 22:
+                            var rioDoOuroContext = new DorsalRioDoOuroContext();
+                            rioDoOuroContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 23:
+                            var inoaContext = new DorsalInoaContext();
+                            inoaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 24:
+                            var rioBonito2Context = new DorsalRioBonito2Context();
+                            rioBonito2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 25:
+                            var itaborai2Context = new DorsalItaborai2Context();
+                            itaborai2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 26:
+                            var trindadeContext = new DorsalTrindadeContext();
+                            trindadeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 27:
+                            var novaCidadeContext = new DorsalNovaCidadeContext();
+                            novaCidadeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                    }
                 }
-                //dados.Add(c.ConnectionString);
+
+                //retorno.Add('Tangua - Feito');
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
-            return dados;
+
+            return "Executado com sucesso!";
+        }
+
+        public string GetPostCST040()
+        {
+            List<int> cdFiliais = new List<int> { 1, 3, 5, 6, 9, 10, 11, 12, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 };
+            var query = @"Update tbTributacao set
+                        TributacaoPDV = 'I',
+                        prTributacao = 0.00,
+                        inISS = 0, CST = '040'
+                        where cdTributacao = 10
+                        and cdEmpresa = 10";
+            try
+            {
+                var context = new DorsalHomologacaoContext();
+
+                //context.Database.ExecuteSqlCommand("Update dbo.tbTributacao set TributacaoPDV = '7', prTributacao =  7.00, inISS = 0, CST = '000' where cdTributacao =  10 and cdEmpresa =  10 ");
+
+                foreach (var item in cdFiliais)
+                {
+                    switch (item)
+                    {
+                        case 1:
+                            var tanguaContext = new DorsalTanguaContext();
+                            tanguaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 3:
+                            var mageContext = new DorsalMageContext();
+                            mageContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 5:
+                            var catarinaContext = new DorsalCatarinaContext();
+                            catarinaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 6:
+                            var maricaContext = new DorsalMaricaContext();
+                            maricaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 9:
+                            var arsenalContext = new DorsalArsenalContext();
+                            arsenalContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 10:
+                            var aguamineralContext = new DorsalAguaMineralContext();
+                            aguamineralContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 11:
+                            var riobonitoContext = new DorsalRioBonitoContext();
+                            riobonitoContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 12:
+                            var itaboraiContext = new DorsalItaboraiContext();
+                            itaboraiContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 14:
+                            var mage2Context = new DorsalMage2Context();
+                            mage2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 15:
+                            var bacaxaContext = new DorsalBacaxaContext();
+                            bacaxaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 17:
+                            var araruamaContext = new DorsalAraruamaContext();
+                            araruamaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 18:
+                            var cabofrioContext = new DorsalCaboFrioContext();
+                            cabofrioContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 20:
+                            var esperancaContext = new DorsalEsperancaContext();
+                            esperancaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 21:
+                            var macaeContext = new DorsalMacaeContext();
+                            macaeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 22:
+                            var rioDoOuroContext = new DorsalRioDoOuroContext();
+                            rioDoOuroContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 23:
+                            var inoaContext = new DorsalInoaContext();
+                            inoaContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 24:
+                            var rioBonito2Context = new DorsalRioBonito2Context();
+                            rioBonito2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 25:
+                            var itaborai2Context = new DorsalItaborai2Context();
+                            itaborai2Context.Database.ExecuteSqlCommand(query);
+
+                            break;
+                        case 26:
+                            var trindadeContext = new DorsalTrindadeContext();
+                            trindadeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                        case 27:
+                            var novaCidadeContext = new DorsalNovaCidadeContext();
+                            novaCidadeContext.Database.ExecuteSqlCommand(query);
+
+                            break;
+
+                    }
+                }
+
+                //retorno.Add('Tangua - Feito');
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return "Executado com sucesso!";
+        }
+
+        public IEnumerable<TESTE3> GetAllTeste() {
+            var context = new AlvoradaContext();
+
+            return context.TESTE3;
         }
     }
 }
