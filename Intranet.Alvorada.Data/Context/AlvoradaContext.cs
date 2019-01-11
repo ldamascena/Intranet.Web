@@ -135,6 +135,12 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        #region Cluster
+
+        public virtual DbSet<ClusterLojas> ClusterLojas { get; set; }
+
+        #endregion
+
         public virtual DbSet<VwAssociacoesConcluidas> VwAssociacoesConcluidas { get; set; }
 
         public virtual DbSet<CadSolAlterProd> CadSolAlterProdutos { get; set; }

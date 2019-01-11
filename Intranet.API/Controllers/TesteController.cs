@@ -307,11 +307,5 @@ namespace Intranet.API.Controllers
 
             return "Executado com sucesso!";
         }
-
-        public IEnumerable<TESTE3> GetAllTeste() {
-            var context = new AlvoradaContext();
-
-            return context.TESTE3;
-        }
     }
 }
