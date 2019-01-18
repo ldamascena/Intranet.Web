@@ -43,7 +43,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="todas()"><i class="fa fa-edit"></i> Todas</button>
+            <!--<button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="todas()"><i class="fa fa-edit"></i> Todas</button>
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasPequenas();"><i class="fa fa-edit"></i> Pequenas</button>
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasMedias();"><i class="fa fa-edit"></i> Medias</button>
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasGrandes();"><i class="fa fa-edit"></i> Grandes</button>
@@ -51,14 +51,14 @@
             <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdItaborai()"><i class="fa fa-edit"></i> Cd.Itaborai</button>
             <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdManilha()"><i class="fa fa-edit"></i> Cd.Manilha</button>
             <button class="btn btn-sm btn-success btn-rounded" type="button" ng-click="limpar()"><i class="fa fa-edit"></i> Limpar</button>
-            <button class="btn btn-sm btn-primary btn-rounded" type="button" style="float:right;" ng-click="salvar()"><i class="fa fa-edit"></i> Salvar</button>
+            <button class="btn btn-sm btn-primary btn-rounded" type="button" style="float:right;" ng-click="salvar()"><i class="fa fa-edit"></i> Salvar</button>-->
 
 
             <div class="ibox float-e-margins">
                 <div class="ibox-title" style="font-size: 11px;">
                     <h5>Dados - <strong>Cluster</strong></h5>
                     <div ibox-tools></div>
-                    <table class="table table-striped table-bordered table-hover">
+                    <table class="table table-striped table-bordered table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th colspan="3"></th>
@@ -105,7 +105,7 @@
                                 </td>
                                 <td style="text-align:center">{{dado.cdProduto}}</td>
                                 <td style="text-align:center"><a href="" ng-click="estatistica(dado)">{{dado.Produto}}</a></td>
-                                <td style="text-align:center" style="text-align:center" ng-style="{'background-color': dado.Itaborai == true ? 'lightblue': ''}"><input id="ITA" name="ITA" type="checkbox" ng-model="dado.ITA"></td>
+                                <td style="text-align:center" style='text-align:center' ng-style="{'background-color': dado.Itaborai == true ? 'lightblue': ''}"><input id="ITA" name="ITA" type="checkbox" ng-model="dado.ITA"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Itaborai2 == true ? 'lightblue': ''}"><input id="ITA2" name="ITA2" type="checkbox" ng-model="dado.ITA2"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Mage == true ? 'lightblue': ''}"><input id="MGE" name="MGE" type="checkbox" ng-model="dado.MGE"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Mage2 == true ? 'lightblue': ''}"><input id="MGE2" name="MGE2" type="checkbox" ng-model="dado.MGE2"></td>

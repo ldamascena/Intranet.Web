@@ -13,7 +13,8 @@
         'ngStorage',
         'angular.filter',
         'rw.moneymask',
-        'chart.js'
+        'chart.js',
+        'scrollable-table'
     ])
 })();
 

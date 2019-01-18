@@ -120,15 +120,30 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        public HttpResponseMessage AlterarAbastecimentoEmMassa(AbastecimentoDTO obj)
+        public HttpResponseMessage AlterarAbastecimentoEmMassa(LogAlteracaoAbastecimento obj)
         {
-            var context = new CentralContext();
-            //var result = context.SugestoesAbastecimento.Where(x => x.cdPessoaFilial == obj.cdPessoaFilial && x.cdPromocao == obj.cdPromocao && x.cdProduto == obj.cdProduto).First();
+            var contextCentral = new CentralContext();
+            var contextAlvorada = new AlvoradaContext();
+
+            var result = contextAlvorada.VwProdutosMudancaAbastecimento;
+
+            foreach (var item in result)
+            {
+                obj.Codigo = item.Codigo;
+                obj.AlteradoDe = item.AlteradoDe;
+                obj.SuperProduto = item.SuperProduto;
+                obj.AlteradoPara = "Centralizado";
+                obj.Data = DateTime.Now;
+                contextAlvorada.LogAlteracaoAbastecimento.Add(obj);
+
+            }
+
 
             try
             {
                 var myParam1Parameter = new SqlParameter("@Responsavel", obj.Responsavel);
-                context.Database.ExecuteSqlCommand("spAlteracaoAbastecimento @Responsavel", myParam1Parameter);
+                contextCentral.Database.ExecuteSqlCommand("spAlteracaoAbastecimento @Responsavel", myParam1Parameter);
+                contextAlvorada.SaveChanges();
             }
             catch (Exception ex)
             {

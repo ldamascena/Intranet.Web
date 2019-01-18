@@ -154,6 +154,8 @@ namespace Intranet.Alvorada.Data.Context
         public virtual DbSet<SugestaoAbastecimento> SugestoesAbastecimento { get; set; }
         public virtual DbSet<LogAlteracaoAbastecimento> LogAlteracaoAbastecimento { get; set; }
 
+        public virtual DbSet<VwProdutosMudancaAbastecimento> VwProdutosMudancaAbastecimento { get; set; }
+
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

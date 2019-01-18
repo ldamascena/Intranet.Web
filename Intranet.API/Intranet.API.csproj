@@ -342,6 +342,7 @@
     <Content Include="css\plugins\ngImgCrop\ng-img-crop.css" />
     <Content Include="css\plugins\ngTags\ng-tags-input-custom.min.css" />
     <Content Include="css\plugins\nouslider\jquery.nouislider.css" />
+    <Content Include="css\plugins\scrollable-table\scrollable-table.css" />
     <Content Include="css\plugins\slick\ajax-loader.gif" />
     <Content Include="css\plugins\slick\fonts\slick.svg" />
     <Content Include="css\plugins\slick\slick-theme.css" />
@@ -2020,6 +2021,7 @@
     <Content Include="js\plugins\angular-diff-match-patch\angular-diff-match-patch.js" />
     <Content Include="js\plugins\angular-idle\angular-idle.js" />
     <Content Include="js\plugins\angular-notify\angular-notify.min.js" />
+    <Content Include="js\plugins\angular-scrollable-table\angular-scrollable-table.js" />
     <Content Include="js\plugins\blueimp\jquery.blueimp-gallery.min.js" />
     <Content Include="js\plugins\bootstrap-markdown\bootstrap-markdown.js" />
     <Content Include="js\plugins\bootstrap-markdown\markdown.js" />
