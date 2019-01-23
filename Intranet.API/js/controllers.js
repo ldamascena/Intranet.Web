@@ -2746,6 +2746,20 @@ function despMotivoCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetAlert) 
             });
     }
 
+    $scope.centrodecusto = function (cadmotivodesp) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'Views/modal/despesa/editar_cadmotivofilial.html',
+            controller: 'despMotivoFilialModalInstanceCtrl',
+            windowClass: "animated fadeIn",
+            size: 'lg',
+            resolve: {
+                cadmotivodespSelected: function () {
+                    return cadmotivodesp;
+                }
+            }
+        })
+    }
+
 }
 
 function despMotivoModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivodespSelected, tipo, SweetAlert) {
@@ -2907,80 +2921,44 @@ function despMotivoFilialCtrl($scope, DTOptionsBuilder, $http, $uibModal, SweetA
                 }
             });
     }
-
 }
 
-function despMotivoFilialModalInstanceCtrl($scope, $uibModalInstance, $http, cadmotivodefilialSelected, SweetAlert) {
+function despMotivoFilialModalInstanceCtrl($scope, $uibModalInstance, $http, SweetAlert, cadmotivodespSelected) {
 
-    $scope.cadmotivosdesp;
-    $scope.lojas;
-
-    $http.get("http://localhost:50837/api/CadMotivoDesp/GetAll").then(function (response) {
-        $scope.motivos = response.data;
+    $http.get("http://localhost:50837/api/CadMotivoDespFilial/GetAllByCodigoMotivo?idMotivo=" + cadmotivodespSelected.IdMotivo).then(function (response) {
+        $scope.motivosFilial = response.data;
     });
-
-    $http.get("http://localhost:50837/api/Usuario/GetAllTesoureirasAndDepositos").then(function (response) {
-        $scope.lojas = response.data;
-    });
-
-    if (cadmotivodefilialSelected != null) {
-        $scope.motivo = cadmotivodefilialSelected.CadMotivoDesp;
-        $scope.loja = cadmotivodefilialSelected.Usuario.Id;
-        $scope.valor = cadmotivodefilialSelected.Limite;
-    }
-
-    $scope.incluir = function () {
-        $scope.obj = {
-            IdMotivo: $scope.motivo.IdMotivo, IdUsuario: $scope.loja, Limite: $scope.valor.replace(",", ".")
-        };
-        console.log($scope.obj);
-        if ($scope.cadMotivoForm.$valid) {
-
-            $http.post("http://localhost:50837/api/CadMotivoDespFilial/Incluir", $scope.obj).then(function (response) {
-                SweetAlert.swal({
-                    title: "Incluido!",
-                    text: "O motivo foi incluido com sucesso.",
-                    type: "success",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-
-            }, function (response) {
-                return alert("Erro: " + response.status);
-            });
-
-        } else {
-            $scope.cadMotivoForm.submitted = true;
-        }
-    }
-
-    $scope.alterar = function () {
-        $scope.obj = {
-            IdMotivo: $scope.motivo.IdMotivo, IdUsuario: $scope.loja, Limite: $scope.valor.replace(",", ".")
-        };
-        console.log($scope.obj);
-        if ($scope.cadMotivoForm.$valid) {
-
-            $http.post("http://localhost:50837/api/CadMotivoDespFilial/Alterar", $scope.obj).then(function (response) {
-                SweetAlert.swal({
-                    title: "Alterado!",
-                    text: "O motivo foi alterado com sucesso.",
-                    type: "success",
-                    timer: 5000
-                });
-                $uibModalInstance.close();
-
-            }, function (response) {
-                return alert("Erro: " + response.status);
-            });
-
-        } else {
-            $scope.cadMotivoForm.submitted = true;
-        }
-    }
 
     $scope.cancel = function () {
         $uibModalInstance.dismiss();
+    }
+
+    $scope.edit = function (motivoFilial) {
+        motivoFilial.editMode = true;
+    }
+
+    $scope.saveUser = function (motivoFilial, $index) {
+        motivoFilial.editMode = false;
+    }
+
+    $scope.salvar = function () {
+
+        SweetAlert.swal({
+            title: "Alterado!",
+            text: "Alteração feita com sucesso!",
+            type: "success",
+            timer: 5000
+        });
+
+        for (var i = 0; i < $scope.motivosFilial.length; i++) {
+            $http.post("http://localhost:50837/api/CadMotivoDespFilial/Alterar", $scope.motivosFilial[i]).then(function (response) {
+            },
+                function (response) {
+                    return alert("Erro: " + response.status)
+                }
+            );
+        }
+        $uibModalInstance.close();
     }
 }
 

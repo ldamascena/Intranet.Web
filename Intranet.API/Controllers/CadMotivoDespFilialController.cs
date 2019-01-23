@@ -19,6 +19,13 @@ namespace Intranet.API.Controllers
             return context.CadMotivoDespFiliais;
         }
 
+        public IEnumerable<CadMotivoDespFilial> GetAllByCodigoMotivo(int idMotivo)
+        {
+            var context = new AlvoradaContext();
+
+            return context.CadMotivoDespFiliais.Where(x => x.IdMotivo == idMotivo);
+        }
+
         public HttpResponseMessage Incluir(CadMotivoDespFilial obj)
         {
             var context = new AlvoradaContext();
@@ -57,6 +64,7 @@ namespace Intranet.API.Controllers
                 });
             }
 
+            
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

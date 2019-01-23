@@ -33,6 +33,7 @@
                                     <th>ID</th>
                                     <th>Motivo</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,6 +41,9 @@
 
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ cadmotivodesp.Motivo }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline btn-success btn-rounded" type="button" ng-click="centrodecusto(cadmotivodesp)"><i class="fa fa-dollar"></i> Centro de Custo</button>
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline btn-primary btn-rounded" type="button" ng-click="editar(cadmotivodesp)"><i class="fa fa-edit"></i> Alterar</button>
                                         <button class="btn btn-sm btn-outline btn-danger btn-rounded" type="button" ng-click="excluir(cadmotivodesp)"><i class="fa fa-trash"></i> Deletar</button>

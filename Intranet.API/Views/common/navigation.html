@@ -40,7 +40,6 @@
                 <a href="#"><i class="fa fa-money"></i> <span class="nav-label">{{ 'Despesas' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('despesas')}">
                     <li ui-sref-active="active"><a href="#" ng-show="grupo != 5" ui-sref="despesas.cadmotivo">Cadastro de Motivo</a></li>
-                    <li ui-sref-active="active"><a href="#" ng-show="grupo == 1" ui-sref="despesas.cadmotivofilial">Cadastro de Motivo Filial</a></li>
                     <li ui-sref-active="active"><a href="#" ng-show="grupo != 5" ui-sref="despesas.cadsituacao">Cadastro de Situacao</a></li>
                     <li ui-sref-active="active"><a href="#" ng-show="grupo != 5" ui-sref="despesas.cadfornecedor">Cadastro de Fornecedor</a></li>
                     <li ui-sref-active="active"><a href="#" ui-sref="despesas.cadsoldespesa">Cadastro de Soliticacao de Despesa</a></li>

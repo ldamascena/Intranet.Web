@@ -5,22 +5,37 @@
     </div>
     <form role="form" name="cadMotivoForm">
         <div class="modal-body">
-            <div class="form-group">
-                <label>Motivo</label>
-                <input type="text" placeholder="Motivo" name="motivo" ng-model="motivo" uib-typeahead="motivocomplete as motivocomplete.Motivo for motivocomplete in motivos | filter:$viewValue | limitTo:8" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Loja/Deposito</label>
-                <select type="text" placeholder="Loja/Deposito" name="loja" class="form-control" ng-required="true" ng-model="loja" ng-options="filial.Id as filial.Sobrenome for filial in lojas"></select>
-            </div>
-            <div class="form-group">
-                <label>Valor</label>
-                <input type="text" placeholder="Valor" name="valor" ng-model="valor" class="form-control" ng-required="true">
-            </div>
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Filial</th>
+                        <th>Centro de Custo</th>
+                        <th>Limite</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="motivoFilial in motivosFilial">
+                        <td>{{motivoFilial.Usuario.Sobrenome}}</td>
+                        <td>{{motivoFilial.CadMotivoDesp.Motivo}}</td>
+                        <!--<td>{{motivoFilial.Limite | currency}}</td>-->
+                        <td>
+                            <span ng-hide="motivoFilial.editMode">{{motivoFilial.Limite | currency}}</span>
+                            <input type="text" name="Limite" ng-show="motivoFilial.editMode" ng-focus="true" class="form-control" ng-model="motivoFilial.Limite" placeholder="Limite" required="" />
+                        </td>
+                        <td>
+                            <button type="button" ng-hide="motivoFilial.editMode" ng-click="edit(motivoFilial)" class="btn btn-xs btn-outline btn-primary btn-rounded">Editar</button>
+                            <button type="button" ng-show="motivoFilial.editMode" ng-click="saveUser(motivoFilial, $index)" class="btn btn-xs btn-outline btn-success btn-rounded">Atualizar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
-            <button type="submit" class="btn btn-primary" ng-click="alterar()">Salvar</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+                <button type="submit" class="btn btn-primary" ng-click="salvar()">Salvar</button>
+            </div>
         </div>
     </form>
 </div>
