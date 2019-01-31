@@ -158,6 +158,13 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+        #region Inventario
+
+        public virtual DbSet<VwInventarioParcial> VwInventarioParcial { get; set; }
+        public virtual DbSet<InventarioParcialProdutos> InventarioParcialProdutos { get; set; }
+
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();

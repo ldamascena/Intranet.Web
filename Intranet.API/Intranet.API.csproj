@@ -232,6 +232,7 @@
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
     <Compile Include="Controllers\EstoqueNotaController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
+    <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LancamentoCntController.cs" />
     <Compile Include="Controllers\MaloteController.cs" />
     <Compile Include="Controllers\MaloteLogController.cs" />
@@ -2570,6 +2571,8 @@
     <Content Include="Views\estoque\estoque_custo.html" />
     <Content Include="Views\forgotpassword.html" />
     <Content Include="Views\grupos.html" />
+    <Content Include="Views\Inventario\Parcial.html" />
+    <Content Include="Views\Inventario\ParcialProdutos.html" />
     <Content Include="Views\inversao.html" />
     <Content Include="Views\login.html" />
     <Content Include="Views\mailbox.html" />
@@ -2610,6 +2613,7 @@
     <Content Include="Views\modal\incluir_editar_cadsit.html" />
     <Content Include="Views\modal\incluir_editar_cadsoldespesa.html" />
     <Content Include="Views\modal\incluir_ordem_de_pagamento.html" />
+    <Content Include="Views\modal\inventario\incluir_produto.html" />
     <Content Include="Views\modal\malote\historico.html" />
     <Content Include="Views\modal\malote\incluir_editar_malote.html" />
     <Content Include="Views\modal\malote\incluir_editar_tipomalote.html" />

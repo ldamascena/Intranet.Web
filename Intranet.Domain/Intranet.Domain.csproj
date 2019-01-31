@@ -121,6 +121,7 @@
     <Compile Include="Entities\EstoqueMovimento.cs" />
     <Compile Include="Entities\EstoqueTipo.cs" />
     <Compile Include="Entities\Grupo.cs" />
+    <Compile Include="Entities\InventarioParcialProdutos.cs" />
     <Compile Include="Entities\LogAlteracaoAbastecimento.cs" />
     <Compile Include="Entities\LogAlteracaoCusto.cs" />
     <Compile Include="Entities\Malote.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Entities\Views\VwProdutosClassificacaoComprador.cs" />
     <Compile Include="Entities\Views\VwEstatisticaProduto.cs" />
     <Compile Include="Entities\Views\VwProdutosMudancaAbastecimento.cs" />
+    <Compile Include="Entities\Views\VwInventarioParcial.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />

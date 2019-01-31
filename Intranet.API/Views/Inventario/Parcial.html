@@ -1,0 +1,155 @@
+﻿<div class="wrapper wrapper-content animated fadeInRight" ng-controller="inventarioParcialCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Busca</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <select id="loja" class="form-control" ng-model="loja" ng-options="loja.cdPessoaFilial as loja.nmFilial for loja in lojas">
+                                <option value="0">Selecione a Filial</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="loja" class="form-control" ng-model="tipo" ng-options="tipo for tipo in tipos"></select>
+                        </div>
+                        <div class="col-lg-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open1()" placeholder="Data de Inicio" uib-datepicker-popup="dd/MM/yyyy" ng-model="dateinicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open2()" placeholder="Data de Fim" uib-datepicker-popup="dd/MM/yyyy" ng-model="datefim" is-open="popup2.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <input type="button" class="btn btn-success btn-rounded" value="buscar" ng-click="Buscar();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">% QUEBRA SOBRE VENDA</h5>
+                    <h2 ng-class="(totalQuebra / totalVenda) * 100 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebra / totalVenda) * 100 | number:2 }}%</b></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">% QUEBRA SOBRE CUSTO</h5>
+                    <h2 ng-class="(totalQuebra / totalCusto) * 100 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebra / totalCusto) * 100 | number:2 }}%</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 co">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">PERDA DE INVENT.</h5>
+                    <h3 ng-class="totalInv < 0 ? 'text-danger' : 'text-navy'"><b>{{totalInv | currency}}</b></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="ibox">
+                <div class="ibox-content ">
+                    <h5 class="m-b-md">TT QUEBRA IDENT.</h5>
+                    <h3 ng-class="(totalQuebraIden)*-1 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebraIden)*-1 | currency}}</b></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">QUEBRA TOTAL</h5>
+                    <h3 ng-class="totalQuebra < 0 ? 'text-danger' : 'text-navy'"><b>{{totalQuebra | currency}}</b></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox">  
+                <div class="ibox-content">
+                    <h5 class="m-b-md">VENDA BRUTA</h5>
+                    <h3><b>{{totalVenda | currency}}</b></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">CUSTO BRUTA</h5>
+                    <h3><b>{{totalCusto | currency}}</b></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="font-size: 12px;">
+        <div class="col-lg-12">
+            <div class="ibox-title">
+            </div>
+            <div class="ibox-content">
+                <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Cod</th>
+                            <th style="width:200px;">Produto</th>
+                            <!--<th>EAN</th>-->
+                            <th>Categoria</th>
+                            <th>Secao</th>
+                            <th>Est.Contabil</th>
+                            <th>Qtd.Contada</th>
+                            <th>Ajst.Qtd</th>
+                            <th>Vl.Ajst</th>
+                            <th>Qtd.Ident</th>
+                            <th>Vl.Ident</th>
+                            <th>Qtd.Quebra</th>
+                            <th>Vl.Quebra</th>
+                            <th>Qtd</th>
+                            <th>Venda</th>
+                            <th>Custo</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="dado in dados | orderBy:'(dado.vlAjuste + (dado.Unitario)*-1)'">
+                            <td>{{dado.cdProduto}}</td>
+                            <td style="width:200px;">{{dado.Produto}}</td>
+                            <td>{{dado.Categoria}}</td>
+                            <td>{{dado.Secao}}</    td>
+                            <td>{{dado.Estoque | number}}</td>
+                            <td>{{dado.qtItemInventario | number}}</td>
+                            <td>{{dado.qtAjusteItem | number}}</td>
+                            <td ng-style="{'color': dado.vlAjuste < 0 ? 'red' :''}">{{dado.vlAjuste | currency}}</td>
+                            <td>{{(dado.QtdQuebra)*-1 | number}}</td>
+                            <td ng-style="{'color': (dado.Unitario)*-1 < 0 ? 'red' :''}">{{(dado.Unitario)*-1 | currency}}</td>
+                            <td>{{(dado.qtAjusteItem + (dado.QtdQuebra)*-1) | number}}</td>
+                            <td ng-style="{'color': (dado.vlAjuste + (dado.Unitario)*-1) < 0 ? 'red' :''}">{{(dado.vlAjuste + (dado.Unitario)*-1) | currency}}</td>
+                            <td>{{dado.Qtd | number}}</td>
+                            <td>{{dado.Venda | currency}}</td>
+                            <td>{{dado.Custo | currency}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

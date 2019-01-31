@@ -42,5 +42,12 @@ namespace Intranet.API.Controllers
 
             return context.EmpresaFiliais.Where(x => x.cdFilialTipo == "L") .OrderBy(x => x.nmFilial);
         }
+
+        public IEnumerable<EmpresaFilial> GetAllLojasAtivasOrdered()
+        {
+            var context = new CentralContext();
+
+            return context.EmpresaFiliais.Where(x => x.cdFilialTipo == "L" && x.cdPessoaFilial < 30 && x.cdPessoaFilial != 16).OrderBy(x => x.nmFilial);
+        }
     }
 }

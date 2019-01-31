@@ -245,6 +245,114 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
         })
     }
 
+    $scope.lojasPequenas = function () {
+        $scope.MGE = true;
+        $scope.TNG = true;
+        $scope.AGM = true;
+        $scope.NCE = true;
+        $scope.JDE = true;
+        $scope.pequenas = true;
+    }
+
+    $scope.lojasMedias = function () {
+
+        $scope.ITA = true;
+        $scope.ITA2 = true;
+        $scope.RBO2 = true;
+        $scope.ASN = true;
+        $scope.JDC = true;
+        $scope.RDO = true;
+        $scope.TND = true;
+        $scope.BCX = true;
+        $scope.medias = true;
+    }
+
+    $scope.lojasPremium = function () {
+        $scope.RBO = true;
+        $scope.INO = true;
+        $scope.MRC = true;
+        $scope.ARM = true;
+        $scope.CBF = true;
+        $scope.MCE = true;
+        $scope.SPD = true;
+        $scope.premium = true;
+    }
+
+    $scope.lojasGrandes = function () {
+        $scope.MGE2 = true;
+        $scope.INO = true;
+        $scope.ARM = true;
+        $scope.MCE = true;
+        $scope.grandes = true;
+    }
+
+    $scope.todas = function () {
+        $scope.ITA = true;
+        $scope.ITA2 = true;
+        $scope.MGE = true;
+        $scope.MGE2 = true;
+        $scope.RBO = true;
+        $scope.RBO2 = true;
+        $scope.TNG = true;
+        $scope.ASN = true;
+        $scope.AGM = true;
+        $scope.INO = true;
+        $scope.JDC = true;
+        $scope.MRC = true;
+        $scope.NCE = true;
+        $scope.RDO = true;
+        $scope.TND = true;
+        $scope.ARM = true;
+        $scope.BCX = true;
+        $scope.CBF = true;
+        $scope.JDE = true;
+        $scope.MCE = true;
+        $scope.SPD = true;
+        $scope.pequenas = true;
+        $scope.medias = true;
+        $scope.premium = true;
+        $scope.grandes = true;
+    }
+
+    $scope.cdItaborai = function () {
+        $scope.CDI = true;
+    }
+
+    $scope.cdManilha = function () {
+        $scope.CDM = true;
+    }
+
+    $scope.limpar = function () {
+
+        $scope.ITA = false;
+        $scope.ITA2 = false;
+        $scope.MGE = false;
+        $scope.MGE2 = false;
+        $scope.RBO = false;
+        $scope.RBO2 = false;
+        $scope.TNG = false;
+        $scope.ASN = false;
+        $scope.AGM = false;
+        $scope.INO = false;
+        $scope.JDC = false;
+        $scope.MRC = false;
+        $scope.NCE = false;
+        $scope.RDO = false;
+        $scope.TND = false;
+        $scope.ARM = false;
+        $scope.BCX = false;
+        $scope.CBF = false;
+        $scope.JDE = false;
+        $scope.MCE = false;
+        $scope.SPD = false;
+        $scope.CDI = false;
+        $scope.CDM = false;
+        $scope.pequenas = false;
+        $scope.medias = false;
+        $scope.premium = false;
+        $scope.grandes = false;
+    }
+
     $scope.save = function () {
         if ($scope.prodForm.$valid) {
             SweetAlert.swal({
@@ -751,7 +859,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
 
     var getAllSelected = function () {
         var selectedItems = $scope.solicitacoesProd.filter(function (item) {
-            return item.selected;
+            return $scope.selected;
         });
 
         return selectedItems.length === $scope.solicitacoesProd.length;
@@ -759,7 +867,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
 
     var setAllSelected = function (value) {
         angular.forEach($scope.solicitacoesProd, function (item) {
-            item.selected = value;
+            $scope.selected = value;
         });
     }
 
@@ -8979,12 +9087,64 @@ function abastecimentoMassaLog($scope, $http, DTOptionsBuilder) {
         ]);
 }
 
-function clusterCtrl($scope, $http, SweetAlert, $uibModal) {
+function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTColumnDefBuilder) {
     $scope.compradores;
     $scope.classificacoes;
     $scope.dados;
     var vm = this;
     vm.checkoxesState = true;
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [2, 'desc'])
+        .withOption('scrollY', 1200)
+        .withDisplayLength(-1)
+        .withOption('lengthChange', false)
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0).notSortable(),
+        DTColumnDefBuilder.newColumnDef(2).notSortable(),
+        DTColumnDefBuilder.newColumnDef(3).notSortable(),
+        DTColumnDefBuilder.newColumnDef(4).notSortable(),
+        DTColumnDefBuilder.newColumnDef(5).notSortable(),
+        DTColumnDefBuilder.newColumnDef(6).notSortable(),
+        DTColumnDefBuilder.newColumnDef(7).notSortable(),
+        DTColumnDefBuilder.newColumnDef(8).notSortable(),
+        DTColumnDefBuilder.newColumnDef(9).notSortable(),
+        DTColumnDefBuilder.newColumnDef(10).notSortable(),
+        DTColumnDefBuilder.newColumnDef(11).notSortable(),
+        DTColumnDefBuilder.newColumnDef(12).notSortable(),
+        DTColumnDefBuilder.newColumnDef(13).notSortable(),
+        DTColumnDefBuilder.newColumnDef(14).notSortable(),
+        DTColumnDefBuilder.newColumnDef(15).notSortable(),
+        DTColumnDefBuilder.newColumnDef(16).notSortable(),
+        DTColumnDefBuilder.newColumnDef(17).notSortable(),
+        DTColumnDefBuilder.newColumnDef(18).notSortable(),
+        DTColumnDefBuilder.newColumnDef(19).notSortable(),
+        DTColumnDefBuilder.newColumnDef(20).notSortable(),
+        DTColumnDefBuilder.newColumnDef(21).notSortable(),
+        DTColumnDefBuilder.newColumnDef(22).notSortable(),
+        DTColumnDefBuilder.newColumnDef(23).notSortable(),
+        DTColumnDefBuilder.newColumnDef(24).notSortable(),
+        DTColumnDefBuilder.newColumnDef(25).notSortable()
+    ];
 
     $http.get("http://localhost:50837/api/cluster/GetAllCompradores").then(function (response) {
         $scope.compradores = response.data;
@@ -9004,14 +9164,14 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal) {
 
     var getAllSelected = function () {
         var selectedItems = $scope.dados.filter(function (item) {
-            return item.selected;
+            return $scope.selected;
         });
         return selectedItems.length === $scope.dados.length;
     }
 
     var setAllSelected = function (value) {
         angular.forEach($scope.dados, function (item) {
-            item.selected = value;
+            $scope.selected = value;
         });
     }
 
@@ -9026,29 +9186,29 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal) {
 
     $scope.lojasPequenas = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.MGE = true;
-                item.TNG = true;
-                item.AGM = true;
-                item.NCE = true;
-                item.JDE = true;
-                item.pequenas = true;
+            if ($scope.selected == true) {
+                $scope.MGE = true;
+                $scope.TNG = true;
+                $scope.AGM = true;
+                $scope.NCE = true;
+                $scope.JDE = true;
+                $scope.pequenas = true;
             }
         });
     }
 
     $scope.lojasMedias = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.ITA = true;
-                item.ITA2 = true;
-                item.RBO2 = true;
-                item.ASN = true;
-                item.JDC = true;
-                item.RDO = true;
-                item.TND = true;
-                item.BCX = true;
-                item.medias = true;
+            if ($scope.selected == true) {
+                $scope.ITA = true;
+                $scope.ITA2 = true;
+                $scope.RBO2 = true;
+                $scope.ASN = true;
+                $scope.JDC = true;
+                $scope.RDO = true;
+                $scope.TND = true;
+                $scope.BCX = true;
+                $scope.medias = true;
             }
         });
 
@@ -9056,109 +9216,109 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal) {
 
     $scope.lojasPremium = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.RBO = true;
-                item.INO = true;
-                item.MRC = true;
-                item.ARM = true;
-                item.CBF = true;
-                item.MCE = true;
-                item.SPD = true;
-                item.premium = true;
+            if ($scope.selected == true) {
+                $scope.RBO = true;
+                $scope.INO = true;
+                $scope.MRC = true;
+                $scope.ARM = true;
+                $scope.CBF = true;
+                $scope.MCE = true;
+                $scope.SPD = true;
+                $scope.premium = true;
             }
         });
     }
 
     $scope.lojasGrandes = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.MGE2 = true;
-                item.INO = true;
-                item.ARM = true;
-                item.MCE = true;
-                item.grandes = true;
+            if ($scope.selected == true) {
+                $scope.MGE2 = true;
+                $scope.INO = true;
+                $scope.ARM = true;
+                $scope.MCE = true;
+                $scope.grandes = true;
             }
         });
     }
 
     $scope.todas = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.ITA = true;
-                item.ITA2 = true;
-                item.MGE = true;
-                item.MGE2 = true;
-                item.RBO = true;
-                item.RBO2 = true;
-                item.TNG = true;
-                item.ASN = true;
-                item.AGM = true;
-                item.INO = true;
-                item.JDC = true;
-                item.MRC = true;
-                item.NCE = true;
-                item.RDO = true;
-                item.TND = true;
-                item.ARM = true;
-                item.BCX = true;
-                item.CBF = true;
-                item.JDE = true;
-                item.MCE = true;
-                item.SPD = true;
-                item.pequenas = true;
-                item.medias = true;
-                item.premium = true;
-                item.grandes = true;
+            if ($scope.selected == true) {
+                $scope.ITA = true;
+                $scope.ITA2 = true;
+                $scope.MGE = true;
+                $scope.MGE2 = true;
+                $scope.RBO = true;
+                $scope.RBO2 = true;
+                $scope.TNG = true;
+                $scope.ASN = true;
+                $scope.AGM = true;
+                $scope.INO = true;
+                $scope.JDC = true;
+                $scope.MRC = true;
+                $scope.NCE = true;
+                $scope.RDO = true;
+                $scope.TND = true;
+                $scope.ARM = true;
+                $scope.BCX = true;
+                $scope.CBF = true;
+                $scope.JDE = true;
+                $scope.MCE = true;
+                $scope.SPD = true;
+                $scope.pequenas = true;
+                $scope.medias = true;
+                $scope.premium = true;
+                $scope.grandes = true;
             }
         });
     }
 
     $scope.cdItaborai = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.CDI = true;
+            if ($scope.selected == true) {
+                $scope.CDI = true;
             }
         });
     }
 
     $scope.cdManilha = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.CDM = true;
+            if ($scope.selected == true) {
+                $scope.CDM = true;
             }
         });
     }
 
     $scope.limpar = function () {
         angular.forEach($scope.dados, function (item) {
-            if (item.selected == true) {
-                item.ITA = false;
-                item.ITA2 = false;
-                item.MGE = false;
-                item.MGE2 = false;
-                item.RBO = false;
-                item.RBO2 = false;
-                item.TNG = false;
-                item.ASN = false;
-                item.AGM = false;
-                item.INO = false;
-                item.JDC = false;
-                item.MRC = false;
-                item.NCE = false;
-                item.RDO = false;
-                item.TND = false;
-                item.ARM = false;
-                item.BCX = false;
-                item.CBF = false;
-                item.JDE = false;
-                item.MCE = false;
-                item.SPD = false;
-                item.CDI = false;
-                item.CDM = false;
-                item.pequenas = false;
-                item.medias = false;
-                item.premium = false;
-                item.grandes = false;
+            if ($scope.selected == true) {
+                $scope.ITA = false;
+                $scope.ITA2 = false;
+                $scope.MGE = false;
+                $scope.MGE2 = false;
+                $scope.RBO = false;
+                $scope.RBO2 = false;
+                $scope.TNG = false;
+                $scope.ASN = false;
+                $scope.AGM = false;
+                $scope.INO = false;
+                $scope.JDC = false;
+                $scope.MRC = false;
+                $scope.NCE = false;
+                $scope.RDO = false;
+                $scope.TND = false;
+                $scope.ARM = false;
+                $scope.BCX = false;
+                $scope.CBF = false;
+                $scope.JDE = false;
+                $scope.MCE = false;
+                $scope.SPD = false;
+                $scope.CDI = false;
+                $scope.CDM = false;
+                $scope.pequenas = false;
+                $scope.medias = false;
+                $scope.premium = false;
+                $scope.grandes = false;
             }
         });
     }
@@ -9202,6 +9362,270 @@ function clusterModalCtrl($scope, $http, $uibModalInstance, produtoSelected) {
     });
 }
 
+function inventarioParcialCtrl($scope, $http, DTOptionsBuilder) {
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('scrollX', '100%')
+        .withOption('scrollY', 500)
+        .withOption('lengthMenu', [50, 100, 150, 200])
+        .withOption('deferRender', true)
+        .withOption('responsive', true)
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.teste = "agcb;asrra;aeea";
+    $scope.teste2 = $scope.teste.split(";");
+
+    console.log($scope.teste);
+    console.log($scope.teste2);
+
+
+
+    $scope.dados;
+    $scope.totalInv;
+    $scope.totalQuebraIden;
+    $scope.totalQuebra
+    $scope.totalVenda;
+    $scope.totalCusto;
+    $scope.lojas;
+    $scope.tipos;
+
+    $http.get("http://localhost:50837/api/EmpresaFilial/GetAllLojasAtivasOrdered").then(function (response) {
+        $scope.lojas = response.data;
+    });
+
+    $http.get("http://localhost:50837/api/Inventario/GetAllTipos").then(function (response) {
+        $scope.tipos = response.data;
+    });
+
+    $scope.allSelected = function (value) {
+        if (value !== undefined) {
+            return setAllSelected(value);
+        } else {
+            return getAllSelected();
+        }
+    }
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.Buscar = function () {
+
+
+        $http.get("http://localhost:50837/api/Inventario/GetAll?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.dados = response.data;
+        })
+
+        $http.get("http://localhost:50837/api/Inventario/GetTotalPerdaInv?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalInv = response.data;
+        })
+        $http.get("http://localhost:50837/api/Inventario/GetTotalQuebraIdent?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalQuebraIden = response.data;
+        })
+
+        $http.get("http://localhost:50837/api/Inventario/GetTotalQuebra?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalQuebra = response.data;
+        })
+
+        $http.get("http://localhost:50837/api/Inventario/GetTotalVenda?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalVenda = response.data;
+        })
+        $http.get("http://localhost:50837/api/Inventario/GetTotalCusto?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalCusto = response.data;
+        })
+    }
+}
+
+function inventarioProdutoCtrl($scope, $http, DTOptionsBuilder, SweetAlert, $uibModal) {
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.dados;
+
+    $http.get("http://localhost:50837/api/Inventario/GetAllProdutos").then(function (response) {
+        $scope.dados = response.data;
+    })
+
+    $scope.incluir = function () {
+        var modalIstance = $uibModal.open({
+            templateUrl: 'Views/modal/inventario/incluir_produto.html',
+            controller: 'inventarioProdutoModalInstanceCtrl',
+            windowClass: "animated fadeIn"
+        }).result.then(function () {
+            $http.get("http://localhost:50837/api/Inventario/GetAllProdutos").then(function (response) {
+                $scope.dados = response.data;
+            });
+        });
+    }
+
+    $scope.excluir = function (dado) {
+        SweetAlert.swal({
+            title: "Deseja excluir?",
+            text: "Não será possivel recuperar depois de excluido!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Sim, deletar!",
+            cancelButtonText: "Não, cancelar!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $http.post("http://localhost:50837/api/Inventario/Excluir", dado).then(function (response) {
+                        SweetAlert.swal({
+                            title: "Exclusao!",
+                            text: "Exclusao feita com sucesso!",
+                            type: "success",
+                            timer: 5000
+                        });
+                        $http.get("http://localhost:50837/api/Inventario/GetAllProdutos").then(function (response) {
+                            $scope.dados = response.data;
+                        })
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal("Cancelado", "Você cancelou a exclusão do grupo", "error");
+                }
+            });
+    }
+
+}
+
+function inventarioProdutoModalInstanceCtrl($scope, $http, SweetAlert, $uibModalInstance) {
+    $scope.tipos;
+
+    $http.get("http://localhost:50837/api/Inventario/GetAllTipos").then(function (response) {
+        $scope.tipos = response.data;
+    });
+
+    $scope.salvar = function () {
+        $scope.obj = { cdProduto: $scope.codigo, Referencia: $scope.tipo };
+        $http.post("http://localhost:50837/api/Inventario/Incluir", $scope.obj).then(function (response) {
+            SweetAlert.swal({
+                title: "Inclusão!",
+                text: "Inclusão feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $uibModalInstance.close();
+        },
+            function (response) {
+                return alert("Erro: " + reponse.status);
+            });
+    }
+
+    $scope.fechar = function () {
+        $uibModalInstance.dismiss();
+    }
+}
 /**
  *
  * Pass all functions into module
@@ -9467,73 +9891,7 @@ angular
     .controller('abastecimentoMassaModalCtrl', abastecimentoMassaModalCtrl)
     .controller('abastecimentoMassaLog', abastecimentoMassaLog)
     .controller('clusterCtrl', clusterCtrl)
-    //.directive('fixedHeader', function ($timeout) {
-    //    return {
-    //        restrict: 'A',
-    //        link: link
-    //    };
-
-    //    function link($scope, $elem, $attrs, $ctrl) {
-    //        var elem = $elem[0];
-
-    //        // wait for data to load and then transform the table
-    //        $scope.$watch(tableDataLoaded, function (isTableDataLoaded) {
-    //            if (isTableDataLoaded) {
-    //                transformTable();
-    //            }
-    //        });
-
-    //        function tableDataLoaded() {
-    //            // first cell in the tbody exists when data is loaded but doesn't have a width
-    //            // until after the table is transformed
-    //            var firstCell = elem.querySelector('tbody tr:first-child td:first-child');
-    //            return firstCell && !firstCell.style.width;
-    //        }
-
-    //        function transformTable() {
-    //            // reset display styles so column widths are correct when measured below
-    //            angular.element(elem.querySelectorAll('thead, tbody, tfoot')).css('display', '');
-
-    //            // wrap in $timeout to give table a chance to finish rendering
-    //            $timeout(function () {
-    //                // set widths of columns
-    //                angular.forEach(elem.querySelectorAll('tr:first-child th'), function (thElem, i) {
-
-    //                    var tdElems = elem.querySelector('tbody tr:first-child td:nth-child(' + (i + 1) + ')');
-    //                    var tfElems = elem.querySelector('tfoot tr:first-child td:nth-child(' + (i + 1) + ')');
-
-    //                    var columnWidth = tdElems ? tdElems.offsetWidth : thElem.offsetWidth;
-    //                    if (tdElems) {
-    //                        tdElems.style.width = columnWidth + 'px';
-    //                    }
-    //                    if (thElem) {
-    //                        thElem.style.width = columnWidth + 'px';
-    //                    }
-    //                    if (tfElems) {
-    //                        tfElems.style.width = columnWidth + 'px';
-    //                    }
-    //                });
-
-    //                // set css styles on thead and tbody
-    //                angular.element(elem.querySelectorAll('thead, tfoot')).css('display', 'block');
-
-    //                angular.element(elem.querySelectorAll('tbody')).css({
-    //                    'display': 'block',
-    //                    'height': $attrs.tableHeight || 'inherit',
-    //                    'overflow': 'auto'
-    //                });
-
-    //                // reduce width of last column by width of scrollbar
-    //                var tbody = elem.querySelector('tbody');
-    //                var scrollBarWidth = tbody.offsetWidth - tbody.clientWidth;
-    //                if (scrollBarWidth > 0) {
-    //                    // for some reason trimming the width by 2px lines everything up better
-    //                    scrollBarWidth -= 2;
-    //                    var lastColumn = elem.querySelector('tbody tr:first-child td:last-child');
-    //                    lastColumn.style.width = (lastColumn.offsetWidth - scrollBarWidth) + 'px';
-    //                }
-    //            });
-    //        }
-    //    }
-    //})
-    .controller('clusterModalCtrl', clusterModalCtrl);
+    .controller('clusterModalCtrl', clusterModalCtrl)
+    .controller('inventarioParcialCtrl', inventarioParcialCtrl)
+    .controller('inventarioProdutoCtrl', inventarioProdutoCtrl)
+    .controller('inventarioProdutoModalInstanceCtrl', inventarioProdutoModalInstanceCtrl);
