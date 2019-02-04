@@ -273,6 +273,25 @@ namespace Intranet.API.Controllers
 
                     break;
 
+                case 19:
+                    var saoPedroContext = new DorsalSaoPedroContext();
+                    if (saoPedroContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        saoPedroContext.Operadores.Add(obj);
+                        saoPedroContext.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
                 case 20:
                     var esperancaContext = new DorsalEsperancaContext();
                     if (esperancaContext.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)

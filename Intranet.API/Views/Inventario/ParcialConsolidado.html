@@ -1,0 +1,88 @@
+﻿<div class="wrapper wrapper-content animated fadeInRight" ng-controller="inventarioParcialConsolidadoCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Busca</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <select id="loja" class="form-control" ng-model="tipo" ng-options="tipo for tipo in tipos"></select>
+                        </div>
+                        <div class="col-lg-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open1()" placeholder="Data de Inicio" uib-datepicker-popup="dd/MM/yyyy" ng-model="dateinicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open2()" placeholder="Data de Fim" uib-datepicker-popup="dd/MM/yyyy" ng-model="datefim" is-open="popup2.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <input type="button" class="btn btn-success btn-rounded" value="buscar" ng-click="Buscar();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row" style="font-size: 12px;">
+            <div class="col-lg-12">
+                <div class="ibox-title">
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Filial</th>
+                                <th>Venda</th>
+                                <th>%Part</th>
+                                <th>Custo</th>
+                                <th>%Part</th>
+                                <th>Lucro</th>
+                                <th>Margem</th>
+                                <th>Inv.Parcial</th>
+                                <th>Quebra.Reg</th>
+                                <th>Quebra.Cont</th>
+                                <th>%.V</th>
+                                <th>%.C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dado in dados">
+                                <td>{{dado.Filial}}</td>
+                                <td>{{dado.Venda | currency}}</td>
+                                <td>{{(dado.Venda / totalVenda) * 100 | number:2}}%</td>
+                                <td>{{dado.Custo | currency}}</td>
+                                <td>{{(dado.Custo / totalCusto) * 100 | number:2}}%</td>
+                                <td>{{dado.Venda - dado.Custo | currency}}</td>
+                                <td>{{((dado.Venda - dado.Custo) / dado.Venda) * 100 | number:2}}%</td>
+                                <td ng-style="{'color': dado.vlAjuste < 0 ? 'red' :''}">{{dado.vlAjuste}}</td>
+                                <td ng-style="{'color': (dado.Unitario)*-1 < 0 ? 'red' :''}">{{(dado.Unitario)*-1}}</td>
+                                <td ng-style="{'color': (dado.vlAjuste + (dado.Unitario)*-1) < 0 ? 'red' :''}">{{(dado.vlAjuste + (dado.Unitario)*-1)}}</td>
+                                <td>
+                                    {{(((dado.vlAjuste + (dado.Unitario)*-1)) / dado.Venda)*100 | number:2}}%
+                                </td>
+                                <td>
+                                    {{(((dado.vlAjuste + (dado.Unitario)*-1)) / dado.Custo)*100 | number:2}}%
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9362,15 +9362,14 @@ function clusterModalCtrl($scope, $http, $uibModalInstance, produtoSelected) {
     });
 }
 
-function inventarioParcialCtrl($scope, $http, DTOptionsBuilder) {
+function inventarioParcialCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
         .withOption('scrollX', '100%')
         .withOption('scrollY', 500)
         .withOption('lengthMenu', [50, 100, 150, 200])
-        .withOption('deferRender', true)
-        .withOption('responsive', true)
+        .withOption('scrollCollapse', true)
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -9390,12 +9389,9 @@ function inventarioParcialCtrl($scope, $http, DTOptionsBuilder) {
             }
         ]);
 
-    $scope.teste = "agcb;asrra;aeea";
-    $scope.teste2 = $scope.teste.split(";");
-
-    console.log($scope.teste);
-    console.log($scope.teste2);
-
+    $scope.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]).withOption('type', 'num-fmt').withOption("symbols", "$")
+    ];
 
 
     $scope.dados;
@@ -9625,6 +9621,139 @@ function inventarioProdutoModalInstanceCtrl($scope, $http, SweetAlert, $uibModal
     $scope.fechar = function () {
         $uibModalInstance.dismiss();
     }
+}
+
+function inventarioParcialConsolidadoCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder) {
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('lengthMenu', [50, 100, 150, 200])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.dados;
+    $scope.totalVenda;
+    $scope.totalCusto;
+
+
+    $http.get("http://localhost:50837/api/Inventario/GetAllTipos").then(function (response) {
+        $scope.tipos = response.data;
+    });
+
+    $scope.allSelected = function (value) {
+        if (value !== undefined) {
+            return setAllSelected(value);
+        } else {
+            return getAllSelected();
+        }
+    }
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.Buscar = function () {
+
+        $http.get("http://localhost:50837/api/Inventario/GetAllGroupFilialVenda?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalVenda = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/Inventario/GetAllGroupFilialCusto?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.totalCusto = response.data;
+        });
+
+        $http.get("http://localhost:50837/api/Inventario/GetAllGroupFilial?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+            $scope.dados = response.data;
+        },
+            function (response) {
+                return alert("Erro: " + response.status);
+            }
+        )};
 }
 /**
  *
@@ -9894,4 +10023,5 @@ angular
     .controller('clusterModalCtrl', clusterModalCtrl)
     .controller('inventarioParcialCtrl', inventarioParcialCtrl)
     .controller('inventarioProdutoCtrl', inventarioProdutoCtrl)
-    .controller('inventarioProdutoModalInstanceCtrl', inventarioProdutoModalInstanceCtrl);
+    .controller('inventarioProdutoModalInstanceCtrl', inventarioProdutoModalInstanceCtrl)
+    .controller('inventarioParcialConsolidadoCtrl', inventarioParcialConsolidadoCtrl);

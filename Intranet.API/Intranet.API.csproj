@@ -2572,6 +2572,7 @@
     <Content Include="Views\forgotpassword.html" />
     <Content Include="Views\grupos.html" />
     <Content Include="Views\Inventario\Parcial.html" />
+    <Content Include="Views\Inventario\ParcialConsolidado.html" />
     <Content Include="Views\Inventario\ParcialProdutos.html" />
     <Content Include="Views\inversao.html" />
     <Content Include="Views\login.html" />
