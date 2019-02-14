@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class GrupoController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Grupo> GetAll()
         {
             var context = new AlvoradaContext();
@@ -20,6 +22,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public Grupo Get(int id)
         {
             var context = new AlvoradaContext();

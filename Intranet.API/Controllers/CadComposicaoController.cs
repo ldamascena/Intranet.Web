@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadComposicaoController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadComposicaoControle> GetAll()
         {
             var context = new AlvoradaContext();
@@ -19,6 +21,7 @@ namespace Intranet.API.Controllers
             return context.CadComposicoesControle.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadComposicaoControle> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -105,6 +108,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public decimal GetTotalByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -115,6 +119,7 @@ namespace Intranet.API.Controllers
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadComposicaoControle> GetAllByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -123,6 +128,7 @@ namespace Intranet.API.Controllers
             && x.DataInclusao== date).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public decimal GetTotalByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -133,6 +139,7 @@ namespace Intranet.API.Controllers
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwAcompanhamentoControleCaixa> GetAnalitcoByUser(int idUsuario, DateTime dataInicio, DateTime dataFim)
         {
             var context = new AlvoradaContext();

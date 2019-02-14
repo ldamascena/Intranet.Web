@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class MaloteController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Malote> GetAllMalotes()
         {
             var context = new AlvoradaContext();
@@ -19,6 +21,7 @@ namespace Intranet.API.Controllers
             return context.Malotes;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Malote> GetAllMalotesDP()
         {
             var context = new AlvoradaContext();
@@ -26,6 +29,7 @@ namespace Intranet.API.Controllers
             return context.Malotes.Where(x => x.MaloteTipo.Setor == "Departamento Pessoal");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Malote> GetAllMalotesTesourariaAndCPD()
         {
             var context = new AlvoradaContext();
@@ -33,6 +37,7 @@ namespace Intranet.API.Controllers
             //return context.MaloteTipos.Where(x => x.Setor == "Tesouraria" || x.Setor == "CPD");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Malote> GetAllMalotesByUsuario(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -40,6 +45,7 @@ namespace Intranet.API.Controllers
             return context.Malotes.Where(x => x.IdUsuarioInclusao == idUsuario || x.IdUsuarioEnviado == idUsuario);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public bool GetAllMalotesByUsuarioDisp(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -180,6 +186,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<MaloteTipo> GetAllTiposMalote()
         {
             var context = new AlvoradaContext();
@@ -223,6 +230,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<MaloteTipo> GetAllTiposMaloteDP()
         {
             var context = new AlvoradaContext();
@@ -230,6 +238,7 @@ namespace Intranet.API.Controllers
             return context.MaloteTipos.Where(x => x.Setor == "Departamento Pessoal");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<MaloteTipo> GetAllTiposMaloteTesourariaAndCPD()
         {
             var context = new AlvoradaContext();
@@ -237,12 +246,14 @@ namespace Intranet.API.Controllers
             return context.MaloteTipos.Where(x => x.Setor == "Tesouraria" || x.Setor == "CPD");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<MaloteTipo> GetAllTiposMaloteTesouraria()
         {
             var context = new AlvoradaContext();
             return context.MaloteTipos.Where(x => x.Setor == "Tesouraria");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<MaloteTipo> GetAllTiposMaloteCPD()
         {
             var context = new AlvoradaContext();

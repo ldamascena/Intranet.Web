@@ -29,7 +29,7 @@
                             <select id="comprador" class="form-control" ng-change="GetClassificacao(comprador);" ng-model="comprador" ng-options="compradorcomplete for compradorcomplete in compradores"></select>
                         </div>
                         <div class="col-lg-6" ng-show="classificacoes.length > 0">
-                            <select id="classificacao" class="form-control" ng-model="classificacao" ng-options="classificacaocomplete for classificacaocomplete in classificacoes"></select>
+                            <select id="classificacao" class="form-control" ng-model="classificacao" ng-options="classificacaocomplete.cdClassificacaoProduto as classificacaocomplete.Classificacao for classificacaocomplete in classificacoes"></select>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">

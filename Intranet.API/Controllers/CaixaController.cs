@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CaixaController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Caixa> GetAll()
         {
             var context = new AlvoradaContext();

@@ -19,6 +19,8 @@ namespace Intranet.API.Controllers
             return context.InventarioParcialProdutos.Select(x => x.Referencia).Distinct();
         }
 
+        #region Por_Filial
+
         public IEnumerable<VwInventarioParcial> GetAll(int loja, string referencia, DateTime dataInicio, DateTime dataFim)
         {
             var context = new AlvoradaContext();
@@ -54,7 +56,6 @@ namespace Intranet.API.Controllers
             return result.OrderByDescending(x => x.Unitario);
 
         }
-
 
         public IEnumerable<VwInventarioParcial> GetAllGroupFilial(string referencia, DateTime dataInicio, DateTime dataFim)
         {
@@ -134,6 +135,97 @@ namespace Intranet.API.Controllers
                 .Where(x => x.cdPessoaFilial == loja && x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.Custo);
             return result;
         }
+
+        #endregion
+
+        #region Por referencia
+
+        public IEnumerable<VwInventarioParcial> GetAllTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            List<VwInventarioParcial> result = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).ToList()
+            .GroupBy(x => new
+            {
+                x.cdProduto,
+                x.Produto,
+                x.Categoria,
+                x.Secao
+            }).ToList().Select(g => new VwInventarioParcial
+            {
+                cdProduto = g.Key.cdProduto,
+                Produto = g.Key.Produto,
+                Categoria = g.Key.Categoria,
+                Secao = g.Key.Secao,
+                Qtd = g.Sum(x => x.Qtd),
+                Venda = g.Sum(x => x.Venda),
+                Custo = g.Sum(x => x.Custo),
+                Estoque = g.Sum(x => x.Estoque),
+                qtItemInventario = g.Sum(x => x.qtItemInventario),
+                qtAjusteItem = g.Sum(x => x.qtAjusteItem),
+                vlAjuste = g.Sum(x => x.vlAjuste),
+                QtdQuebra = g.Sum(x => x.QtdQuebra),
+                qtItemQuebra = g.Sum(x => x.qtItemQuebra),
+                Unitario = g.Sum(x => x.Unitario)
+            }).ToList();
+
+            return result.OrderByDescending(x => x.Unitario);
+
+        }
+
+        public decimal GetTotalPerdaInvTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            decimal result = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.vlAjuste);
+            return result;
+        }
+
+        public decimal GetTotalQuebraIdentTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            decimal result = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.Unitario);
+            return result;
+        }
+
+        public decimal GetTotalQuebraTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            decimal perda = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.vlAjuste);
+
+            decimal quebra = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.Unitario);
+
+            decimal result = (perda + (quebra) * -1);
+
+            return result;
+        }
+
+        public decimal GetTotalVendaTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            decimal result = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.Venda);
+            return result;
+        }
+
+        public decimal GetTotalCustoTodos(string referencia, DateTime dataInicio, DateTime dataFim)
+        {
+            var context = new AlvoradaContext();
+
+            decimal result = context.VwInventarioParcial
+                .Where(x => x.Referencia == referencia && x.Data >= dataInicio && x.Data <= dataFim).Sum(y => y.Custo);
+            return result;
+        }
+
+        #endregion
 
         public decimal GetAllGroupFilialVenda(string referencia, DateTime dataInicio, DateTime dataFim)
         {

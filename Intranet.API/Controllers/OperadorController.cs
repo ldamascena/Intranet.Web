@@ -10,11 +10,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class OperadorController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Operador> GetAll()
         {
             var context = new AlvoradaContext();
@@ -22,6 +24,7 @@ namespace Intranet.API.Controllers
             return context.Operadores;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Operador> GetAllByOperador(string nomeOperador)
         {
             var context = new AlvoradaContext();
@@ -29,6 +32,7 @@ namespace Intranet.API.Controllers
             return context.Operadores.Where(x => x.NmOperador == nomeOperador);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public int GetLastIdOperador()
         {
             var context = new AlvoradaContext();

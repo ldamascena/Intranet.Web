@@ -12,6 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class CadAtendenteController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadAtendente> GetAll()
         {
             var context = new AlvoradaContext();

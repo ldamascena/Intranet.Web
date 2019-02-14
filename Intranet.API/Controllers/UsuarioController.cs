@@ -10,13 +10,14 @@ using System.Web.Helpers;
 using System.Data.Entity;
 using Intranet.Service;
 using System.Web;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
 
     public class UsuarioController : ApiController
     {
-
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Usuario> GetAll()
         {
             var context = new AlvoradaContext();
@@ -24,6 +25,7 @@ namespace Intranet.API.Controllers
             return context.Usuarios.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public Usuario GetUser(string username)
         {
             var context = new AlvoradaContext();
@@ -31,6 +33,7 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Username == username).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Usuario> GetAllTesoureirasAndDepositos()
         {
             var context = new AlvoradaContext();
@@ -38,6 +41,7 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Nome == "Tesouraria" || x.Nome == "Deposito" || x.Sobrenome == "Administrativo").ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Usuario> GetAllCPDS()
         {
             var context = new AlvoradaContext();
@@ -45,6 +49,7 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Nome == "CPD").ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Usuario> GetAllTI()
         {
             var context = new AlvoradaContext();
@@ -52,6 +57,7 @@ namespace Intranet.API.Controllers
             return context.Usuarios.Where(x => x.Grupo.FirstOrDefault().Nome == "TI").ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<Usuario> GetAllDPLojas()
         {
             var context = new AlvoradaContext();

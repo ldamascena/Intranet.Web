@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadAssProdLogController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadAssProdLog> GetAll()
         {
             var context = new AlvoradaContext();
@@ -18,6 +20,7 @@ namespace Intranet.API.Controllers
             return context.CadAssProdLogs.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadAssProdLog> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -25,6 +28,7 @@ namespace Intranet.API.Controllers
             return context.CadAssProdLogs.Where(x => x.IdUsuario == idUsuario).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadAssProdLog> GetAllByCadProd(int IdCadAssProd)
         {
             var context = new AlvoradaContext();

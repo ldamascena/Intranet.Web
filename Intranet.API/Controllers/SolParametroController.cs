@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class SolParametroController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<SolParametro> GetAll()
         {
             var context = new CentralContext();
@@ -19,6 +21,7 @@ namespace Intranet.API.Controllers
             return context.SolParametros.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<SolParametro> GetAllSistemaInventario()
         {
             var context = new CentralContext();
@@ -26,6 +29,7 @@ namespace Intranet.API.Controllers
             return context.SolParametros.Where(x => x.NmParametro == "SistemaInventario");
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public SolParametro GetAllSistemaInventarioByLoja(int idLoja)
         {
             var context = new CentralContext();

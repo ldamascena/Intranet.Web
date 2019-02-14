@@ -8,8 +8,12 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-lg-3">
-                            <select id="loja" class="form-control" ng-model="loja" ng-options="loja.cdPessoaFilial as loja.nmFilial for loja in lojas">
-                                <option value="0">Selecione a Filial</option>
+                            <!--<select id="loja" class="form-control" ng-model="loja" ng-options="loja.cdPessoaFilial as loja.nmFilial for loja in lojas">
+        <option value="0">Todos</option>
+    </select>-->
+                            <select select id="loja" class="form-control" ng-model="loja">
+                                <option value="0" ng-selected="selected">TODAS</option>
+                                <option ng-repeat="loja in lojas" value="{{loja.cdPessoaFilial}}">{{loja.nmFilial}}</option>
                             </select>
                         </div>
                         <div class="col-lg-3">
@@ -134,18 +138,18 @@
                             <td>{{dado.cdProduto}}</td>
                             <td style="width:200px;">{{dado.Produto}}</td>
                             <td>{{dado.Categoria}}</td>
-                            <td>{{dado.Secao}}</    td>
-                            <td>{{dado.Estoque}}</td>
-                            <td>{{dado.qtItemInventario}}</td>
-                            <td>{{dado.qtAjusteItem}}</td>
+                            <td>{{dado.Secao}}</td>
+                            <td>{{dado.Estoque | number: 0}}</td>
+                            <td ng-style="{'color': dado.qtItemInventario < 0 ? 'red' :''}">{{dado.qtItemInventario | number: 0}}</td>
+                            <td ng-style="{'color': dado.qtAjusteItem < 0 ? 'red' :''}">{{dado.qtAjusteItem | number: 0}}</td>
                             <td ng-style="{'color': dado.vlAjuste < 0 ? 'red' :''}">{{dado.vlAjuste}}</td>
-                            <td>{{(dado.QtdQuebra)*-1}}</td>
+                            <td ng-style="{'color': (dado.QtdQuebra)*-1 < 0 ? 'red' :''}">{{(dado.QtdQuebra)*-1 | number:0}}</td>
                             <td ng-style="{'color': (dado.Unitario)*-1 < 0 ? 'red' :''}">{{(dado.Unitario)*-1}}</td>
-                            <td>{{(dado.qtAjusteItem + (dado.QtdQuebra)*-1)}}</td>
+                            <td>{{(dado.qtAjusteItem + (dado.QtdQuebra)*-1) | number:0}}</td>
                             <td ng-style="{'color': (dado.vlAjuste + (dado.Unitario)*-1) < 0 ? 'red' :''}">{{(dado.vlAjuste + (dado.Unitario)*-1)}}</td>
-                            <td>{{dado.Qtd}}</td>
-                            <td>{{dado.Venda}}</td>
-                            <td>{{dado.Custo}}</td>
+                            <td>{{dado.Qtd | number: 0}}</td>
+                            <td>{{dado.Venda | currency}}</td>
+                            <td>{{dado.Custo | currency}}</td>
                         </tr>
                     </tbody>
                 </table>

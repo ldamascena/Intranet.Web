@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadSitDespController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         // GET: api/CadMotivoDesp
         public IEnumerable<CadSitDesp> GetAll()
         {
@@ -22,6 +24,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public CadSitDesp Get(int id)
         {
             var context = new AlvoradaContext();

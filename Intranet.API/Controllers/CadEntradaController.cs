@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadEntradaController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadEntradaControle> GetAll()
         {
             var context = new AlvoradaContext();
@@ -19,6 +21,7 @@ namespace Intranet.API.Controllers
             return context.CadEntradasControle.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadEntradaControle> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -85,6 +88,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public decimal GetTotalByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -95,6 +99,7 @@ namespace Intranet.API.Controllers
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadEntradaControle> GetAllByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -103,6 +108,7 @@ namespace Intranet.API.Controllers
             && x.DataInclusao == date).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public decimal GetTotalByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();

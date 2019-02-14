@@ -12,6 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class CadCaixaController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadCaixaControle> GetAll()
         {
             var context = new AlvoradaContext();
@@ -19,6 +20,7 @@ namespace Intranet.API.Controllers
             return context.CadCaixasControle.ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadCaixaControle> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();

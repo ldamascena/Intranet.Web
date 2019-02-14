@@ -8,11 +8,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadAgendamentoController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwEstoqueMinimoProduto> GetProdutoByCodigo(int codigo)
         {
             var context = new CentralContext();
@@ -20,6 +22,7 @@ namespace Intranet.API.Controllers
             return context.VwEstoqueMinimoProduto.Where(x => x.cdProduto == codigo);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadAgendamentoEstoque> GetAllAgendamentos()
         {
             var context = new AlvoradaContext();
@@ -27,6 +30,7 @@ namespace Intranet.API.Controllers
             return context.CadAgendamentosEstoque;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public int GetLastAgendamento()
         {
             var context = new AlvoradaContext();
@@ -34,6 +38,7 @@ namespace Intranet.API.Controllers
             return context.CadAgendamentosEstoque.ToList().LastOrDefault().Id;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public CadAgendamentoEstoque GetAgendamentoById(int Id)
         {
             var context = new AlvoradaContext();

@@ -12,11 +12,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class PessoaJuridicaController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<PessoaJuridica> GetAll()
         {
             var context = new CentralContext();
@@ -24,6 +26,7 @@ namespace Intranet.API.Controllers
             return context.PessoasJuridica;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public PessoaJuridica GetByCNPJ(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
         {
             var context = new CentralContext();
@@ -32,6 +35,7 @@ namespace Intranet.API.Controllers
 
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public int GetCdPessoaJuridica(string CNPJEmpresa, int CNPJFilial, int CNPJDV)
         {
             var context = new CentralContext();

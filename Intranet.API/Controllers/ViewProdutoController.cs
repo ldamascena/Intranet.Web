@@ -11,11 +11,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class ViewProdutoController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         // GET: api/ViewProduto
         public IEnumerable<string> GetAll()
         {
@@ -24,6 +26,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutoEAN.Select(x => x.Produto).ToList().Distinct();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public VwProdutoEAN GetByEAN(long Ean)
         {
             var context = new CentralContext();
@@ -31,6 +34,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutoEAN.Where(x => x.CdEAN == Ean).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public VwProdutoEAN GetByCdProduto(int IdProduto)
         {
             var context = new CentralContext();
@@ -38,6 +42,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutoEAN.Where(x => x.Codigo == IdProduto).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwEmbalagensProdutoEAN> GetEmbalagensByCdProduto(int IdProduto)
         {
             var context = new CentralContext();
@@ -45,6 +50,7 @@ namespace Intranet.API.Controllers
             return context.VwEmbalagensProdutoEAN.Where(x => x.CdProduto == IdProduto).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<string> GetAllAtivosEInativos()
         {
             var context = new CentralContext();
@@ -52,6 +58,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutoEAN.Where(x => x.Morto == false).Select(x => x.Produto).ToList().Distinct();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwProdutoEAN> GetProdutoById(string produto)
         {
             var context = new CentralContext();

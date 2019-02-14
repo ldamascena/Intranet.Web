@@ -9157,7 +9157,7 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTC
     }
 
     $scope.Buscar = function () {
-        $http.get("http://localhost:50837/api/cluster/GetAllProdutosClassificacao?classificacao=" + $scope.classificacao).then(function (response) {
+        $http.get("http://localhost:50837/api/cluster/GetAllProdutosClassificacao?codigo=" + $scope.classificacao).then(function (response) {
             $scope.dados = response.data;
         });
     }
@@ -9494,28 +9494,53 @@ function inventarioParcialCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuild
 
     $scope.Buscar = function () {
 
+        if ($scope.loja != 0) {
+            $http.get("http://localhost:50837/api/Inventario/GetAll?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.dados = response.data;
+            })
 
-        $http.get("http://localhost:50837/api/Inventario/GetAll?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.dados = response.data;
-        })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalPerdaInv?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalInv = response.data;
+            })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalQuebraIdent?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalQuebraIden = response.data;
+            })
 
-        $http.get("http://localhost:50837/api/Inventario/GetTotalPerdaInv?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.totalInv = response.data;
-        })
-        $http.get("http://localhost:50837/api/Inventario/GetTotalQuebraIdent?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.totalQuebraIden = response.data;
-        })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalQuebra?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalQuebra = response.data;
+            })
 
-        $http.get("http://localhost:50837/api/Inventario/GetTotalQuebra?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.totalQuebra = response.data;
-        })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalVenda?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalVenda = response.data;
+            })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalCusto?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalCusto = response.data;
+            })
+        }
 
-        $http.get("http://localhost:50837/api/Inventario/GetTotalVenda?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.totalVenda = response.data;
-        })
-        $http.get("http://localhost:50837/api/Inventario/GetTotalCusto?loja=" + $scope.loja + "&referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
-            $scope.totalCusto = response.data;
-        })
+        else {
+            $http.get("http://localhost:50837/api/Inventario/GetAllTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.dados = response.data;
+            })
+
+            $http.get("http://localhost:50837/api/Inventario/GetTotalPerdaInvTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalInv = response.data;
+            })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalQuebraIdentTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalQuebraIden = response.data;
+            })
+
+            $http.get("http://localhost:50837/api/Inventario/GetTotalQuebraTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalQuebra = response.data;
+            })
+
+            $http.get("http://localhost:50837/api/Inventario/GetTotalVendaTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalVenda = response.data;
+            })
+            $http.get("http://localhost:50837/api/Inventario/GetTotalCustoTodos?referencia=" + $scope.tipo + "&dataInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dataFim=" + $scope.datefim.toLocaleDateString('en-US')).then(function (response) {
+                $scope.totalCusto = response.data;
+            })
+        }
     }
 }
 

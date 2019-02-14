@@ -9,12 +9,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadSolProdController : ApiController
     {
-
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadSolProd> GetAll()
         {
             var context = new AlvoradaContext();
@@ -22,6 +23,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Take(500).OrderByDescending(x => x.Id).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadSolProd> GetAllByStatus(int idStatus, DateTime dtInicio, DateTime dtFim)
         {
             var context = new AlvoradaContext();
@@ -29,6 +31,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdStatus == idStatus && x.DataCriacao >= dtInicio && x.DataCriacao <= dtFim).Take(500).OrderByDescending(x => x.Id);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadSolProd> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -36,6 +39,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdUsuario == idUsuario).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadSolProd> GetAllAproveByComercial()
         {
             var context = new AlvoradaContext();
@@ -43,6 +47,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdStatus == 2).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadSolProd> GetAllAproveByDiretoria()
         {
             var context = new AlvoradaContext();
@@ -50,6 +55,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.IdStatus == 4).ToList();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public CadSolProd GetByID(int Id)
         {
             var context = new AlvoradaContext();
@@ -57,6 +63,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdutos.Where(x => x.Id == Id).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public int? GetLastId()
         {
             var context = new AlvoradaContext();

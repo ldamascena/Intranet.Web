@@ -11,11 +11,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class AbastecimentoController : ApiController
     {
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwMixAbastecimentoPromo> GetAllByComprador(string Comprador, int cdPromo)
         {
             var context = new CentralContext();
@@ -23,6 +25,7 @@ namespace Intranet.API.Controllers
             return context.VwMixAbastecimentoPromo.Where(x => x.Comprador == Comprador && x.cdPromocao == cdPromo);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public VwProdutosMovimento GetAllByCodigoAndFilial(int codigo, int codigoFilial)
         {
             var context = new CentralContext();
@@ -30,6 +33,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutosMovimento.Where(x => x.cdProduto == codigo && x.cdPessoaFilial == codigoFilial).FirstOrDefault();
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<ParametroAbastecimento> GetAllParametro()
         {
             var context = new AlvoradaContext();
@@ -37,6 +41,7 @@ namespace Intranet.API.Controllers
             return context.ParametrosAbastecimento;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public ParametroAbastecimento GetParametroByPromocao(int codigo)
         {
             var context = new AlvoradaContext();

@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class CadMotivoDespFilialController : ApiController
     {
         // GET: api/CadMotivoFilialDesp
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadMotivoDespFilial> GetAll()
         {
             var context = new AlvoradaContext();
@@ -19,6 +21,7 @@ namespace Intranet.API.Controllers
             return context.CadMotivoDespFiliais;
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<CadMotivoDespFilial> GetAllByCodigoMotivo(int idMotivo)
         {
             var context = new AlvoradaContext();
@@ -88,6 +91,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [CacheOutput(ServerTimeSpan = 120)]
         public CadMotivoDespFilial GetMotivoDespFilialByUser(int idMotivo, int idUsuario)
         {
             var context = new AlvoradaContext();
