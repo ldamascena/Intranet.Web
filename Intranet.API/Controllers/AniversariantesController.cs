@@ -12,7 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class AniversariantesController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<Aniversariantes> GetAll()
         {
             var context = new AlvoradaContext();
@@ -20,7 +20,7 @@ namespace Intranet.API.Controllers
             return context.Aniversariantes;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<Aniversariantes> GetAllByMonth()
         {
             var context = new AlvoradaContext();
@@ -28,7 +28,7 @@ namespace Intranet.API.Controllers
             return context.Aniversariantes.Where(x => x.Aniversario.Month == DateTime.Now.Month).OrderBy(x => x.Aniversario.Day);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<Aniversariantes> GetAllByDay()
         {
             var context = new AlvoradaContext();
@@ -36,7 +36,7 @@ namespace Intranet.API.Controllers
             return context.Aniversariantes.Where(x => x.Aniversario.Month == DateTime.Now.Month && x.Aniversario.Day == DateTime.Now.Day);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public bool GetBirthdayToday()
         {
             var context = new AlvoradaContext();

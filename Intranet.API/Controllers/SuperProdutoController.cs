@@ -14,7 +14,7 @@ namespace Intranet.API.Controllers
 {
     public class SuperProdutoController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         // GET: api/SuperProduto
         public IEnumerable<SuperProduto> GetAll()
         {
@@ -23,7 +23,7 @@ namespace Intranet.API.Controllers
             return context.SuperProdutos.ToList();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<SuperProduto> Getteste()
         {
             var context = new CentralContext();

@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadAssProdGradeController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadAssProdGrade> GetByIdCadAss(int idCadAss)
         {
             var context = new AlvoradaContext();

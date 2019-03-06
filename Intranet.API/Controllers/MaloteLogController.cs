@@ -12,7 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class MaloteLogController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<MaloteLog> GetAll()
         {
             var context = new AlvoradaContext();
@@ -20,7 +20,7 @@ namespace Intranet.API.Controllers
             return context.MalotesLog;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<MaloteLog> GetById(int Id)
         {
             var context = new AlvoradaContext();

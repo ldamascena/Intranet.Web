@@ -18,6 +18,8 @@ namespace Intranet.Solidcon.Data.Context
             
         }
 
+        public virtual DbSet<VWEstoqueClassificacao> VWEstoqueClassificacao { get; set; }
+
         #region Alertas
 
         #region Geral

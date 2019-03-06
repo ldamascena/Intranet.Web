@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadFornecedorDespController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadFornecedorDesp> GetAll()
         {
             var context = new AlvoradaContext();
@@ -23,7 +23,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadFornecedorDesp Get(int id)
         {
             var context = new AlvoradaContext();

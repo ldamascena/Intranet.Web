@@ -17,23 +17,25 @@ namespace Intranet.Service
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                SmtpClient SmtpServer = new SmtpClient("smtp.smalvorada.com");
 
-                mail.From = new MailAddress("ldamascena2307@smalvorada.com");
+                mail.From = new MailAddress("intranet@smalvorada.com");
                 mail.To.Add(para);
                 mail.Subject = assunto;
                 mail.Body = body;
                 mail.IsBodyHtml = true;
                 SmtpServer.Port = 587;
                 //SmtpServer.Port = 465;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("ldamascena2307@gmail.com", "ldamascena");
-                SmtpServer.EnableSsl = true;
+                SmtpServer.UseDefaultCredentials = false;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("intranet@smalvorada.com", "intranet@2019#");
+                SmtpServer.EnableSsl = false;
 
                 SmtpServer.Send(mail);
             }
             catch (Exception ex)
             {
-                throw ex;
+                    throw ex;
             }
         }
 

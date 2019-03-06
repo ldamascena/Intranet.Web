@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class PessoaController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         // GET: api/Pessoa
         public IEnumerable<Pessoa> GetAll()
         {

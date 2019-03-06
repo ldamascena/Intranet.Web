@@ -15,7 +15,7 @@ namespace Intranet.API.Controllers
 {
     public class SolitDespController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public async Task <IEnumerable<CadSolDesp>> GetAll()
         {
             var context = new AlvoradaContext();
@@ -23,7 +23,7 @@ namespace Intranet.API.Controllers
             return await context.CadSolicitacoesDesp.Take(2000).OrderByDescending(x => x.DataInclusao).ToListAsync();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolDesp> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -33,7 +33,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolDesp> GetAllByUserAprovado(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -46,7 +46,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadSolDesp Get(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -232,7 +232,7 @@ namespace Intranet.API.Controllers
 
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public decimal GetTotalByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -246,7 +246,7 @@ namespace Intranet.API.Controllers
             return total;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public decimal GetTotalByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -260,7 +260,7 @@ namespace Intranet.API.Controllers
             return total;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public decimal GetTotalByMotivoDate(int idMotivo, int idUsuario)
         {
             var context = new AlvoradaContext();

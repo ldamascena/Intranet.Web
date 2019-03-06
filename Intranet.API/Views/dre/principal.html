@@ -1,176 +1,65 @@
 ﻿<div ng-controller="bpdreCtrl">
     <div class="row">
-        <div class="form-group col-lg-2 col-lg-offset-1">
-            <div>
-                <select class="form-control" id="ano" name="ano" ng-model="ano">
-                    <option value="">Selecione o Ano</option>
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
-                </select>
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">Valor de Estoque</h5>
+                    <!--<h2 ng-class="(totalQuebra / totalVenda) * 100 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebra / totalVenda) * 100 | number:2 }}%</b></h2>-->
+                </div>
             </div>
         </div>
-        <div class="form-group col-lg-2">
-            <div>
-                <select class="form-control" id="mes" name="mes">
-                    <option value="">Selecione o Mês</option>
-                    <option value="1">Janeiro</option>
-                    <option value="2">Fevereiro</option>
-                    <option value="3">Março</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Maio</option>
-                    <option value="6">Junho</option>
-                    <option value="7">Julho</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option>
-                </select>
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">CDME</h5>
+                    <!--<h2 ng-class="(totalQuebra / totalVenda) * 100 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebra / totalVenda) * 100 | number:2 }}%</b></h2>-->
+                </div>
             </div>
         </div>
-        <div class="form-group col-lg-3">
-            <div>
-                <select class="form-control" id="segmento" name="segmento">
-                    <option value="">Selecione a Filial</option>
-                </select>
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="m-b-md">Dias de Estoque</h5>
+                    <!--<h2 ng-class="(totalQuebra / totalVenda) * 100 < 0 ? 'text-danger' : 'text-navy'"><b>{{(totalQuebra / totalVenda) * 100 | number:2 }}%</b></h2>-->
+                </div>
             </div>
-        </div>
-        <div class="form-group col-lg-2">
-            <input type="button" class="btn btn-primary btn-rounded" value="Definir" ng-click="Definir();" />
         </div>
     </div>
 
     <div class="row">
-        <div class="tabs-container">
-            <uib-tabset>
-                <uib-tab heading="DRE">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <!--<div class="widget lazur-bg no-padding col-lg-2 col-sm-offset-1" style="text-align:center" ng-show="dre.length > 0">
-                                <div class="p-m">
-                                    <h4 class="font-bold no-margins">
-                                        Resultado Liquido
-                                    </h4>
-                                    <h2 class="p-h-xs">R$ 210,660</h2>
-                                </div>
-                            </div>
-                            <div class="widget lazur-bg no-padding col-lg-2 col-lg-offset-1" style="text-align:center" ng-show="dre.length > 0">
-                                <div class="p-m">
-                                    <h4 class="font-bold no-margins">
-                                        Resultado Mês Passado
-                                    </h4>
-                                    <h2 class="p-h-xs">R$ 210,660</h2>
-                                </div>
-                            </div>
-                            <div class="widget red-bg no-padding col-lg-2 col-lg-offset-1" style="text-align:center" ng-show="dre.length > 0">
-                                <div class="p-m">
-                                    <h4 class="font-bold no-margins">
-                                        Variação Mês Passado
-                                    </h4>
-                                    <h2 class="p-h-xs">24.21%</h2>
-                                </div>
-                            </div>
-                            <div class="widget red-bg no-padding col-lg-2 col-lg-offset-1" style="text-align:center" ng-show="dre.length > 0">
-                                <div class="p-m">
-                                    <h4 class="font-bold no-margins">
-                                        Variação Ano Passado
-                                    </h4>
-                                    <h2 class="p-h-xs">24.21%</h2>
-                                </div>
-                            </div>-->
-                        </div>
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome Contabil</th>
-                                            <th>Vl Mes Atual</th>
-                                            <th>Vl Mes Passado</th>
-                                            <th>Vl Ano Passado</th>
-                                            <th>Variação Mês</th>
-                                            <th>Variação Ano</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="item in dre | filterTreeItem:itemId:isExpend">
-                                            <td>
-                                                <span style="padding-left: {{item.level * 30}}px;">
-                                                    <span class="glyphicon" ng-click="itemClick(item.id, item.expend);"
-                                                          ng-class="{'glyphicon-minus': !item.leaf && item.expend, 'glyphicon-plus': !item.leaf && !item.expend, 'glyphicon-globe': item.leaf}">
-                                                    </span>
-                                                    {{ item.NomeContabil }}
-                                                </span>
-                                            </td>
-                                            <td>{{ item.Valor | currency }}</td>
-                                            <td>{{ item.ValorMesAnt | currency }} </td>
-                                            <td>{{ item.ValorAnoAnt | currency }}</td>
-                                            <td ng-class="{'text-navy': ((item.Valor / item.ValorMesAnt)-1) * 100 > 0, 'text-danger': ((item.Valor / item.ValorMesAnt)-1) * 100 < 0}">{{ ((item.Valor / item.ValorMesAnt)-1) * 100 | number:2}}%  <i ng-class="{'fa fa-level-up': ((item.Valor / item.ValorMesAnt)-1) * 100 > 0, 'fa fa-level-down': ((item.Valor / item.ValorMesAnt)-1) * 100 < 0}"></i></td>
-                                            <td ng-class="{'text-navy': ((item.Valor / item.ValorAnoAnt)-1) * 100 > 0, 'text-danger': ((item.Valor / item.ValorAnoAnt)-1) * 100 < 0}">{{ ((item.Valor / item.ValorAnoAnt)-1) * 100 | number:2}}%  <i ng-class="{'fa fa-level-up': ((item.Valor / item.ValorAnoAnt)-1) * 100 > 0, 'fa fa-level-down': ((item.Valor / item.ValorAnoAnt)-1) * 100 < 0}"></i></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </uib-tab>
-                <uib-tab heading="BP">
-                    <div class="ibox-content col-lg-6">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Nome Contabil</th>
-                                        <th>Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in ativos | filterTreeItem:itemAtivo:isExpend">
-                                        <td>
-                                            <span style="padding-left: {{item.level * 30}}px;">
-                                                <span class="glyphicon" ng-click="itemClickAtivo(item.id, item.expend);"
-                                                      ng-class="{'glyphicon-minus': !item.leaf && item.expend, 'glyphicon-plus': !item.leaf && !item.expend, 'glyphicon-globe': item.leaf}">
-                                                </span>
-                                                {{ item.NomeContabil }}
-                                            </span>
-                                        </td>
-                                        <td>{{ item.Valor | currency }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="ibox-content col-lg-6" style="clear:none;">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Nome Contabil</th>
-                                        <th>Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in passivos | filterTreeItem:itemPassivo:isExpend">
-                                        <td>
-                                            <span style="padding-left: {{item.level * 30}}px;">
-                                                <span class="glyphicon" ng-click="itemClickPassivo(item.id, item.expend);"
-                                                      ng-class="{'glyphicon-minus': !item.leaf && item.expend, 'glyphicon-plus': !item.leaf && !item.expend, 'glyphicon-globe': item.leaf}">
-                                                </span>
-                                                {{ item.NomeContabil }}
-                                            </span>
-                                        </td>
-                                        <td>{{ item.Valor | currency }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </uib-tab>
-            </uib-tabset>
+        <div class="ibox-content">
+            <div class="row">
+                <table class="table table-striped table-bordered table-hover    ">
+                    <thead>
+                        <tr>
+                            <th>Filial</th>
+                            <th>Qtd.Estoque</th>
+                            <th>Vl.Estoque
+                            <th>Estoque Prop. CD</th>
+                            <th>Est. Teórico Total</th>
+                            <th>CDME</th>
+                            <th>Part. CDME</th>
+                            <th>D.Est</th>
+                            <th>D.Est CD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="dadoFilial in dadosFilial">
+                            <td>{{dadoFilial.Filial}}</td>
+                            <td>{{dadoFilial.QtdEstoque | number:2}}</td>
+                            <td>{{dadoFilial.VlEstoque | currency}}</td>
+                            <td>{{(dadosFilial[6].VlEstoque + dadosFilial[7].VlEstoque + dadosFilial[8].VlEstoque) * ((((dadoFilial.CMV / diasVenda) / (TotalCMV / diasVenda)))) | currency}}</td>
+                            <td>{{(dadoFilial.VlEstoque) + (dadosFilial[6].VlEstoque + dadosFilial[7].VlEstoque + dadosFilial[8].VlEstoque) * ((((dadoFilial.CMV / diasVenda) / (TotalCMV / diasVenda)))) | currency}}</td>
+                            <td>{{(dadoFilial.CMV / diasVenda) | number:2}}</td>
+                            <td>{{((((dadoFilial.CMV / diasVenda) / (TotalCMV / diasVenda))) * 100) | number:2}}%</td>
+                            <td>{{(dadoFilial.VlEstoque) / (dadoFilial.CMV / diasVenda) | number:2}}</td>
+                            <td>
+                                {{((dadoFilial.VlEstoque + (dadosFilial[6].VlEstoque + dadosFilial[7].VlEstoque + dadosFilial[8].VlEstoque) * ((((dadoFilial.CMV / diasVenda) / (TotalCMV / diasVenda)))))) / (dadoFilial.CMV / diasVenda) | number:2}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

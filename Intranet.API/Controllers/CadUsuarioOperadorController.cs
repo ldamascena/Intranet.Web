@@ -14,7 +14,7 @@ namespace Intranet.API.Controllers
 {
     public class CadUsuarioOperadorController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadUsuarioOperador> GetAll()
         {
             var context = new AlvoradaContext();
@@ -24,7 +24,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadUsuarioOperador Get(int id)
         {
             var context = new AlvoradaContext();
@@ -34,7 +34,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadUsuarioOperador> GetAllByLoja(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -63,7 +63,7 @@ namespace Intranet.API.Controllers
                 context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
                 emailService.SendEmail("vaniadp@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
-                emailService.SendEmail("arquivo@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+                emailService.SendEmail("escala@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
 
 
             }

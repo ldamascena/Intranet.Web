@@ -15,7 +15,7 @@ namespace Intranet.API.Controllers
 {
     public class CadSolAlterProdController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolAlterProd> GetAll()
         {
             var context = new AlvoradaContext();
@@ -23,7 +23,7 @@ namespace Intranet.API.Controllers
             return context.CadSolAlterProdutos.Take(500).OrderByDescending(x => x.Id).ToList();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolAlterProd> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();

@@ -9,13 +9,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using WebApi.OutputCache.V2;
 
 namespace Intranet.API.Controllers
 {
     public class ClusterController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<string> GetAllCompradores()
         {
             var context = new CentralContext();
@@ -23,28 +21,19 @@ namespace Intranet.API.Controllers
             return context.VwClassificacaoComprador.Select(x => x.Comprador).Distinct();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
-        public IEnumerable<VwClassificacaoComprador> GetAllClassificacoesByComprador(string comprador)
+        public IEnumerable<string> GetAllClassificacoesByComprador(string comprador)
         {
             var context = new CentralContext();
 
-             var result = context.VwClassificacaoComprador.Where(x => x.Comprador == comprador).Select(
-               x => new VwClassificacaoComprador
-               {
-                   cdClassificacaoProduto = x.cdClassificacaoProduto,
-                   Classificacao = x.Classificacao
-               }
-                ).Distinct();
-
-            return result;
+            return context.VwClassificacaoComprador.Where(x => x.Comprador == comprador).Select(x => x.Classificacao).Distinct();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
-        public IEnumerable<VwProdutosClassificacaoComprador> GetAllProdutosClassificacao(int codigo)
+        public IEnumerable<VwProdutosClassificacaoComprador> GetAllProdutosClassificacao(string classificacao)
         {
             var context = new CentralContext();
 
-            return context.VwProdutosClassificacaoComprador.Where(x => x.cdClassificacaoProduto == codigo).OrderBy(x => x.Produto);
+            return context.VwProdutosClassificacaoComprador.Where(x => x.Classificacao == classificacao).OrderBy(x => x.Produto);
+            ;
         }
 
         public HttpResponseMessage Incluir(List<ClusterLojas> objs)
@@ -78,7 +67,6 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
         public IEnumerable<VwEstatisticaProduto> GetEstatisticaByProduto(int codigo)
         {
             var context = new CentralContext();

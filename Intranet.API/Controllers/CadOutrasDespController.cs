@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadOutrasDespController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadOutrasDespControle> GetAll()
         {
             var context = new AlvoradaContext();
@@ -21,7 +21,7 @@ namespace Intranet.API.Controllers
             return context.CadOutrasDespsControle.ToList();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadOutrasDespControle> GetAllByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -88,7 +88,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public decimal GetTotalByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -99,7 +99,7 @@ namespace Intranet.API.Controllers
                 .Select(y => y.Sum(x => x.Valor)).FirstOrDefault();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadOutrasDespControle> GetAllByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -108,7 +108,7 @@ namespace Intranet.API.Controllers
             && x.DataInclusao == date);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public decimal GetTotalByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();

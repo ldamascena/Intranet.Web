@@ -11,7 +11,7 @@ namespace Intranet.API.Controllers
 {
     public class SitDespController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<SituacaoDesp> GetAll()
         {
             var context = new AlvoradaContext();

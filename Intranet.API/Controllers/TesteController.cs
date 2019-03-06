@@ -307,5 +307,28 @@ namespace Intranet.API.Controllers
 
             return "Executado com sucesso!";
         }
+
+
+        public string GetTesteEmail() {
+
+            var emailService = new EmailService();
+
+            emailService.SendEmail("leonardo.damascena@smalvorada.com", "teste", "teste");
+
+            return "a";
+        }
+
+        public IEnumerable<VWEstoqueClassificacao> GetTotalLoja() {
+            var centralContext = new CentralContext();
+
+            return centralContext.VWEstoqueClassificacao.OrderBy(x => x.Filial);
+        }
+
+        public decimal GetTotalCDME()
+        {
+            var centralContext = new CentralContext();
+
+            return centralContext.VWEstoqueClassificacao.Sum(x => x.CMV);
+        }
     }
 }

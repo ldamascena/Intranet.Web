@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadSaldoController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadSaldoControle GetLastSaldoByUser(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -41,7 +41,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadSaldoControle GetSaldoByUserAndDate(int idUsuario, DateTime date)
         {
             var context = new AlvoradaContext();
@@ -136,7 +136,7 @@ namespace Intranet.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSaldoControleLog> GetAllLogs()
         {
             var context = new AlvoradaContext();
@@ -144,7 +144,7 @@ namespace Intranet.API.Controllers
             return context.CadSaldosControleLogs;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSaldoControleLog> GetAllLogsByUser(int IdUsuario, DateTime dataInicial, DateTime dataFinal)
         {
             var context = new AlvoradaContext();

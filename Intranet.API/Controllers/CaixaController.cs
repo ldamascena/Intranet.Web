@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CaixaController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<Caixa> GetAll()
         {
             var context = new AlvoradaContext();

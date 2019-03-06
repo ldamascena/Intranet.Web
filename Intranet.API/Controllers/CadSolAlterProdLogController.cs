@@ -12,7 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class CadSolAlterProdLogController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolAlterProdLog> GetById(int id)
         {
             var context = new AlvoradaContext();

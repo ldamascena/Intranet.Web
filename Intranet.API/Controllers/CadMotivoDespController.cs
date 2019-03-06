@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadMotivoDespController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         // GET: api/CadMotivoDesp
         public IEnumerable<CadMotivoDesp> GetAll()
         {
@@ -24,7 +24,7 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public CadMotivoDesp Get(int id)
         {
             var context = new AlvoradaContext();

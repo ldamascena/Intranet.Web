@@ -13,7 +13,7 @@ namespace Intranet.API.Controllers
 {
     public class CadSolProdGradeController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolProdGrade> GetAll()
         {
             var context = new AlvoradaContext();
@@ -21,7 +21,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdGrades.ToList();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<CadSolProdGrade> GetByIdProduto(int idCadProduto)
         {
             var context = new AlvoradaContext();
@@ -29,7 +29,7 @@ namespace Intranet.API.Controllers
             return context.CadSolProdGrades.Where(x => x.IdCadSolProd == idCadProduto).ToList();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public HttpResponseMessage GetGetByIdProdutoExcluir(int IdCadSolProd)
         {
             var context = new AlvoradaContext();

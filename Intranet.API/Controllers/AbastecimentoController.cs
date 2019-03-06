@@ -17,7 +17,7 @@ namespace Intranet.API.Controllers
 {
     public class AbastecimentoController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<VwMixAbastecimentoPromo> GetAllByComprador(string Comprador, int cdPromo)
         {
             var context = new CentralContext();
@@ -25,7 +25,7 @@ namespace Intranet.API.Controllers
             return context.VwMixAbastecimentoPromo.Where(x => x.Comprador == Comprador && x.cdPromocao == cdPromo);
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public VwProdutosMovimento GetAllByCodigoAndFilial(int codigo, int codigoFilial)
         {
             var context = new CentralContext();
@@ -33,7 +33,7 @@ namespace Intranet.API.Controllers
             return context.VwProdutosMovimento.Where(x => x.cdProduto == codigo && x.cdPessoaFilial == codigoFilial).FirstOrDefault();
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<ParametroAbastecimento> GetAllParametro()
         {
             var context = new AlvoradaContext();
@@ -41,7 +41,7 @@ namespace Intranet.API.Controllers
             return context.ParametrosAbastecimento;
         }
 
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public ParametroAbastecimento GetParametroByPromocao(int codigo)
         {
             var context = new AlvoradaContext();
@@ -128,27 +128,10 @@ namespace Intranet.API.Controllers
         public HttpResponseMessage AlterarAbastecimentoEmMassa(LogAlteracaoAbastecimento obj)
         {
             var contextCentral = new CentralContext();
-            var contextAlvorada = new AlvoradaContext();
-
-            var result = contextAlvorada.VwProdutosMudancaAbastecimento;
-
-            foreach (var item in result)
-            {
-                obj.Codigo = item.Codigo;
-                obj.AlteradoDe = item.AlteradoDe;
-                obj.SuperProduto = item.SuperProduto;
-                obj.AlteradoPara = "Centralizado";
-                obj.Data = DateTime.Now;
-                contextAlvorada.LogAlteracaoAbastecimento.Add(obj);
-
-            }
-
-
             try
             {
                 var myParam1Parameter = new SqlParameter("@Responsavel", obj.Responsavel);
                 contextCentral.Database.ExecuteSqlCommand("spAlteracaoAbastecimento @Responsavel", myParam1Parameter);
-                contextAlvorada.SaveChanges();
             }
             catch (Exception ex)
             {

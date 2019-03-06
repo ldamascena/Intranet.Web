@@ -12,7 +12,7 @@ namespace Intranet.API.Controllers
 {
     public class CargaController : ApiController
     {
-        [CacheOutput(ServerTimeSpan = 120)]
+        
         public IEnumerable<Carga> GetAll()
         {
             var context = new CentralContext();
