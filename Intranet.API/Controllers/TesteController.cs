@@ -14,6 +14,7 @@ using System.Web.Http;
 using System.Data.Entity;
 using Intranet.Data.Context;
 using Intranet.Alvorada.Data.Context;
+using Intranet.Domain.Entities.Views;
 
 namespace Intranet.API.Controllers
 {
@@ -329,6 +330,28 @@ namespace Intranet.API.Controllers
             var centralContext = new CentralContext();
 
             return centralContext.VWEstoqueClassificacao.Sum(x => x.CMV);
+        }
+
+        public IEnumerable<vwDadosConsolidado> Get()
+        {
+            var context = new CentralContext();
+
+            return context.vwDadosConsolidado;
+        }
+
+        public IEnumerable<vwDadosLoja> GetLojas()
+        {
+            var context = new CentralContext();
+
+            return context.vwDadosLoja.OrderBy(x => x.Filial);
+        }
+
+        public IEnumerable<vwDadosCompradores> GetCompradores()
+        {
+            var context = new CentralContext();
+            context.Database.CommandTimeout = 180;
+
+            return context.vwDadosCompradores;
         }
     }
 }

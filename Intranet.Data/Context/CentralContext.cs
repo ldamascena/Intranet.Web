@@ -1,5 +1,6 @@
 ﻿using Intranet.Domain;
 using Intranet.Domain.Entities;
+using Intranet.Domain.Entities.Views;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,6 +20,19 @@ namespace Intranet.Solidcon.Data.Context
         }
 
         public virtual DbSet<VWEstoqueClassificacao> VWEstoqueClassificacao { get; set; }
+
+        public virtual DbSet<vwDadosConsolidado> vwDadosConsolidado { get; set; }
+        public virtual DbSet<vwDadosLoja> vwDadosLoja { get; set; }
+        public virtual DbSet<vwDadosCompradores> vwDadosCompradores { get; set; }
+
+        #region Produto
+
+        public virtual DbSet<vwSuperProduto> vwSuperProduto { get; set; }
+
+        public virtual DbSet<vwFornecedor> vwFornecedor { get; set; }
+
+        #endregion
+
 
         #region Alertas
 
@@ -112,6 +126,7 @@ namespace Intranet.Solidcon.Data.Context
 
         public virtual DbSet<VwMixAbastecimentoPromo> VwMixAbastecimentoPromo { get; set; }
         public virtual DbSet<VwProdutosMovimento> VwProdutosMovimento { get; set; }
+        public virtual DbSet<vwSuperProdutoNegociacao> VwSuperProdutoNegociacao { get; set; }
 
         #endregion
 

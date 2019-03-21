@@ -116,7 +116,8 @@
                                                     <td>{{dadoFilial.vlCompras + dadoFilial.vlPedidos | currency}}</td>
                                                     <td ng-class="dadoFilial.CMV - (dadoFilial.vlCompras + dadoFilial.vlPedidos) >= 0 ? 'text-navy' : 'text-danger'">{{dadoFilial.CMV - (dadoFilial.vlCompras + dadoFilial.vlPedidos) | currency}}</td>
                                                     <td ng-class="(((dadoFilial.vlCompras + dadoFilial.vlPedidos) / dadoFilial.CMV) -1) * 100 <= 0 ? 'text-navy' : 'text-danger'">
-                                                    <i ng-class="(((dadoFilial.vlCompras + dadoFilial.vlPedidos) / dadoFilial.CMV) -1) * 100 <= 0 ? 'fa fa-level-up': 'fa fa-level-doww'"></i> {{(((dadoFilial.vlCompras + dadoFilial.vlPedidos) / dadoFilial.CMV) -1) * 100 | number: 2}}% </td>
+                                                        <i ng-class="(((dadoFilial.vlCompras + dadoFilial.vlPedidos) / dadoFilial.CMV) -1) * 100 <= 0 ? 'fa fa-level-up': 'fa fa-level-doww'"></i> {{(((dadoFilial.vlCompras + dadoFilial.vlPedidos) / dadoFilial.CMV) -1) * 100 | number: 2}}%
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

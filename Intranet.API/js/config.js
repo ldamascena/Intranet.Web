@@ -722,6 +722,40 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/register.html",
             data: { pageTitle: 'Register', specialClass: 'gray-bg' }
         })
+
+        .state('analitico', {
+            url: "/analitico",
+            templateUrl: "views/analitico.html",
+            data: { pageTitle: 'Analitico', specialClass: 'gray-bg' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        }
+                    ]);
+                }
+            }
+        })
+
         .state('forgotpassword', {
             url: "/forgotpassword",
             templateUrl: "views/forgotpassword.html",
@@ -2002,6 +2036,54 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             }
         })
 
+        .state('produto.troca', {
+            url: "/troca",
+            templateUrl: "views/abastecimento/troca_de_abastecimento.html",
+            data: { pageTitle: 'Alteracao Abastecimento' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/plugins/dataTables/angular-datatables.min.js']
+                        },
+                        {
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+                        },
+                        {
+                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            files: ['js/plugins/moment/moment.min.js']
+                        },
+                        {
+                            name: 'datePicker',
+                            files: ['css/plugins/datapicker/angular-datapicker.css', 'js/plugins/datapicker/angular-datepicker.js']
+                        },
+                        {
+                            files: ['css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css']
+                        },
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'localytics.directives',
+                            files: ['css/plugins/chosen/bootstrap-chosen.css', 'js/plugins/chosen/chosen.jquery.js', 'js/plugins/chosen/chosen.js']
+                        }
+                    ]);
+                }
+            }
+        })
+
         .state('suporte', {
             abstract: true,
             url: "/suporte",
@@ -2715,15 +2797,15 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
-        .state('inventario', {
+        .state('fornecedor', {
             abstract: true,
-            url: "/Inventario",
+            url: "/fornecedor",
             templateUrl: "views/common/content.html"
         })
-        .state('inventario.parcial', {
-            url: "/parcial",
-            templateUrl: "views/Inventario/Parcial.html",
-            data: { pageTitle: 'Invetario Parcial' },
+        .state('fornecedor.lista', {
+            url: "/consulta",
+            templateUrl: "views/fornecedor/cad_edit_fornecedor.html",
+            data: { pageTitle: 'Cadastro de Fornecedor' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
@@ -2752,7 +2834,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
-        .state('inventario.parcialprodutos', {
+        .state('cadfornecedor.parcialprodutos', {
             url: "/parcialprodutos",
             templateUrl: "views/Inventario/ParcialProdutos.html",
             data: { pageTitle: 'Inventario Parcial Produtos' },
@@ -2816,6 +2898,43 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
+        //.state('promocao', {
+        //    abstract: true,
+        //    url: "/promocao",
+        //    templateUrl: "views/common/content.html"
+        //})
+        //.state('promocao.principal', {
+        //    url: "/principal",
+        //    templateUrl: "views/promocao/principal.html",
+        //    data: { pageTitle: 'Teste' },
+        //    resolve: {
+        //        loadPlugin: function ($ocLazyLoad) {
+        //            return $ocLazyLoad.load([
+        //                {
+        //                    serie: true,
+        //                    files: ['js/plugins/dataTables/datatables.min.js', 'css/plugins/dataTables/datatables.min.css']
+        //                },
+        //                {
+        //                    serie: true,
+        //                    name: 'datatables',
+        //                    files: ['js/plugins/dataTables/angular-datatables.min.js']
+        //                },
+        //                {
+        //                    serie: true,
+        //                    name: 'datatables.buttons',
+        //                    files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
+        //                },
+        //                {
+        //                    files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+        //                },
+        //                {
+        //                    name: 'oitozero.ngSweetAlert',
+        //                    files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
+        //                }
+        //            ]);
+        //        }
+        //    }
+        //})
         ;
 }
 angular

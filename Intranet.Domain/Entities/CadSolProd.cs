@@ -76,7 +76,6 @@ namespace Intranet.Domain.Entities
         public decimal? Camadas { get; set; }
 
         [DataMember]
-        [Required]
         public string Mix { get; set; }
 
         [DataMember]

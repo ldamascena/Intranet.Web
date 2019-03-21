@@ -1,6 +1,7 @@
 ﻿using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities;
 using Intranet.Domain.Entities.DTOS;
+using Intranet.Domain.Entities.Views;
 using Intranet.Solidcon.Data.Context;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace Intranet.API.Controllers
 
             return context.VwMixAbastecimentoPromo.Where(x => x.Comprador == Comprador && x.cdPromocao == cdPromo);
         }
-
         
         public VwProdutosMovimento GetAllByCodigoAndFilial(int codigo, int codigoFilial)
         {
@@ -32,7 +32,6 @@ namespace Intranet.API.Controllers
 
             return context.VwProdutosMovimento.Where(x => x.cdProduto == codigo && x.cdPessoaFilial == codigoFilial).FirstOrDefault();
         }
-
         
         public IEnumerable<ParametroAbastecimento> GetAllParametro()
         {
@@ -41,7 +40,6 @@ namespace Intranet.API.Controllers
             return context.ParametrosAbastecimento;
         }
 
-        
         public ParametroAbastecimento GetParametroByPromocao(int codigo)
         {
             var context = new AlvoradaContext();
@@ -147,5 +145,106 @@ namespace Intranet.API.Controllers
 
             return context.LogAlteracaoAbastecimento.Where(x => x.Data >= dtinicio && x.Data <= dtfim);
         }
+
+        public IEnumerable<vwSuperProdutoNegociacao> GetBySuperProduto(int codigo)
+        {
+            var context = new CentralContext();
+
+            var produtos = context.Database.SqlQuery
+            <vwSuperProdutoNegociacao>(@"Select 
+	                                distinct 
+	                                tbSuperProduto.cdSuperProduto,
+	                                cdPessoaComercial as cdPessoa,
+	                                dbo.fnNomeSuperProduto(tbSuperProduto.cdSuperProduto, 10) as SuperProduto, 
+	                                tbCompraTipo.cdCompraTipo, 
+	                                tbCompraTipo.nmCompraTipo,
+	                                tbPessoa.nmPessoa
+                                from tbSuperProduto
+                                LEFT JOIN tbCompraTipo
+	                                on tbCompraTipo.cdCompraTipo = tbSuperProduto.cdCompraTipo
+                                LEFT JOIN tbNegociacao
+	                                on tbNegociacao.cdSuperProduto = tbSuperProduto.cdSuperProduto
+                                LEFT JOIN tbPessoa
+	                                on tbPessoa.cdPessoa = tbNegociacao.cdPessoaComercial
+                                where tbSuperProduto.cdSuperProduto = @param1", new SqlParameter("param1", codigo)).ToList();
+
+            return produtos;
+        }
+
+        public IEnumerable<vwSuperProdutoNegociacao> GetBySuperProdutos(IEnumerable<int> codigos)
+        {
+            var context = new CentralContext();
+
+            var produtos = context.Database.SqlQuery
+            <vwSuperProdutoNegociacao>(@"Select 
+	                                distinct 
+	                                tbSuperProduto.cdSuperProduto,
+	                                cdPessoaComercial as cdPessoa,
+	                                dbo.fnNomeSuperProduto(tbSuperProduto.cdSuperProduto, 10) as SuperProduto, 
+	                                tbCompraTipo.cdCompraTipo, 
+	                                tbCompraTipo.nmCompraTipo,
+	                                tbPessoa.nmPessoa
+                                from tbSuperProduto
+                                LEFT JOIN tbCompraTipo
+	                                on tbCompraTipo.cdCompraTipo = tbSuperProduto.cdCompraTipo
+                                LEFT JOIN tbNegociacao
+	                                on tbNegociacao.cdSuperProduto = tbSuperProduto.cdSuperProduto
+                                LEFT JOIN tbPessoa
+	                                on tbPessoa.cdPessoa = tbNegociacao.cdPessoaComercial
+                                where tbSuperProduto.cdSuperProduto in (@param1)", new SqlParameter("param1", codigos)).ToList();
+
+            return produtos;
+        }
+
+        public IEnumerable<vwSuperProdutoNegociacao> GetByFornecedor(int codigoFornecedor)
+        {
+            var context = new CentralContext();
+
+            var produtos = context.Database.SqlQuery
+            <vwSuperProdutoNegociacao>(@"Select 
+	                                distinct 
+	                                tbSuperProduto.cdSuperProduto,
+	                                cdPessoaComercial as cdPessoa,
+	                                dbo.fnNomeSuperProduto(tbSuperProduto.cdSuperProduto, 10) as SuperProduto, 
+	                                tbCompraTipo.cdCompraTipo, 
+	                                tbCompraTipo.nmCompraTipo,
+	                                tbPessoa.nmPessoa
+                                from tbSuperProduto
+                                LEFT JOIN tbCompraTipo
+	                                on tbCompraTipo.cdCompraTipo = tbSuperProduto.cdCompraTipo
+                                LEFT JOIN tbNegociacao
+	                                on tbNegociacao.cdSuperProduto = tbSuperProduto.cdSuperProduto
+                                LEFT JOIN tbPessoa
+	                                on tbPessoa.cdPessoa = tbNegociacao.cdPessoaComercial
+                                where tbPessoa.cdPessoa = @param1", new SqlParameter("param1", codigoFornecedor)).ToList();
+
+            return produtos;
+        }
+
+        public IEnumerable<vwSuperProdutoNegociacao> GetTeste(int codigo)
+        {
+            var context = new CentralContext();
+
+            var produtos = context.Database.SqlQuery
+            <vwSuperProdutoNegociacao>(@"Select 
+	                                distinct 
+	                                tbSuperProduto.cdSuperProduto,
+	                                cdPessoaComercial as cdPessoa,
+	                                dbo.fnNomeSuperProduto(tbSuperProduto.cdSuperProduto, 10) as SuperProduto, 
+	                                tbCompraTipo.cdCompraTipo, 
+	                                tbCompraTipo.nmCompraTipo,
+	                                tbPessoa.nmPessoa
+                                from tbSuperProduto
+                                LEFT JOIN tbCompraTipo
+	                                on tbCompraTipo.cdCompraTipo = tbSuperProduto.cdCompraTipo
+                                LEFT JOIN tbNegociacao
+	                                on tbNegociacao.cdSuperProduto = tbSuperProduto.cdSuperProduto
+                                LEFT JOIN tbPessoa
+	                                on tbPessoa.cdPessoa = tbNegociacao.cdPessoaComercial
+                                where tbSuperProduto.cdSuperProduto = @param1", new SqlParameter("param1", codigo)).ToList();
+
+            return produtos;
+        }
+
     }
 }

@@ -90,6 +90,7 @@
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 9 || grupo == 10 || grupo == 11"><a ui-sref="produto.altlistaprodutos">Lista de Solicitacoes de Alteracao</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="produto.classificacaoproduto">Classificacao de Produtos</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 10 || grupo == 15 || grupo == 22"><a ui-sref="produto.associacao">Associacao de Produtos</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8 || grupo == 9"><a ui-sref="produto.troca">Abastecimento Troca</a></li>
                 </ul>
             </li>
 
@@ -103,11 +104,12 @@
             <li ng-class="{active: $state.includes('abastecimento')}" ng-show="grupo == 1">
                 <a href="#"><i class="fa fa-newspaper-o"></i> <span class="nav-label">{{ 'Abastecimento' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('abastecimento')}">
-                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="abastecimento.principal">Ajuste Preco Promocao</a></li>
+                    <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 8"><a ui-sref="promocao.principal">Ajuste Preco Promocao</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="abastecimento.parametro">Cadastro de Parametro</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="abastecimento.aprovacao">Aprovacao de Abastecimento</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 26"><a ui-sref="abastecimento.massa">Alt.Abastecimento em Massa</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 26"><a ui-sref="abastecimento.massalog">Log Alt.Abastecimento em Massa</a></li>
+                    
                 </ul>
             </li>
 
@@ -139,12 +141,10 @@
                     <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
                 </ul>
             </li>
-            <li ng-class="{active: $state.includes('inventario')}" ng-show="grupo == 1 || grupo == 7">
-                <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">{{ 'Inventario' | translate }}</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('inventario')}">
-                    <li ui-sref-active="active"><a ui-sref="inventario.parcial" ng-show="grupo == 1 || grupo == 7">Parcial</a></li>
-                    <li ui-sref-active="active"><a ui-sref="inventario.parcialprodutos" ng-show="grupo == 1 || grupo == 7">Parcial Produtos</a></li>
-                    <li ui-sref-active="active"><a ui-sref="inventario.parcialconsolidado" ng-show="grupo == 1 || grupo == 7">Parcial Consolidado</a></li>
+            <li ng-class="{active: $state.includes('fornecedor')}" ng-show="grupo == 1">
+                <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">{{ 'Fornecedor' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('fornecedor')}">
+                    <li ui-sref-active="active"><a ui-sref="fornecedor.lista" ng-show="grupo == 1">Listagem de Fornecedores</a></li>
                     <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
                 </ul>
             </li>

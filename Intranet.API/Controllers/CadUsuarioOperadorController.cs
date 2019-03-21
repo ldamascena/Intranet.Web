@@ -142,7 +142,7 @@ namespace Intranet.API.Controllers
                 };
                 context.CadUsuarioOperadorLogs.Add(Log);
                 context.SaveChanges();
-                emailService.SendEmail("clima@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+                emailService.SendEmail("indicadores@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
             }
             catch (Exception ex)
             {

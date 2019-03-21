@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebApi.OutputCache.V2;
+using Intranet.Domain.Entities.Views;
 
 namespace Intranet.API.Controllers
 {
@@ -19,6 +20,12 @@ namespace Intranet.API.Controllers
         {
             var context = new CentralContext();
             return context.Pessoas.Where(x => x.Morto == false);
+        }
+
+        public IEnumerable<vwFornecedor> GetAllFornecedores()
+        {
+            var context = new CentralContext();
+            return context.vwFornecedor;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Intranet.API.Controllers
                 model.DataInclusao = DateTime.Now;
                 context.CadAssProd.Add(model);
                 context.SaveChanges();
-                emailService.SendEmail("indicador@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
+                emailService.SendEmail("indicadores@smalvorada.com", "Nova Associação de Produto - Pendente", emailService.BodyAssociacaoProduto());
             }
 
             catch (Exception ex)

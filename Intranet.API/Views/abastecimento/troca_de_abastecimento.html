@@ -1,0 +1,147 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Abastecimento</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="abastecimento.troca">Home</a>
+            </li>
+            <li>
+                <a>Produdo</a>
+            </li>
+            <li class="active">
+                <strong>troca</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="abastecimentoTrocaCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Cadastro - <strong>Parametro</strong></h5>
+                    <div ibox-tools></div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label>Tipo de Troca *</label>
+                            <select class="form-control" ng-model="tipo" ng-options="tipo as tipo for tipo in tipos">
+                                <option value="">Selecione o tipo de mudança</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row animated bounceIn" ng-show="tipo == 'Super Produto'">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><strong>Super Produto</strong></h5>
+                    <div ibox-tools></div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label>Super Produto *</label>
+                            <input type="text" placeholder="Super Produto" name="codigoSuperProduto" ng-model="codigoSuperProduto" uib-typeahead="codigoSuperProduto as codigoSuperProduto.CodigoNome for codigoSuperProduto in codigoProdutos | filter:$viewValue | limitTo:8" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-info" ng-click="buscaProduto()">Carregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="row animated bounceIn" ng-show="tipo == 'Lista de Super Produtos'">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><strong>Lista de Super Produtos</strong></h5>
+                    <div ibox-tools></div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label>Lista de Super Produtos *</label>
+                            <select multiple chosen class="chosen-select" tabindex="8" name="codigosSuperProduto" ng-model="codigosSuperProduto" ng-options="codigoSuperProduto.cdSuperProduto as codigoSuperProduto.CodigoNome for codigoSuperProduto in codigoProdutos"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" ng-click="buscaProdutos(codigosSuperProduto)">Carregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="row animated bounceIn" ng-show="tipo == 'Fornecedor'">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><strong>Fornecedor</strong></h5>
+                    <div ibox-tools></div>
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label>Fornecedor *</label>
+                            <input type="text" placeholder="Super Produto" name="fornecedor" ng-model="fornecedor" uib-typeahead="fornecedor as fornecedor.dFornecedor for fornecedor in fornecedores | filter:$viewValue | limitTo:8" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-info" ng-click="buscaFornecedor()">Carregar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="dados.length > 0">
+        <div class="col-lg-12">
+            <div class="btn-group" uib-dropdown>
+                <button type="button" class="btn btn-primary btn-sm" uib-dropdown-toggle>
+                    Alterar <span class="caret"></span>
+                </button>
+                <ul role="menu" uib-dropdown-menu="">
+                    <li><a href="" ng-click=EDL(tipo);>EDL</a></li>
+                    <li><a href="" ng-click=CCEDL(tipo);>CCEDL</a></li>
+                    <li><a href="" ng-click=Centralizado(tipo);>Centralizado</a></li>
+                    <li><a href="" ng-click=Cross(tipo);>Cross-Docking</a></li>
+                </ul>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Listagem - <strong>Produtos</strong></h5>
+                    <div ibox-tools></div>
+                    <div class="ibox-content">
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Super Produto</th>
+                                            <th>Abastecimento</th>
+                                            <th>Fornecedor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dado in dados">
+
+                                            <td>{{ dado.cdSuperProduto }}</td>
+                                            <td>{{ dado.SuperProduto }}</td>
+                                            <td>{{ dado.nmCompraTipo }}</td>
+                                            <td>{{ dado.nmPessoa }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

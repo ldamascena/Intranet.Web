@@ -382,7 +382,6 @@ function wizardCtrl($scope, $rootScope, $uibModal, $http, $timeout, SweetAlert, 
                             Comprimento: $scope.comprimento == undefined ? $scope.comprimento : $scope.comprimento.toString().replace(",", "."),
                             Lastro: $scope.lastro == undefined ? $scope.lastro : $scope.lastro.toString().replace(",", "."),
                             Camadas: $scope.camadas == undefined ? $scope.camadas : $scope.camadas.toString().replace(",", "."),
-                            Mix: $scope.mix.toString(),
                             Caracteristica: $scope.caracteristica == undefined ? $scope.caracteristica : $scope.caracteristica.toString(),
                             JustificativaResumida: $scope.justificativa, Observacao: $scope.observacao,
                             IdUsuario: $localStorage.user.Id, TipoCadastro: $scope.tipoCadastro, Segmento: $scope.segmento, IdCadSolProd: $scope.IdCadSolProd
@@ -1143,7 +1142,6 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
     $scope.comprimento = solicitacaoProdSelected.Comprimento;
     $scope.lastro = solicitacaoProdSelected.Lastro;
     $scope.camadas = solicitacaoProdSelected.Camadas;
-    $scope.mix = solicitacaoProdSelected.Mix;
     $scope.caracteristica = solicitacaoProdSelected.Caracteristica;
     $scope.justificativa = solicitacaoProdSelected.JustificativaResumida;
     $scope.tipoCadastro = solicitacaoProdSelected.TipoCadastro;
@@ -1159,7 +1157,7 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
             Comprador: $scope.comprador, Fornecedor: $scope.fornecedor, Abastecimento: $scope.abastecimento, ConcSensibilidade: $scope.concorrencia,
             Custo: $scope.custo, Venda: $scope.venda, Embalagem: $scope.embalagem, QtdEmbalagem: $scope.qtdEmbalagem,
             Peso: $scope.peso, Altura: $scope.altura, Largura: $scope.largura, Comprimento: $scope.comprimento, Lastro: $scope.lastro,
-            Camadas: $scope.camadas, Mix: $scope.mix, Caracteristica: $scope.caracteristica,
+            Camadas: $scope.camadas, Caracteristica: $scope.caracteristica,
             JustificativaResumida: $scope.justificativa, Observacao: $scope.observacao, idStatus: solicitacaoProdSelected.IdStatus,
             IdUsuario: solicitacaoProdSelected.IdUsuario, DataCriacao: solicitacaoProdSelected.DataCriacao, Segmento: $scope.segmento,
             TipoCadastro: $scope.tipoCadastro, IdUserLocksolicitacaoProdSelected: solicitacaoProdSelected.IdUserLocksolicitacaoProdSelected
@@ -6602,12 +6600,17 @@ function bpdreCtrl($scope, $localStorage, $http, DTOptionsBuilder) {
 }
 
 function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert, $interval, $uibModal) {
-    $scope.dados = [];
-    $scope.parametroCoberturas = 0;
+    $scope.dadosFilial = [];
+    $scope.dadosComprador = [];
+    $scope.totalVenda = 0;
+    $scope.totalCMV = 0;
+    $scope.totalPedidos = 0;
+    $scope.totalCompras = 0;
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
+    $scope.dtOptions1 = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
         .withOption('order', [0, 'asc'])
+        .withOption('lengthMenu', [50, 100, 150, 200])
         .withButtons([
             { extend: 'copy' },
             { extend: 'csv' },
@@ -6627,47 +6630,43 @@ function promocaoCtrl($scope, $localStorage, $http, DTOptionsBuilder, SweetAlert
             }
         ]);
 
-    $http.get("http://localhost:50837/api/Promocao/GetAllAtivas").then(function (response) {
-        $scope.promocoes = response.data;
-    })
+    $scope.dtOptions2 = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [0, 'asc'])
+        .withOption('lengthMenu', [50, 100, 150, 200])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
 
-    $scope.carregar = function () {
-        $http.get("http://localhost:50837/api/Abastecimento/GetAllByComprador?Comprador=" + $scope.comprador + "&cdPromo=" + $scope.promocao).then(function (response) {
-            if (response.data.length == 0) {
-                SweetAlert.swal({
-                    title: "Nenhum resultado encontrado",
-                    type: "warning"
-                });
-            }
-            else {
-                $scope.dados = response.data;
-            }
-        })
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
 
-        $http.get("http://localhost:50837/api/Abastecimento/GetParametroByPromocao?codigo=" + $scope.promocao).then(function (response) {
-            $scope.parametroCoberturas = response.data
-        })
-    }
-
-    $scope.visualizar = function (index) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'Views/modal/abastecimento/visualizar_detalhe.html',
-            controller: 'promocaoModalInstanceCtrl',
-            windowClass: 'animated fadeIn app-modal-window',
-            resolve: {
-                abastecimentoSelected: function () {
-                    return index;
-                },
-                parametroCoberturas: function () {
-                    return $scope.parametroCoberturas
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
                 }
             }
-        }).result.then(function () {
-            $http.get("http://localhost:50837/api/Abastecimento/GetAllByComprador?Comprador=" + $scope.comprador + "&cdPromo=" + $scope.promocao).then(function (response) {
-                $scope.dados = response.data;
-            })
-        });
-    }
+        ]);
+
+    $http.get("http://localhost:50837/api/teste/Get").then(function (response) {
+        $scope.totalCMV = response.data[0].CMV
+        $scope.totalVenda = response.data[0].Venda
+        $scope.totalPedidos = response.data[0].vlPedidos
+        $scope.totalCompras = response.data[0].vlCompras
+    })
+
+    $http.get("http://localhost:50837/api/teste/GetLojas").then(function (response) {
+        $scope.dadosFilial = response.data;
+    })
+
+    $http.get("http://localhost:50837/api/teste/GetCompradores").then(function (response) {
+        $scope.dadosComprador = response.data;
+    })
 }
 
 function promocaoModalInstanceCtrl($scope, $http, $uibModalInstance, abastecimentoSelected, parametroCoberturas) {
@@ -9224,6 +9223,411 @@ function abastecimentoMassaLog($scope, $http, DTOptionsBuilder) {
         ]);
 }
 
+function abastecimentoTrocaCtrl($scope, $http, DTOptionsBuilder, $localStorage, SweetAlert) {
+
+    $scope.tipo = "";
+    //$scope.tipos = ['Super Produto', 'Lista de Super Produtos', 'Fornecedor'];
+    $scope.tipos = ['Super Produto', 'Fornecedor'];
+    $scope.fornecedores;
+    $scope.nomeProduto;
+    $scope.codigoProdutos;
+    $scope.dados;
+
+    $http.get("http://localhost:50837/api/SuperProduto/GetAll").then(function (response) {
+        $scope.codigoProdutos = response.data;
+    })
+
+    $http.get("http://localhost:50837/api/Pessoa/GetAllFornecedores").then(function (response) {
+        $scope.fornecedores = response.data;
+    })
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('order', [2, 'desc'])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $scope.buscaProduto = function () {
+        $http.get("http://localhost:50837/api/abastecimento/GetBySuperProduto?codigo=" + $scope.codigoSuperProduto.cdSuperProduto).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    //$scope.buscaProdutos = function (codigos) {
+
+    //    $scope.listaCodigos = codigos;
+
+    //    $http.get("http://localhost:50837/api/abastecimento/GetBySuperProdutos?codigos=" + $scope.listaCodigos).then(function (response) {
+    //        $scope.dados = response.data;
+    //    });
+    //}
+
+    $scope.buscaFornecedor = function () {
+        $http.get("http://localhost:50837/api/abastecimento/GetByFornecedor?codigoFornecedor=" + $scope.fornecedor.cdPessoa).then(function (response) {
+            $scope.dados = response.data;
+        });
+    }
+
+    $scope.EDL = function (tipo) {
+        if (tipo == "Super Produto") {
+            SweetAlert.swal({
+                title: "Deseja alterar para EDL?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 1, cdSuperProduto: $scope.codigoSuperProduto.cdSuperProduto, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoProduto", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetBySuperProduto?codigo=" + $scope.codigoSuperProduto.cdSuperProduto).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+        else {
+
+            SweetAlert.swal({
+                title: "Deseja alterar para EDL?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 1, cdPessoaComercial: $scope.fornecedor.cdPessoa, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoFornecedor", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetByFornecedor?codigoFornecedor=" + $scope.fornecedor.cdPessoa).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+
+    }
+
+    $scope.CCEDL = function (tipo) {
+        if (tipo == "Super Produto") {
+            SweetAlert.swal({
+                title: "Deseja alterar para CCEDL?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 2, cdSuperProduto: $scope.codigoSuperProduto.cdSuperProduto, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoProduto", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetBySuperProduto?codigo=" + $scope.codigoSuperProduto.cdSuperProduto).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+        else {
+            SweetAlert.swal({
+                title: "Deseja alterar para CCEDL?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 2, cdPessoaComercial: $scope.fornecedor.cdPessoa, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoFornecedor", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetByFornecedor?codigoFornecedor=" + $scope.fornecedor.cdPessoa).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+    }
+
+    $scope.Centralizado = function (tipo) {
+        if (tipo == "Super Produto") {
+            SweetAlert.swal({
+                title: "Deseja Alterar para Centralizado?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 3, cdSuperProduto: $scope.codigoSuperProduto.cdSuperProduto, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoProduto", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetBySuperProduto?codigo=" + $scope.codigoSuperProduto.cdSuperProduto).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+        else {
+            SweetAlert.swal({
+                title: "Deseja alterar para Centralizado?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 3, cdPessoaComercial: $scope.fornecedor.cdPessoa, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoFornecedor", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetByFornecedor?codigoFornecedor=" + $scope.fornecedor.cdPessoa).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+    }
+
+    $scope.Cross = function (tipo) {
+        if (tipo == "Super Produto") {
+            SweetAlert.swal({
+                title: "Deseja Alterar para Cross-Docking?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 4, cdSuperProduto: $scope.codigoSuperProduto.cdSuperProduto, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoProduto", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetBySuperProduto?codigo=" + $scope.codigoSuperProduto.cdSuperProduto).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+        else {
+            SweetAlert.swal({
+                title: "Deseja alterar para Cross-Docking?",
+                text: "Não será possivel recuperar o registro depois de alterar!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Sim, alterar!",
+                cancelButtonText: "Não, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                timer: 10000
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.obj = { cdCompraTipo: 4, cdPessoaComercial: $scope.fornecedor.cdPessoa, Responsavel: $localStorage.user.Nome + " " + $localStorage.user.Sobrenome };
+                        $http.post("http://localhost:50837/api/SuperProduto/AlteraAbastecimentoFornecedor", $scope.obj).then(function (response) {
+                            SweetAlert.swal({
+                                title: "Alterado!",
+                                text: "O registro foi alterado com sucesso!",
+                                type: "success",
+                                timer: 10000
+                            });
+                            $http.get("http://localhost:50837/api/abastecimento/GetByFornecedor?codigoFornecedor=" + $scope.fornecedor.cdPessoa).then(function (response) {
+                                $scope.dados = response.data;
+                            });
+                        },
+                            function (response) {
+                                return alert("Erro: " + response.status);
+                            }
+                        );
+                    } else {
+                        SweetAlert.swal({
+                            title: "Cancelado!",
+                            text: "Você cancelou a exclusão!",
+                            type: "error",
+                            timer: 10000
+                        });
+                    }
+                });
+        }
+    }
+
+}
+
 function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTColumnDefBuilder) {
     $scope.compradores;
     $scope.classificacoes;
@@ -9918,6 +10322,9 @@ function inventarioParcialConsolidadoCtrl($scope, $http, DTOptionsBuilder, DTCol
         )
     };
 }
+
+function cadFornecedorCtrl($scope, $http) {
+}
 /**
  *
  * Pass all functions into module
@@ -10182,9 +10589,11 @@ angular
     .controller('abastecimentoMassaCtrl', abastecimentoMassaCtrl)
     .controller('abastecimentoMassaModalCtrl', abastecimentoMassaModalCtrl)
     .controller('abastecimentoMassaLog', abastecimentoMassaLog)
+    .controller('abastecimentoTrocaCtrl', abastecimentoTrocaCtrl)
     .controller('clusterCtrl', clusterCtrl)
     .controller('clusterModalCtrl', clusterModalCtrl)
     .controller('inventarioParcialCtrl', inventarioParcialCtrl)
     .controller('inventarioProdutoCtrl', inventarioProdutoCtrl)
     .controller('inventarioProdutoModalInstanceCtrl', inventarioProdutoModalInstanceCtrl)
-    .controller('inventarioParcialConsolidadoCtrl', inventarioParcialConsolidadoCtrl);
+    .controller('inventarioParcialConsolidadoCtrl', inventarioParcialConsolidadoCtrl)
+    .controller('cadFornecedorCtrl', cadFornecedorCtrl);

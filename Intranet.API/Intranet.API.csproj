@@ -2535,11 +2535,14 @@
     <Content Include="Views\abastecimento\parametro_abastecimento.html" />
     <Content Include="Views\abastecimento\aprovacao.html" />
     <Content Include="Views\abastecimento\principal.html" />
+    <Content Include="Views\abastecimento\troca_de_abastecimento.html" />
     <Content Include="Views\agendamento\listaestoqueminimo.html" />
     <Content Include="Views\alertas\balanco.html" />
     <Content Include="Views\alertas\geral.html" />
     <Content Include="Views\alertas\inversao.html" />
     <Content Include="Views\alertas\ultimocusto.html" />
+    <Content Include="Views\analitico.html" />
+    <Content Include="Views\fornecedor\cad_edit_fornecedor.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
     <Content Include="Views\cadprod\sol_produto.html" />
     <Content Include="Views\cadusuario\cad_usuario.html" />

@@ -149,6 +149,9 @@
     <Compile Include="Entities\Promocao.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Entities\Vendedor.cs" />
+    <Compile Include="Entities\Views\vwDadosCompradores.cs" />
+    <Compile Include="Entities\Views\vwDadosConsolidado.cs" />
+    <Compile Include="Entities\Views\vwDadosLoja.cs" />
     <Compile Include="Entities\Views\VwEstoqueClassificacao.cs" />
     <Compile Include="Entities\Views\ViewProduto.cs" />
     <Compile Include="Entities\Views\VwAcompanhamentoControleCaixa.cs" />
@@ -160,6 +163,7 @@
     <Compile Include="Entities\Views\VwClassificacaoMetaMes.cs" />
     <Compile Include="Entities\Views\VwEmbalagensProdutoEAN.cs" />
     <Compile Include="Entities\Views\VwEstoqueMinimoProduto.cs" />
+    <Compile Include="Entities\Views\vwFornecedor.cs" />
     <Compile Include="Entities\Views\VwLancamentoContabilRaizFive.cs" />
     <Compile Include="Entities\Views\VwLancamentoContabilRaizFour.cs" />
     <Compile Include="Entities\Views\VwLancamentoContabilRaizOne.cs" />
@@ -177,6 +181,8 @@
     <Compile Include="Entities\Views\VwEstatisticaProduto.cs" />
     <Compile Include="Entities\Views\VwProdutosMudancaAbastecimento.cs" />
     <Compile Include="Entities\Views\VwInventarioParcial.cs" />
+    <Compile Include="Entities\Views\vwSuperProduto.cs" />
+    <Compile Include="Entities\Views\vwSuperProdutoNegociacao.cs" />
     <Compile Include="Interfaces\Applications\IAlertaBalancoApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaGeralApp.cs" />
     <Compile Include="Interfaces\Applications\IAlertaHistoricoApp.cs" />

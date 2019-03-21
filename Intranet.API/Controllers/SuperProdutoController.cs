@@ -9,37 +9,60 @@ using System.Net.Http;
 using System.Web.Http;
 using Intranet.Domain.Entities;
 using WebApi.OutputCache.V2;
+using Intranet.Domain.Entities.Views;
+using System.Data.SqlClient;
+using Intranet.Domain.Entities.DTOS;
 
 namespace Intranet.API.Controllers
 {
     public class SuperProdutoController : ApiController
     {
-        
-        // GET: api/SuperProduto
-        public IEnumerable<SuperProduto> GetAll()
+        public IEnumerable<vwSuperProduto> GetAll()
         {
             var context = new CentralContext();
 
-            return context.SuperProdutos.ToList();
+            return context.vwSuperProduto;
         }
 
-        
-        public IEnumerable<SuperProduto> Getteste()
+        public HttpResponseMessage AlteraAbastecimentoProduto(AbastecimentoDTO obj) {
+            var context = new CentralContext();
+
+            try
+            {
+                var responsavel = new SqlParameter("@responsavel", obj.Responsavel);
+                var cdCompraTipo = new SqlParameter("@cdCompraTipo", obj.cdCompraTipo);
+                var cdSuperProduto = new SqlParameter("@cdSuperProduto", obj.cdSuperProduto);
+                
+
+                var result = context.Database.ExecuteSqlCommand("exec spAlteracaoAbastecimentoPorProduto @responsavel, @cdCompraTipo, @cdSuperProduto", responsavel, cdCompraTipo, cdSuperProduto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage AlteraAbastecimentoFornecedor(AbastecimentoDTO obj)
         {
             var context = new CentralContext();
 
-            var produtos = context.SuperProdutos.SqlQuery(@"Select tbSuperProduto.* from tbProduto
-                                                            INNER JOIN tbSuperProduto
-                                                                ON tbProduto.cdSuperProduto = tbSuperProduto.cdSuperProduto
-                                                            INNER JOIN tbEstoqueFisico
-                                                                ON tbEstoqueFisico.cdProduto = tbProduto.cdProduto
-                                                            WHERE tbEstoqueFisico.cdEstoqueTipo = 1
-                                                            AND tbEstoqueFisico.cdPessoaFilial = 13
-                                                            AND tbSuperProduto.cdCompraTipo != 3
-                                                            and tbEstoqueFisico.qtEstoqueFisico > 0");
+            try
+            {
+                SqlParameter cdCompraTipo = new SqlParameter("@cdCompraTipo", obj.cdCompraTipo);
+                SqlParameter cdPessoaComercial = new SqlParameter("@cdPessoaComercial", obj.cdPessoaComercial);
+                SqlParameter responsavel = new SqlParameter("@responsavel", obj.Responsavel);
 
-            return produtos;
 
+                var result = context.Database.ExecuteSqlCommand("exec spAlteracaoAbastecimentoPorFornecedor @responsavel, @cdCompraTipo, @cdPessoaComercial", responsavel, cdCompraTipo, cdPessoaComercial);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }
