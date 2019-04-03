@@ -101,6 +101,12 @@ namespace Intranet.Domain.Entities
         public bool? NovaCidade { get; set; }
 
         [DataMember]
+        public bool? Araruama2 { get; set; }
+
+        [DataMember]
+        public bool? Ativo { get; set; }
+
+        [DataMember]
         public DateTime? dtAlteracao { get; set; }
 
         [DataMember]
@@ -171,5 +177,8 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public bool? CDM { get; set; }
+
+        [DataMember]
+        public bool? Inativo { get; set; }
     }
 }

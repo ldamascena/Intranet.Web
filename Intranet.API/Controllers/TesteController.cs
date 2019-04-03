@@ -15,6 +15,7 @@ using System.Data.Entity;
 using Intranet.Data.Context;
 using Intranet.Alvorada.Data.Context;
 using Intranet.Domain.Entities.Views;
+using Intranet.Domain.Entities.DTOS;
 
 namespace Intranet.API.Controllers
 {
@@ -352,6 +353,20 @@ namespace Intranet.API.Controllers
             context.Database.CommandTimeout = 180;
 
             return context.vwDadosCompradores;
+        }
+
+        public IQueryable<VendaDTO> GetVendaDTO() {
+            var context = new CentralContext();
+
+            var vendas = context.Database.SqlQuery
+           <VendaDTO>(@"Select 
+	                    SUM(tbVendaPDV.qtVenda) as Qtd, 
+	                    SUM(tbVendaPDV.qtVenda * vlCusto) as CMV, 
+	                    SUM(tbVendaPDV.qtVenda * vlvenda ) as Venda
+                    from tbVendaPDV
+                    where dtVenda between CONVERT(DATE, GETDATE()-31) and CONVERT(DATE, GETDATE()-1)").AsQueryable();
+
+            return vendas;
         }
     }
 }

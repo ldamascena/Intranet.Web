@@ -38,7 +38,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return context.Usuarios.Where(x => x.Nome == "Tesouraria" || x.Nome == "Deposito" || x.Sobrenome == "Administrativo").ToList();
+            return context.Usuarios.Where(x => x.Nome == "Tesouraria" || x.Nome == "Deposito" || x.Sobrenome == "Administrativo" || x.Sobrenome == "Administrativo 2").ToList();
         }
 
         

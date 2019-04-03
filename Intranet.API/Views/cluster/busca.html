@@ -29,7 +29,7 @@
                             <select id="comprador" class="form-control" ng-change="GetClassificacao(comprador);" ng-model="comprador" ng-options="compradorcomplete for compradorcomplete in compradores"></select>
                         </div>
                         <div class="col-lg-6" ng-show="classificacoes.length > 0">
-                            <select id="classificacao" class="form-control" ng-model="classificacao" ng-options="classificacaocomplete.cdClassificacaoProduto as classificacaocomplete.Classificacao for classificacaocomplete in classificacoes"></select>
+                            <select id="classificacao" class="form-control" ng-model="classificacao" ng-options="classificacaocomplete for classificacaocomplete in classificacoes"></select>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
@@ -48,9 +48,10 @@
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasMedias();"><i class="fa fa-edit"></i> Medias</button>
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasGrandes();"><i class="fa fa-edit"></i> Grandes</button>
             <button class="btn btn-sm btn-default btn-rounded" type="button" ng-click="lojasPremium();"><i class="fa fa-edit"></i> Premium</button>
-            <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdItaborai()"><i class="fa fa-edit"></i> Cd.Itaborai</button>
-            <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdManilha()"><i class="fa fa-edit"></i> Cd.Manilha</button>
-            <button class="btn btn-sm btn-success btn-rounded" type="button" ng-click="limpar()"><i class="fa fa-edit"></i> Limpar</button>
+            <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdItaborai();"><i class="fa fa-edit"></i> Cd.Itaborai</button>
+            <button class="btn btn-sm btn-warning btn-rounded" type="button" ng-click="cdManilha();"><i class="fa fa-edit"></i> Cd.Manilha</button>
+            <button class="btn btn-sm btn-danger btn-rounded" type="button" ng-click="inativar();"><i class="fa fa-edit"></i> Inativar</button>
+            <button class="btn btn-sm btn-success btn-rounded" type="button" ng-click="limpar();"><i class="fa fa-edit"></i> Limpar</button>
             <button class="btn btn-sm btn-primary btn-rounded" type="button" style="float:right;" ng-click="salvar()"><i class="fa fa-edit"></i> Salvar</button>
 
 
@@ -66,6 +67,7 @@
                                 </th>
                                 <th>Codigo</th>
                                 <th>Produto</th>
+                                <th>Inativar</th>
                                 <th>ITA</th>
                                 <th>ITA2</th>
                                 <th>MGE</th>
@@ -82,6 +84,7 @@
                                 <th>RDO</th>
                                 <th>TND</th>
                                 <th>ARM</th>
+                                <th>ARM2</th>
                                 <th>BCX</th>
                                 <th>CBF</th>
                                 <th>JDE</th>
@@ -98,6 +101,7 @@
                                 </td>
                                 <td style="text-align:center">{{dado.cdProduto}}</td>
                                 <td style="text-align:center"><a href="" ng-click="estatistica(dado)">{{dado.Produto}}</a></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Ativo == true ? 'indianred': ''}"><input id="Inativo" name="Inativo" type="checkbox" ng-model="dado.Inativo"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Itaborai == true ? 'lightblue': ''}"><input id="ITA" name="ITA" type="checkbox" ng-model="dado.ITA"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Itaborai2 == true ? 'lightblue': ''}"><input id="ITA2" name="ITA2" type="checkbox" ng-model="dado.ITA2"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Mage == true ? 'lightblue': ''}"><input id="MGE" name="MGE" type="checkbox" ng-model="dado.MGE"></td>
@@ -114,6 +118,7 @@
                                 <td style="text-align:center" ng-style="{'background-color': dado.RioDoOuro == true ? 'lightblue': ''}"><input id="RDO" name="RDO" type="checkbox" ng-model="dado.RDO"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Trindade == true ? 'lightblue': ''}"><input id="TND" name="TND" type="checkbox" ng-model="dado.TND"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Araruama == true ? 'lightblue': ''}"><input id="ARM" name="ARM" type="checkbox" ng-model="dado.ARM"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Araruama2 == true ? 'lightblue': ''}"><input id="ARM2" name="ARM2" type="checkbox" ng-model="dado.ARM2"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Bacaxa == true ? 'lightblue': ''}"><input id="BCX" name="BCX" type="checkbox" ng-model="dado.BCX"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.CaboFrio == true ? 'lightblue': ''}"><input id="CBF" name="CBF" type="checkbox" ng-model="dado.CBF"></td>
                                 <td style="text-align:center" ng-style="{'background-color': dado.Esperanca == true ? 'lightblue': ''}"><input id="JDE" name="JDE" type="checkbox" ng-model="dado.JDE"></td>

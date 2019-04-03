@@ -89,6 +89,9 @@ namespace Intranet.Domain.Entities
         public bool? CDM { get; set; }
 
         [DataMember]
+        public bool? ARM2 { get; set; }
+
+        [DataMember]
         public bool? Pequenas { get; set; }
 
         [DataMember]
@@ -99,5 +102,9 @@ namespace Intranet.Domain.Entities
 
         [DataMember]
         public bool? Grandes { get; set; }
+
+        [DataMember]
+        public bool? Inativo { get; set; }
+
     }
 }

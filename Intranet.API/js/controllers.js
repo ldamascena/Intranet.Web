@@ -1445,6 +1445,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
         grade.INO = true;
         grade.MRC = true;
         grade.ARM = true;
+        grade.ARM2 = true;
         grade.CBF = true;
         grade.MCE = true;
         grade.SPD = true;
@@ -1455,6 +1456,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
         grade.MGE2 = true;
         grade.INO = true;
         grade.ARM = true;
+        grade.ARM2 = true;
         grade.MCE = true;
         grade.grandes = true;
 
@@ -1482,6 +1484,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
         grade.JDE = true;
         grade.MCE = true;
         grade.SPD = true;
+        grade.ARM2 = true;
         grade.pequenas = true;
         grade.medias = true;
         grade.premium = true;
@@ -1519,6 +1522,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
         grade.JDE = false;
         grade.MCE = false;
         grade.SPD = false;
+        grade.ARM2 = false;
         grade.pequenas = false;
         grade.medias = false;
         grade.premium = false;
@@ -7537,7 +7541,7 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
 
     $scope.operadores;
 
-    $http.get("http://192.168.1.116:8080/Intranet.API/api/Operador/GetAll").then(function (response) {
+    $http.get("http://localhost:50837/api/Operador/GetAll").then(function (response) {
         $scope.operadores = response.data;
     })
 
@@ -7556,7 +7560,7 @@ function operadorCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModal,
                 }
             }
         }).result.then(function () {
-            $http.get("http://192.168.1.116:8080/Intranet.API/api/Operador/GetAll").then(function (response) {
+            $http.get("http://localhost:50837/api/Operador/GetAll").then(function (response) {
                 $scope.operadores = response.data;
             });
         });
@@ -9628,16 +9632,17 @@ function abastecimentoTrocaCtrl($scope, $http, DTOptionsBuilder, $localStorage, 
 
 }
 
-function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTColumnDefBuilder) {
+function clusterCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder, SweetAlert, $uibModal) {
     $scope.compradores;
     $scope.classificacoes;
     $scope.dados;
     var vm = this;
     vm.checkoxesState = true;
+
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
         .withOption('order', [2, 'desc'])
-        .withOption('scrollY', 1200)
+        .withOption('scrollY', 500)
         .withDisplayLength(-1)
         .withOption('lengthChange', false)
         .withButtons([
@@ -9698,21 +9703,21 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTC
     }
 
     $scope.Buscar = function () {
-        $http.get("http://localhost:50837/api/cluster/GetAllProdutosClassificacao?codigo=" + $scope.classificacao).then(function (response) {
+        $http.get("http://localhost:50837/api/cluster/GetAllProdutosClassificacao?classificacao=" + $scope.classificacao).then(function (response) {
             $scope.dados = response.data;
         });
     }
 
     var getAllSelected = function () {
         var selectedItems = $scope.dados.filter(function (item) {
-            return $scope.selected;
+            return item.selected;
         });
         return selectedItems.length === $scope.dados.length;
     }
 
     var setAllSelected = function (value) {
         angular.forEach($scope.dados, function (item) {
-            $scope.selected = value;
+            item.selected = value;
         });
     }
 
@@ -9727,29 +9732,33 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTC
 
     $scope.lojasPequenas = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.MGE = true;
-                $scope.TNG = true;
-                $scope.AGM = true;
-                $scope.NCE = true;
-                $scope.JDE = true;
-                $scope.pequenas = true;
+            if (item.selected == true) {
+                item.MGE = true;
+                item.TNG = true;
+                item.AGM = true;
+                item.NCE = true;
+                item.JDE = true;
+                item.TND = true;
+                item.pequenas = true;
             }
         });
     }
 
     $scope.lojasMedias = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.ITA = true;
-                $scope.ITA2 = true;
-                $scope.RBO2 = true;
-                $scope.ASN = true;
-                $scope.JDC = true;
-                $scope.RDO = true;
-                $scope.TND = true;
-                $scope.BCX = true;
-                $scope.medias = true;
+            if (item.selected == true) {
+                item.ITA = true;
+                item.ITA2 = true;
+                item.RBO2 = true;
+                item.ASN = true;
+                item.JDC = true;
+                item.RDO = true;
+                item.BCX = true;
+                item.CBF = true;
+                item.SPD = true;
+                item.MRC = true;
+                item.RBO = true;
+                item.medias = true;
             }
         });
 
@@ -9757,109 +9766,121 @@ function clusterCtrl($scope, $http, SweetAlert, $uibModal, DTOptionsBuilder, DTC
 
     $scope.lojasPremium = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.RBO = true;
-                $scope.INO = true;
-                $scope.MRC = true;
-                $scope.ARM = true;
-                $scope.CBF = true;
-                $scope.MCE = true;
-                $scope.SPD = true;
-                $scope.premium = true;
+            if (item.selected == true) {
+                item.RBO = true;
+                item.INO = true;
+                item.MRC = true;
+                item.ARM = true;
+                item.CBF = true;
+                item.MCE = true;
+                item.SPD = true;
+                item.ARM2 = true;
+                item.premium = true;
             }
         });
     }
 
     $scope.lojasGrandes = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.MGE2 = true;
-                $scope.INO = true;
-                $scope.ARM = true;
-                $scope.MCE = true;
-                $scope.grandes = true;
+            if (item.selected == true) {
+                item.MGE2 = true;
+                item.INO = true;
+                item.ARM = true;
+                item.MCE = true;
+                item.ARM2 = true;
+                item.grandes = true;
             }
         });
     }
 
     $scope.todas = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.ITA = true;
-                $scope.ITA2 = true;
-                $scope.MGE = true;
-                $scope.MGE2 = true;
-                $scope.RBO = true;
-                $scope.RBO2 = true;
-                $scope.TNG = true;
-                $scope.ASN = true;
-                $scope.AGM = true;
-                $scope.INO = true;
-                $scope.JDC = true;
-                $scope.MRC = true;
-                $scope.NCE = true;
-                $scope.RDO = true;
-                $scope.TND = true;
-                $scope.ARM = true;
-                $scope.BCX = true;
-                $scope.CBF = true;
-                $scope.JDE = true;
-                $scope.MCE = true;
-                $scope.SPD = true;
-                $scope.pequenas = true;
-                $scope.medias = true;
-                $scope.premium = true;
-                $scope.grandes = true;
+            if (item.selected == true) {
+                item.ITA = true;
+                item.ITA2 = true;
+                item.MGE = true;
+                item.MGE2 = true;
+                item.RBO = true;
+                item.RBO2 = true;
+                item.TNG = true;
+                item.ASN = true;
+                item.AGM = true;
+                item.INO = true;
+                item.JDC = true;
+                item.MRC = true;
+                item.NCE = true;
+                item.RDO = true;
+                item.TND = true;
+                item.ARM = true;
+                item.BCX = true;
+                item.CBF = true;
+                item.JDE = true;
+                item.MCE = true;
+                item.SPD = true;
+                item.ARM2 = true;
+                item.pequenas = true;
+                item.medias = true;
+                item.premium = true;
+                item.grandes = true;
             }
         });
     }
 
     $scope.cdItaborai = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.CDI = true;
+            if (item.selected == true) {
+                item.CDI = true;
             }
         });
     }
 
     $scope.cdManilha = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.CDM = true;
+            if (item.selected == true) {
+                item.CDM = true;
+            }
+        });
+    }
+
+    $scope.inativar = function () {
+        angular.forEach($scope.dados, function (item) {
+            if (item.selected == true) {
+                item.Inativo = true;
             }
         });
     }
 
     $scope.limpar = function () {
         angular.forEach($scope.dados, function (item) {
-            if ($scope.selected == true) {
-                $scope.ITA = false;
-                $scope.ITA2 = false;
-                $scope.MGE = false;
-                $scope.MGE2 = false;
-                $scope.RBO = false;
-                $scope.RBO2 = false;
-                $scope.TNG = false;
-                $scope.ASN = false;
-                $scope.AGM = false;
-                $scope.INO = false;
-                $scope.JDC = false;
-                $scope.MRC = false;
-                $scope.NCE = false;
-                $scope.RDO = false;
-                $scope.TND = false;
-                $scope.ARM = false;
-                $scope.BCX = false;
-                $scope.CBF = false;
-                $scope.JDE = false;
-                $scope.MCE = false;
-                $scope.SPD = false;
-                $scope.CDI = false;
-                $scope.CDM = false;
-                $scope.pequenas = false;
-                $scope.medias = false;
-                $scope.premium = false;
-                $scope.grandes = false;
+            if (item.selected == true) {
+                item.ITA = false;
+                item.ITA2 = false;
+                item.MGE = false;
+                item.MGE2 = false;
+                item.RBO = false;
+                item.RBO2 = false;
+                item.TNG = false;
+                item.ASN = false;
+                item.AGM = false;
+                item.INO = false;
+                item.JDC = false;
+                item.MRC = false;
+                item.NCE = false;
+                item.RDO = false;
+                item.TND = false;
+                item.ARM = false;
+                item.BCX = false;
+                item.CBF = false;
+                item.JDE = false;
+                item.MCE = false;
+                item.SPD = false;
+                item.CDI = false;
+                item.CDM = false;
+                item.ARM2 = false;
+                item.pequenas = false;
+                item.medias = false;
+                item.premium = false;
+                item.grandes = false;
             }
         });
     }
