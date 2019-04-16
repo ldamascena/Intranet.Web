@@ -247,7 +247,7 @@ namespace Intranet.API.Controllers
                 context.CadSolProdLogs.Add(log);
                 context.SaveChanges();
                 //emailService.SendEmail("viniciusbonifacio@smalvorda.com", "Aprovação de Cadastro de Produto - Pendente");
-                emailService.SendEmail("indicadoreses@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
+                emailService.SendEmail("indicadores@smalvorada.com", "Novo Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastro());
                 //emailService.SendEmail("fmedeiros@smalvorada.com", "Nova Aprovação de Cadastro de Produto - Pendente", emailService.BodySolicitacaoCadastroDiretoria());
             }
 

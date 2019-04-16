@@ -18,6 +18,7 @@
                         <tr>
                             <th> Cod no Fornecedor</th>
                             <th>Descricao / Sabor *</th>
+                            <th>NCM *</th>
                             <th>EAN *</th>
                             <th>DUN *</th>
                             <th></th>
@@ -26,11 +27,14 @@
                     <tbody ng-repeat="grade in grades">
                         <tr>
                             <!--<td class="col-lg-4"><input type="text" ng-model="grade.produto" uib-typeahead="produto for produto in produtos | filter:$viewValue | limitTo:5" class="form-control"></td>-->
-                            <td class="col-lg-2">
+                            <td class="col-lg-1">
                                 <input id="codfornecedor" ng-model="grade.codfornecedor" name="codfornecedor" type="text" class="form-control">
                             </td>
-                            <td class="col-lg-4">
+                            <td class="col-lg-3">
                                 <input id="descricaosabor" ng-model="grade.descricaosabor" ng-required="true" name="descricaosabor" type="text" class="form-control">
+                            </td>
+                            <td class="col-lg-2">
+                                <input id="ncm" ng-model="grade.ncm" numbers-only ng-maxlength="8" ng-required="true" name="ncm" type="text" class="form-control">
                             </td>
                             <td class="col-lg-3">
                                 <input id="EAN" ng-model="grade.EAN" ng-required="true" name="EAN" type="text" class="form-control">

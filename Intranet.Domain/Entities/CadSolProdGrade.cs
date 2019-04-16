@@ -39,6 +39,9 @@ namespace Intranet.Domain.Entities
         public string ProdutoInativado { get; set; }
 
         [DataMember]
+        public string NCM { get; set; }
+
+        [DataMember]
         public bool? ITA { get; set; }
 
         [DataMember]

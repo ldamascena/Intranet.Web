@@ -1409,7 +1409,7 @@ function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSel
 function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelected, SweetAlert) {
     $scope.grades = [{}];
 
-    $scope.addNew = function (grade) {
+    $scope.addNew = function (grade)    {
         $scope.grades.push({});
     };
 
@@ -1540,6 +1540,7 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
                     EAN: $scope.grades[i].EAN,
                     DUN: $scope.grades[i].DUN,
                     ProdutoInativado: $scope.grades[i].produto,
+                    NCM: $scope.grades[i].ncm,
                     ITA: $scope.grades[i].ITA,
                     ITA2: $scope.grades[i].ITA2,
                     MGE: $scope.grades[i].MGE,
@@ -1568,6 +1569,8 @@ function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelect
                     premium: $scope.grades[i].premium,
                     grandes: $scope.grades[i].grandes
                 }
+
+                //console.log($scope.objgrade);
 
                 $http.post("http://localhost:50837/api/CadSolProdGrade/Incluir", $scope.objgrade).then(function (response) {
                     SweetAlert.swal({
@@ -10364,7 +10367,26 @@ angular
     .controller('validadeModalInstanceCtrl', validadeModalInstanceCtrl)
     .controller('solListaProdModalInstanceCtrl', solListaProdModalInstanceCtrl)
     .controller('solProdHistoricoModalCtrl', solProdHistoricoModalCtrl)
-    .controller('incluiEANModalCtrl', incluiEANModalCtrl)
+    .controller('incluiEANModalCtrl', incluiEANModalCtrl).directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModelCtrl) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
+
+                        if (transformedInput !== text) {
+                            ngModelCtrl.$setViewValue(transformedInput);
+                            ngModelCtrl.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModelCtrl.$parsers.push(fromUser);
+            }
+        };
+    })
     .controller('altProd', altProd)
     .controller('listaAltProd', listaAltProd)
     .controller('solAltProdHistoricoModalCtrl', solAltProdHistoricoModalCtrl)

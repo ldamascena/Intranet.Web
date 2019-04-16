@@ -23,7 +23,6 @@ namespace Intranet.API.Controllers
 
             return result;
         }
-
         
         public CadUsuarioOperador Get(int id)
         {
@@ -34,7 +33,6 @@ namespace Intranet.API.Controllers
             return result;
         }
 
-        
         public IEnumerable<CadUsuarioOperador> GetAllByLoja(int idUsuario)
         {
             var context = new AlvoradaContext();
@@ -64,6 +62,43 @@ namespace Intranet.API.Controllers
                 context.SaveChanges();
                 emailService.SendEmail("vaniadp@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
                 emailService.SendEmail("escala@smalvorada.com", "Nova Aprovação de Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse<dynamic>(HttpStatusCode.InternalServerError, new
+                {
+                    Error = ex.Message
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+
+        }
+
+        public HttpResponseMessage IncluirAprovado([FromBody] CadUsuarioOperador obj)
+        {
+
+            var context = new AlvoradaContext();
+            var emailService = new EmailService();
+
+            try
+            {
+                obj.DataInclusao = DateTime.Now;
+                obj.IdStatus = 8;
+                context.CadUsuariosOperadores.Add(obj);
+                var Log = new CadUsuarioOperadorLog
+                {
+                    IdCadUsuOpe = obj.Id,
+                    IdStatus = 8,
+                    DataLog = DateTime.Now,
+                    IdUsuario = obj.IdUsuario
+                };
+                context.CadUsuarioOperadorLogs.Add(Log);
+                context.SaveChanges();
+                emailService.SendEmail("indicadores@smalvorada.com", "Novo Cadastro de Usuário - Pendente", emailService.BodySolicitacaoUsuario());
+
 
 
             }

@@ -23,23 +23,18 @@ namespace Intranet.API.Controllers
 
             return context.Operadores;
         }
-
-        
         public IEnumerable<Operador> GetAllByOperador(string nomeOperador)
         {
             var context = new AlvoradaContext();
 
             return context.Operadores.Where(x => x.NmOperador == nomeOperador);
         }
-
-        
         public int GetLastIdOperador()
         {
             var context = new AlvoradaContext();
             
             return context.Operadores.ToList().LastOrDefault().CdOperador + 1;
         }
-
         public HttpResponseMessage IncluirIntranet(Operador obj)
         {
             var context = new AlvoradaContext();
@@ -57,7 +52,6 @@ namespace Intranet.API.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
-
         public HttpResponseMessage IncluirDorsais(Operador obj)
         {
             var alvoradaContext = new AlvoradaContext();
@@ -449,11 +443,29 @@ namespace Intranet.API.Controllers
 
                     break;
 
+                case 28:
+                    var araruama2Context = new DorsalAraruama2Context();
+                    if (araruama2Context.Operadores.Where(x => x.NmOperador == obj.NmOperador).Count() == 0)
+                    {
+                        araruama2Context.Operadores.Add(obj);
+                        araruama2Context.SaveChanges();
+                        var log = new OperadorLog
+                        {
+                            CdFilial = obj.CdFilial,
+                            CdOperador = obj.CdOperador,
+                            Data = DateTime.Now,
+                            Tipo = "Inclusão"
+                        };
+                        alvoradaContext.OperadoresLogs.Add(log);
+                        alvoradaContext.SaveChanges();
+                    }
+
+                    break;
+
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
-
         public HttpResponseMessage InativarDorsais(Operador obj)
         {
             var alvoradaContext = new AlvoradaContext();
@@ -688,7 +700,6 @@ namespace Intranet.API.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
-
         public IEnumerable<VwOperadorLog> GetLogByCodigo(int codigo)
         {
             var context = new AlvoradaContext();

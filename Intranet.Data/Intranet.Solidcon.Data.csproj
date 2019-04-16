@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\CentralContext.cs" />
+    <Compile Include="Context\DorsalAraruama2Context.cs" />
     <Compile Include="Context\DorsalHomologacaoContext.cs" />
     <Compile Include="Context\DorsalSaoPedroContext.cs" />
     <Compile Include="Context\DorsalMacaeContext.cs" />
