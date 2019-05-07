@@ -201,6 +201,7 @@ namespace Intranet.API.Controllers
             {
                 context.Entry(result).State = EntityState.Modified;
                 result.IdStatus = 9;
+                result.Motivo = obj.Motivo;
                 var Log = new CadUsuarioOperadorLog
                 {
                     IdCadUsuOpe = obj.Id,

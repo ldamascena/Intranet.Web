@@ -62,6 +62,9 @@ namespace Intranet.Domain.Entities
         public string Observacao { get; set; }
 
         [DataMember]
+        public string Motivo { get; set; }
+
+        [DataMember]
         public int IdUsuario { get; set; }
 
         [DataMember]

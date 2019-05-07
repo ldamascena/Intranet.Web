@@ -7306,7 +7306,7 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
         SweetAlert.swal({
             title: "Deseja reprovar o registro da pessoa: " + cadUsuario.Pessoa,
             text: "Não será possivel voltar o registro depois de aprovado!",
-            type: "warning",
+            type: "input",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "Sim, reprovar!",
@@ -7316,6 +7316,7 @@ function cadUsuarioCtrl($scope, $localStorage, $http, DTOptionsBuilder, $uibModa
         },
             function (isConfirm) {
                 if (isConfirm) {
+                    cadUsuario.Motivo = isConfirm;
                     SweetAlert.swal({
                         title: "Reprovado!",
                         text: "O registro foi reprovar com sucesso.",
@@ -7441,6 +7442,8 @@ function cadUsuarioCtrlModalInstance($scope, $uibModalInstance, cadUsuarioSelect
         $scope.usuarioCadastro = cadUsuarioSelected.IdUsuario;
         $scope.idStatus = cadUsuarioSelected.IdStatus;
         $scope.senha = cadUsuarioSelected.Senha;
+        $scope.motivo = cadUsuarioSelected.Motivo;
+        console.log(cadUsuarioSelected);
     }
 
     $scope.incluir = function () {
