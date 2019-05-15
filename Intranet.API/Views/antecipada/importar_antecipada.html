@@ -1,0 +1,41 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Antecipada</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li class="active">
+                <strong>Importacao de Arquivo</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="confAntecipadaCtrl">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <h1>
+                            <span class="text-muted"><i style="color:orangered" class="fa fa-warning"></i> Aviso!</span>
+                        </h1>
+                    </div>
+                    <div style="padding-top: 25px;">
+                        <h4>
+                            Esse procedimento foi criado para realizar a importacao do arquivo de conferencia antecipada. <strong style="color:red"> Lembrando que so vai importar se o arquivo estiver de acordo com o layout definido</strong>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="text-center">
+                <button class="btn btn-success" ng-click="importar()">Importar</button>
+            </div>
+        </div>
+    </div>

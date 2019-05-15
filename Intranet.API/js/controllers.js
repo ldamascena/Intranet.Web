@@ -1409,7 +1409,7 @@ function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSel
 function incluiEANModalCtrl($scope, $uibModalInstance, $http, IdCadSolProdSelected, SweetAlert) {
     $scope.grades = [{}];
 
-    $scope.addNew = function (grade)    {
+    $scope.addNew = function (grade) {
         $scope.grades.push({});
     };
 
@@ -10350,8 +10350,408 @@ function inventarioParcialConsolidadoCtrl($scope, $http, DTOptionsBuilder, DTCol
     };
 }
 
-function cadFornecedorCtrl($scope, $http) {
+function cadFornecedorCtrl($scope, $http, $uibModal) {
 }
+
+function CalendarCtrl($scope, $uibModal) {
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
+    $scope.events = [
+
+        { title: 'Birthday Party', start: new Date(y, m, d + 1, 19, 0), end: new Date(y, m, d + 2, 22, 30), allDay: true },
+        { title: 'Birthday Party', start: new Date(y, m, d + 1, 1, 0), end: new Date(y, m, d + 2, 22, 30), allDay: true, backgroundColor: 'red', borderColor: 'red' }
+    ];
+
+
+    /* message on eventClick */
+    $scope.alertOnEventClick = function (event, allDay, jsEvent, view) {
+        $scope.alertMessage = (event.title + ': Clicked ');
+    };
+    /* message on Drop */
+    //$scope.alertOnDrop = function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+    //    $scope.alertMessage = (event.title + ': Droped to make dayDelta ' + dayDelta);
+    //};
+    ///* message on Resize */
+    //$scope.alertOnResize = function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+    //    $scope.alertMessage = (event.title + ': Resized to make dayDelta ' + minuteDelta);
+    //};
+
+    /* config object */
+    $scope.uiConfig = {
+        calendar: {
+            height: 600,
+            editable: false,
+            displayEventTime: false,
+            header: {
+                left: '',
+                center: 'prev title next',
+                right: ''
+            },
+            dayClick: function (date) {
+                var modalIstance = $uibModal.open({
+                    templateUrl: 'Views/modal/calendar/incluir.html',
+                    controller: 'CalendarModalCtrl',
+                    windowClass: "animated fadeIn"
+                }).result.then(function () {
+                });
+            },
+            eventClick: function (event) {
+                alert('modal event')
+            }
+        }
+    };
+
+    /* Event sources array */
+    $scope.eventSources = [$scope.events];
+}
+
+function CalendarModalCtrl($uibModalInstance) {
+
+}
+
+function confAntecipadaCtrl($scope, $http, DTOptionsBuilder, $localStorage, $uibModal, SweetAlert, toaster, $interval) {
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('lengthMenu', [20, 50, 100, 200])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+    $interval(function () {
+        $http.get("http://localhost:50837/api/ConfAntecipada/GetQtdPendente?idUsuario=" + $localStorage.user.Id).then(function (response) {
+            SweetAlert.swal({
+                title: "Você tem " + response.data + "notas pendentes!",
+                type: "warning"
+            });
+        })
+    }, 600000);
+
+    $scope.antecipadas;
+
+    $http.get("http://localhost:50837/api/ConfAntecipada/GetAntecipadasByUser?idUsuario=" + $localStorage.user.Id).then(function (response) {
+        $scope.antecipadas = response.data;
+    })
+
+    $scope.buscar = function () {
+        $http.get("http://localhost:50837/api/ConfAntecipada/GetAntecipadasByUserDateErro?idUsuario=" + $localStorage.user.Id + "&dtInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dtFim=" + $scope.datefim.toLocaleDateString('en-US') + "&tipoErro=" + $scope.tipoErro).then(function (response) {
+            $scope.antecipadas = response.data;
+        })
+    }
+
+    $scope.dateinicio = new Date();
+    $scope.datefim = new Date();
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    $scope.importar = function () {
+        $uibModal.open({
+            templateUrl: 'Views/modal/produto/loading_massa.html',
+            controller: 'confAntecipadaModalInstanceCtrl',
+            windowClass: "animated fadeIn"
+        })
+    }
+
+    $scope.finalizar = function (antecipada) {
+        $http.post("http://localhost:50837/api/ConfAntecipada/MarcarVisualizado", antecipada);
+        SweetAlert.swal({
+            title: "Deseja o registro da nota: " + antecipada.Numero_NFe,
+            type: "input",
+            showCancelButton: true,
+            confirmButtonText: "Pendente!",
+            cancelButtonText: "Finalizar!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            cancelButtonColor: '#e2342a',
+            confirmButtonColor: '#ff630f',
+            inputPlaceholder: 'Observacao',
+            showLoaderOnConfirm: true
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    antecipada.Observacao = isConfirm
+                    SweetAlert.swal({
+                        title: "Alterado!",
+                        text: "O registro foi alterado com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/ConfAntecipada/FinalizarNota", antecipada).then(function (response) {
+
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+
+                } else {
+                    SweetAlert.swal({
+                        title: "Alterado!",
+                        text: "O registro foi alterado com sucesso.",
+                        type: "success",
+                        timer: 5000
+                    });
+
+                    $http.post("http://localhost:50837/api/ConfAntecipada/FinalizarNota", antecipada).then(function (response) {
+
+                    }, function (response) {
+                        return alert("Erro: " + response.status);
+                    });
+                }
+            });
+    }
+}
+
+function confAntecipadaModalInstanceCtrl($http, $localStorage, $uibModalInstance, SweetAlert) {
+    if ($localStorage.user.Id == 32) {
+        $http.post("http://localhost:50837/api/ConfAntecipada/ImportarCristiane").then(function () {
+            $uibModalInstance.dismiss();
+            SweetAlert.swal({
+                title: "Sucesso!    ",
+                text: "Importação feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+        },
+            function (response) {
+                alert("Erro: " + response.status);
+            })
+    }
+
+    else if ($localStorage.user.Id == 34) {
+        $http.post("http://localhost:50837/api/ConfAntecipada/ImportarCristiane").then(function () {
+
+        },
+            function (response) {
+                alert("Erro: " + response.status);
+            })
+    }
+
+    else if ($localStorage.user.Id == 128) {
+        $http.post("http://localhost:50837/api/ConfAntecipada/ImportarCristiane").then(function () {
+
+        },
+            function (response) {
+                alert("Erro: " + response.status);
+            })
+    }
+}
+
+function confAntecipadaIndicadoresCtrl($scope, $http, DTOptionsBuilder, $localStorage, $uibModal, SweetAlert) {
+
+    $scope.indicadores;
+    $scope.indicador;
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withOption('lengthMenu', [20, 50, 100, 200])
+        .withButtons([
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                }
+            }
+        ]);
+
+
+    if ($localStorage.user.Id == 32) {
+        $scope.indicador = "Cristiane"
+    }
+
+    else if ($localStorage.user.Id == 34) {
+        $scope.indicador = "Bruno"
+    }
+
+    else if ($localStorage.user.Id == 128) {
+        $scope.indicador = "Marcelo"
+    }
+
+    $http.get("http://localhost:50837/api/ConfAntecipada/GetAntecipadasByIndicador?indicador=" + $scope.indicador).then(function (response) {
+        $scope.indicadores = response.data;
+    })
+
+    $scope.buscar = function () {
+        $http.get("http://localhost:50837/api/ConfAntecipada/GetAntecipadasByIndicadorDateErro?indicador=" + $scope.indicador + "&dtInicio=" + $scope.dateinicio.toLocaleDateString('en-US') + "&dtFim=" + $scope.datefim.toLocaleDateString('en-US') + "&tipoErro=" + $scope.tipoErro).then(function (response) {
+            $scope.indicadores = response.data;
+        })
+    }
+
+    $scope.dateinicio = new Date();
+    $scope.datefim = new Date();
+
+    $scope.today = function () {
+        $scope.date = new Date();
+    };
+
+    $scope.clear = function () {
+        $scope.date = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.date = new Date(year, month, day);
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+}
+
 /**
  *
  * Pass all functions into module
@@ -10642,4 +11042,9 @@ angular
     .controller('inventarioProdutoCtrl', inventarioProdutoCtrl)
     .controller('inventarioProdutoModalInstanceCtrl', inventarioProdutoModalInstanceCtrl)
     .controller('inventarioParcialConsolidadoCtrl', inventarioParcialConsolidadoCtrl)
-    .controller('cadFornecedorCtrl', cadFornecedorCtrl);
+    .controller('cadFornecedorCtrl', cadFornecedorCtrl)
+    .controller('CalendarCtrl', CalendarCtrl)
+    .controller('CalendarModalCtrl', CalendarModalCtrl)
+    .controller('confAntecipadaCtrl', confAntecipadaCtrl)
+    .controller('confAntecipadaModalInstanceCtrl', confAntecipadaModalInstanceCtrl)
+    .controller('confAntecipadaIndicadoresCtrl', confAntecipadaIndicadoresCtrl);

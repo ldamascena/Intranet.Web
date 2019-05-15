@@ -1,0 +1,120 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Lista Antecipadas</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="principal.instutucional">Home</a>
+            </li>
+            <li>
+                <a>Lista</a>
+            </li>
+            <li class="active">
+                <strong>Antecipada</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="confAntecipadaCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Busca</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group-sm">
+                                <select class="form-control" ng-model="tipoErro">
+                                    <option value=""></option>
+                                    <option value="Erro(s) de Cadastro - Associacao">Erro(s) de Cadastro - Associacao</option>
+                                    <option value="Erro(s) de Cadastro - Produto Morto/Inativo/Fora do Mix">Erro(s) de Cadastro - Produto Morto/Inativo/Fora do Mix</option>
+                                    <option value="Erro(s) de Cadastro - Produto s/ Cadastro">Erro(s) de Cadastro - Produto s/ Cadastro</option>
+                                    <option value="Erro(s) de Pedido - Custo">Erro(s) de Pedido - Custo</option>
+                                    <option value="Erro(s) de Pedido - Pedido Expirado">Erro(s) de Pedido - Pedido Expirado</option>
+                                    <option value="Erro(s) de Pedido - Produtos Sem Pedido">Erro(s) de Pedido - Produtos Sem Pedido</option>
+                                    <option value="Erro(s) de Pedido - Quantidade">Erro(s) de Pedido - Quantidade</option>
+                                    <option value="Erro(s) de Pedido - Razao Social da NF diferente do Pedido">Erro(s) de Pedido - Razao Social da NF diferente do Pedido</option>
+                                    <option value="Erro(s) Nfe - Sem Pedido">Erro(s) Nfe - Sem Pedido</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open1()" placeholder="Data de Inicio" uib-datepicker-popup="dd/MM/yyyy" ng-model="dateinicio" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="input-group">
+                                <input type="text" class="form-control" ng-click="open2()" placeholder="Data de Fim" uib-datepicker-popup="dd/MM/yyyy" ng-model="datefim" is-open="popup2.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input type="button" class="btn btn-sm btn-success btn-rounded" value="buscar" ng-click="buscar();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Lista de <strong>Antecipadas</strong></h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Indicador</th>
+                                    <th>Filial</th>
+                                    <th>Data</th>
+                                    <th>Fornecedor</th>
+                                    <th>Numero</th>
+                                    <th>Erro</th>
+                                    <th>Resp</th>
+                                    <th>Observacao</th>
+                                    <th>V</th>
+                                    <th>F</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="antecipada in antecipadas">
+                                    <td>{{antecipada.Id}}</td>
+                                    <td ng-class="{'danger' : antecipada.Indicador == 'Cristiane',
+                                                   'warning' : antecipada.Indicador == 'Bruno',
+                                                   'primary' : antecipada.Indicador == 'Marcelo'}">
+                                        {{antecipada.Indicador}}
+                                    </td>
+                                    <td>{{antecipada.Filial}}</td>
+                                    <td>{{antecipada.Data | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{antecipada.Fornecedor}}</td>
+                                    <td><a hef="" ng-click="finalizar(antecipada);">{{antecipada.Numero_NFe}}</a></td>
+                                    <td>{{antecipada.Erro}}</td>
+                                    <td>{{antecipada.Usuario.Nome}}</td>
+                                    <td>{{antecipada.Observacao}}</td>
+                                    <td><i ng-class="antecipada.Visualizado ? 'fa fa-check text-navy' : 'fa fa-times text-danger'"></i></td>
+                                    <td><i ng-class="antecipada.Feito ? 'fa fa-check text-navy' : 'fa fa-times text-danger'"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

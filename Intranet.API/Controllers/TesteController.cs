@@ -362,11 +362,53 @@ namespace Intranet.API.Controllers
            <VendaDTO>(@"Select 
 	                    SUM(tbVendaPDV.qtVenda) as Qtd, 
 	                    SUM(tbVendaPDV.qtVenda * vlCusto) as CMV, 
-	                    SUM(tbVendaPDV.qtVenda * vlvenda ) as Venda
+	                    SUM(tbVendaPDV.qtVenda * vlvenda ) as Venda,
+						dbo.fnNomePessoa(cdPessoaFilial) as Filial
                     from tbVendaPDV
-                    where dtVenda between CONVERT(DATE, GETDATE()-31) and CONVERT(DATE, GETDATE()-1)").AsQueryable();
+                    where dtVenda between CONVERT(DATE, GETDATE()-1) and CONVERT(DATE, GETDATE()-1)
+					group by cdPessoaFilial").AsQueryable();
 
             return vendas;
         }
+
+        public IQueryable<InventarioDTO> GetInventarioQtd()
+        {
+            var context = new CentralContext();
+
+            var inventario = context.Database.SqlQuery<InventarioDTO>(
+                @"SELECT top 100
+	              tbProduto.cdProduto as Codigo,
+	              dbo.fnNomeProduto(tbProduto.cdProduto, 10) as Produto,
+	              tbPessoa.nmPessoa as Filial,
+	              dbo.fnClassificacaoNome(dbo.fnCodigoHierarquiaNivel(cdClassificacaoProduto, 10, 1), 10) as Classificacao,
+	              CONVERT(INT, SUM(ISNULL(dbo.tbInventarioItem.qtAjusteItem, 0))) as Qtd,
+	              (SUM(dbo.tbInventarioItem.vlEmbalagem * dbo.tbInventarioItem.qtAjusteItem)*-1) AS Valor
+	            FROM tbInventario
+	            INNER JOIN tbInventarioItem
+	              ON tbInventario.cdInventario = tbInventarioItem.cdInventario
+	              AND tbInventario.cdPessoaFilial = tbInventarioItem.cdPessoaFilial
+	            INNER JOIN tbProduto
+		            on tbProduto.cdProduto = tbInventarioItem.cdProduto
+	            INNER JOIN tbSuperProduto
+		            on tbSuperProduto.cdSuperProduto = tbProduto.cdSuperProduto
+	            INNER JOIN tbPessoa
+		            on tbPessoa.cdPessoa = tbInventario.cdPessoaFilial
+	            WHERE (dbo.tbInventario.dtInventario BETWEEN '2019-04-01' and '2019-05-01')
+	            AND (dbo.tbInventario.inAjustado = 1)
+	            AND (ISNULL(dbo.tbInventarioItem.qtAjusteItem, 0) <> 0)	
+	            AND (ISNULL(dbo.tbInventario.inSemAjusteEstoque, 0) = 0)
+	            AND (dbo.tbInventario.cdTipoEstoque = 1)
+	            AND (nmPessoa = 'ITABORAI')
+	            AND (dbo.fnClassificacaoNome(dbo.fnCodigoHierarquiaNivel(cdClassificacaoProduto, 10, 1), 10) = '02-MERCEARIA DOCE')
+	            GROUP BY tbInventario.cdPessoaFilial, 
+	            tbProduto.cdProduto,
+	            cdClassificacaoProduto,
+	            tbPessoa.nmPessoa
+	            ORDER BY SUM(ISNULL(dbo.tbInventarioItem.qtAjusteItem, 0)) DESC").AsQueryable();
+
+            return inventario;
+        }
+
+        
     }
 }

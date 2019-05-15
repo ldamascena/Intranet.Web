@@ -235,6 +235,7 @@
     <Compile Include="Controllers\CargaController.cs" />
     <Compile Include="Controllers\ClassificacaoProdutoController.cs" />
     <Compile Include="Controllers\ClusterController.cs" />
+    <Compile Include="Controllers\ConfAntecipadaController.cs" />
     <Compile Include="Controllers\EmpresaFilialController.cs" />
     <Compile Include="Controllers\EstoqueContabilController.cs" />
     <Compile Include="Controllers\EstoqueFisicoController.cs" />
@@ -2542,6 +2543,10 @@
     <Content Include="Views\alertas\inversao.html" />
     <Content Include="Views\alertas\ultimocusto.html" />
     <Content Include="Views\analitico.html" />
+    <Content Include="Views\antecipada\importar_antecipada.html" />
+    <Content Include="Views\antecipada\lista_antecipadas.html" />
+    <Content Include="Views\antecipada\lista_indicadores.html" />
+    <Content Include="Views\calendario\index.html" />
     <Content Include="Views\fornecedor\cad_edit_fornecedor.html" />
     <Content Include="Views\cadprod\aprov_produto.html" />
     <Content Include="Views\cadprod\sol_produto.html" />
@@ -2607,6 +2612,8 @@
     <Content Include="Views\modal\cadusuario\historico_operador.html" />
     <Content Include="Views\modal\cadusuario\incluir_operador.html" />
     <Content Include="Views\modal\cadusuario\solicitar_editar_usuario.html" />
+    <Content Include="Views\modal\calendar\editar.html" />
+    <Content Include="Views\modal\calendar\incluir.html" />
     <Content Include="Views\modal\change_password.html" />
     <Content Include="Views\modal\cluster\vis_estatistica.html" />
     <Content Include="Views\modal\controledecaixa\fechamento.html" />

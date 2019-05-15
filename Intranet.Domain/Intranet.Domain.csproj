@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AccountViewModels.cs" />
+    <Compile Include="Entities\Calendar.cs" />
     <Compile Include="Entities\ClusterLojas.cs" />
     <Compile Include="Entities\AlertaAnalitico.cs" />
     <Compile Include="Entities\AlertaBalanco.cs" />
@@ -113,8 +114,11 @@
     <Compile Include="Entities\ChamSuporteLog.cs" />
     <Compile Include="Entities\ClassificacaoMeta.cs" />
     <Compile Include="Entities\ClassificacaoProduto.cs" />
+    <Compile Include="Entities\ConfAntecipada.cs" />
     <Compile Include="Entities\DTOS\AbastecimentoDTO.cs" />
+    <Compile Include="Entities\DTOS\ConfEmailDTO.cs" />
     <Compile Include="Entities\DTOS\EstoqueDTO.cs" />
+    <Compile Include="Entities\DTOS\InventarioDTO.cs" />
     <Compile Include="Entities\DTOS\PlanoDeContasDTO.cs" />
     <Compile Include="Entities\DTOS\VendaDTO.cs" />
     <Compile Include="Entities\EmpresaFilial.cs" />

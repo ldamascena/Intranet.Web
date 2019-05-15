@@ -1,0 +1,61 @@
+﻿<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">Inclusao Agendamento</h4>
+        <small class="font-bold">Tela exclusivamente para inclusão de agendamento</small>
+    </div>
+    <form role="form" name="CadAtendenteForm">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Nome*</label>
+                        <input type="text" placeholder="Nome" name="nome" ng-model="nome" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Sobrenome*</label>
+                        <input type="text" placeholder="Sobrenome" name="sobrenome" ng-model="sobrenome" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Inicio*</label>
+                        <input type="text" placeholder="Inicio" name="inicio" ng-model="inicio" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Fim*</label>
+                        <input type="text" placeholder="Fim" name="fim" ng-model="fim" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="baixa" value="option1" name="radioInline" checked="">
+                            <label for="baixa"> Baixa </label>
+                        </div>
+                        <div class="radio radio-warning radio-inline">
+                            <input type="radio" id="media" value="option2" name="radioInline">
+                            <label for="media"> Media </label>
+                        </div>
+                        <div class="radio radio-danger radio-inline">
+                            <input type="radio" id="alta" value="option3" name="radioInline">
+                            <label for="alta"> Alta </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="cancel()">Fechar</button>
+            <button type="submit" class="btn btn-primary" ng-click="incluir()">Salvar</button>
+        </div>
+    </form>
+</div>

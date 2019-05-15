@@ -141,6 +141,12 @@ namespace Intranet.Alvorada.Data.Context
 
         #endregion
 
+
+        #region Calendário
+        public virtual DbSet<Calendar> Calendar { get; set; }
+
+        #endregion
+
         public virtual DbSet<VwAssociacoesConcluidas> VwAssociacoesConcluidas { get; set; }
 
         public virtual DbSet<CadSolAlterProd> CadSolAlterProdutos { get; set; }
@@ -162,6 +168,12 @@ namespace Intranet.Alvorada.Data.Context
 
         public virtual DbSet<VwInventarioParcial> VwInventarioParcial { get; set; }
         public virtual DbSet<InventarioParcialProdutos> InventarioParcialProdutos { get; set; }
+
+        #endregion
+
+        #region Conferencia Antecipada
+
+        public virtual DbSet<ConfAntecipada> ConfAntecipada { get; set; }
 
         #endregion
 
@@ -604,6 +616,12 @@ namespace Intranet.Alvorada.Data.Context
                 .HasMany(e => e.UsuarioAgendamento)
                 .WithRequired(e => e.UsuarioCadastro)
                 .HasForeignKey(e => e.IdUsuario)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(e => e.UsuarioAntecipada)
+                .WithRequired(e => e.Usuario)
+                .HasForeignKey(e => e.IdUsuarioComprador)
                 .WillCascadeOnDelete(false);
         }
     }

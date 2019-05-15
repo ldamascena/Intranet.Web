@@ -22,6 +22,10 @@
                 <a ui-sref="principal.instutucional"><i class="fa fa-diamond"></i> <span class="nav-label">{{ 'Principal' | translate }}</span> </a>
             </li>
 
+            <li ui-sref-active="active">
+                <a ui-sref="calendario.principal"><i class="fa fa-clock-o"></i> <span class="nav-label">{{ 'Calendario' | translate }}</span> </a>
+            </li>
+
             <!--<li ui-sref-active="active">
         <a ui-sref="departamentos"><i class="fa fa-building"></i> <span class="nav-label">{{ 'Departamentos' | translate }}</span> </a>
     </li>-->
@@ -109,7 +113,7 @@
                     <li ui-sref-active="active" ng-show="grupo == 1"><a ui-sref="abastecimento.aprovacao">Aprovacao de Abastecimento</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 26"><a ui-sref="abastecimento.massa">Alt.Abastecimento em Massa</a></li>
                     <li ui-sref-active="active" ng-show="grupo == 1 || grupo == 26"><a ui-sref="abastecimento.massalog">Log Alt.Abastecimento em Massa</a></li>
-                    
+
                 </ul>
             </li>
 
@@ -145,6 +149,15 @@
                 <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">{{ 'Fornecedor' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('fornecedor')}">
                     <li ui-sref-active="active"><a ui-sref="fornecedor.lista" ng-show="grupo == 1">Listagem de Fornecedores</a></li>
+                    <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
+                </ul>
+            </li>
+            <li ng-class="{active: $state.includes('antecipada')}" ng-show="grupo == 1 || grupo == 8 || grupo == 9 || grupo == 10">
+                <a href="#"><i class="fa fa-gavel"></i> <span class="nav-label">{{ 'Antecipadas' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('fornecedor')}">
+                    <li ui-sref-active="active"><a ui-sref="antecipada.lista" ng-show="grupo == 1 || grupo == 8 || grupo == 9">Lista de Antecipadas</a></li>
+                    <li ui-sref-active="active"><a ui-sref="antecipada.importacao" ng-show="grupo == 1 || grupo == 10">Importacao</a></li>
+                    <li ui-sref-active="active"><a ui-sref="antecipada.indicadores" ng-show="grupo == 1 || grupo == 10">Lista de Indicadores</a></li>
                     <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
                 </ul>
             </li>
