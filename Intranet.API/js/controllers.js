@@ -442,7 +442,7 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
             }
         ]);
 
-    $scope.solicitacoesProd;
+    $scope.solicitacoesProd = [];
     $scope.grupo = $localStorage.user.Grupo[0].Id;
     $scope.usuarioLogado = $localStorage.user.Id
     $scope.dateinicio = new Date(2017, 1, 1);
@@ -463,13 +463,6 @@ function solListaProdCtrl($scope, $uibModal, $http, SweetAlert, $localStorage, D
                 $scope.solicitacoesProd = response.data;
             });
         }
-    }
-
-    $scope.save = function () {
-        $scope.solicitacoesProdArray = [];
-        angular.forEach($scope.solicitacoesProd, function (solicitacoesProd) {
-            if (solicitacoesProd.selected) $scope.solicitacoesProdArray.push(solicitacoesProd);
-        });
     }
 
     $scope.aprovarComercial = function (solicitacaoProd) {
@@ -1395,6 +1388,32 @@ function solListaProdModalInstanceCtrl($scope, $uibModalInstance, $http, solicit
                 }
             });
     };
+
+    $scope.excluirGrade = function (grade) {
+        $http.post("http://localhost:50837/api/CadSolProdGrade/Excluir", grade).then(function () {
+            SweetAlert.swal({
+                title: "Exclusão feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.Id).then(function (response) {
+                $scope.grades = response.data;
+            });
+        })
+    }
+
+    $scope.alterarGrade = function (grade) {
+        $http.post("http://localhost:50837/api/CadSolProdGrade/Alterar", grade).then(function () {
+            SweetAlert.swal({
+                title: "Alteração feita com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+            $http.get("http://localhost:50837/api/CadSolProdGrade/GetByIdProduto?idCadProduto=" + solicitacaoProdSelected.Id).then(function (response) {
+                $scope.grades = response.data;
+            });
+        })
+    }
 }
 
 function solProdHistoricoModalCtrl($scope, $uibModalInstance, solicitacaoProdSelected, $http, $localStorage) {

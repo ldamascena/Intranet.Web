@@ -68,5 +68,41 @@ namespace Intranet.API.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+
+        public HttpResponseMessage Alterar([FromBody] CadSolProdGrade obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public HttpResponseMessage Excluir([FromBody] CadSolProdGrade obj)
+        {
+            var context = new AlvoradaContext();
+
+            try
+            {
+                context.Entry(obj).State = EntityState.Deleted;
+                context.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }
