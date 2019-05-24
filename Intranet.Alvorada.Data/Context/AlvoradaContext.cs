@@ -138,6 +138,7 @@ namespace Intranet.Alvorada.Data.Context
         #region Cluster
 
         public virtual DbSet<ClusterLojas> ClusterLojas { get; set; }
+        public virtual DbSet<ClusterConfig> ClusterConfig { get; set; }
 
         #endregion
 

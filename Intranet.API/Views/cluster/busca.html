@@ -17,6 +17,53 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" ng-controller="clusterCtrl">
+    <div class="row" ng-show="grupo == 'Admin' || grupo == 'Gestor Comercial'">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Ativacao/Inativacao</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <h1>
+                            <span class="text-muted"><i style="color:orangered" class="fa fa-warning"></i> Aviso!</span>
+                        </h1>
+                    </div>
+                    <div style="padding-top: 25px;">
+                        <h4>
+                            Esse procedimento foi criado para realizar a inativacao e reativacao do cluster. <strong style="color:red"> Lembrando que só gestor comercial tera acesso a fazer tanto a ativacao quanto a inativacao do cluster!</strong>
+                        </h4>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-danger" ng-show="ativo" ng-click="desabilitar();">Desabilitar</button>
+                        <button class="btn btn-primary" ng-show="!ativo" ng-click="habilitar();">Habilitar</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Atualizar Cluster</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <h1>
+                            <span class="text-muted"><i style="color:orangered" class="fa fa-warning"></i> Aviso!</span>
+                        </h1>
+                    </div>
+                    <div style="padding-top: 25px;">
+                        <h4>
+                            Esse procedimento foi criado para realizar a mudanca do cluster. <strong style="color:red"> Lembrando que só gestor comercial tera acesso a fazer tanto a ativacao quanto a inativacao do cluster!</strong>
+                        </h4>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" ng-click="atualizarCluster()">Atualizar Cluster</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
@@ -101,31 +148,31 @@
                                 </td>
                                 <td style="text-align:center">{{dado.cdProduto}}</td>
                                 <td style="text-align:center"><a href="" ng-click="estatistica(dado)">{{dado.Produto}}</a></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Ativo == true ? 'indianred': ''}"><input id="Inativo" name="Inativo" type="checkbox" ng-model="dado.Inativo"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Itaborai == true ? 'lightblue': ''}"><input id="ITA" name="ITA" type="checkbox" ng-model="dado.ITA"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Itaborai2 == true ? 'lightblue': ''}"><input id="ITA2" name="ITA2" type="checkbox" ng-model="dado.ITA2"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Mage == true ? 'lightblue': ''}"><input id="MGE" name="MGE" type="checkbox" ng-model="dado.MGE"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Mage2 == true ? 'lightblue': ''}"><input id="MGE2" name="MGE2" type="checkbox" ng-model="dado.MGE2"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.RioBonito == true ? 'lightblue': ''}"><input id="RBO" name="RBO" type="checkbox" ng-model="dado.RBO"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.RioBonito2 == true ? 'lightblue': ''}"><input id="RBO2" name="RBO2" type="checkbox" ng-model="dado.RBO2"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Tangua == true ? 'lightblue': ''}"><input id="TNG" name="TNG" type="checkbox" ng-model="dado.TNG"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Arsenal == true ? 'lightblue': ''}"><input id="ASN" name="ASN" type="checkbox" ng-model="dado.ASN"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.AgMineral == true ? 'lightblue': ''}"><input id="AGM" name="AGM" type="checkbox" ng-model="dado.AGM"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Inoa == true ? 'lightblue': ''}"><input id="INO" name="INO" type="checkbox" ng-model="dado.INO"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Catarina == true ? 'lightblue': ''}"><input id="JDC" name="JDC" type="checkbox" ng-model="dado.JDC"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Marica == true ? 'lightblue': ''}"><input id="MRC" name="MRC" type="checkbox" ng-model="dado.MRC"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.NovaCidade == true ? 'lightblue': ''}"><input id="NCE" name="NCE" type="checkbox" ng-model="dado.NCE"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.RioDoOuro == true ? 'lightblue': ''}"><input id="RDO" name="RDO" type="checkbox" ng-model="dado.RDO"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Trindade == true ? 'lightblue': ''}"><input id="TND" name="TND" type="checkbox" ng-model="dado.TND"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Araruama == true ? 'lightblue': ''}"><input id="ARM" name="ARM" type="checkbox" ng-model="dado.ARM"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Araruama2 == true ? 'lightblue': ''}"><input id="ARM2" name="ARM2" type="checkbox" ng-model="dado.ARM2"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Bacaxa == true ? 'lightblue': ''}"><input id="BCX" name="BCX" type="checkbox" ng-model="dado.BCX"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.CaboFrio == true ? 'lightblue': ''}"><input id="CBF" name="CBF" type="checkbox" ng-model="dado.CBF"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Esperanca == true ? 'lightblue': ''}"><input id="JDE" name="JDE" type="checkbox" ng-model="dado.JDE"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.Macae == true ? 'lightblue': ''}"><input id="MCE" name="MCE" type="checkbox" ng-model="dado.MCE"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.SaoPedro == true ? 'lightblue': ''}"><input id="SPD" name="SPD" type="checkbox" ng-model="dado.SPD"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.CdItaborai == true ? 'lightblue': ''}"><input id="CDI" name="CDI" type="checkbox" ng-model="dado.CDI"></td>
-                                <td style="text-align:center" ng-style="{'background-color': dado.CdManilha == true ? 'lightblue': ''}"><input id="CDM" name="CDM" type="checkbox" ng-model="dado.CDM"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Ativo == true ? 'indianred': ''}"><input id="Inativo" name="Inativo" type="checkbox" ng-disabled="!ativo" ng-model="dado.Inativo"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Itaborai == true ? 'lightblue': ''}"><input id="ITA" name="ITA" type="checkbox" ng-disabled="!ativo" ng-model="dado.ITA"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Itaborai2 == true ? 'lightblue': ''}"><input id="ITA2" name="ITA2" type="checkbox" ng-disabled="!ativo" ng-model="dado.ITA2"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Mage == true ? 'lightblue': ''}"><input id="MGE" name="MGE" type="checkbox" ng-disabled="!ativo" ng-model="dado.MGE"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Mage2 == true ? 'lightblue': ''}"><input id="MGE2" name="MGE2" type="checkbox" ng-disabled="!ativo" ng-model="dado.MGE2"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.RioBonito == true ? 'lightblue': ''}"><input id="RBO" name="RBO" type="checkbox" ng-disabled="!ativo" ng-model="dado.RBO"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.RioBonito2 == true ? 'lightblue': ''}"><input id="RBO2" name="RBO2" type="checkbox" ng-disabled="!ativo" ng-model="dado.RBO2"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Tangua == true ? 'lightblue': ''}"><input id="TNG" name="TNG" type="checkbox" ng-disabled="!ativo" ng-model="dado.TNG"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Arsenal == true ? 'lightblue': ''}"><input id="ASN" name="ASN" type="checkbox" ng-disabled="!ativo" ng-model="dado.ASN"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.AgMineral == true ? 'lightblue': ''}"><input id="AGM" name="AGM" type="checkbox" ng-disabled="!ativo" ng-model="dado.AGM"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Inoa == true ? 'lightblue': ''}"><input id="INO" name="INO" type="checkbox" ng-disabled="!ativo" ng-model="dado.INO"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Catarina == true ? 'lightblue': ''}"><input id="JDC" name="JDC" type="checkbox" ng-disabled="!ativo" ng-model="dado.JDC"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Marica == true ? 'lightblue': ''}"><input id="MRC" name="MRC" type="checkbox" ng-disabled="!ativo" ng-model="dado.MRC"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.NovaCidade == true ? 'lightblue': ''}"><input id="NCE" name="NCE" type="checkbox" ng-disabled="!ativo" ng-model="dado.NCE"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.RioDoOuro == true ? 'lightblue': ''}"><input id="RDO" name="RDO" type="checkbox" ng-disabled="!ativo" ng-model="dado.RDO"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Trindade == true ? 'lightblue': ''}"><input id="TND" name="TND" type="checkbox" ng-disabled="!ativo" ng-model="dado.TND"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Araruama == true ? 'lightblue': ''}"><input id="ARM" name="ARM" type="checkbox" ng-disabled="!ativo" ng-model="dado.ARM"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Araruama2 == true ? 'lightblue': ''}"><input id="ARM2" name="ARM2" type="checkbox" ng-disabled="!ativo" ng-model="dado.ARM2"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Bacaxa == true ? 'lightblue': ''}"><input id="BCX" name="BCX" type="checkbox" ng-disabled="!ativo" ng-model="dado.BCX"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.CaboFrio == true ? 'lightblue': ''}"><input id="CBF" name="CBF" type="checkbox" ng-disabled="!ativo" ng-model="dado.CBF"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Esperanca == true ? 'lightblue': ''}"><input id="JDE" name="JDE" type="checkbox" ng-disabled="!ativo" ng-model="dado.JDE"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.Macae == true ? 'lightblue': ''}"><input id="MCE" name="MCE" type="checkbox" ng-disabled="!ativo" ng-model="dado.MCE"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.SaoPedro == true ? 'lightblue': ''}"><input id="SPD" name="SPD" type="checkbox" ng-disabled="!ativo" ng-model="dado.SPD"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.CdItaborai == true ? 'lightblue': ''}"><input id="CDI" name="CDI" type="checkbox" ng-disabled="!ativo" ng-model="dado.CDI"></td>
+                                <td style="text-align:center" ng-style="{'background-color': dado.CdManilha == true ? 'lightblue': ''}"><input id="CDM" name="CDM" type="checkbox" ng-disabled="!ativo" ng-model="dado.CDM"></td>
                             </tr>
                         </tbody>
                     </table>

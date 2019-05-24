@@ -9657,12 +9657,20 @@ function abastecimentoTrocaCtrl($scope, $http, DTOptionsBuilder, $localStorage, 
 
 }
 
-function clusterCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder, SweetAlert, $uibModal) {
+function clusterCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder, SweetAlert, $uibModal, $interval, $localStorage) {
     $scope.compradores;
     $scope.classificacoes;
-    $scope.dados;
+    $scope.dados = [];
     var vm = this;
     vm.checkoxesState = true;
+    $scope.ativo;
+    $scope.grupo = $localStorage.user.Grupo[0].Nome;
+
+    $http.get("http://localhost:50837/api/cluster/GetConfig").then(function (response) {
+        $scope.ativo = response.data.Ativo;
+    })
+
+
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDOM('<"html5buttons"B>lTfgitp')
@@ -9937,6 +9945,49 @@ function clusterCtrl($scope, $http, DTOptionsBuilder, DTColumnDefBuilder, SweetA
                 }
             }
         });
+    }
+
+    $scope.desabilitar = function () {
+        
+        $http.get("http://localhost:50837/api/cluster/desabilitarCluster").then(function (response) {
+            $interval(function () {
+                location.reload();
+            }, 3000);
+            SweetAlert.swal({
+                title: "Sucesso!",
+                text: "O Cluster foi desabilitado com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+        })
+    }
+
+    $scope.habilitar = function () {
+        $http.get("http://localhost:50837/api/cluster/habilitarCluster").then(function (response) {
+            $interval(function () {
+                location.reload();
+            }, 3000);
+            SweetAlert.swal({
+                title: "Sucesso!",
+                text: "O Cluster foi habilitado com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+        })
+    }
+
+    $scope.atualizarCluster = function () {
+        $http.post("http://localhost:50837/api/cluster/AtualizarCluster").then(function (response) {
+            $interval(function () {
+                location.reload();
+            }, 3000);
+            SweetAlert.swal({
+                title: "Sucesso!",
+                text: "O Cluster atualizado com sucesso!",
+                type: "success",
+                timer: 5000
+            });
+        })
     }
 }
 

@@ -16,6 +16,10 @@
     <div class="col-lg-2">
     </div>
 </div>
+<div>
+    <h1>Angular</h1>
+    <img ng-src="file://///192.168.1.207/Antecipada/CADASTRO%20KIT.jpg">
+</div>
 <div class="wrapper wrapper-content animated fadeInRight" ng-controller="confAntecipadaCtrl">
     <div class="row">
         <div class="col-lg-12">
@@ -85,6 +89,7 @@
                                     <th>Data</th>
                                     <th>Fornecedor</th>
                                     <th>Numero</th>
+                                    <th></th>
                                     <th>Erro</th>
                                     <th>Resp</th>
                                     <th>Observacao</th>
@@ -104,6 +109,7 @@
                                     <td>{{antecipada.Data | date: 'dd/MM/yyyy'}}</td>
                                     <td>{{antecipada.Fornecedor}}</td>
                                     <td><a hef="" ng-click="finalizar(antecipada);">{{antecipada.Numero_NFe}}</a></td>
+                                    <td><a href=""><i class="fa fa-camera-retro"></i></a></td>
                                     <td>{{antecipada.Erro}}</td>
                                     <td>{{antecipada.Usuario.Nome}}</td>
                                     <td>{{antecipada.Observacao}}</td>
@@ -117,4 +123,5 @@
             </div>
         </div>
     </div>
+    
 </div>

@@ -138,10 +138,10 @@
                     <li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>
                 </ul>
             </li>
-            <li ng-class="{active: $state.includes('cluster')}" ng-show="grupo == 1">
+            <li ng-class="{active: $state.includes('cluster')}" ng-show="grupo == 1 || grupo == 8 || grupo == 9">
                 <a href="#"><i class="fa fa-clock-o"></i> <span class="nav-label">{{ 'Cluster' | translate }}</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('cluster')}">
-                    <li ui-sref-active="active"><a ui-sref="cluster.busca" ng-show="grupo == 1">Busca\Alteracao</a></li>
+                    <li ui-sref-active="active"><a ui-sref="cluster.busca" ng-show="grupo == 1 || grupo == 8 || grupo == 9">Busca\Alteracao</a></li>
                     <!--<li ui-sref-active="active"><a ui-sref="agendamento.listaestoqueminimo">Agendamentos Estoque Minimo</a></li>-->
                 </ul>
             </li>

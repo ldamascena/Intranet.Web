@@ -20,7 +20,7 @@ namespace Intranet.API.Controllers
         {
             var context = new AlvoradaContext();
 
-            return await context.CadSolicitacoesDesp.Take(2000).OrderByDescending(x => x.DataInclusao).ToListAsync();
+            return await context.CadSolicitacoesDesp.Take(500).OrderByDescending(x => x.DataInclusao).ToListAsync();
         }
 
         

@@ -73,5 +73,73 @@ namespace Intranet.API.Controllers
 
             return context.VwEstatisticaProduto.Where(x => x.cdProduto == codigo);
         }
+
+        public ClusterConfig GetConfig()
+        {
+            var context = new AlvoradaContext();
+
+            return context.ClusterConfig.FirstOrDefault();
+        }
+
+        [HttpGet]
+        public bool habilitarCluster()
+        {
+            var context = new AlvoradaContext();
+            var result = context.ClusterConfig.FirstOrDefault();
+
+            try
+            {
+                
+                result.Ativo = true;
+                result.UltDataReativacao = DateTime.Now;
+                context.Entry(result).State = EntityState.Modified;
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return true;
+        }
+
+        [HttpGet]
+        public bool desabilitarCluster()
+        {
+            var context = new AlvoradaContext();
+            var result = context.ClusterConfig.FirstOrDefault();
+
+            try
+            {
+                
+                result.Ativo = false;
+                result.UltDataInativacao = DateTime.Now;
+                context.Entry(result).State = EntityState.Modified;
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return true;
+        }
+
+        public HttpResponseMessage AtualizarCluster()
+        {
+            var contextAlvorada = new CentralContext();
+            try
+            {
+                contextAlvorada.Database.ExecuteSqlCommand("spAlteraCluster");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }

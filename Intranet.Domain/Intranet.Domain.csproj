@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Entities\AccountViewModels.cs" />
     <Compile Include="Entities\Calendar.cs" />
+    <Compile Include="Entities\ClusterConfig.cs" />
     <Compile Include="Entities\ClusterLojas.cs" />
     <Compile Include="Entities\AlertaAnalitico.cs" />
     <Compile Include="Entities\AlertaBalanco.cs" />
